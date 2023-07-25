@@ -2,6 +2,7 @@ import Quill from "quill";
 import "./quill.snow.css";
 import "./style.css";
 import AlthingiNetLogo from "./althingi.net.png";
+import Constitution from "./1944.33.xml";
 
 var quill = new Quill('#editor', {
   debug: 'warning',
@@ -13,3 +14,5 @@ logo.src = AlthingiNetLogo;
 logo.height = 100;
 logo.weight = 100;
 document.body.append(logo);
+
+console.log(Constitution);
