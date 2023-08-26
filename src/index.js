@@ -12,7 +12,7 @@ var quill = new Quill('#editor', {
 const logo = new Image();
 logo.src = AlthingiNetLogo;
 logo.height = 100;
-logo.weight = 100;
+logo.width = 100;
 document.body.append(logo);
 
 console.log(Constitution);
