@@ -8,3 +8,15 @@
 body {
   font-family: 'MyFont';
 }
+
+.line-dotted {
+  border-style: dotted;
+}
+
+.line-solid {
+  border-style: solid;
+}
+
+.line-double {
+  border-style: double;
+}

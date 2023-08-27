@@ -11,6 +11,13 @@ class MarkBlot extends Inline {
 };
 Quill.register(MarkBlot);
 
+const Parchment = Quill.import('parchment');
+var boxAttributor = new Parchment.Attributor.Class('box', 'line', {
+ scope: Parchment.Scope.INLINE,
+ whitelist: ['solid', 'double', 'dotted']
+});
+Quill.register(boxAttributor);
+
 var quill = new Quill('#editor', {
   debug: 'warning',
   theme: 'snow',
