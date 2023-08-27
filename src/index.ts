@@ -8,6 +8,19 @@ let Inline = Quill.import('blots/inline');
 class MarkBlot extends Inline {
   static blotName = 'mark';
   static tagName = 'mark';
+
+  constructor(domNode: HTMLElement) {
+    super(domNode);
+
+    this.clickHandler = this.clickHandler.bind(this);
+    domNode.addEventListener("click", this.clickHandler);
+  }
+
+  clickHandler(event: MouseEvent) {
+    console.log("Mark blot clicked!");
+    console.log("Event:", event);
+    console.log("This:", this);
+  }
 };
 Quill.register(MarkBlot);
 
