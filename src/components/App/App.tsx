@@ -1,11 +1,11 @@
-import 'react-quill/dist/quill.snow.css';
-import DocumentSelector from '../DocumentSelector/DocumentSelector';
-import './App.css';
-import { GithubFile } from '../../utils/getGitFiles';
-import { Layout, Space } from 'antd';
+import { Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { useState } from 'react';
+import 'react-quill/dist/quill.snow.css';
+import { GithubFile } from '../../utils/getGitFiles';
+import DocumentSelector from '../DocumentSelector/DocumentSelector';
 import Editor from '../Editor/Editor';
+import './App.css';
 
 function App() {
   const [selectedFile, setSelectedFile] = useState<GithubFile | null>(null);
@@ -23,9 +23,7 @@ function App() {
   return (
     <Layout>
       <Content style={{ padding: '50px', textAlign: 'center' }}>
-        <Space direction="vertical" size='large'>
           {content}
-        </Space>
       </Content>
     </Layout>
   );

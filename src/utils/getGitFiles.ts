@@ -19,13 +19,13 @@ const getGitFiles = async (page = 0): Promise<GithubFile[]> => {
     if (DISABLE_GITHUB) {
         return [{
             name: 'test',
-            path: 'test',
-            download_url: 'test',
+            path: 'data/xml/1998.22.xml',
+            download_url: 'https://github.com/althingi-net/lagasafn-xml/blob/master/data/xml/1998.22.xml',
             type: 'test',
         }, {
             name: 'test',
-            path: 'test',
-            download_url: 'test',
+            path: 'data/xml/1998.22.xml',
+            download_url: 'https://github.com/althingi-net/lagasafn-xml/blob/master/data/xml/1998.22.xml',
             type: 'test',
         }]
     }
