@@ -1,7 +1,8 @@
-import { FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
-import { GithubFile } from "../../utils/getGitFiles";
+import convertXmlToHtml from "../../utils/convertXmlToHtml";
 import downloadGitFile from "../../utils/downloadGitFile";
+import { GithubFile } from "../../utils/getGitFiles";
 
 interface Props {
     file: GithubFile;
@@ -23,7 +24,7 @@ const Editor: FC<Props> = ({ file }) => {
 
     useEffect(() => {
         console.log("content", content);
-
+        setValue(convertXmlToHtml(content));
     }, [content]);
 
     useEffect(() => {
