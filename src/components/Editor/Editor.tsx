@@ -1,7 +1,12 @@
 import { FC, useState } from "react";
 import ReactQuill from "react-quill";
+import { GithubFile } from "../../utils/getGitFiles";
 
-const Editor: FC = () => {
+interface Props {
+    file: GithubFile;
+}
+
+const Editor: FC<Props> = ({ file }) => {
 
   const [value, setValue] = useState('');
 
