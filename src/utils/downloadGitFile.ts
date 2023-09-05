@@ -1,8 +1,8 @@
 import { Octokit } from "octokit";
-import { GithubFile } from "./getGitFiles";
 import decodeBase64 from "./decodeBase64";
+import GithubFile from "../models/GithubFile";
 
-const DISABLE_GITHUB = false;
+const DISABLE_GITHUB = true;
 const exampleFile = `PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGxhdyBu
 cj0ibTAwZDAwIiB5ZWFyPSIxMjc1IiBwcmltaXRpdmUtbnI9IjAiPgogIDxu
 YW1lPktyaXN0aW5yw6l0dHVyIMOBcm5hIGJpc2t1cHMgw55vcmzDoWtzc29u

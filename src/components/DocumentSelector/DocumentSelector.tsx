@@ -1,6 +1,7 @@
 import { Button, List, Space } from "antd";
 import { FC, useEffect, useState } from "react";
-import getGitFiles, { GithubFile } from "../../utils/getGitFiles";
+import getGitFiles from "../../utils/getGitFiles";
+import GithubFile from "../../models/GithubFile";
 
 interface Props {
     onFileSelect: (file: GithubFile) => void;

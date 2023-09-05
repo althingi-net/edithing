@@ -1,13 +1,7 @@
 import { Octokit } from "octokit";
+import GithubFile from "../models/GithubFile";
 
 const DISABLE_GITHUB = true;
-
-export interface GithubFile {
-    name: string;
-    path: string;
-    download_url: string;
-    type: string;
-}
 
 const octokit = new Octokit({
     // auth: 'YOUR-TOKEN',

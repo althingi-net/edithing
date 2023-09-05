@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import ReactQuill from "react-quill";
 
 const IGNORE_TAGS = [
     '?xml',
@@ -6,7 +7,12 @@ const IGNORE_TAGS = [
     'num',
 ];
 
-const convertXmlToHtml = (xml: string): string => {
+/**
+ * Convert XML to Custom-HTML (CHTML) that is used in the editor and can be converted back to the original XML
+ * @param xml string
+ * @returns CHTML string
+ */
+const convertXmlToChtml = (xml: string): string => {
     const parser = new XMLParser();
     let object = parser.parse(xml);
 
@@ -40,23 +46,11 @@ const convert = (object: any): string => {
 const convertObject = (key: string, value: string): string => {
     const content = convert(value);
 
-    if (key === 'law') {
-        return `<div class="boxbody">${content}</div>`;
-    }
-
-    if (key === 'name') {
-        return `<h2>${content}</h2>`;
-    }
-
-    if (key === 'original') {
-        return `<p style="text-align:center"><strong>${content}</strong></p><hr>`
-    }
-
-    if (key === 'minister-clause') {
-        return `${content}<hr><br>`;
+    if (key === 'paragraph') {
+        return `<p>${content}</p>`;
     }
 
     return content;
 }
 
-export default convertXmlToHtml;
+export default convertXmlToChtml;
