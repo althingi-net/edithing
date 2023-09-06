@@ -1,10 +1,10 @@
 import { XMLParser } from "fast-xml-parser";
-import ReactQuill from "react-quill";
 
 const IGNORE_TAGS = [
     '?xml',
-    'date',
-    'num',
+    'name',
+    'num-and-date',
+    'minister-clause',
 ];
 
 /**
@@ -13,15 +13,15 @@ const IGNORE_TAGS = [
  * @returns CHTML string
  */
 const convertXmlToChtml = (xml: string): string => {
-    const parser = new XMLParser();
+    const parser = new XMLParser({ ignoreAttributes: false });
     let object = parser.parse(xml);
 
     return convert(object)
 }
 
-const convert = (object: any): string => {
+const convert = (object: any, join = ''): string => {
     if (Array.isArray(object)) {
-        return object.map(convert).join('');
+        return `${object.map(item => convert(item)).join(join)}`;
     }
 
     if (typeof object === 'object') {
@@ -43,14 +43,50 @@ const convert = (object: any): string => {
     return `${object}`;
 }
 
-const convertObject = (key: string, value: string): string => {
-    const content = convert(value);
-
-    if (key === 'paragraph') {
-        return `<p>${content}</p>`;
+const convertObject = (key: string, value: any): string => {
+    if (key === 'law') {
+        const attributes = extractAttributes(['nr', 'year'], value);
+        return `<ol type="I"${attributes}>${convert(value)}</ol>`;
     }
 
-    return content;
+    if (key === 'chapter') {
+        return `<li><ol>${convert(value, '</ol></li><li><ol>')}</ol></li>`;
+    }
+
+    if (key === 'art') {
+        return `<li><ol>${convert(value, '</ol></li><li><ol>')}</ol></li>`;
+    }
+
+    if (key === 'subart') {
+        return `<li><ol>${convert(value, '</ol></li><li><ol>')}</ol></li>`;
+    }
+
+    if (key === 'paragraph') {
+        return `<p>${convert(value, '</p><p>')}</p>`;
+    }
+
+    if (key === 'sen') {
+        return `<span>${convert(value, '</span><span>')}</span>`;
+    }
+
+    return '';
+}
+
+const extractAttributes = (names: string[], object: any) => {
+    const values: string[] = [];
+
+    names.forEach((name) => {
+        const value = object[`@_${name}`];
+        if (value) {
+            values.push(`data-${name}="${value}"`);
+        }
+    })
+
+    if (values.length > 0) {
+        return ` ${values.join(' ')}`;
+    }
+
+    return '';
 }
 
 export default convertXmlToChtml;
