@@ -12,7 +12,7 @@ const IGNORE_TAGS = [
  * @param xml string
  * @returns CHTML string
  */
-const convertXmlToChtml = (xml: string): string => {
+const convertXmlToSlate = (xml: string): string => {
     const parser = new XMLParser({ ignoreAttributes: false });
     let object = parser.parse(xml);
 
@@ -89,4 +89,4 @@ const extractAttributes = (names: string[], object: any) => {
     return '';
 }
 
-export default convertXmlToChtml;
+export default convertXmlToSlate;

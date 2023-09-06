@@ -5,7 +5,7 @@ import { BaseEditor, Element, Descendant, createEditor } from "slate";
 import { Editable, ReactEditor, RenderElementProps, Slate, withReact } from "slate-react";
 import { HistoryEditor, withHistory } from "slate-history";
 import { ListType, ListsSchema, onKeyDown, withLists } from '@prezly/slate-lists';
-import convertXmlToChtml from "../../utils/convertXmlToChtml";
+import convertXmlToChtml from "../../utils/convertXmlToSlate";
 
 
 type CustomElement = { type: Type; children: Descendant[] }
