@@ -1,111 +1,217 @@
 import convertXmlToSlate from "./convertXmlToSlate";
+import { Type } from '../components/Editor/Slate';
+import { Descendant } from 'slate';
 
-test('<law> to <ol type="I">', () => {
-    const input = `<law><name>Stjórnarskrá lýðveldisins Íslands</name></law>`;
-    const output = `<ol type="I"></ol>`;
 
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<chapter> to <li><ol>', () => {
-    const input = `<chapter nr="1" nr-type="roman" roman-nr="I"><nr-title>I.</nr-title></chapter>`;
-    const output = `<li><ol></ol></li>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<law><chapter><chapter></law> to <ol><li/><li/></ol>', () => {
+test('<law><chapter> to <ol><li>', () => {
     const input = `
         <law>
-            <chapter nr="1" nr-type="roman" roman-nr="I"><nr-title>I.</nr-title></chapter>
-            <chapter nr="1" nr-type="roman" roman-nr="II"><nr-title>II.</nr-title></chapter>
+            <chapter nr="1" nr-type="roman" roman-nr="I">
+                <nr-title>I.</nr-title>
+            </chapter>
         </law>
     `;
-    const output = `<ol type="I"><li><ol></ol></li><li><ol></ol></li></ol>`;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        listType: 'I',
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: '' }],
+            }],
+        }],
+    }];
 
-    expect(convertXmlToSlate(input)).toBe(output);
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
 
-test('<art> to <li><ol>', () => {
-    const input = `<art nr="1"><nr-title>1</nr-title></art>`;
-    const output = `<li><ol></ol></li>`;
+test('<chapter> to <ol><li>', () => {
+    const input = `
+        <chapter nr="1" nr-type="roman" roman-nr="I">
+            <nr-title>I.</nr-title>
+        </chapter>
+    `;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        listType: 'I',
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: '' }],
+            }],
+        }],
+    }];
 
-    expect(convertXmlToSlate(input)).toBe(output);
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
 
-test('<law><art><art></law> to <ol><li/><li/></ol>', () => {
+test('<art> to <ol><li>', () => {
+    const input = `
+        <art>
+            <nr-title>I.</nr-title>
+        </art>
+    `;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: '' }],
+            }],
+        }],
+    }];
+
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
+});
+
+test('<subart> to <ol><li>', () => {
+    const input = `
+        <subart></subart>
+    `;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: '' }],
+            }],
+        }],
+    }];
+
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
+});
+
+test('<paragraph> to <ol><li>', () => {
+    const input = `
+        <paragraph></paragraph>
+    `;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: '' }],
+            }],
+        }],
+    }];
+
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
+});
+
+test('<paragraph><sen><sen> to <ol><li><p>', () => {
+    const input = `
+        <paragraph>
+            <sen>one.</sen>
+            <sen>two.</sen>
+        </paragraph>
+    `;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: 'one. two.' }],
+            }],
+        }],
+    }];
+
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
+});
+
+test('full structure', () => {
     const input = `
         <law>
-            <art nr="1"><nr-title>I.</nr-title></art>
-            <art nr="1"><nr-title>II.</nr-title></art>
+            <chapter nr="1" nr-type="roman" roman-nr="I">
+                <nr-title>I.</nr-title>
+                <art>
+                    <nr-title>1. gr.</nr-title>
+                    <subart>
+                        <paragraph>
+                            <sen>one.</sen>
+                            <sen>two.</sen>
+                        </paragraph>
+                    </subart>
+                </art>
+                <art>
+                    <nr-title>2. gr.</nr-title>
+                    <subart>
+                        <paragraph>
+                            <sen>one.</sen>
+                            <sen>two.</sen>
+                        </paragraph>
+                    </subart>
+                </art>
+            </chapter>
         </law>
     `;
-    const output = `<ol type="I"><li><ol></ol></li><li><ol></ol></li></ol>`;
+    const output: Descendant[] = [{
+        type: Type.ORDERED_LIST,
+        listType: 'I',
+        children: [{
+            type: Type.LIST_ITEM,
+            children: [{
+                type: Type.LIST_ITEM_TEXT,
+                children: [{ text: '' }],
+            }, {
+                type: Type.ORDERED_LIST,
+                children: [{
+                    type: Type.LIST_ITEM,
+                    children: [{
+                        type: Type.LIST_ITEM_TEXT,
+                        children: [{ text: '' }],
+                    }, {
+                        type: Type.ORDERED_LIST,
+                        children: [{
+                            type: Type.LIST_ITEM,
+                            children: [{
+                                type: Type.LIST_ITEM_TEXT,
+                                children: [{ text: '' }],
+                            }, {
+                                type: Type.ORDERED_LIST,
+                                children: [{
+                                    type: Type.LIST_ITEM,
+                                    children: [{
+                                        type: Type.LIST_ITEM_TEXT,
+                                        children: [{ text: 'one. two.' }],
+                                    }],
+                                }],
+                            }],
+                        }],
+                    }],
+                }, {
+                    type: Type.LIST_ITEM,
+                    children: [{
+                        type: Type.LIST_ITEM_TEXT,
+                        children: [{ text: '' }],
+                    }, {
+                        type: Type.ORDERED_LIST,
+                        children: [{
+                            type: Type.LIST_ITEM,
+                            children: [{
+                                type: Type.LIST_ITEM_TEXT,
+                                children: [{ text: '' }],
+                            }, {
+                                type: Type.ORDERED_LIST,
+                                children: [{
+                                    type: Type.LIST_ITEM,
+                                    children: [{
+                                        type: Type.LIST_ITEM_TEXT,
+                                        children: [{ text: 'one. two.' }],
+                                    }],
+                                }],
+                            }],
+                        }],
+                    }],
+                }],
+            }],
+        }],
+    }]
 
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<subart> to <li><ol>', () => {
-    const input = `<subart nr="1"><nr-title>1</nr-title></subart>`;
-    const output = `<li><ol></ol></li>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<law><subart><subart></law> to <ol><li/><li/></ol>', () => {
-    const input = `
-        <law>
-            <subart nr="1"><nr-title>I.</nr-title></subart>
-            <subart nr="1"><nr-title>II.</nr-title></subart>
-        </law>
-    `;
-    const output = `<ol type="I"><li><ol></ol></li><li><ol></ol></li></ol>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<paragraph> to <p>', () => {
-    const input = `<paragraph nr="1"><nr-title>1</nr-title></paragraph>`;
-    const output = `<p></p>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<law><paragraph><paragraph></law> to <ol><li/><li/></ol>', () => {
-    const input = `
-        <law>
-            <paragraph nr="1"><nr-title>I.</nr-title></paragraph>
-            <paragraph nr="1"><nr-title>II.</nr-title></paragraph>
-        </law>
-    `;
-    const output = `<ol type="I"><p></p><p></p></ol>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<sen> to <p>', () => {
-    const input = `<sen>dgs</sen>`;
-    const output = `<span>dgs</span>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-test('<law><sen><sen></law> to <ol><span/><span/></ol>', () => {
-    const input = `
-        <law>
-            <sen>1</sen>
-            <sen>2</sen>
-        </law>
-    `;
-    const output = `<ol type="I"><span>1</span><span>2</span></ol>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
-});
-
-
-test('<law> to retain nr', () => {
-    const input = `<law nr="33" year="1944"></law>`;
-    const output = `<ol type="I" data-nr="33" data-year="1944"></ol>`;
-
-    expect(convertXmlToSlate(input)).toBe(output);
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
