@@ -4,7 +4,6 @@ import { useState } from 'react';
 import DocumentSelector from '../DocumentSelector/DocumentSelector';
 import Editor from '../Editor/Editor';
 import GithubFile from '../../models/GithubFile';
-import 'react-quill/dist/quill.snow.css';
 
 function App() {
   const [selectedFile, setSelectedFile] = useState<GithubFile | null>(null);
