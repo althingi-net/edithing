@@ -1,64 +1,14 @@
 import { onKeyDown, withLists } from '@prezly/slate-lists';
+import { Button } from 'antd';
 import { FC, useEffect, useState } from "react";
 import { Descendant, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import { Editable, Slate, withReact } from "slate-react";
 import GithubFile from "../../models/GithubFile";
-import downloadGitFile from "../../utils/downloadGitFile";
-import { Type, renderElement, schema } from "./Slate";
+import convertSlateToXml from '../../utils/convertSlateToXml';
 import convertXmlToSlate from '../../utils/convertXmlToSlate';
-
-const initialValue: Descendant[] = [
-    {
-        type: Type.ORDERED_LIST,
-        listType: 'I',
-        children: [
-            {
-                type: Type.LIST_ITEM,
-                listItemValue: 1,
-                children: [
-                    { type: Type.LIST_ITEM_TEXT, children: [{ text: ' ' }] },
-                    {
-                        type: Type.ORDERED_LIST,
-                        children: [
-                            {
-                                type: Type.LIST_ITEM,
-                                listItemValue: 1,
-                                children: [
-                                    { type: Type.LIST_ITEM_TEXT, children: [{ text: ' ' }] },
-                                    {
-                                        type: Type.ORDERED_LIST,
-                                        children: [
-                                            {
-                                                type: Type.LIST_ITEM,
-                                                listItemValue: 1,
-                                                children: [
-                                                    { type: Type.LIST_ITEM_TEXT, children: [{ text: ' ' }] },
-                                                    {
-                                                        type: Type.ORDERED_LIST,
-                                                        children: [
-                                                            {
-                                                                type: Type.LIST_ITEM,
-                                                                listItemValue: 1,
-                                                                children: [{ type: Type.LIST_ITEM_TEXT, children: [{ text: 'Sentence one.' }, { text: 'Sentence two.' }] }],
-                                                            },
-                                                        ],
-                                                    },
-                                                    
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                    
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
-];
+import downloadGitFile from "../../utils/downloadGitFile";
+import { renderElement, schema } from "./Slate";
 
 interface Props {
     file: GithubFile;
@@ -85,14 +35,17 @@ const Editor: FC<Props> = ({ file }) => {
     }
 
     return (
-        <div style={{ textAlign: 'left' }}>
-            <Slate editor={editor} initialValue={value} onChange={setValue}>
-                <Editable
-                    onKeyDown={(event) => onKeyDown(editor, event)}
-                    renderElement={renderElement}
-                />
-            </Slate>
-        </div>
+        <>
+            <Button onClick={() => console.log('new xml', convertSlateToXml(editor))}>Print XML</Button>
+            <div style={{ textAlign: 'left' }}>
+                <Slate editor={editor} initialValue={value} onChange={setValue}>
+                    <Editable
+                        onKeyDown={(event) => onKeyDown(editor, event)}
+                        renderElement={renderElement}
+                    />
+                </Slate>
+            </div>
+        </>
     )
 }
 

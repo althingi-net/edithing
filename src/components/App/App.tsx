@@ -1,9 +1,9 @@
-import { Layout } from 'antd';
+import { Button, Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { useState } from 'react';
+import GithubFile from '../../models/GithubFile';
 import DocumentSelector from '../DocumentSelector/DocumentSelector';
 import Editor from '../Editor/Editor';
-import GithubFile from '../../models/GithubFile';
 
 function App() {
   const [selectedFile, setSelectedFile] = useState<GithubFile | null>(null);
@@ -15,8 +15,12 @@ function App() {
   const content = !selectedFile ? (
     <DocumentSelector onFileSelect={handleFileSelect} />
   ) : (
-    <Editor file={selectedFile} />
+    <>
+      <Button onClick={() => setSelectedFile(null)}>Back</Button>
+      <Editor file={selectedFile} />
+    </>
   );
+
 
   return (
     <Layout>

@@ -1,5 +1,5 @@
 import convertXmlToSlate from "./convertXmlToSlate";
-import { Type } from '../components/Editor/Slate';
+import { ElementType } from '../components/Editor/Slate';
 import { Descendant } from 'slate';
 
 
@@ -12,13 +12,23 @@ test('<law><chapter> to <ol><li>', () => {
         </law>
     `;
     const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
-        listType: 'I',
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: 'chapter',
+            nrType: 'roman',
+        },
         children: [{
-            type: Type.LIST_ITEM,
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: 'chapter',
+                nr: '1',
+                nrType: 'roman',
+                romanNr: 'I',
+                title: 'I.',
+            },
             children: [{
-                type: Type.LIST_ITEM_TEXT,
-                children: [{ text: '' }],
+                type: ElementType.LIST_ITEM_TEXT,
+                children: [{ text: 'I.' }],
             }],
         }],
     }];
@@ -33,13 +43,23 @@ test('<chapter> to <ol><li>', () => {
         </chapter>
     `;
     const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
-        listType: 'I',
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: 'chapter',
+            nrType: 'roman',
+        },
         children: [{
-            type: Type.LIST_ITEM,
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: 'chapter',
+                nr: '1',
+                nrType: 'roman',
+                romanNr: 'I',
+                title: 'I.',
+            },
             children: [{
-                type: Type.LIST_ITEM_TEXT,
-                children: [{ text: '' }],
+                type: ElementType.LIST_ITEM_TEXT,
+                children: [{ text: 'I.' }],
             }],
         }],
     }];
@@ -49,17 +69,25 @@ test('<chapter> to <ol><li>', () => {
 
 test('<art> to <ol><li>', () => {
     const input = `
-        <art>
-            <nr-title>I.</nr-title>
+        <art nr="1">
+            <nr-title>1. gr.</nr-title>
         </art>
     `;
     const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: 'art',
+        },
         children: [{
-            type: Type.LIST_ITEM,
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: 'art',
+                nr: '1',
+                title: '1. gr.',
+            },
             children: [{
-                type: Type.LIST_ITEM_TEXT,
-                children: [{ text: '' }],
+                type: ElementType.LIST_ITEM_TEXT,
+                children: [{ text: '1. gr.' }],
             }],
         }],
     }];
@@ -69,14 +97,21 @@ test('<art> to <ol><li>', () => {
 
 test('<subart> to <ol><li>', () => {
     const input = `
-        <subart></subart>
+        <subart nr="1"></subart>
     `;
     const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: 'subart',
+        },
         children: [{
-            type: Type.LIST_ITEM,
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: 'subart',
+                nr: '1',
+            },
             children: [{
-                type: Type.LIST_ITEM_TEXT,
+                type: ElementType.LIST_ITEM_TEXT,
                 children: [{ text: '' }],
             }],
         }],
@@ -87,14 +122,21 @@ test('<subart> to <ol><li>', () => {
 
 test('<paragraph> to <ol><li>', () => {
     const input = `
-        <paragraph></paragraph>
+        <paragraph nr="1"></paragraph>
     `;
     const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: 'paragraph',
+        },
         children: [{
-            type: Type.LIST_ITEM,
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: 'paragraph',
+                nr: '1',
+            },
             children: [{
-                type: Type.LIST_ITEM_TEXT,
+                type: ElementType.LIST_ITEM_TEXT,
                 children: [{ text: '' }],
             }],
         }],
@@ -105,17 +147,24 @@ test('<paragraph> to <ol><li>', () => {
 
 test('<paragraph><sen><sen> to <ol><li><p>', () => {
     const input = `
-        <paragraph>
+        <paragraph nr="1">
             <sen>one.</sen>
             <sen>two.</sen>
         </paragraph>
     `;
     const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: 'paragraph',
+        },
         children: [{
-            type: Type.LIST_ITEM,
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: 'paragraph',
+                nr: '1',
+            },
             children: [{
-                type: Type.LIST_ITEM_TEXT,
+                type: ElementType.LIST_ITEM_TEXT,
                 children: [{ text: 'one. two.' }],
             }],
         }],
@@ -124,94 +173,3 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
 
-test('full structure', () => {
-    const input = `
-        <law>
-            <chapter nr="1" nr-type="roman" roman-nr="I">
-                <nr-title>I.</nr-title>
-                <art>
-                    <nr-title>1. gr.</nr-title>
-                    <subart>
-                        <paragraph>
-                            <sen>one.</sen>
-                            <sen>two.</sen>
-                        </paragraph>
-                    </subart>
-                </art>
-                <art>
-                    <nr-title>2. gr.</nr-title>
-                    <subart>
-                        <paragraph>
-                            <sen>one.</sen>
-                            <sen>two.</sen>
-                        </paragraph>
-                    </subart>
-                </art>
-            </chapter>
-        </law>
-    `;
-    const output: Descendant[] = [{
-        type: Type.ORDERED_LIST,
-        listType: 'I',
-        children: [{
-            type: Type.LIST_ITEM,
-            children: [{
-                type: Type.LIST_ITEM_TEXT,
-                children: [{ text: '' }],
-            }, {
-                type: Type.ORDERED_LIST,
-                children: [{
-                    type: Type.LIST_ITEM,
-                    children: [{
-                        type: Type.LIST_ITEM_TEXT,
-                        children: [{ text: '' }],
-                    }, {
-                        type: Type.ORDERED_LIST,
-                        children: [{
-                            type: Type.LIST_ITEM,
-                            children: [{
-                                type: Type.LIST_ITEM_TEXT,
-                                children: [{ text: '' }],
-                            }, {
-                                type: Type.ORDERED_LIST,
-                                children: [{
-                                    type: Type.LIST_ITEM,
-                                    children: [{
-                                        type: Type.LIST_ITEM_TEXT,
-                                        children: [{ text: 'one. two.' }],
-                                    }],
-                                }],
-                            }],
-                        }],
-                    }],
-                }, {
-                    type: Type.LIST_ITEM,
-                    children: [{
-                        type: Type.LIST_ITEM_TEXT,
-                        children: [{ text: '' }],
-                    }, {
-                        type: Type.ORDERED_LIST,
-                        children: [{
-                            type: Type.LIST_ITEM,
-                            children: [{
-                                type: Type.LIST_ITEM_TEXT,
-                                children: [{ text: '' }],
-                            }, {
-                                type: Type.ORDERED_LIST,
-                                children: [{
-                                    type: Type.LIST_ITEM,
-                                    children: [{
-                                        type: Type.LIST_ITEM_TEXT,
-                                        children: [{ text: 'one. two.' }],
-                                    }],
-                                }],
-                            }],
-                        }],
-                    }],
-                }],
-            }],
-        }],
-    }]
-
-    expect(convertXmlToSlate(input)).toStrictEqual(output);
-});

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@prezly/slate-lists": "^0.96.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -13,6 +14,7 @@
     "@types/react-dom": "^18.2.7",
     "antd": "^5.8.6",
     "fast-xml-parser": "^4.2.7",
+    "minify-xml": "^4.0.0",
     "octokit": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -49,7 +51,7 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "/node_modules/(?!@prezly/slate-lists).+\\.js$"
+      "/node_modules/(?!@prezly/slate-lists|minify-xml).+\\.js$"
     ]
   }
 }

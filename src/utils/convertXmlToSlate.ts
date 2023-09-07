@@ -1,13 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { Descendant, Text } from "slate";
-import { ListItem, OrderedList, Type } from "../components/Editor/Slate";
-
-const IGNORE_TAGS = [
-    '?xml',
-    'name',
-    'num-and-date',
-    'minister-clause',
-];
+import { ElementType, OrderedList } from "../components/Editor/Slate";
 
 const LIST_TAGS = [
     'chapter',
@@ -32,36 +25,57 @@ const convertObject = (object: any): Descendant[] => {
 
         if (LIST_TAGS.includes(key)) {
             const node: OrderedList = {
-                type: Type.ORDERED_LIST,
+                type: ElementType.ORDERED_LIST,
+                meta: {
+                    type: key,
+                },
                 children: [],
             }
 
-            if (key === 'chapter') {
-                node.listType = 'I';
+            if (value['@_nr-type']) {
+                node.meta.nrType = value['@_nr-type'];
             }
 
-            values.forEach((value) => {
-                node.children.push(...convertObject(value).map((item) => {
+            values.forEach((element) => {
+                const children = convertObject(element).map((child) => {
                     const childNode: Descendant = {
-                        type: Type.LIST_ITEM,
+                        type: ElementType.LIST_ITEM,
+                        meta: {
+                            type: key,
+                            nr: element['@_nr'],
+                        },
                         children: [],
                     }
+                    
+                    if (element['nr-title']) {
+                        childNode.meta.title = element['nr-title'];
+                    }
+                    
+                    if (element['@_nr-type']) {
+                        childNode.meta.nrType = element['@_nr-type'];
+                    }
+                    
+                    if (element['@_roman-nr']) {
+                        childNode.meta.romanNr = element['@_roman-nr'];
+                    }
 
-                    if (isText(item)) {
+                    if (Text.isText(child)) {
                         childNode.children.push({
-                            type: Type.LIST_ITEM_TEXT,
-                            children: [item],
+                            type: ElementType.LIST_ITEM_TEXT,
+                            children: [child.text ? child : { text: element['nr-title'] ?? '' }],
                         })
                     } else {
                         childNode.children.push({
-                            type: Type.LIST_ITEM_TEXT,
-                            children: [{ text: '' }],
+                            type: ElementType.LIST_ITEM_TEXT,
+                            children: [{ text: element['nr-title'] ?? '' }],
                         });
-                        childNode.children.push(item);
+                        childNode.children.push(child);
                     }
 
                     return childNode
-                }))
+                });
+
+                node.children.push(...children)
             })
 
             nodes.push(node);
@@ -75,10 +89,6 @@ const convertObject = (object: any): Descendant[] => {
     normalizeChildren(nodes);
 
     return nodes;
-}
-
-function isText(node: any): node is Text {
-    return node.text !== undefined ? true : false;
 }
 
 /**
