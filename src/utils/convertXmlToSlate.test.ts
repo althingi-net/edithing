@@ -1,7 +1,6 @@
 import convertXmlToSlate from "./convertXmlToSlate";
-import { ElementType } from '../components/Editor/Slate';
+import { ElementType, MetaType } from '../components/Editor/Slate';
 import { Descendant } from 'slate';
-
 
 test('<law><chapter> to <ol><li>', () => {
     const input = `
@@ -14,17 +13,16 @@ test('<law><chapter> to <ol><li>', () => {
     const output: Descendant[] = [{
         type: ElementType.ORDERED_LIST,
         meta: {
-            type: 'chapter',
+            type: MetaType.CHAPTER,
             nrType: 'roman',
         },
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'chapter',
+                type: MetaType.CHAPTER,
                 nr: '1',
                 nrType: 'roman',
                 romanNr: 'I',
-                title: 'I.',
             },
             children: [{
                 type: ElementType.LIST_ITEM_TEXT,
@@ -45,17 +43,16 @@ test('<chapter> to <ol><li>', () => {
     const output: Descendant[] = [{
         type: ElementType.ORDERED_LIST,
         meta: {
-            type: 'chapter',
+            type: MetaType.CHAPTER,
             nrType: 'roman',
         },
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'chapter',
+                type: MetaType.CHAPTER,
                 nr: '1',
                 nrType: 'roman',
                 romanNr: 'I',
-                title: 'I.',
             },
             children: [{
                 type: ElementType.LIST_ITEM_TEXT,
@@ -81,9 +78,8 @@ test('<art> to <ol><li>', () => {
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'art',
+                type: MetaType.ART,
                 nr: '1',
-                title: '1. gr.',
             },
             children: [{
                 type: ElementType.LIST_ITEM_TEXT,
@@ -102,12 +98,12 @@ test('<subart> to <ol><li>', () => {
     const output: Descendant[] = [{
         type: ElementType.ORDERED_LIST,
         meta: {
-            type: 'subart',
+            type: MetaType.SUBART,
         },
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'subart',
+                type: MetaType.SUBART,
                 nr: '1',
             },
             children: [{
@@ -127,12 +123,12 @@ test('<paragraph> to <ol><li>', () => {
     const output: Descendant[] = [{
         type: ElementType.ORDERED_LIST,
         meta: {
-            type: 'paragraph',
+            type: MetaType.PARAGRAPH,
         },
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'paragraph',
+                type: MetaType.PARAGRAPH,
                 nr: '1',
             },
             children: [{
@@ -155,12 +151,12 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
     const output: Descendant[] = [{
         type: ElementType.ORDERED_LIST,
         meta: {
-            type: 'paragraph',
+            type: MetaType.PARAGRAPH,
         },
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'paragraph',
+                type: MetaType.PARAGRAPH,
                 nr: '1',
             },
             children: [{

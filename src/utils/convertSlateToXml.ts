@@ -1,5 +1,5 @@
-import { Element, Node } from "slate";
-import { ElementType, ListItem, OrderedList } from "../components/Editor/Slate";
+import { Text, Element, Node } from "slate";
+import { ElementType, ListItem, MetaType, OrderedList } from "../components/Editor/Slate";
 
 const convertSlateToXml = (root: Node): string => {
     return convert(root, root);
@@ -15,7 +15,8 @@ const convert = (root: Node, value: Node): string => {
 
         if (Element.isElementType<ListItem>(node, ElementType.LIST_ITEM)) {
             const { meta } = node;
-            const { type, nr, nrType, romanNr, title } = meta;
+            const { type, nr, nrType, romanNr } = meta;
+            const title = getNodesTitle(node);
 
             const attributes = [];
 
@@ -31,8 +32,6 @@ const convert = (root: Node, value: Node): string => {
                 attributes.push(`roman-nr="${romanNr}"`);
             }
 
-
-
             const xml = `
                 <${type} ${attributes.join(' ')}>
                     ${title ? `<nr-title>${title}</nr-title>` : ''}
@@ -42,25 +41,16 @@ const convert = (root: Node, value: Node): string => {
 
             return xml;
         }
+    }
 
-        // if (Element.isElementType<OrderedList>(node, Type.LIST_ITEM_TEXT)) {
-        //     const { meta } = node;
-        //     const parent = Node.parent(root, path.slice(0, -1));
+    return ''
+}
 
-        //     if (!parent || !Element.isElementType<ListItem>(parent, Type.LIST_ITEM)) {
-        //         return '';
-        //     }
+const getNodesTitle = (node: ListItem): string => {
+    const child = Node.child(node, 0);
 
-        //     const { type, nrType, romanNr, title } = parent.meta;
-        //     const xml = `
-        //         <${type} nr="${nr}" nr-type="${nrType}" roman-nr="${romanNr}">
-        //             <nr-title>${title}</nr-title>
-        //             ${node.children.map(convertSlateToXml).join('')}
-        //         </${type}>
-        //     `;
-
-        //     return xml;
-        // }
+    if (node.meta.type !== MetaType.PARAGRAPH) {
+        return Node.string(child);
     }
 
     return ''

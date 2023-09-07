@@ -1,5 +1,5 @@
 import { Node } from "slate";
-import { ElementType } from "../components/Editor/Slate";
+import { ElementType, MetaType } from "../components/Editor/Slate";
 import minify from "minify-xml";
 import convertSlateToXml from "./convertSlateToXml";
 
@@ -13,11 +13,10 @@ test('convert chapters', () => {
         children: [{
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'chapter',
+                type: MetaType.CHAPTER,
                 nr: '1',
                 nrType: 'roman',
                 romanNr: 'I',
-                title: 'I.',
             },
             children: [{
                 type: ElementType.LIST_ITEM_TEXT,
@@ -26,11 +25,10 @@ test('convert chapters', () => {
         }, {
             type: ElementType.LIST_ITEM,
             meta: {
-                type: 'chapter',
+                type: MetaType.CHAPTER,
                 nr: '2',
                 nrType: 'roman',
                 romanNr: 'II',
-                title: 'II.',
             },
             children: [{
                 type: ElementType.LIST_ITEM_TEXT,

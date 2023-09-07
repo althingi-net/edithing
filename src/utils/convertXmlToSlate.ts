@@ -1,13 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { Descendant, Text } from "slate";
-import { ElementType, OrderedList } from "../components/Editor/Slate";
-
-const LIST_TAGS = [
-    'chapter',
-    'art',
-    'subart',
-    'paragraph',
-];
+import { ElementType, LIST_TAGS, MetaType, OrderedList } from "../components/Editor/Slate";
 
 const convertXmlToSlate = (xml: string): Descendant[] => {
     const parser = new XMLParser({ ignoreAttributes: false });
@@ -41,14 +34,10 @@ const convertObject = (object: any): Descendant[] => {
                     const childNode: Descendant = {
                         type: ElementType.LIST_ITEM,
                         meta: {
-                            type: key,
+                            type: key as MetaType,
                             nr: element['@_nr'],
                         },
                         children: [],
-                    }
-                    
-                    if (element['nr-title']) {
-                        childNode.meta.title = element['nr-title'];
                     }
                     
                     if (element['@_nr-type']) {
@@ -59,6 +48,7 @@ const convertObject = (object: any): Descendant[] => {
                         childNode.meta.romanNr = element['@_roman-nr'];
                     }
 
+                    // Wrap child in LIST_ITEM_TEXT if its text or prepend it before the child to use as title text
                     if (Text.isText(child)) {
                         childNode.children.push({
                             type: ElementType.LIST_ITEM_TEXT,

@@ -32,16 +32,27 @@ export type OrderedList = {
 export type ListItem = {
     type: ElementType.LIST_ITEM;
     children: Descendant[];
-    listItemValue?: number;
     meta: {
-        type: string;
+        type: MetaType;
         nr: string;
         nrType?: string;
         romanNr?: string;
-        title?: string;
     }
 }
 
+export enum MetaType {
+    CHAPTER = 'chapter',
+    ART = 'art',
+    SUBART = 'subart',
+    PARAGRAPH = 'paragraph',
+}
+
+export const LIST_TAGS = [
+    'chapter',
+    'art',
+    'subart',
+    'paragraph',
+];
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
     console.log('renderElement', { element, attributes, children })
