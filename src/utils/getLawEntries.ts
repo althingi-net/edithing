@@ -1,11 +1,9 @@
 import { XMLParser } from "fast-xml-parser";
 import GithubFile from "../models/GithubFile";
 import downloadGitFile from "./downloadGitFile";
-import fixBase64Decode from "./fixBase64Decode";
 
 const getLawEntries = async (): Promise<GithubFile[]> => {
     let result = await downloadGitFile('data/xml/index.xml')
-    result = fixBase64Decode(result)
 
     const parser = new XMLParser({ ignoreAttributes: false });
     let object = parser.parse(result);

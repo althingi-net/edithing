@@ -1,5 +1,4 @@
 import decodeBase64 from "./decodeBase64";
-import GithubFile from "../models/GithubFile";
 import github from "../api/github";
 
 const exampleXml = `
