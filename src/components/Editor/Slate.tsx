@@ -55,7 +55,6 @@ export const LIST_TAGS = [
 ];
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
-    console.log('renderElement', { element, attributes, children })
     switch (element.type) {
         case ElementType.ORDERED_LIST:
             // @ts-ignore
@@ -102,16 +101,13 @@ export const schema: ListsSchema = {
         return { children: [{ text: '' }], ...props, type: ElementType.PARAGRAPH };
     },
     createListNode(type = ListType.UNORDERED, props = {}) {
-        console.log('createListNode', type, props)
         const nodeType = type === ListType.ORDERED ? ElementType.ORDERED_LIST : ElementType.UNORDERED_LIST;
         return { children: [{ text: '' }], ...props, type: nodeType };
     },
     createListItemNode(props = {}) {
-        console.log('createListItemNode', props)
         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM };
     },
     createListItemTextNode(props = {}) {
-        console.log('createListItemTextNode', props)
         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM_TEXT };
     },
 };
