@@ -1,7 +1,7 @@
 import { Button, List, Space } from "antd";
 import { FC, useEffect, useState } from "react";
-import getGitFiles from "../../utils/getGitFiles";
 import GithubFile from "../../models/GithubFile";
+import getLawEntries from "../../utils/getLawEntries";
 
 interface Props {
     onFileSelect: (file: GithubFile) => void;
@@ -9,28 +9,29 @@ interface Props {
 
 const DocumentSelector: FC<Props> = ({ onFileSelect }) => {
     const [data, setData] = useState<GithubFile[]>([]);
+    console.log('data', data);
 
     useEffect(() => {
-        getGitFiles().then((result) => {
-            console.log(result);
-            setData(result);
-        });
+        getLawEntries().then(setData);
     }, []);
 
     return (
         <Space direction="vertical" size='large'>
             <List
                 size="large"
-                style={{ minWidth: '300px' }}
-                header={<div>Select a bill to edit</div>}
+                style={{ minWidth: '300px', textAlign: 'left' }}
+                header={<h1>Law Entries</h1>}
                 bordered
                 dataSource={data}
                 renderItem={(item) =>
                     <List.Item
                         style={{ width: '100%' }}
-                        actions={[<Button onClick={() => onFileSelect(item)}>Load</Button>]}
+                        actions={[<Button onClick={() => onFileSelect(item)}>Edit</Button>]}
                     >
-                        {item.name}
+                        <List.Item.Meta
+                            title={`${item.identifier} - ${item.date}`}
+                            description={item.name}
+                        />
                     </List.Item>
                 }
                 pagination={{ position: 'bottom', align: 'center' }}
