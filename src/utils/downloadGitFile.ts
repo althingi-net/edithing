@@ -1,8 +1,7 @@
-import { Octokit } from "octokit";
 import decodeBase64 from "./decodeBase64";
 import GithubFile from "../models/GithubFile";
+import github from "../api/github";
 
-const DISABLE_GITHUB = true;
 const exampleXml = `
     <law nr="33" year="1944">
     <chapter nr="1" nr-type="roman" roman-nr="I">
@@ -27,21 +26,17 @@ const exampleXml = `
         </art>
     </chapter>
     </law> 
-`
+`;
 
-const octokit = new Octokit({
-    // auth: 'YOUR-TOKEN',
-});
-
-const downloadGitFile = async (file: GithubFile) => {
-    if (DISABLE_GITHUB) {
+const downloadGitFile = async (file: string) => {
+    if (process.env.REACT_APP_DISABLE_GITHUB === 'true') {
         return exampleXml;
     }
 
-    const result = await octokit.rest.repos.getContent({
+    const result = await github.rest.repos.getContent({
         owner: 'althingi-net',
         repo: 'lagasafn-xml',
-        path: file.path,
+        path: file,
     });
 
     if (result.status !== 200) {

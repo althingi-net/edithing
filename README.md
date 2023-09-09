@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## How to use
+
+1. Duplicate [.env.sample](.env.sample) and rename to [.env](.env)
+2. Go to https://github.com/settings/tokens and create a token for public repositories (do not choose private, since this token will be in the browser for other users to see)
+3. Copy/Paste the token from github into [.env](.env) after the "=" of `REACT_APP_GITHUB_TOKEN` (example: `REACT_APP_GITHUB_TOKEN=mytokenhere`) 
+3. Run `npm i` to install npm packages
+4. Run `npm start` to run the app locally
+
 ## Available Scripts
 
 In the project directory, you can run:
