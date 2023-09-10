@@ -1,4 +1,4 @@
-import { Text, Element, Node } from "slate";
+import { Text, Element, Node, Editor } from "slate";
 import { ElementType, ListItem, MetaType, OrderedList } from "../components/Editor/Slate";
 
 const convertSlateToXml = (root: Node): string => {
@@ -10,7 +10,7 @@ const convert = (root: Node, node: Node): string => {
         return node.text;
     }
 
-    if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST) || Element.isElementType<OrderedList>(node, ElementType.EDITOR)) {
+    if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
         return node.children.map(child => convert(root, child)).join('');
     }
 
