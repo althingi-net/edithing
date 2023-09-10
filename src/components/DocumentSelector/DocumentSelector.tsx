@@ -19,7 +19,6 @@ const filterLawEntry = (filter: string) => (item: GithubFile) => {
 const DocumentSelector: FC<Props> = ({ onFileSelect }) => {
     const [data, setData] = useState<GithubFile[]>([]);
     const [filter, setFilter] = useState('');
-    console.log('data', data);
 
     useEffect(() => {
         getLawEntries().then(setData);

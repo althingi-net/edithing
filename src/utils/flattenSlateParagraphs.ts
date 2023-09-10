@@ -17,7 +17,6 @@ const flattenSlateParagraphs = (root: Node) => {
                 });
             }
         }
-        console.log(node);
     });
 
     return list;

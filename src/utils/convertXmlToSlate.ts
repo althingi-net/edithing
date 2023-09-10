@@ -52,12 +52,12 @@ const convertObject = (object: any): Descendant[] => {
                     if (Text.isText(child)) {
                         childNode.children.push({
                             type: ElementType.LIST_ITEM_TEXT,
-                            children: [child.text ? child : { text: element['nr-title'] ?? '' }],
+                            children: [child.text ? child : { text: element['nr-title'] ?? element['#text'] ?? '' }],
                         })
                     } else {
                         childNode.children.push({
                             type: ElementType.LIST_ITEM_TEXT,
-                            children: [{ text: element['nr-title'] ?? '' }],
+                            children: [{ text: element['nr-title'] ?? element['#text'] ?? '' }],
                         });
                         childNode.children.push(child);
                     }
@@ -72,13 +72,32 @@ const convertObject = (object: any): Descendant[] => {
         }
 
         if (key === 'sen') {
-            nodes.push({ text: values.join(' ') })
+            nodes.push({ text: parseSenTag(values) })
         }
     }
 
     normalizeChildren(nodes);
 
     return nodes;
+}
+
+const parseSenTag = (sen: any[]): string => {
+    return sen.map((child) => {
+        if (typeof child === 'string') {
+            return child;
+        }
+
+        if (child['#text']) {
+            return `${child['#text']}`;
+        }
+
+        // TODO: handle links
+        // if (child['a']) {
+        //     return child['@_href'];
+        // }
+
+        return '';
+    }).join(' ');
 }
 
 /**

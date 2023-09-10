@@ -78,8 +78,8 @@ test('<paragraph> to <ol><li>', () => {
 test('<paragraph><sen><sen> to <ol><li><p>', () => {
     const input = `
         <paragraph nr="1">
-            <sen>one.</sen>
-            <sen>two.</sen>
+            <sen nr="1">one.</sen>
+            <sen nr="2">two.</sen>
         </paragraph>
     `;
     const output: Descendant[] = [
@@ -91,3 +91,17 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
 
+test('multiple <paragraph> to <ol><li>', () => {
+    const input = `
+        <paragraph nr="1">first</paragraph>
+        <paragraph nr="2">second</paragraph>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'first'),
+            createListItem(MetaType.PARAGRAPH, '2', 'second'),
+        ]),
+    ];
+
+    expect(convertXmlToSlate(input)).toStrictEqual(output);
+});
