@@ -1,2 +1,1 @@
-declare module 'minify-xml';
-declare module 'text-diff';
+declare module 'xml-beautifier';

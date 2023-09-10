@@ -1,8 +1,9 @@
 import { Text, Element, Node, Editor } from "slate";
 import { ElementType, ListItem, MetaType, OrderedList } from "../components/Editor/Slate";
+import beautify from "xml-beautifier";
 
 const convertSlateToXml = (root: Node): string => {
-    return convert(root, root);
+    return beautify(convert(root, root));
 }
 
 const convert = (root: Node, node: Node): string => {
@@ -33,14 +34,24 @@ const convert = (root: Node, node: Node): string => {
             attributes.push(`roman-nr="${romanNr}"`);
         }
 
+        // Remove the title from the children
+        let children = node.children;
+        if (title) {
+            children = node.children.slice(1);
+        }
+
         const xml = `
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
-                ${node.children.map(child => convert(root, child)).join('')}
+                ${children.map(child => convert(root, child)).join('')}
             </${type}>
         `;
 
         return xml;
+    }
+
+    if (Element.isElementType<Element>(node, ElementType.LIST_ITEM_TEXT)) {
+        return node.children.map(child => convert(root, child)).join('');
     }
 
     return ''
