@@ -1,6 +1,6 @@
 import convertXmlToSlate from "./convertXmlToSlate";
-import { ElementType, MetaType } from '../components/Editor/Slate';
-import { Descendant } from 'slate';
+import { ElementType, MetaType, createList, createListItem, createSlateRoot } from '../components/Editor/Slate';
+import { Descendant, Node } from 'slate';
 
 test('<law><chapter> to <ol><li>', () => {
     const input = `
@@ -10,26 +10,11 @@ test('<law><chapter> to <ol><li>', () => {
             </chapter>
         </law>
     `;
-    const output: Descendant[] = [{
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: MetaType.CHAPTER,
-            nrType: 'roman',
-        },
-        children: [{
-            type: ElementType.LIST_ITEM,
-            meta: {
-                type: MetaType.CHAPTER,
-                nr: '1',
-                nrType: 'roman',
-                romanNr: 'I',
-            },
-            children: [{
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [{ text: 'I.' }],
-            }],
-        }],
-    }];
+    const output: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        ]),
+    ];
 
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
@@ -40,26 +25,11 @@ test('<chapter> to <ol><li>', () => {
             <nr-title>I.</nr-title>
         </chapter>
     `;
-    const output: Descendant[] = [{
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: MetaType.CHAPTER,
-            nrType: 'roman',
-        },
-        children: [{
-            type: ElementType.LIST_ITEM,
-            meta: {
-                type: MetaType.CHAPTER,
-                nr: '1',
-                nrType: 'roman',
-                romanNr: 'I',
-            },
-            children: [{
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [{ text: 'I.' }],
-            }],
-        }],
-    }];
+    const output: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        ]),
+    ];
 
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
@@ -70,23 +40,11 @@ test('<art> to <ol><li>', () => {
             <nr-title>1. gr.</nr-title>
         </art>
     `;
-    const output: Descendant[] = [{
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: 'art',
-        },
-        children: [{
-            type: ElementType.LIST_ITEM,
-            meta: {
-                type: MetaType.ART,
-                nr: '1',
-            },
-            children: [{
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [{ text: '1. gr.' }],
-            }],
-        }],
-    }];
+    const output: Descendant[] = [
+        createList(MetaType.ART, [
+            createListItem(MetaType.ART, '1', '1. gr.'),
+        ]),
+    ];
 
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
@@ -95,23 +53,11 @@ test('<subart> to <ol><li>', () => {
     const input = `
         <subart nr="1"></subart>
     `;
-    const output: Descendant[] = [{
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: MetaType.SUBART,
-        },
-        children: [{
-            type: ElementType.LIST_ITEM,
-            meta: {
-                type: MetaType.SUBART,
-                nr: '1',
-            },
-            children: [{
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [{ text: '' }],
-            }],
-        }],
-    }];
+    const output: Descendant[] = [
+        createList(MetaType.SUBART, [
+            createListItem(MetaType.SUBART, '1', ''),
+        ]),
+    ];
 
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
@@ -120,23 +66,11 @@ test('<paragraph> to <ol><li>', () => {
     const input = `
         <paragraph nr="1"></paragraph>
     `;
-    const output: Descendant[] = [{
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: MetaType.PARAGRAPH,
-        },
-        children: [{
-            type: ElementType.LIST_ITEM,
-            meta: {
-                type: MetaType.PARAGRAPH,
-                nr: '1',
-            },
-            children: [{
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [{ text: '' }],
-            }],
-        }],
-    }];
+    const output: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', ''),
+        ]),
+    ];
 
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });
@@ -148,23 +82,11 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
             <sen>two.</sen>
         </paragraph>
     `;
-    const output: Descendant[] = [{
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: MetaType.PARAGRAPH,
-        },
-        children: [{
-            type: ElementType.LIST_ITEM,
-            meta: {
-                type: MetaType.PARAGRAPH,
-                nr: '1',
-            },
-            children: [{
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [{ text: 'one. two.' }],
-            }],
-        }],
-    }];
+    const output: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'one. two.'),
+        ]),
+    ];
 
     expect(convertXmlToSlate(input)).toStrictEqual(output);
 });

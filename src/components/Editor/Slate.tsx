@@ -1,7 +1,8 @@
 import { ListsSchema, ListType } from "@prezly/slate-lists";
-import { Descendant, BaseEditor, Element } from "slate";
+import { Descendant, BaseEditor, Element, Node } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor, RenderElementProps } from "slate-react";
+import convertRomanNumber from "../../utils/convertRomanNumber";
 
 
 declare module 'slate' {
@@ -13,6 +14,7 @@ declare module 'slate' {
 }
 
 export enum ElementType {
+    EDITOR = 'editor',
     PARAGRAPH = 'paragraph',
     ORDERED_LIST = 'ordered-list',
     UNORDERED_LIST = 'unordered-list',
@@ -110,4 +112,51 @@ export const schema: ListsSchema = {
     createListItemTextNode(props = {}) {
         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM_TEXT };
     },
+};
+
+export const createSlateRoot = (children: Descendant[]): Node => ({
+    type: ElementType.EDITOR,
+    children,
+});
+
+export const createList = (type: MetaType, children: Descendant[]): Descendant => {
+    const node: OrderedList = {
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: type,
+        },
+        children,
+    }
+
+    if (type === MetaType.CHAPTER) {
+        node.meta.nrType = 'roman';
+    }
+
+    return node;
+};
+
+export const createListItem = (type: MetaType, nr: string, title = '', children: Descendant[] = []): ListItem => {
+    const node: ListItem = {
+        type: ElementType.LIST_ITEM,
+        meta: {
+            type: type,
+            nr,
+        },
+        children: [
+            {
+                type: ElementType.LIST_ITEM_TEXT,
+                children: [
+                    { text: title ?? `${type === MetaType.CHAPTER ? convertRomanNumber(nr) : nr}.` },
+                ],
+            }, 
+            ...children
+        ],
+    };
+
+    if (type === MetaType.CHAPTER) {
+        node.meta.nrType = 'roman';
+        node.meta.romanNr = convertRomanNumber(nr);
+    }
+
+    return node;
 };

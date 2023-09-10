@@ -10,7 +10,7 @@ const convert = (root: Node, node: Node): string => {
         return node.text;
     }
 
-    if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST)) {
+    if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST) || Element.isElementType<OrderedList>(node, ElementType.EDITOR)) {
         return node.children.map(child => convert(root, child)).join('');
     }
 
