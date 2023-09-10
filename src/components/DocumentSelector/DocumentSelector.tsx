@@ -25,7 +25,7 @@ const DocumentSelector: FC<Props> = ({ onFileSelect }) => {
     }, []);
 
     return (
-        <Space direction="vertical" size='large'>
+        <Space size='large'>
             <List
                 size="large"
                 style={{ minWidth: '600px', textAlign: 'left' }}
