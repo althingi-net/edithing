@@ -49,7 +49,7 @@ const Editor: FC<Props> = ({ file }) => {
                 </Col>
                 <Col span={12}>
                     <div style={{ height: '100%' }}>
-                        <Collapse defaultActiveKey={['2', '4']}>
+                        <Collapse defaultActiveKey={[]} destroyInactivePanel>
                             <Collapse.Panel header="Old XML" key="1">
                                 <CodeBlock
                                     text={originalDocument}
