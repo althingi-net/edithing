@@ -114,6 +114,18 @@ export const schema: ListsSchema = {
     },
 };
 
+export const isList = (node: Node): node is OrderedList => {
+    return Element.isElementType(node, ElementType.ORDERED_LIST);
+}
+
+export const isListItem = (node: Node): node is ListItem => {
+    return Element.isElementType(node, ElementType.LIST_ITEM);
+}
+
+export const isListItemText = (node: Node) => {
+    return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
+}
+
 export const createSlateRoot = (children: Descendant[]): Node => ({
     type: ElementType.EDITOR,
     children,
@@ -148,7 +160,7 @@ export const createListItem = (type: MetaType, nr: string, title = '', children:
                 children: [
                     { text: title ?? `${type === MetaType.CHAPTER ? convertRomanNumber(nr) : nr}.` },
                 ],
-            }, 
+            },
             ...children
         ],
     };

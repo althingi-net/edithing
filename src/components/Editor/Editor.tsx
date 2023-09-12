@@ -1,16 +1,16 @@
-import { onKeyDown, withLists } from '@prezly/slate-lists';
-import { Col, Collapse, Row, Space } from 'antd';
+import { onKeyDown } from '@prezly/slate-lists';
+import { Col, Collapse, Row } from 'antd';
 import { FC, useEffect, useState } from "react";
 import { CodeBlock } from 'react-code-blocks';
-import { Descendant, createEditor } from "slate";
-import { withHistory } from "slate-history";
-import { Editable, Slate, withReact } from "slate-react";
+import { Descendant } from "slate";
+import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
 import compareDocuments from '../../utils/compareDocuments';
 import convertSlateToXml from '../../utils/convertSlateToXml';
 import convertXmlToSlate from '../../utils/convertXmlToSlate';
 import downloadGitFile from "../../utils/downloadGitFile";
-import { renderElement, schema } from "./Slate";
+import { renderElement } from "./Slate";
+import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 
 interface Props {
     file: GithubFile;
@@ -18,7 +18,7 @@ interface Props {
 
 const Editor: FC<Props> = ({ file }) => {
     console.log("Render Editor");
-    const [editor] = useState(() => withLists(schema)(withHistory(withReact(createEditor()))))
+    const [editor] = useState(createEditorWithPlugins)
     const [originalDocument, setOriginalDocument] = useState<string>('');
     const [value, setValue] = useState<Descendant[] | null>(null);
 
@@ -74,7 +74,7 @@ const Editor: FC<Props> = ({ file }) => {
                                     language={'json'}
                                 />
                             </Collapse.Panel>
-                        </Collapse>;
+                        </Collapse>
                     </div>
                 </Col>
             </Row>
