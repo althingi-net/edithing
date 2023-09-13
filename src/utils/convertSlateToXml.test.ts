@@ -16,6 +16,7 @@ test('convert chapters', () => {
         ]),
     ]);
     const output = `
+        <?xml version="1.0" encoding="utf-8"?>
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>I.</nr-title>
             <paragraph nr="1">one.</paragraph>

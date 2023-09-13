@@ -3,16 +3,19 @@ import { ElementType, ListItem, MetaType, OrderedList } from "../components/Edit
 import beautify from "xml-beautifier";
 
 const convertSlateToXml = (root: Node): string => {
-    return beautify(convert(root, root));
+    return beautify([
+        '<?xml version="1.0" encoding="utf-8"?>',
+        convertSlate(root, root),
+    ].join(''));
 }
 
-const convert = (root: Node, node: Node): string => {
+const convertSlate = (root: Node, node: Node): string => {
     if (Text.isText(node)) {
         return node.text;
     }
 
     if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
-        return node.children.map(child => convert(root, child)).join('');
+        return node.children.map(child => convertSlate(root, child)).join('');
     }
 
     if (Element.isElementType<ListItem>(node, ElementType.LIST_ITEM)) {
@@ -43,7 +46,7 @@ const convert = (root: Node, node: Node): string => {
         const xml = `
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
-                ${children.map(child => convert(root, child)).join('')}
+                ${children.map(child => convertSlate(root, child)).join('')}
             </${type}>
         `;
 
@@ -51,7 +54,7 @@ const convert = (root: Node, node: Node): string => {
     }
 
     if (Element.isElementType<Element>(node, ElementType.LIST_ITEM_TEXT)) {
-        return node.children.map(child => convert(root, child)).join('');
+        return node.children.map(child => convertSlate(root, child)).join('');
     }
 
     return ''
