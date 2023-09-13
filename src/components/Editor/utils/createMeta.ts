@@ -4,7 +4,7 @@ import { ListItem, isList, isListItem } from '../Slate';
 import getSiblingAbove from './getSiblingAbove';
 import createListMeta from './createListMeta';
 
-const createMetaFromSibling = (editor: Editor, node: Node, path: Path) => {
+const createMeta = (editor: Editor, node: Node, path: Path) => {
     if (isList(node)) {
         if (path.length <= 2) {
             return createListMeta();
@@ -51,4 +51,4 @@ const createMetaFromSibling = (editor: Editor, node: Node, path: Path) => {
 }
 
 
-export default createMetaFromSibling;
+export default createMeta;

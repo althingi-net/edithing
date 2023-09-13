@@ -1,6 +1,6 @@
 import { createEditor } from "slate";
 import { createListItem, MetaType, createList } from "../Slate";
-import createMetaFromSibling from "./createMetaFromSibling"
+import createMeta from "./createMeta"
 
 test('List: sibling above', () => {
     const editor = createEditor();
@@ -16,7 +16,7 @@ test('List: sibling above', () => {
         nrType: 'roman',
     };
 
-    expect(createMetaFromSibling(editor, editor.children[0], [0])).toEqual(output);
+    expect(createMeta(editor, editor.children[0], [0])).toEqual(output);
 });
 
 test('ListItem: sibling above', () => {
@@ -37,5 +37,5 @@ test('ListItem: sibling above', () => {
         romanNr: 'II',
     };
 
-    expect(createMetaFromSibling(editor, node, [0, 1])).toEqual(output);
+    expect(createMeta(editor, node, [0, 1])).toEqual(output);
 });
