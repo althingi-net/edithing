@@ -1,6 +1,6 @@
 import { onKeyDown } from '@prezly/slate-lists';
 import { Col, Collapse, Row } from 'antd';
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { CodeBlock } from 'react-code-blocks';
 import { Descendant } from "slate";
 import { Editable, Slate } from "slate-react";
@@ -11,6 +11,7 @@ import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import compareDocuments from './utils/changelog/compareDocuments';
+import useDebounce from './utils/useDebounce';
 
 interface Props {
     file: GithubFile;
@@ -20,7 +21,8 @@ const Editor: FC<Props> = ({ file }) => {
     console.log("Render Editor");
     const [editor] = useState(createEditorWithPlugins)
     const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
-    const [value, setValue] = useState<Descendant[] | null>(null);
+    const [slate, setSlate] = useState<Descendant[] | null>(null);
+    const debouncedSlate = useDebounce(slate, 500);
     const [xml, setXml] = useState<string>()
 
     useEffect(() => {
@@ -31,11 +33,48 @@ const Editor: FC<Props> = ({ file }) => {
         if (xml) {
             const result = importXml(xml);
             setOriginalDocument(result)
-            setValue(result.slate)
+            setSlate(result.slate)
         }
     }, [xml]);
 
-    if (!value || !originalDocument) {
+    const sidepanel = useMemo(() => {
+        if (!originalDocument || !debouncedSlate) {
+            return null;
+        }
+
+        return (
+            <div style={{ height: '100%' }}>
+                <Collapse defaultActiveKey={[]} destroyInactivePanel>
+                    <Collapse.Panel header="Old XML" key="1">
+                        <CodeBlock
+                            text={xml}
+                            language={'xml'}
+                        />
+                    </Collapse.Panel>
+                    <Collapse.Panel header="Slate" key="2">
+                        <CodeBlock
+                            text={JSON.stringify(debouncedSlate, null, 2)}
+                            language={'json'}
+                        />
+                    </Collapse.Panel>
+                    <Collapse.Panel header="New XML" key="3">
+                        <CodeBlock
+                            text={exportXml(debouncedSlate, true, originalDocument.meta)}
+                            language={'xml'}
+                        />
+                    </Collapse.Panel>
+                    <Collapse.Panel header="Changes" key="4">
+                        <CodeBlock
+                            text={JSON.stringify(compareDocuments(originalDocument.slate, debouncedSlate), null, 2)}
+                            language={'json'}
+                        />
+                    </Collapse.Panel>
+                </Collapse>
+            </div>
+        );
+    }, [debouncedSlate, originalDocument, xml]);
+    
+    if (!slate || !originalDocument || !debouncedSlate) {
         return null;
     }
 
@@ -44,7 +83,7 @@ const Editor: FC<Props> = ({ file }) => {
             <Row gutter={16} style={{ height: '100%' }}>
                 <Col span={12}>
                     <div style={{ height: '100%' }}>
-                        <Slate editor={editor} initialValue={value} onChange={setValue}>
+                        <Slate editor={editor} initialValue={slate} onChange={setSlate}>
                             <Editable
                                 style={{ width: "100%", height: "100%", padding: "10px", border: "1px solid #ccc" }}
                                 onKeyDown={(event) => onKeyDown(editor, event)}
@@ -54,34 +93,7 @@ const Editor: FC<Props> = ({ file }) => {
                     </div>
                 </Col>
                 <Col span={12}>
-                    <div style={{ height: '100%' }}>
-                        <Collapse defaultActiveKey={[]} destroyInactivePanel>
-                            <Collapse.Panel header="Old XML" key="1">
-                                <CodeBlock
-                                    text={xml}
-                                    language={'xml'}
-                                />
-                            </Collapse.Panel>
-                            <Collapse.Panel header="Slate" key="2">
-                                <CodeBlock
-                                    text={JSON.stringify(editor.children, null, 2)}
-                                    language={'json'}
-                                />
-                            </Collapse.Panel>
-                            <Collapse.Panel header="New XML" key="3">
-                                <CodeBlock
-                                    text={exportXml(editor, true, originalDocument.meta)}
-                                    language={'xml'}
-                                />
-                            </Collapse.Panel>
-                            <Collapse.Panel header="Changes" key="4">
-                                <CodeBlock
-                                    text={JSON.stringify(compareDocuments(originalDocument.slate, editor), null, 2)}
-                                    language={'json'}
-                                />
-                            </Collapse.Panel>
-                        </Collapse>
-                    </div>
+                    {sidepanel}
                 </Col>
             </Row>
         </div>

@@ -1,13 +1,16 @@
-import { Descendant, Node } from "slate";
+import { Descendant } from "slate";
 import flattenSlateParagraphs from "./flattenSlateParagraphs";
 import { ElementType } from "../../Slate";
 
-const compareDocuments = (original: Descendant[], editor: Node, ) => {
+const compareDocuments = (original: Descendant[], current: Descendant[]) => {
     const originalTexts = flattenSlateParagraphs({
         type: ElementType.EDITOR,
         children: original,
     });
-    const newTexts = flattenSlateParagraphs(editor);
+    const newTexts = flattenSlateParagraphs({
+        type: ElementType.EDITOR,
+        children: current,
+    });
     
     const output: string[] = [];
     const added = newTexts.filter(newText => !originalTexts.find(originalText => originalText.id === newText.id));

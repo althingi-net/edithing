@@ -1,10 +1,10 @@
-import { Node } from "slate";
-import { MetaType, createList, createListItem, createSlateRoot } from "../../Slate";
-import exportXml from "./exportXml";
+import { Descendant } from "slate";
 import beautify from "xml-beautifier";
+import { MetaType, createList, createListItem } from "../../Slate";
+import exportXml from "./exportXml";
 
 test('export chapters', () => {
-    const input: Node = createSlateRoot([
+    const input: Descendant[] = [
         createList(MetaType.CHAPTER, [
             createListItem(MetaType.CHAPTER, '1', 'I.', [
                 createList(MetaType.PARAGRAPH, [
@@ -14,7 +14,7 @@ test('export chapters', () => {
             ]),
             createListItem(MetaType.CHAPTER, '2', 'II.'),
         ]),
-    ]);
+    ];
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>I.</nr-title>
@@ -30,7 +30,7 @@ test('export chapters', () => {
 });
 
 test('export xml header', () => {
-    const input: Node = createSlateRoot([]);
+    const input: Descendant[] = [];
     const output = `
         <?xml version="1.0" encoding="utf-8"?>
     `;
@@ -39,11 +39,11 @@ test('export xml header', () => {
 });
 
 test('export document meta data', () => {
-    const input: Node = createSlateRoot([
+    const input: Descendant[] = [
         createList(MetaType.CHAPTER, [
             createListItem(MetaType.CHAPTER, '1', 'I.'),
         ]),
-    ]);
+    ];
     const documentMeta = {
         nr: '33',
         year: '1944',

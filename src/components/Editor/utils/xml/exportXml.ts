@@ -1,11 +1,15 @@
-import { Text, Element, Node, Editor } from "slate";
+import { Text, Element, Node, Editor, Descendant } from "slate";
 import { ElementType, ListItem, MetaType, OrderedList } from "../../Slate";
 import beautify from "xml-beautifier";
 import DocumentMeta from "../../../../models/DocumentMeta";
 
 
-const exportXml = (root: Node, addHeader = false, documentMeta?: DocumentMeta): string => {
+const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: DocumentMeta): string => {
     const xml = [];
+    const root = {
+        type: ElementType.EDITOR,
+        children: rootNodes,
+    };
     const slateXml = convertSlate(root, root);
 
     if (addHeader) {

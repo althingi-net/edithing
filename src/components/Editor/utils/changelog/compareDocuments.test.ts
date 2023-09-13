@@ -1,5 +1,5 @@
-import { Descendant, Node } from "slate";
-import { MetaType, createList, createListItem, createSlateRoot } from "../../Slate";
+import { Descendant } from "slate";
+import { MetaType, createList, createListItem } from "../../Slate";
 import compareDocuments from "./compareDocuments";
 
 
@@ -31,11 +31,11 @@ test('Removed paragraph 2', () => {
             createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
         ]),
     ];
-    const inputB: Node = createSlateRoot([
+    const inputB: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
         ]),
-    ]);
+    ];
 
     const output = [
         'Paragraph 2. was removed',
@@ -50,12 +50,12 @@ test('Added paragraph 2', () => {
             createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
         ]),
     ];
-    const inputB: Node = createSlateRoot([
+    const inputB: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
             createListItem(MetaType.PARAGRAPH, '2', 'New Text'),
         ]),
-    ]);
+    ];
 
     const output = [
         'Paragraph 2. was added with "New Text"',
@@ -70,11 +70,11 @@ test('Changed paragraph 1', () => {
             createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
         ]),
     ];
-    const inputB: Node = createSlateRoot([
+    const inputB: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', 'Hello z'),
         ]),
-    ]);
+    ];
 
     const output = [
         'Paragraph 1. was changed from "Hello World" to "Hello z"',
@@ -94,7 +94,7 @@ test('Changed Chapter 1 Paragraph 2', () => {
             ]),
         ]),
     ];
-    const inputB: Node = createSlateRoot([
+    const inputB: Descendant[] = [
         createList(MetaType.CHAPTER, [
             createListItem(MetaType.CHAPTER, '1', 'I.', [
                 createList(MetaType.PARAGRAPH, [
@@ -103,7 +103,7 @@ test('Changed Chapter 1 Paragraph 2', () => {
                 ]),
             ]),
         ]),
-    ]);
+    ];
 
     const output = [
         'Chapter 1. Paragraph 2. was changed from "Hello World" to "Hello z"',
