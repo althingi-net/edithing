@@ -1,8 +1,8 @@
-import { Editor, Transforms, Node, Element } from "slate";
-import { ElementType, isList, isListItem } from "../Slate";
+import { Editor, Element, Transforms } from "slate";
+import increaseRomanNumber from "../../../utils/increaseRomanNumber";
+import { isList, isListItem } from "../Slate";
 import createLawTitle from "../utils/createLawTitle";
 import createMetaFromSibling from "../utils/createMetaFromSibling";
-import increaseRomanNumber from "../../../utils/increaseRomanNumber";
 
 const withLawParagraphs = (editor: Editor) => {
     const { normalizeNode } = editor
@@ -12,7 +12,7 @@ const withLawParagraphs = (editor: Editor) => {
 
         if (isList(node) || isListItem(node)) {
             if (!node.meta) {
-                const meta = createMetaFromSibling(editor, path);
+                const meta = createMetaFromSibling(editor, node, path);
                 setMeta(editor, node, path, meta);
                 bumpSiblingNumbers(editor, node, path);
             }

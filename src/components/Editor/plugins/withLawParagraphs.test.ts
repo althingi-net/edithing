@@ -1,7 +1,47 @@
 import { ElementType, MetaType, createList, createListItem } from "../Slate";
 import createEditorWithPlugins from "./createEditorWithPlugins";
 
-test('add missing meta data to ListItem', async () => {
+test('add missing meta data to List Element', async () => {
+    const editor = createEditorWithPlugins();
+    editor.children = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.', [
+                {
+                    type: ElementType.ORDERED_LIST,
+                    children: [
+                        {
+                            type: ElementType.LIST_ITEM,
+                            children: [
+                                {
+                                    type: ElementType.LIST_ITEM_TEXT,
+                                    children: [
+                                        { text: '' },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },   
+            ]),
+        ]),
+    ];
+
+    editor.normalize({ force: true })
+
+    const output = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.', [
+                createList(MetaType.ART, [
+                    createListItem(MetaType.ART, '1', '1. gr.'),
+                ]),
+            ]),
+        ]),
+    ];
+
+    expect(editor.children).toEqual(output);
+});
+
+test('add missing meta data to ListItem Element', async () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, [

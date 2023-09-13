@@ -1,25 +1,28 @@
 import { Editor, Node, Path } from 'slate';
 import increaseRomanNumber from '../../../utils/increaseRomanNumber';
-import { isList, isListItem } from '../Slate';
+import { ListItem, isList, isListItem } from '../Slate';
 import getSiblingAbove from './getSiblingAbove';
+import createListMeta from './createListMeta';
 
-const createMetaFromSibling = (editor: Editor, path: Path) => {
-    const aboveSibling = getSiblingAbove(editor, path);
-    const meta: any = {};
-
-    if (aboveSibling) {
-        if (isList(aboveSibling)) {
-            const { type, nrType } = aboveSibling.meta;
-
-            meta.type = type;
-            meta.nrType = nrType;
+const createMetaFromSibling = (editor: Editor, node: Node, path: Path) => {
+    if (isList(node)) {
+        if (path.length <= 2) {
+            return createListMeta();
         }
 
-        if (isListItem(aboveSibling)) {
-            const { nr, romanNr, nrType, type } = aboveSibling.meta;
+        const parent = Node.get(editor, path.slice(0, -2));
+        return createListMeta(parent);
+    }
 
-            meta.type = type;
-            meta.nr = `${(Number(nr) ?? 0) + 1}`;
+    if (isListItem(node)) {
+        const siblingAbove = getSiblingAbove(editor, path);
+        if (siblingAbove && isListItem(siblingAbove)) {
+            const { nr, romanNr, nrType, type } = siblingAbove.meta;
+            
+            const meta: ListItem['meta'] = {
+                type,
+                nr: `${(Number(nr) ?? 0) + 1}`
+            };
 
             if (nrType) {
                 meta.nrType = nrType;
@@ -28,10 +31,23 @@ const createMetaFromSibling = (editor: Editor, path: Path) => {
             if (romanNr) {
                 meta.romanNr = increaseRomanNumber(romanNr);
             }
-        }
-    }
 
-    return meta;
+            return meta;
+        } else {
+            const nextParent = Editor.above(editor, { at: path, match: n => isList(n) && !!n.meta });
+            const meta = createListMeta(nextParent?.[0]) as ListItem['meta'];
+    
+            meta.nr = '1';
+        
+            if (meta.nrType === 'roman') {
+                meta.romanNr = 'I';
+            }
+    
+            return meta;
+        }
+    } 
+
+    return {};
 }
 
 

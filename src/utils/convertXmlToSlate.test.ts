@@ -1,6 +1,6 @@
+import { Descendant } from 'slate';
+import { MetaType, createList, createListItem } from '../components/Editor/Slate';
 import convertXmlToSlate from "./convertXmlToSlate";
-import { ElementType, MetaType, createList, createListItem, createSlateRoot } from '../components/Editor/Slate';
-import { Descendant, Node } from 'slate';
 
 test('<law><chapter> to <ol><li>', () => {
     const input = `

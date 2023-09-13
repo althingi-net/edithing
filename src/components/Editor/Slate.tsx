@@ -26,7 +26,7 @@ export type OrderedList = {
     type: ElementType.ORDERED_LIST;
     children: Descendant[],
     meta: {
-        type: string;
+        type: MetaType;
         nrType?: string;
     }
 }

@@ -20,7 +20,7 @@ const convertObject = (object: any): Descendant[] => {
             const node: OrderedList = {
                 type: ElementType.ORDERED_LIST,
                 meta: {
-                    type: key,
+                    type: key as MetaType,
                 },
                 children: [],
             }
