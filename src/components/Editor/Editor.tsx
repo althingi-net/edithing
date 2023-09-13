@@ -5,13 +5,12 @@ import { CodeBlock } from 'react-code-blocks';
 import { Descendant } from "slate";
 import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
-import compareDocuments from '../../utils/compareDocuments';
-import convertSlateToXml from '../../utils/convertSlateToXml';
-import convertXmlToSlate from '../../utils/convertXmlToSlate';
-import downloadGitFile from "../../utils/downloadGitFile";
 import { renderElement } from "./Slate";
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
-import DocumentMeta from '../../models/DocumentMeta';
+import exportXml from './utils/xml/exportXml';
+import importXml from './utils/xml/importXml';
+import downloadGitFile from './utils/xml/downloadGitFile';
+import compareDocuments from './utils/changelog/compareDocuments';
 
 interface Props {
     file: GithubFile;
@@ -20,18 +19,21 @@ interface Props {
 const Editor: FC<Props> = ({ file }) => {
     console.log("Render Editor");
     const [editor] = useState(createEditorWithPlugins)
-    const [originalDocument, setOriginalDocument] = useState<string>('');
+    const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
     const [value, setValue] = useState<Descendant[] | null>(null);
-    // const [documentMeta, setDocumentMeta] = useState<DocumentMeta>();
+    const [xml, setXml] = useState<string>('')
 
     useEffect(() => {
-        downloadGitFile(file.path).then((content) => {
-            setOriginalDocument(content)
-            setValue(convertXmlToSlate(content))
-        });
+        downloadGitFile(file.path).then(setXml);
     }, [file]);
 
-    if (!value) {
+    useEffect(() => {
+        const result = importXml(xml);
+        setOriginalDocument(result)
+        setValue(result.slate)
+    }, [xml]);
+
+    if (!value || !originalDocument) {
         return null;
     }
 
@@ -54,7 +56,7 @@ const Editor: FC<Props> = ({ file }) => {
                         <Collapse defaultActiveKey={[]} destroyInactivePanel>
                             <Collapse.Panel header="Old XML" key="1">
                                 <CodeBlock
-                                    text={originalDocument}
+                                    text={xml}
                                     language={'xml'}
                                 />
                             </Collapse.Panel>
@@ -66,13 +68,13 @@ const Editor: FC<Props> = ({ file }) => {
                             </Collapse.Panel>
                             <Collapse.Panel header="New XML" key="3">
                                 <CodeBlock
-                                    text={convertSlateToXml(editor, true, )}
+                                    text={exportXml(editor, true, )}
                                     language={'xml'}
                                 />
                             </Collapse.Panel>
                             <Collapse.Panel header="Changes" key="4">
                                 <CodeBlock
-                                    text={JSON.stringify(compareDocuments(originalDocument, editor), null, 2)}
+                                    text={JSON.stringify(compareDocuments(originalDocument.slate, editor), null, 2)}
                                     language={'json'}
                                 />
                             </Collapse.Panel>

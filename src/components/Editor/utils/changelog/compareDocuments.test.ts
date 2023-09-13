@@ -1,5 +1,5 @@
 import { Descendant, Node } from "slate";
-import { MetaType, createList, createListItem, createSlateRoot } from "../components/Editor/Slate";
+import { MetaType, createList, createListItem, createSlateRoot } from "../../Slate";
 import compareDocuments from "./compareDocuments";
 
 

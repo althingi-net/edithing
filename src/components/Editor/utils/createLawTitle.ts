@@ -1,5 +1,5 @@
-import convertRomanNumber from "../../../utils/convertRomanNumber"
 import { MetaType } from "../Slate"
+import convertRomanNumber from "./convertRomanNumber"
 
 const createLawTitle = (nr: string, type: MetaType) => {
     switch (type) {

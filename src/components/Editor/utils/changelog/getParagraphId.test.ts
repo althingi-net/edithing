@@ -1,6 +1,6 @@
 import { Node } from "slate";
-import { MetaType, createList, createListItem, createSlateRoot } from "../components/Editor/Slate";
 import getParagraphId from "./getParagraphId";
+import { createSlateRoot, createList, MetaType, createListItem } from "../../Slate";
 
 test('getParagraphId 1 level deep', () => {
     const input: Node = createSlateRoot([

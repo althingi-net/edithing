@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
-import GithubFile from "../models/GithubFile";
-import downloadGitFile from "./downloadGitFile";
+import GithubFile from "../../models/GithubFile";
+import downloadGitFile from "../Editor/utils/xml/downloadGitFile";
 
 const getLawEntries = async (): Promise<GithubFile[]> => {
     let result = await downloadGitFile('data/xml/index.xml')

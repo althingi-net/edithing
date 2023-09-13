@@ -1,5 +1,5 @@
 import { Path, Node, Element } from "slate";
-import { ElementType } from "../components/Editor/Slate";
+import { ElementType } from "../../Slate";
 import getParagraphId from "./getParagraphId";
 
 const flattenSlateParagraphs = (root: Node) => {

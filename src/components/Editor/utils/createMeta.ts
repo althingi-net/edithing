@@ -1,5 +1,5 @@
 import { Editor, Node, Path } from 'slate';
-import increaseRomanNumber from '../../../utils/increaseRomanNumber';
+import increaseRomanNumber from './increaseRomanNumber';
 import { ListItem, isList, isListItem } from '../Slate';
 import getSiblingAbove from './getSiblingAbove';
 import createListMeta from './createListMeta';

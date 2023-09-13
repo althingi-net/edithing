@@ -1,5 +1,5 @@
 import { Path, Node, Element } from "slate";
-import { ListItem, ElementType } from "../components/Editor/Slate";
+import { ListItem, ElementType } from "../../Slate";
 
 const getParagraphId = (root: Node, path: Path) => {
     return Array.from(Node.ancestors(root, path))

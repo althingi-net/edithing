@@ -2,7 +2,7 @@ import { ListsSchema, ListType } from "@prezly/slate-lists";
 import { Descendant, BaseEditor, Element, Node } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor, RenderElementProps } from "slate-react";
-import convertRomanNumber from "../../utils/convertRomanNumber";
+import convertRomanNumber from "./utils/convertRomanNumber";
 
 
 declare module 'slate' {

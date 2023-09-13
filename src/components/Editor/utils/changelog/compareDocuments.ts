@@ -1,6 +1,6 @@
 import { Descendant, Node } from "slate";
-import { ElementType } from "../components/Editor/Slate";
 import flattenSlateParagraphs from "./flattenSlateParagraphs";
+import { ElementType } from "../../Slate";
 
 const compareDocuments = (original: Descendant[], editor: Node, ) => {
     const originalTexts = flattenSlateParagraphs({

@@ -1,7 +1,7 @@
 import { Button, List, Space } from "antd";
 import { FC, useEffect, useState } from "react";
 import GithubFile from "../../models/GithubFile";
-import getLawEntries from "../../utils/getLawEntries";
+import getLawEntries from "./getLawEntries";
 import Search from "antd/es/input/Search";
 
 interface Props {

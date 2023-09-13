@@ -1,5 +1,5 @@
+import github from "../../../../api/github";
 import decodeBase64 from "./decodeBase64";
-import github from "../api/github";
 
 const exampleXml = `
     <law nr="33" year="1944">

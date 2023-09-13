@@ -1,6 +1,6 @@
 import { Node } from "slate";
-import { MetaType, createList, createListItem, createSlateRoot } from "../components/Editor/Slate";
 import flattenSlateParagraphs from "./flattenSlateParagraphs";
+import { createSlateRoot, createList, MetaType, createListItem } from "../../Slate";
 
 test('flatten simple chapter>paragraph', () => {
     const inputA: Node = createSlateRoot([

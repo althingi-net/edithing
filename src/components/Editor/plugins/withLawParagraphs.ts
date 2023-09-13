@@ -1,5 +1,5 @@
 import { Editor, Element, Transforms } from "slate";
-import increaseRomanNumber from "../../../utils/increaseRomanNumber";
+import increaseRomanNumber from "../utils/increaseRomanNumber";
 import { isList, isListItem } from "../Slate";
 import createLawTitle from "../utils/createLawTitle";
 import createMeta from "../utils/createMeta";
