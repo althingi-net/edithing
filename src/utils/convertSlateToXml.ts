@@ -1,12 +1,41 @@
 import { Text, Element, Node, Editor } from "slate";
 import { ElementType, ListItem, MetaType, OrderedList } from "../components/Editor/Slate";
 import beautify from "xml-beautifier";
+import DocumentMeta from "../models/DocumentMeta";
 
-const convertSlateToXml = (root: Node): string => {
-    return beautify([
-        '<?xml version="1.0" encoding="utf-8"?>',
-        convertSlate(root, root),
-    ].join(''));
+
+const convertSlateToXml = (root: Node, addHeader = false, documentMeta?: DocumentMeta): string => {
+    const xml = [];
+    const slateXml = convertSlate(root, root);
+
+    if (addHeader) {
+        xml.push('<?xml version="1.0" encoding="utf-8"?>');
+    }
+
+    if (documentMeta) {
+        xml.push(convertDocumentMetaToXml(documentMeta, slateXml));
+    } else {
+        xml.push(slateXml);
+    }
+    
+    return beautify(xml.join(''));
+}
+
+const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string): string => {
+    const { nr, year, name, date, original, ministerClause } = documentMeta;
+
+    return `
+        <law nr="${nr}" year="${year}">
+            <name>${name}</name>
+            <num-and-date>
+                <date>${date}</date>
+                <num>${nr}</num>
+                <original>${original}</original>
+            </num-and-date>
+            <minister-clause>${ministerClause}</minister-clause>
+            ${children}
+        </law>
+    `;
 }
 
 const convertSlate = (root: Node, node: Node): string => {

@@ -11,6 +11,7 @@ import convertXmlToSlate from '../../utils/convertXmlToSlate';
 import downloadGitFile from "../../utils/downloadGitFile";
 import { renderElement } from "./Slate";
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
+import DocumentMeta from '../../models/DocumentMeta';
 
 interface Props {
     file: GithubFile;
@@ -21,6 +22,7 @@ const Editor: FC<Props> = ({ file }) => {
     const [editor] = useState(createEditorWithPlugins)
     const [originalDocument, setOriginalDocument] = useState<string>('');
     const [value, setValue] = useState<Descendant[] | null>(null);
+    // const [documentMeta, setDocumentMeta] = useState<DocumentMeta>();
 
     useEffect(() => {
         downloadGitFile(file.path).then((content) => {
@@ -64,7 +66,7 @@ const Editor: FC<Props> = ({ file }) => {
                             </Collapse.Panel>
                             <Collapse.Panel header="New XML" key="3">
                                 <CodeBlock
-                                    text={convertSlateToXml(editor)}
+                                    text={convertSlateToXml(editor, true, )}
                                     language={'xml'}
                                 />
                             </Collapse.Panel>
