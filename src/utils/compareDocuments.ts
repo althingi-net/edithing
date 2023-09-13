@@ -1,13 +1,8 @@
-import { Node } from "slate";
-// import Diff from "text-diff";
+import { Descendant, Node } from "slate";
 import { ElementType } from "../components/Editor/Slate";
-import convertXmlToSlate from "./convertXmlToSlate";
 import flattenSlateParagraphs from "./flattenSlateParagraphs";
 
-// const diff = new Diff();
-
-const compareDocuments = (originalXml: string, editor: Node, ) => {
-    const original = convertXmlToSlate(originalXml);
+const compareDocuments = (original: Descendant[], editor: Node, ) => {
     const originalTexts = flattenSlateParagraphs({
         type: ElementType.EDITOR,
         children: original,
@@ -18,7 +13,6 @@ const compareDocuments = (originalXml: string, editor: Node, ) => {
     const added = newTexts.filter(newText => !originalTexts.find(originalText => originalText.id === newText.id));
     const removed = originalTexts.filter(originalText => !newTexts.find(newText => newText.id === originalText.id));
     const changed = newTexts.filter(newText => originalTexts.find(originalText => originalText.id === newText.id && originalText.content !== newText.content));
-
 
     added.forEach(addedText => {
         output.push(`${parseIdToDisplay(addedText.id)} was added with "${addedText.content}"`);

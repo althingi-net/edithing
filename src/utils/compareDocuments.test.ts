@@ -1,4 +1,4 @@
-import { Node } from "slate";
+import { Descendant, Node } from "slate";
 import { MetaType, createList, createListItem, createSlateRoot } from "../components/Editor/Slate";
 import compareDocuments from "./compareDocuments";
 
@@ -23,10 +23,14 @@ import compareDocuments from "./compareDocuments";
 // });
 
 test('Removed paragraph 2', () => {
-    const inputA = `
-        <paragraph nr="1">New Text</paragraph>
-        <paragraph nr="2">Hello World</paragraph>
-    `;
+    const inputA: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
+        ]),
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+        ]),
+    ];
     const inputB: Node = createSlateRoot([
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
@@ -41,9 +45,11 @@ test('Removed paragraph 2', () => {
 });
 
 test('Added paragraph 2', () => {
-    const inputA = `
-        <paragraph nr="1">Hello World</paragraph>
-    `;
+    const inputA: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+        ]),
+    ];
     const inputB: Node = createSlateRoot([
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
@@ -59,9 +65,11 @@ test('Added paragraph 2', () => {
 });
 
 test('Changed paragraph 1', () => {
-    const inputA = `
-        <paragraph nr="1">Hello World</paragraph>
-    `;
+    const inputA: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+        ]),
+    ];
     const inputB: Node = createSlateRoot([
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', 'Hello z'),
@@ -76,13 +84,16 @@ test('Changed paragraph 1', () => {
 });
 
 test('Changed Chapter 1 Paragraph 2', () => {
-    const inputA = `
-        <chapter nr="1" nr-type="roman" roman-nr="I">
-            <nr-title>I.</nr-title>
-            <paragraph nr="1">Hello World</paragraph>
-            <paragraph nr="2">Hello World</paragraph>
-        </chapter>
-    `;
+    const inputA: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.', [
+                createList(MetaType.PARAGRAPH, [
+                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+                    createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+                ]),
+            ]),
+        ]),
+    ];
     const inputB: Node = createSlateRoot([
         createList(MetaType.CHAPTER, [
             createListItem(MetaType.CHAPTER, '1', 'I.', [
