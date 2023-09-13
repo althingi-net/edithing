@@ -1,10 +1,10 @@
 import { Text, Element, Node, Editor } from "slate";
-import { ElementType, ListItem, MetaType, OrderedList } from "../components/Editor/Slate";
+import { ElementType, ListItem, MetaType, OrderedList } from "../../Slate";
 import beautify from "xml-beautifier";
-import DocumentMeta from "../models/DocumentMeta";
+import DocumentMeta from "../../../../models/DocumentMeta";
 
 
-const convertSlateToXml = (root: Node, addHeader = false, documentMeta?: DocumentMeta): string => {
+const exportXml = (root: Node, addHeader = false, documentMeta?: DocumentMeta): string => {
     const xml = [];
     const slateXml = convertSlate(root, root);
 
@@ -99,4 +99,4 @@ const getNodesTitle = (node: ListItem): string => {
     return ''
 }
 
-export default convertSlateToXml;
+export default exportXml;

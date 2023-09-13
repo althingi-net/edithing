@@ -1,15 +1,27 @@
 import { XMLParser } from "fast-xml-parser";
+import DocumentMeta from "../../../../models/DocumentMeta";
 import { Descendant, Text } from "slate";
-import { ElementType, LIST_TAGS, MetaType, OrderedList } from "../components/Editor/Slate";
+import { LIST_TAGS, OrderedList, ElementType, MetaType } from "../../Slate";
 
-const convertXmlToSlate = (xml: string): Descendant[] => {
+const importXml = (xml: string) => {
     const parser = new XMLParser({ ignoreAttributes: false });
     let object = parser.parse(xml);
 
-    return convertObject(object['law'] || object);
+    const meta: DocumentMeta = {
+        nr: object['law']['@_nr'],
+        year: object['law']['@_year'],
+        name: object['law']['name'],
+        date: object['law']['num-and-date']?.['date'],
+        original: object['law']['num-and-date']?.['original'],
+        ministerClause: object['law']['minister-clause'],
+    };
+
+    const slate = convertSlate(object['law'] || object);
+
+    return { meta, slate };
 }
 
-const convertObject = (object: any): Descendant[] => {
+const convertSlate = (object: any): Descendant[] => {
     const nodes: Descendant[] = [];
 
     for (const key in object) {
@@ -30,7 +42,7 @@ const convertObject = (object: any): Descendant[] => {
             }
 
             values.forEach((element) => {
-                const children = convertObject(element).map((child) => {
+                const children = convertSlate(element).map((child) => {
                     const childNode: Descendant = {
                         type: ElementType.LIST_ITEM,
                         meta: {
@@ -112,4 +124,5 @@ const normalizeChildren = (nodes: Descendant[]) => {
     }
 }
 
-export default convertXmlToSlate;
+
+export default importXml;

@@ -1,9 +1,9 @@
 import { Node } from "slate";
-import { MetaType, createList, createListItem, createSlateRoot } from "../components/Editor/Slate";
-import convertSlateToXml from "./convertSlateToXml";
+import { MetaType, createList, createListItem, createSlateRoot } from "../../Slate";
+import exportXml from "./exportXml";
 import beautify from "xml-beautifier";
 
-test('convert chapters', () => {
+test('export chapters', () => {
     const input: Node = createSlateRoot([
         createList(MetaType.CHAPTER, [
             createListItem(MetaType.CHAPTER, '1', 'I.', [
@@ -26,20 +26,24 @@ test('convert chapters', () => {
         </chapter>
     `
 
-    expect(convertSlateToXml(input)).toBe(beautify(output));
+    expect(exportXml(input)).toBe(beautify(output));
 });
 
-test('add xml header', () => {
+test('export xml header', () => {
     const input: Node = createSlateRoot([]);
     const output = `
         <?xml version="1.0" encoding="utf-8"?>
     `;
     
-    expect(convertSlateToXml(input, true)).toBe(beautify(output));
+    expect(exportXml(input, true)).toBe(beautify(output));
 });
 
-test('add document meta data', () => {
-    const input: Node = createSlateRoot([]);
+test('export document meta data', () => {
+    const input: Node = createSlateRoot([
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        ]),
+    ]);
     const documentMeta = {
         nr: '33',
         year: '1944',
@@ -52,13 +56,16 @@ test('add document meta data', () => {
         <law nr="33" year="1944">
             <name>Stjórnarskrá lýðveldisins Íslands</name>
             <num-and-date>
-            <date>1944-06-17</date>
-            <num>33</num>
-            <original>1944 nr. 33 17. júní</original>
+                <date>1944-06-17</date>
+                <num>33</num>
+                <original>1944 nr. 33 17. júní</original>
             </num-and-date>
             <minister-clause>&lt;a href=&quot;http://www.althingi.is//dba-bin/fe&quot;&gt;</minister-clause>
+            <chapter nr="1" nr-type="roman" roman-nr="I">
+                <nr-title>I.</nr-title>
+            </chapter>
         </law>
     `;
 
-    expect(convertSlateToXml(input, false, documentMeta)).toBe(beautify(output));
+    expect(exportXml(input, false, documentMeta)).toBe(beautify(output));
 });
