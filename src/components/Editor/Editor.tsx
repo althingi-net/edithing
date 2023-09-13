@@ -21,16 +21,18 @@ const Editor: FC<Props> = ({ file }) => {
     const [editor] = useState(createEditorWithPlugins)
     const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
     const [value, setValue] = useState<Descendant[] | null>(null);
-    const [xml, setXml] = useState<string>('')
+    const [xml, setXml] = useState<string>()
 
     useEffect(() => {
         downloadGitFile(file.path).then(setXml);
     }, [file]);
 
     useEffect(() => {
-        const result = importXml(xml);
-        setOriginalDocument(result)
-        setValue(result.slate)
+        if (xml) {
+            const result = importXml(xml);
+            setOriginalDocument(result)
+            setValue(result.slate)
+        }
     }, [xml]);
 
     if (!value || !originalDocument) {
@@ -68,7 +70,7 @@ const Editor: FC<Props> = ({ file }) => {
                             </Collapse.Panel>
                             <Collapse.Panel header="New XML" key="3">
                                 <CodeBlock
-                                    text={exportXml(editor, true, )}
+                                    text={exportXml(editor, true, originalDocument.meta)}
                                     language={'xml'}
                                 />
                             </Collapse.Panel>
