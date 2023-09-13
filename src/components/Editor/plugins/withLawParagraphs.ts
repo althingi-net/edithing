@@ -13,8 +13,8 @@ const withLawParagraphs = (editor: Editor) => {
         if (isList(node) || isListItem(node)) {
             if (!node.meta) {
                 const meta = createMeta(editor, node, path);
-                setMeta(editor, node, path, meta);
                 bumpSiblingNumbers(editor, node, path);
+                setMeta(editor, node, path, meta);
             }
         }
 
@@ -39,6 +39,7 @@ function setMeta(editor: Editor, node: Element, path: number[], meta: any) {
 }
 
 const bumpSiblingNumbers = (editor: Editor, node: Element, path: number[]) => {
+    const previousSelection = editor.selection;
     const [parent, parentPath] = Editor.parent(editor, path);
 
     for (let i = path.slice(-1)[0] + 1; i < parent.children.length; i++) {
@@ -54,6 +55,11 @@ const bumpSiblingNumbers = (editor: Editor, node: Element, path: number[]) => {
 
             setMeta(editor, sibling, siblingPath, newMeta);
         }
+    }
+
+    // Restore selection to go back to where it was before
+    if (previousSelection) {
+        Transforms.setSelection(editor, previousSelection);
     }
 }
 
