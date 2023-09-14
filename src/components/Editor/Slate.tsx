@@ -8,7 +8,7 @@ import convertRomanNumber from "./utils/convertRomanNumber";
 declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor
-        Element: { type: ElementType; children: Descendant[] } | ListItem | OrderedList
+        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | OrderedList
         Text: { text: string }
     }
 }

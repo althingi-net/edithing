@@ -1,10 +1,10 @@
-import { Editor, Node, Path } from 'slate';
-import increaseRomanNumber from './increaseRomanNumber';
+import { Editor, Element, Node, Path } from 'slate';
 import { ListItem, isList, isListItem } from '../Slate';
-import getSiblingAbove from './getSiblingAbove';
 import createListMeta from './createListMeta';
+import getSiblingAbove from './getSiblingAbove';
+import increaseRomanNumber from './increaseRomanNumber';
 
-const createMeta = (editor: Editor, node: Node, path: Path) => {
+const createMeta = <T extends Element>(editor: Editor, node: T, path: Path): T['meta'] => {
     if (isList(node)) {
         if (path.length <= 2) {
             return createListMeta();
@@ -17,7 +17,7 @@ const createMeta = (editor: Editor, node: Node, path: Path) => {
     if (isListItem(node)) {
         const siblingAbove = getSiblingAbove(editor, path);
         if (siblingAbove && isListItem(siblingAbove)) {
-            const { nr, romanNr, nrType, type } = siblingAbove.meta;
+            const { nr, romanNr, nrType, type, title } = siblingAbove.meta;
             
             const meta: ListItem['meta'] = {
                 type,
@@ -32,6 +32,14 @@ const createMeta = (editor: Editor, node: Node, path: Path) => {
                 meta.romanNr = increaseRomanNumber(romanNr);
             }
 
+            if (title) {
+                if (romanNr && meta.romanNr) {
+                    meta.title = `${title.replace(romanNr, meta.romanNr)}`;
+                } else {
+                    meta.title = `${title.replace(nr, meta.nr)}`;
+                }
+            }
+
             return meta;
         } else {
             const nextParent = Editor.above(editor, { at: path, match: n => isList(n) && !!n.meta });
@@ -43,11 +51,11 @@ const createMeta = (editor: Editor, node: Node, path: Path) => {
                 meta.romanNr = 'I';
             }
     
-            return meta;
+            return meta as ListItem['meta'];
         }
     } 
 
-    return {};
+    return null;
 }
 
 
