@@ -86,7 +86,7 @@ test('Changed paragraph 1', () => {
 test('Changed Chapter 1 Paragraph 2', () => {
     const inputA: Descendant[] = [
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
                 createList(MetaType.PARAGRAPH, [
                     createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
                     createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
@@ -96,7 +96,7 @@ test('Changed Chapter 1 Paragraph 2', () => {
     ];
     const inputB: Descendant[] = [
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
                 createList(MetaType.PARAGRAPH, [
                     createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
                     createListItem(MetaType.PARAGRAPH, '2', 'Hello z'),

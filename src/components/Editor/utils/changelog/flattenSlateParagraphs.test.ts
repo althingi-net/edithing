@@ -5,7 +5,7 @@ import { createSlateRoot, createList, MetaType, createListItem } from "../../Sla
 test('flatten simple chapter>paragraph', () => {
     const inputA: Node = createSlateRoot([
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
                 createList(MetaType.PARAGRAPH, [
                     createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
                 ]),
@@ -29,9 +29,9 @@ test('flatten simple chapter>paragraph', () => {
 test('flatten multiple levels chapter>art>paragraph', () => {
     const inputA: Node = createSlateRoot([
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
                 createList(MetaType.ART, [
-                    createListItem(MetaType.ART, '1', '1. gr.', [
+                    createListItem(MetaType.ART, '1', '1. gr.', undefined, [
                         createList(MetaType.PARAGRAPH, [
                             createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
                         ]),

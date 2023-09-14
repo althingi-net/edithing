@@ -17,7 +17,7 @@ test('getParagraphId 1 level deep', () => {
 test('getParagraphId 2 levels deep', () => {
     const input: Node = createSlateRoot([
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '2', 'II.', [
+            createListItem(MetaType.CHAPTER, '2', 'II.', undefined, [
                 createList(MetaType.PARAGRAPH, [
                     createListItem(MetaType.PARAGRAPH, '1', 'one. two.'),
                 ]),
