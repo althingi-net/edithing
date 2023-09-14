@@ -12,6 +12,7 @@ import importXml from './utils/xml/importXml';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import compareDocuments from './utils/changelog/compareDocuments';
 import useDebounce from './utils/useDebounce';
+import NodeMetaForm from './NodeMetaForm';
 
 interface Props {
     file: GithubFile;
@@ -45,25 +46,28 @@ const Editor: FC<Props> = ({ file }) => {
         return (
             <div style={{ height: '100%' }}>
                 <Collapse defaultActiveKey={[]} destroyInactivePanel>
-                    <Collapse.Panel header="Old XML" key="1">
+                    <Collapse.Panel header="Paragraph Configuration" key="1">
+                        <NodeMetaForm />
+                    </Collapse.Panel>
+                    <Collapse.Panel header="Old XML" key="2">
                         <CodeBlock
                             text={xml}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Slate" key="2">
+                    <Collapse.Panel header="Slate" key="3">
                         <CodeBlock
                             text={JSON.stringify(debouncedSlate, null, 2)}
                             language={'json'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="New XML" key="3">
+                    <Collapse.Panel header="New XML" key="4">
                         <CodeBlock
                             text={exportXml(debouncedSlate, true, originalDocument.meta)}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Changes" key="4">
+                    <Collapse.Panel header="Changes" key="5">
                         <CodeBlock
                             text={JSON.stringify(compareDocuments(originalDocument.slate, debouncedSlate), null, 2)}
                             language={'json'}
@@ -73,30 +77,30 @@ const Editor: FC<Props> = ({ file }) => {
             </div>
         );
     }, [debouncedSlate, originalDocument, xml]);
-    
+
     if (!slate || !originalDocument || !debouncedSlate) {
         return null;
     }
 
     return (
-        <div style={{ height: 'calc(100vh - 160px)' }}>
-            <Row gutter={16} style={{ height: '100%' }}>
-                <Col span={12}>
-                    <div style={{ height: '100%' }}>
-                        <Slate editor={editor} initialValue={slate} onChange={setSlate}>
+        <Slate editor={editor} initialValue={slate} onChange={setSlate}>
+            <div style={{ height: 'calc(100vh - 160px)' }}>
+                <Row gutter={16} style={{ height: '100%' }}>
+                    <Col span={12}>
+                        <div style={{ height: '100%' }}>
                             <Editable
                                 style={{ width: "100%", height: "100%", padding: "10px", border: "1px solid #ccc" }}
                                 onKeyDown={(event) => onKeyDown(editor, event)}
                                 renderElement={renderElement}
                             />
-                        </Slate>
-                    </div>
-                </Col>
-                <Col span={12}>
-                    {sidepanel}
-                </Col>
-            </Row>
-        </div>
+                        </div>
+                    </Col>
+                    <Col span={12}>
+                        {sidepanel}
+                    </Col>
+                </Row>
+            </div>
+        </Slate >
     )
 }
 
