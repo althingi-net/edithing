@@ -59,17 +59,21 @@ const convertSlate = (object: any): Descendant[] => {
                     if (element['@_roman-nr']) {
                         childNode.meta.romanNr = element['@_roman-nr'];
                     }
+                    
+                    if (element['nr-title']) {
+                        childNode.meta.title = element['nr-title'];
+                    }
 
                     // Wrap child in LIST_ITEM_TEXT if its text or prepend it before the child to use as title text
                     if (Text.isText(child)) {
                         childNode.children.push({
                             type: ElementType.LIST_ITEM_TEXT,
-                            children: [child.text ? child : { text: element['nr-title'] ?? element['#text'] ?? '' }],
+                            children: [child.text ? child : { text: childNode.meta.title ?? element['#text'] ?? '' }],
                         })
                     } else {
                         childNode.children.push({
                             type: ElementType.LIST_ITEM_TEXT,
-                            children: [{ text: element['nr-title'] ?? element['#text'] ?? '' }],
+                            children: [{ text: childNode.meta.title ?? element['#text'] ?? '' }],
                         });
                         childNode.children.push(child);
                     }

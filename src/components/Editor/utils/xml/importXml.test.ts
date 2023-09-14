@@ -81,7 +81,24 @@ test('<subart> to <ol><li>', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.SUBART, [
-            createListItem(MetaType.SUBART, '1', ''),
+            createListItem(MetaType.SUBART, '1'),
+        ]),
+    ];
+
+    expect(importXml(input).slate).toStrictEqual(output);
+});
+
+test('<title>', () => {
+    const input = `
+        <law>
+            <subart nr="1">
+                <nr-title>1. gr.</nr-title>
+            </subart>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.SUBART, [
+            createListItem(MetaType.SUBART, '1', '1. gr.'),
         ]),
     ];
 
@@ -96,7 +113,7 @@ test('<paragraph> to <ol><li>', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', ''),
+            createListItem(MetaType.PARAGRAPH, '1'),
         ]),
     ];
 
@@ -114,7 +131,7 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'one. two.'),
+            createListItem(MetaType.PARAGRAPH, '1', undefined, 'one. two.'),
         ]),
     ];
 
@@ -130,8 +147,8 @@ test('multiple <paragraph> to <ol><li>', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'first'),
-            createListItem(MetaType.PARAGRAPH, '2', 'second'),
+            createListItem(MetaType.PARAGRAPH, '1', undefined, 'first'),
+            createListItem(MetaType.PARAGRAPH, '2', undefined, 'second'),
         ]),
     ];
 

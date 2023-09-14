@@ -54,7 +54,7 @@ const convertSlate = (root: Node, node: Node): string => {
     if (Element.isElementType<ListItem>(node, ElementType.LIST_ITEM)) {
         const { meta } = node;
         const { type, nr, nrType, romanNr } = meta;
-        const title = getNodesTitle(node);
+        const title = meta.title ? getNodesTitle(node) : undefined;
 
         const attributes = [];
 

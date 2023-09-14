@@ -39,6 +39,14 @@ export type ListItem = {
         nr: string;
         nrType?: string;
         romanNr?: string;
+        
+        /** 
+         * Redudant to the first child of the list-item-text slate node.  
+         * Export will ignore the content of this field 
+         * but uses it as flag, when set, that the node 
+         * will generate a XML tag "title" in the export.  
+         */
+        title?: string;
     }
 }
 
@@ -147,7 +155,7 @@ export const createList = (type: MetaType, children: Descendant[]): Descendant =
     return node;
 };
 
-export const createListItem = (type: MetaType, nr: string, title = '', children: Descendant[] = []): ListItem => {
+export const createListItem = (type: MetaType, nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
     const node: ListItem = {
         type: ElementType.LIST_ITEM,
         meta: {
@@ -158,12 +166,16 @@ export const createListItem = (type: MetaType, nr: string, title = '', children:
             {
                 type: ElementType.LIST_ITEM_TEXT,
                 children: [
-                    { text: title ?? `${type === MetaType.CHAPTER ? convertRomanNumber(nr) : nr}.` },
+                    { text: text ?? title ?? '' },
                 ],
             },
             ...children
         ],
     };
+
+    if (title != null) {
+        node.meta.title = title;
+    }
 
     if (type === MetaType.CHAPTER) {
         node.meta.nrType = 'roman';

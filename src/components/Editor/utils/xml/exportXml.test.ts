@@ -6,10 +6,10 @@ import exportXml from "./exportXml";
 test('export chapters', () => {
     const input: Descendant[] = [
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
                 createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'one.'),
-                    createListItem(MetaType.PARAGRAPH, '2', 'two.'),
+                    createListItem(MetaType.PARAGRAPH, '1', undefined, 'one.'),
+                    createListItem(MetaType.PARAGRAPH, '2', undefined, 'two.'),
                 ]),
             ]),
             createListItem(MetaType.CHAPTER, '2', 'II.'),
@@ -68,4 +68,32 @@ test('export document meta data', () => {
     `;
 
     expect(exportXml(input, false, documentMeta)).toBe(beautify(output));
+});
+
+test('export no title if meta.title is undefined', () => {
+    const input: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', undefined, 'some text'),
+        ]),
+    ];
+    const output = `
+        <chapter nr="1" nr-type="roman" roman-nr="I">some text</chapter>
+    `
+
+    expect(exportXml(input)).toBe(beautify(output));
+});
+
+test('export title from LIST_ITEM_TEXT', () => {
+    const input: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'old', 'new'),
+        ]),
+    ];
+    const output = `
+        <chapter nr="1" nr-type="roman" roman-nr="I">
+            <nr-title>new</nr-title>
+        </chapter>
+    `
+
+    expect(exportXml(input)).toBe(beautify(output));
 });
