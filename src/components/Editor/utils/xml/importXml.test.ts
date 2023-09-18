@@ -1,5 +1,5 @@
 import { Descendant } from "slate";
-import { createList, MetaType, createListItem } from "../../Slate";
+import { createList, MetaType, createListItem, createNumericNumart, createInlineLetterNumart } from "../../Slate";
 import importXml from "./importXml";
 
 test('import xml', () => {
@@ -149,6 +149,37 @@ test('multiple <paragraph> to <ol><li>', () => {
         createList(MetaType.PARAGRAPH, [
             createListItem(MetaType.PARAGRAPH, '1', undefined, 'first'),
             createListItem(MetaType.PARAGRAPH, '2', undefined, 'second'),
+        ]),
+    ];
+
+    expect(importXml(input).slate).toStrictEqual(output);
+});
+
+test('numart', () => {
+    const input = `
+        <law>
+            <numart nr="1" type="numeric">
+                <numart nr="a" style-note="inline-with-parent" type="alphabet">
+                    <paragraph nr="1">
+                        <nr-title>a.</nr-title>
+                        <sen nr="1">Sendiráð skulu.</sen>
+                        <sen nr="2">Sendiráðin í Genf.</sen>
+                    </paragraph>
+                </numart>
+            </numart>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.NUMART, [
+            createNumericNumart('1', undefined, undefined, [
+                createList(MetaType.NUMART, [
+                    createInlineLetterNumart('a', undefined, undefined, [
+                        createList(MetaType.PARAGRAPH, [
+                            createListItem(MetaType.PARAGRAPH, '1', 'a.', 'Sendiráð skulu. Sendiráðin í Genf.'),
+                        ]),
+                    ]),
+                ]),
+            ]),
         ]),
     ];
 

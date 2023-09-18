@@ -3,6 +3,7 @@ import { Descendant, BaseEditor, Element, Node } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import convertRomanNumber from "./utils/convertRomanNumber";
+import { TAGS } from "./Tags";
 
 
 declare module 'slate' {
@@ -37,7 +38,7 @@ export type ListItem = {
     meta: {
         type: MetaType;
         nr: string;
-        nrType?: string;
+        nrType?: string; // roman, numeric, alphabet, mixed
         romanNr?: string;
         
         /** 
@@ -47,6 +48,11 @@ export type ListItem = {
          * will generate a XML tag "title" in the export.  
          */
         title?: string;
+
+        /**
+         * Defines display of this node
+         */
+        styleNote?: string; // inline-with-parent
     }
 }
 
@@ -55,16 +61,31 @@ export enum MetaType {
     ART = 'art',
     SUBART = 'subart',
     PARAGRAPH = 'paragraph',
+    NUMART = 'numart',
+    SEN = 'sen',
 }
 
 export const LIST_TAGS = [
     'chapter',
     'art',
     'subart',
+    'numart',
     'paragraph',
 ];
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
+    const config = TAGS[element.meta?.type];
+
+    if (config) {
+        if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
+            return <span {...attributes}>{children}</span>;
+        }
+
+        if (config.display === 'block') {
+            return <div {...attributes}>{children}</div>;
+        }
+    }
+
     switch (element.type) {
         case ElementType.ORDERED_LIST:
             // @ts-ignore
@@ -75,10 +96,10 @@ export function renderElement({ element, attributes, children }: RenderElementPr
             // @ts-ignore
             return <li value={element.value} {...attributes}>{children}</li>;
         case ElementType.LIST_ITEM_TEXT:
-            return <div {...attributes}>{children}</div>;
+            return <span {...attributes}>{children}</span>;
         case ElementType.PARAGRAPH:
         default:
-            return <p {...attributes}>{children}</p>;
+            return <span {...attributes}>{children}</span>;
     }
 }
 
@@ -184,3 +205,20 @@ export const createListItem = (type: MetaType, nr: string, title?: string, text?
 
     return node;
 };
+
+export const createNumericNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
+    const node = createListItem(MetaType.NUMART, nr, title, text, children);
+
+    node.meta.nrType = 'numeric';
+
+    return node;
+}
+
+export const createInlineLetterNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
+    const node = createListItem(MetaType.NUMART, nr, title, text, children);
+
+    node.meta.nrType = 'alphabet';
+    node.meta.styleNote = 'inline-with-parent';
+
+    return node;
+}

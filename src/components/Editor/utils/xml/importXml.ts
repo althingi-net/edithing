@@ -52,12 +52,16 @@ const convertSlate = (object: any): Descendant[] => {
                         children: [],
                     }
                     
-                    if (element['@_nr-type']) {
-                        childNode.meta.nrType = element['@_nr-type'];
+                    if (element['@_nr-type'] || element['@_type']) {
+                        childNode.meta.nrType = element['@_nr-type'] ?? element['@_type'];
                     }
                     
                     if (element['@_roman-nr']) {
                         childNode.meta.romanNr = element['@_roman-nr'];
+                    }
+                    
+                    if (element['@_style-note']) {
+                        childNode.meta.styleNote = element['@_style-note'];
                     }
                     
                     if (element['nr-title']) {

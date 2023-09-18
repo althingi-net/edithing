@@ -1,9 +1,9 @@
 import { Editor, Element, Node, Text, Transforms } from "slate";
-import increaseRomanNumber from "../utils/increaseRomanNumber";
-import { ListItem, isList, isListItem } from "../Slate";
+import { isList, isListItem } from "../Slate";
 import createLawTitle from "../utils/createLawTitle";
 import createMeta from "../utils/createMeta";
 import increaseMixedNumber from "../utils/increaseMixedNumber";
+import increaseRomanNumber from "../utils/increaseRomanNumber";
 
 const withLawParagraphs = (editor: Editor) => {
     const { normalizeNode } = editor
