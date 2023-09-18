@@ -97,3 +97,21 @@ test('export title from LIST_ITEM_TEXT', () => {
 
     expect(exportXml(input)).toBe(beautify(output));
 });
+
+test('sen being exported', () => {
+    const input: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', undefined, 'one. two.'),
+        ]),
+    ];
+    const output = `
+        <law>
+            <paragraph nr="1">
+                <sen nr="1">one.</sen>
+                <sen nr="2">two.</sen>
+            </paragraph>
+        </law>
+    `;
+
+    expect(exportXml(input)).toBe(beautify(output));
+});
