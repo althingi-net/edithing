@@ -5,14 +5,15 @@ import { CodeBlock } from 'react-code-blocks';
 import { Descendant } from "slate";
 import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
+import CopyClipboardButton from './CopyClipboardButton';
+import NodeMetaForm from './NodeMetaForm';
 import { renderElement } from "./Slate";
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
-import exportXml from './utils/xml/exportXml';
-import importXml from './utils/xml/importXml';
-import downloadGitFile from './utils/xml/downloadGitFile';
 import compareDocuments from './utils/changelog/compareDocuments';
 import useDebounce from './utils/useDebounce';
-import NodeMetaForm from './NodeMetaForm';
+import downloadGitFile from './utils/xml/downloadGitFile';
+import exportXml from './utils/xml/exportXml';
+import importXml from './utils/xml/importXml';
 
 interface Props {
     file: GithubFile;
@@ -43,33 +44,37 @@ const Editor: FC<Props> = ({ file }) => {
             return null;
         }
 
+        const slateState = JSON.stringify(debouncedSlate, null, 2);
+        const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
+        const changelog = JSON.stringify(compareDocuments(originalDocument.slate, debouncedSlate), null, 2);
+
         return (
             <div style={{ height: '100%' }}>
                 <Collapse defaultActiveKey={[]} destroyInactivePanel>
                     <Collapse.Panel header="Paragraph Configuration" key="1">
                         <NodeMetaForm />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Old XML" key="2">
+                    <Collapse.Panel header="Old XML" key="2" extra={<CopyClipboardButton text={xml} />}>
                         <CodeBlock
                             text={xml}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Slate" key="3">
+                    <Collapse.Panel header="Slate" key="3" extra={<CopyClipboardButton text={slateState} />}>
                         <CodeBlock
-                            text={JSON.stringify(debouncedSlate, null, 2)}
+                            text={slateState}
                             language={'json'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="New XML" key="4">
+                    <Collapse.Panel header="New XML" key="4" extra={<CopyClipboardButton text={xmlExport} />}>
                         <CodeBlock
-                            text={exportXml(debouncedSlate, true, originalDocument.meta)}
+                            text={xmlExport}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Changes" key="5">
+                    <Collapse.Panel header="Changes" key="5" extra={<CopyClipboardButton text={changelog} />}>
                         <CodeBlock
-                            text={JSON.stringify(compareDocuments(originalDocument.slate, debouncedSlate), null, 2)}
+                            text={changelog}
                             language={'json'}
                         />
                     </Collapse.Panel>
