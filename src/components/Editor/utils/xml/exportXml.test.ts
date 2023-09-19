@@ -18,8 +18,16 @@ test('export chapters', () => {
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>I.</nr-title>
-            <paragraph nr="1">one.</paragraph>
-            <paragraph nr="2">two.</paragraph>
+            <paragraph nr="1">
+                <sen nr="1">
+                    one.
+                </sen>
+            </paragraph>
+            <paragraph nr="2">
+                <sen nr="1">
+                    two.
+                </sen>
+            </paragraph>
         </chapter>
         <chapter nr="2" nr-type="roman" roman-nr="II">
             <nr-title>II.</nr-title>
@@ -77,8 +85,10 @@ test('export no title if meta.title is undefined', () => {
         ]),
     ];
     const output = `
-        <chapter nr="1" nr-type="roman" roman-nr="I">some text</chapter>
-    `
+        <chapter nr="1" nr-type="roman" roman-nr="I">
+            <sen nr="1">some text</sen>
+        </chapter>
+    `;
 
     expect(exportXml(input)).toBe(beautify(output));
 });
@@ -93,7 +103,7 @@ test('export title from LIST_ITEM_TEXT', () => {
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>new</nr-title>
         </chapter>
-    `
+    `;
 
     expect(exportXml(input)).toBe(beautify(output));
 });
@@ -101,16 +111,16 @@ test('export title from LIST_ITEM_TEXT', () => {
 test('sen being exported', () => {
     const input: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, 'one. two.'),
+            createListItem(MetaType.PARAGRAPH, '1', undefined, 'one.', [{
+                text: 'two.',
+            }]),
         ]),
     ];
     const output = `
-        <law>
-            <paragraph nr="1">
-                <sen nr="1">one.</sen>
-                <sen nr="2">two.</sen>
-            </paragraph>
-        </law>
+        <paragraph nr="1">
+            <sen nr="1">one.</sen>
+            <sen nr="2">two.</sen>
+        </paragraph>
     `;
 
     expect(exportXml(input)).toBe(beautify(output));

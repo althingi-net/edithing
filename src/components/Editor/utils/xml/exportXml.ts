@@ -10,7 +10,7 @@ const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: Do
         type: ElementType.EDITOR,
         children: rootNodes,
     };
-    const slateXml = convertSlate(root, root);
+    const slateXml = convertSlate(root, root, 0);
 
     if (addHeader) {
         xml.push('<?xml version="1.0" encoding="utf-8"?>');
@@ -42,13 +42,13 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
     `;
 }
 
-const convertSlate = (root: Node, node: Node): string => {
+const convertSlate = (root: Node, node: Node, index: number): string => {
     if (Text.isText(node)) {
-        return node.text;
+        return `<sen nr="${index + 1}">${node.text}</sen>`;
     }
 
     if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
-        return node.children.map(child => convertSlate(root, child)).join('');
+        return node.children.map((child, index) => convertSlate(root, child, index)).join('');
     }
 
     if (Element.isElementType<ListItem>(node, ElementType.LIST_ITEM)) {
@@ -79,7 +79,7 @@ const convertSlate = (root: Node, node: Node): string => {
         const xml = `
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
-                ${children.map(child => convertSlate(root, child)).join('')}
+                ${children.map((child, index) => convertSlate(root, child, index)).join('')}
             </${type}>
         `;
 
@@ -87,7 +87,7 @@ const convertSlate = (root: Node, node: Node): string => {
     }
 
     if (Element.isElementType<Element>(node, ElementType.LIST_ITEM_TEXT)) {
-        return node.children.map(child => convertSlate(root, child)).join('');
+        return node.children.map((child, index) => convertSlate(root, child, index)).join('');
     }
 
     return ''
