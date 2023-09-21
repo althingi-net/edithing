@@ -96,12 +96,14 @@ test('export no title if meta.title is undefined', () => {
 test('export title from LIST_ITEM_TEXT', () => {
     const input: Descendant[] = [
         createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'old', 'new'),
+            createListItem(MetaType.CHAPTER, '1', 'title', ['text1', 'text2']),
         ]),
     ];
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
-            <nr-title>new</nr-title>
+            <nr-title>title</nr-title>
+            <sen nr="1">text1</sen>
+            <sen nr="2">text2</sen>
         </chapter>
     `;
 
@@ -111,9 +113,7 @@ test('export title from LIST_ITEM_TEXT', () => {
 test('sen being exported', () => {
     const input: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, 'one.', [{
-                text: 'two.',
-            }]),
+            createListItem(MetaType.PARAGRAPH, '1', undefined, ['one.', 'two.']),
         ]),
     ];
     const output = `

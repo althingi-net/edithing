@@ -1,5 +1,5 @@
-import { Text, Element, Node, Editor, Descendant } from "slate";
-import { ElementType, ListItem, MetaType, OrderedList } from "../../Slate";
+import { Text, Element, Node, Editor, Descendant, Path } from "slate";
+import { ElementType, ListItem, MetaType, OrderedList, isList, isListItem, isListItemText } from "../../Slate";
 import beautify from "xml-beautifier";
 import DocumentMeta from "../../../../models/DocumentMeta";
 
@@ -10,7 +10,7 @@ const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: Do
         type: ElementType.EDITOR,
         children: rootNodes,
     };
-    const slateXml = convertSlate(root, root, 0);
+    const slateXml = convertSlate(root, root, []);
 
     if (addHeader) {
         xml.push('<?xml version="1.0" encoding="utf-8"?>');
@@ -42,19 +42,19 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
     `;
 }
 
-const convertSlate = (root: Node, node: Node, index: number): string => {
-    if (Text.isText(node)) {
-        return `<sen nr="${index + 1}">${node.text}</sen>`;
+const convertSlate = (root: Node, node: Node, path: Path): string => {
+    if (Text.isText(node) && node.text) {
+        return `<sen nr="${path.slice(-1)[0] + 1}">${node.text}</sen>`;
     }
 
-    if (Element.isElementType<OrderedList>(node, ElementType.ORDERED_LIST) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
-        return node.children.map((child, index) => convertSlate(root, child, index)).join('');
+    if (isList(node) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
+        return node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('');
     }
 
-    if (Element.isElementType<ListItem>(node, ElementType.LIST_ITEM)) {
+    if (isListItem(node)) {
         const { meta } = node;
         const { type, nr, nrType, romanNr } = meta;
-        const title = meta.title ? getNodesTitle(node) : undefined;
+        let title = meta.title;
 
         const attributes = [];
 
@@ -71,23 +71,24 @@ const convertSlate = (root: Node, node: Node, index: number): string => {
         }
 
         // Remove the title from the children
-        let children = node.children;
-        if (title) {
-            children = node.children.slice(1);
+        const textNode = node.children[0];
+        if (title && isListItemText(textNode)) {
+            title = textNode.children.slice(0, 1).map(item => item.text).join('');
+            textNode.children = textNode.children.slice(1);
         }
 
         const xml = `
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
-                ${children.map((child, index) => convertSlate(root, child, index)).join('')}
+                ${node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('')}
             </${type}>
         `;
 
         return xml;
     }
 
-    if (Element.isElementType<Element>(node, ElementType.LIST_ITEM_TEXT)) {
-        return node.children.map((child, index) => convertSlate(root, child, index)).join('');
+    if (isListItemText(node)) {
+        return node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('');
     }
 
     return ''

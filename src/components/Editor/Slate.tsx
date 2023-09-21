@@ -1,5 +1,5 @@
 import { ListsSchema, ListType } from "@prezly/slate-lists";
-import { Descendant, BaseEditor, Element, Node } from "slate";
+import { Descendant, BaseEditor, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import convertRomanNumber from "./utils/convertRomanNumber";
@@ -54,6 +54,11 @@ export type ListItem = {
          */
         styleNote?: string; // inline-with-parent
     }
+}
+
+export type ListItemText = {
+    type: ElementType.LIST_ITEM_TEXT;
+    children: Text[];
 }
 
 export enum MetaType {
@@ -151,7 +156,7 @@ export const isListItem = (node: Node): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
 }
 
-export const isListItemText = (node: Node) => {
+export const isListItemText = (node: Node): node is ListItemText => {
     return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
 }
 
@@ -176,7 +181,12 @@ export const createList = (type: MetaType, children: Descendant[]): Descendant =
     return node;
 };
 
-export const createListItem = (type: MetaType, nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
+export const createListItem = (type: MetaType, nr: string, title?: string, text?: string | string[], children: Descendant[] = []): ListItem => {
+    const textNode: ListItemText = {
+        type: ElementType.LIST_ITEM_TEXT,
+        children: Array.isArray(text) ? text.map(text => ({ text })) : [{ text: text ?? '' }],
+    }
+    
     const node: ListItem = {
         type: ElementType.LIST_ITEM,
         meta: {
@@ -184,18 +194,19 @@ export const createListItem = (type: MetaType, nr: string, title?: string, text?
             nr,
         },
         children: [
-            {
-                type: ElementType.LIST_ITEM_TEXT,
-                children: [
-                    { text: text ?? title ?? '' },
-                ],
-            },
+            textNode,
             ...children
         ],
     };
 
-    if (title != null) {
+    if (title) {
         node.meta.title = title;
+
+        textNode.children.unshift({ text: title });
+    }
+
+    if (textNode.children.length > 1) {
+        textNode.children = textNode.children.filter((item => item.text !== ''));
     }
 
     if (type === MetaType.CHAPTER) {
@@ -219,6 +230,14 @@ export const createInlineLetterNumart = (nr: string, title?: string, text?: stri
 
     node.meta.nrType = 'alphabet';
     node.meta.styleNote = 'inline-with-parent';
+
+    return node;
+}
+
+export const createLetterNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
+    const node = createListItem(MetaType.NUMART, nr, title, text, children);
+
+    node.meta.nrType = 'alphabet';
 
     return node;
 }

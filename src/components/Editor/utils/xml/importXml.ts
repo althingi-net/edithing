@@ -1,25 +1,34 @@
 import { XMLParser } from "fast-xml-parser";
-import DocumentMeta from "../../../../models/DocumentMeta";
 import { Descendant, Text } from "slate";
-import { LIST_TAGS, OrderedList, ElementType, MetaType } from "../../Slate";
+import DocumentMeta from "../../../../models/DocumentMeta";
+import { ElementType, LIST_TAGS, ListItemText, MetaType, OrderedList, isListItemText } from "../../Slate";
 
 const importXml = (xml: string) => {
-    const parser = new XMLParser({ ignoreAttributes: false });
-    let object = parser.parse(xml);
+    const object = parseXml(xml);
 
-    const meta: DocumentMeta = {
-        nr: object['law']['@_nr'],
-        year: object['law']['@_year'],
-        name: object['law']['name'],
-        date: object['law']['num-and-date']?.['date'],
-        original: object['law']['num-and-date']?.['original'],
-        ministerClause: object['law']['minister-clause'],
-    };
-
+    const meta = extractMeta(object);
     const slate = convertSlate(object['law'] || object);
 
     return { meta, slate };
 }
+
+const parseXml = (xml: string) => {
+    const parser = new XMLParser({ ignoreAttributes: false });
+    return parser.parse(xml);
+}
+
+const extractMeta = (object: any): DocumentMeta => {
+    const law = object['law'] || object;
+
+    return {
+        nr: law['@_nr'],
+        year: law['@_year'],
+        name: law['name'],
+        date: law['num-and-date']?.['date'],
+        original: law['num-and-date']?.['original'],
+        ministerClause: law['minister-clause'],
+    };
+};
 
 const convertSlate = (object: any): Descendant[] => {
     const nodes: Descendant[] = [];
@@ -42,57 +51,71 @@ const convertSlate = (object: any): Descendant[] => {
             }
 
             values.forEach((element) => {
-                const children = convertSlate(element).map((child) => {
-                    const childNode: Descendant = {
-                        type: ElementType.LIST_ITEM,
-                        meta: {
-                            type: key as MetaType,
-                            nr: element['@_nr'],
-                        },
-                        children: [],
-                    }
-                    
-                    if (element['@_nr-type'] || element['@_type']) {
-                        childNode.meta.nrType = element['@_nr-type'] ?? element['@_type'];
-                    }
-                    
-                    if (element['@_roman-nr']) {
-                        childNode.meta.romanNr = element['@_roman-nr'];
-                    }
-                    
-                    if (element['@_style-note']) {
-                        childNode.meta.styleNote = element['@_style-note'];
-                    }
-                    
-                    if (element['nr-title']) {
-                        childNode.meta.title = element['nr-title'];
-                    }
+                const listItem: Descendant = {
+                    type: ElementType.LIST_ITEM,
+                    meta: {
+                        type: key as MetaType,
+                        nr: element['@_nr'],
+                    },
+                    children: [],
+                }
 
-                    // Wrap child in LIST_ITEM_TEXT if its text or prepend it before the child to use as title text
+                if (element['@_nr-type'] || element['@_type']) {
+                    listItem.meta.nrType = element['@_nr-type'] ?? element['@_type'];
+                }
+
+                if (element['@_roman-nr']) {
+                    listItem.meta.romanNr = element['@_roman-nr'];
+                }
+
+                if (element['@_style-note']) {
+                    listItem.meta.styleNote = element['@_style-note'];
+                }
+
+                if (element['nr-title']) {
+                    listItem.meta.title = element['nr-title'];
+                }
+
+                const textNode: ListItemText = {
+                    type: ElementType.LIST_ITEM_TEXT,
+                    children: [],
+                };
+                listItem.children.push(textNode);
+
+                if (listItem.meta.title || element['#text']) {
+                    textNode.children.push({ text: listItem.meta.title ?? element['#text'] });
+                }
+
+                convertSlate(element).forEach((child) => {
                     if (Text.isText(child)) {
-                        childNode.children.push({
-                            type: ElementType.LIST_ITEM_TEXT,
-                            children: [child.text ? child : { text: childNode.meta.title ?? element['#text'] ?? '' }],
-                        })
-                    } else {
-                        childNode.children.push({
-                            type: ElementType.LIST_ITEM_TEXT,
-                            children: [{ text: childNode.meta.title ?? element['#text'] ?? '' }],
-                        });
-                        childNode.children.push(child);
-                    }
+                        if (!child.text) {
+                            return null;
+                        }
 
-                    return childNode
+                        textNode.children.push(child);
+                    } else if (isListItemText(child)) {
+                        textNode.children.push(...child.children);
+                    } else {
+                        listItem.children.push(child);
+                    }
                 });
 
-                node.children.push(...children)
+                normalizeChildren(textNode.children);
+
+                node.children.push(listItem);
             })
 
             nodes.push(node);
         }
 
         if (key === 'sen') {
-            nodes.push({ text: parseSenTag(values) })
+            const texts = parseSenTag(values).filter(Boolean).map(text => ({ text }));
+            if (texts.length > 0) {
+                nodes.push({
+                    type: ElementType.LIST_ITEM_TEXT,
+                    children: texts,
+                })
+            }
         }
     }
 
@@ -101,7 +124,7 @@ const convertSlate = (object: any): Descendant[] => {
     return nodes;
 }
 
-const parseSenTag = (sen: any[]): string => {
+const parseSenTag = (sen: any[]): string[] => {
     return sen.map((child) => {
         if (typeof child === 'string') {
             return child;
@@ -117,7 +140,7 @@ const parseSenTag = (sen: any[]): string => {
         // }
 
         return '';
-    }).join(' ');
+    });
 }
 
 /**

@@ -34,10 +34,17 @@ const Editor: FC<Props> = ({ file }) => {
     useEffect(() => {
         if (xml) {
             const result = importXml(xml);
+            console.log('xml', xml)
+            console.log('importXml', result)
             setOriginalDocument(result)
-            setSlate(result.slate)
+            updateSlate(result.slate)
         }
     }, [xml]);
+
+    const updateSlate = (value: Descendant[]) => {
+        console.log('updateSlate', value)
+        setSlate(value);
+    }
 
     const sidepanel = useMemo(() => {
         if (!originalDocument || !debouncedSlate) {
@@ -87,8 +94,10 @@ const Editor: FC<Props> = ({ file }) => {
         return null;
     }
 
+    console.log('Render Editor', {editor, slate})
+
     return (
-        <Slate editor={editor} initialValue={slate} onChange={setSlate}>
+        <Slate editor={editor} initialValue={slate} onChange={updateSlate}>
             <div style={{ height: 'calc(100vh - 160px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12}>

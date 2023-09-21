@@ -1,6 +1,7 @@
 import { Descendant } from "slate";
-import { createList, MetaType, createListItem, createNumericNumart, createInlineLetterNumart } from "../../Slate";
+import { createList, MetaType, createListItem, createNumericNumart, createLetterNumart, createInlineLetterNumart } from "../../Slate";
 import importXml from "./importXml";
+import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
 
 test('import xml', () => {
     const input = `
@@ -15,6 +16,7 @@ test('import xml', () => {
             <minister-clause>links</minister-clause>
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>I.</nr-title>
+                <sen>Sendiráð skulu.</sen>
             </chapter>
         </law>
     `;
@@ -30,7 +32,7 @@ test('import xml', () => {
         },
         slate: [
             createList(MetaType.CHAPTER, [
-                createListItem(MetaType.CHAPTER, '1', 'I.'),
+                createListItem(MetaType.CHAPTER, '1', 'I.', 'Sendiráð skulu.'),
             ]),
         ],
     };
@@ -131,7 +133,7 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, 'one. two.'),
+            createListItem(MetaType.PARAGRAPH, '1', undefined, ['one.', 'two.']),
         ]),
     ];
 
@@ -162,8 +164,7 @@ test('numart', () => {
                 <numart nr="a" style-note="inline-with-parent" type="alphabet">
                     <paragraph nr="1">
                         <nr-title>a.</nr-title>
-                        <sen nr="1">Sendiráð skulu.</sen>
-                        <sen nr="2">Sendiráðin í Genf.</sen>
+                        <sen nr="1">Sendiráðin í Genf.</sen>
                     </paragraph>
                 </numart>
             </numart>
@@ -175,7 +176,58 @@ test('numart', () => {
                 createList(MetaType.NUMART, [
                     createInlineLetterNumart('a', undefined, undefined, [
                         createList(MetaType.PARAGRAPH, [
-                            createListItem(MetaType.PARAGRAPH, '1', 'a.', 'Sendiráð skulu. Sendiráðin í Genf.'),
+                            createListItem(MetaType.PARAGRAPH, '1', 'a.', 'Sendiráðin í Genf.'),
+                        ]),
+                    ]),
+                ]),
+            ]),
+        ]),
+    ];
+
+    expect(importXml(input).slate).toStrictEqual(output);
+});
+
+test('multiple sen', () => {
+    const input = `
+        <law>
+            <paragraph nr="1">
+                <nr-title>a.</nr-title>
+                <sen nr="1">Sendiráð skulu.</sen>
+                <sen nr="2">Sendiráðin í Genf.</sen>
+            </paragraph>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'a.', ['Sendiráð skulu.', 'Sendiráðin í Genf.']),
+        ]),
+    ];
+
+    expect(importXml(input).slate).toStrictEqual(output);
+});
+
+test('title+sen+numart need to become one ListItem', () => {
+    const input = `
+        <law>
+            <paragraph nr="1">
+                <nr-title>2.</nr-title>
+                <sen nr="1">Umdæmi sendiráða skulu vera sem hér segir:</sen>
+                <numart nr="a" type="alphabet">
+                    <paragraph nr="1">
+                        <nr-title>a.</nr-title>
+                        <sen nr="1">Berlín.</sen>
+                    </paragraph>
+                </numart>
+            </paragraph>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', '2.', 'Umdæmi sendiráða skulu vera sem hér segir:', [
+                createList(MetaType.NUMART, [
+                    createLetterNumart('a', undefined, undefined, [
+                        createList(MetaType.PARAGRAPH, [
+                            createListItem(MetaType.PARAGRAPH, '1', 'a.', ['Berlín.']),
                         ]),
                     ]),
                 ]),
