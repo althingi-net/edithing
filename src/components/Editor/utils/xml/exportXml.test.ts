@@ -1,6 +1,6 @@
 import { Descendant } from "slate";
 import beautify from "xml-beautifier";
-import { MetaType, createList, createListItem } from "../../Slate";
+import { MetaType, createLetterNumart, createList, createListItem } from "../../Slate";
 import exportXml from "./exportXml";
 
 test('export chapters', () => {
@@ -124,4 +124,26 @@ test('sen being exported', () => {
     `;
 
     expect(exportXml(input)).toBe(beautify(output));
+});
+
+test('do not modify input', () => {
+    const input: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', '2.', 'Umdæmi sendiráða skulu vera sem hér segir:', [
+                createList(MetaType.NUMART, [
+                    createLetterNumart('a', undefined, undefined, [
+                        createList(MetaType.PARAGRAPH, [
+                            createListItem(MetaType.PARAGRAPH, '1', 'a.', ['Berlín.']),
+                        ]),
+                    ]),
+                ]),
+            ]),
+        ]),
+    ];
+
+    const original = JSON.stringify(input);
+    
+    exportXml(input);
+    
+    expect(original).toBe(JSON.stringify(input));
 });

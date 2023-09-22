@@ -1,7 +1,7 @@
-import { Text, Element, Node, Editor, Descendant, Path } from "slate";
-import { ElementType, ListItem, MetaType, OrderedList, isList, isListItem, isListItemText } from "../../Slate";
+import { Descendant, Editor, Element, Node, Path, Text } from "slate";
 import beautify from "xml-beautifier";
 import DocumentMeta from "../../../../models/DocumentMeta";
+import { ElementType, OrderedList, isList, isListItem, isListItemText } from "../../Slate";
 
 
 const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: DocumentMeta): string => {
@@ -43,10 +43,6 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
 }
 
 const convertSlate = (root: Node, node: Node, path: Path): string => {
-    if (Text.isText(node) && node.text) {
-        return `<sen nr="${path.slice(-1)[0] + 1}">${node.text}</sen>`;
-    }
-
     if (isList(node) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
         return node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('');
     }
@@ -70,35 +66,29 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
             attributes.push(`roman-nr="${romanNr}"`);
         }
 
-        // Remove the title from the children
-        const textNode = node.children[0];
-        if (title && isListItemText(textNode)) {
-            title = textNode.children.slice(0, 1).map(item => item.text).join('');
-            textNode.children = textNode.children.slice(1);
+        // extract LIST_ITEM_TEXT from children
+        const listItemText = node.children[0];
+        const otherChildren = node.children.slice(1);
+        let sentences: Text[] = [];
+
+        if (isListItemText(listItemText)) {
+            sentences = listItemText.children;
+            
+            if (title && isListItemText(listItemText)) {
+                title = sentences.slice(0, 1).map(item => item.text).join('');
+                sentences = sentences.slice(1)
+            }
         }
 
         const xml = `
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
-                ${node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('')}
+                ${sentences.map((sentence, index) => `<sen nr="${index + 1}">${sentence.text}</sen>`).join('')}
+                ${otherChildren.map((child, index) => convertSlate(root, child, [...path, index])).join('')}
             </${type}>
         `;
 
         return xml;
-    }
-
-    if (isListItemText(node)) {
-        return node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('');
-    }
-
-    return ''
-}
-
-const getNodesTitle = (node: ListItem): string => {
-    const child = Node.child(node, 0);
-
-    if (node.meta.type !== MetaType.PARAGRAPH) {
-        return Node.string(child);
     }
 
     return ''

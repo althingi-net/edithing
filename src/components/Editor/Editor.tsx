@@ -34,15 +34,12 @@ const Editor: FC<Props> = ({ file }) => {
     useEffect(() => {
         if (xml) {
             const result = importXml(xml);
-            console.log('xml', xml)
-            console.log('importXml', result)
             setOriginalDocument(result)
             updateSlate(result.slate)
         }
     }, [xml]);
 
     const updateSlate = (value: Descendant[]) => {
-        console.log('updateSlate', value)
         setSlate(value);
     }
 
@@ -93,8 +90,6 @@ const Editor: FC<Props> = ({ file }) => {
     if (!slate || !originalDocument || !debouncedSlate) {
         return null;
     }
-
-    console.log('Render Editor', {editor, slate})
 
     return (
         <Slate editor={editor} initialValue={slate} onChange={updateSlate}>

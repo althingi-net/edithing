@@ -92,9 +92,7 @@ const convertList = (key: string, values: any[]): Descendant => {
 
         const textNode: ListItemText = {
             type: ElementType.LIST_ITEM_TEXT,
-            //TODO: remove { text: '' } and investigate why only in the browser text 
-            //      nodes are randomly empty when there is actually text content
-            children: [{ text: '' }], 
+            children: [], 
         };
         listItem.children.push(textNode);
 
