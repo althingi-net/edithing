@@ -10,7 +10,7 @@ declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor
         Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | OrderedList
-        Text: { text: string }
+        Text: { text: string, title?: boolean, nr?: string }
     }
 }
 
@@ -184,7 +184,7 @@ export const createList = (type: MetaType, children: Descendant[]): Descendant =
 export const createListItem = (type: MetaType, nr: string, title?: string, text?: string | string[], children: Descendant[] = []): ListItem => {
     const textNode: ListItemText = {
         type: ElementType.LIST_ITEM_TEXT,
-        children: Array.isArray(text) ? text.map(text => ({ text })) : [{ text: text ?? '' }],
+        children: [],
     }
     
     const node: ListItem = {
@@ -202,7 +202,17 @@ export const createListItem = (type: MetaType, nr: string, title?: string, text?
     if (title) {
         node.meta.title = title;
 
-        textNode.children.unshift({ text: title });
+        textNode.children.unshift({ text: title, title: true });
+    }
+
+    if (Array.isArray(text)) {
+        textNode.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
+    } else {
+        if (text) {
+            textNode.children.push({ text, nr: '1' });
+        } else {
+            textNode.children.push({ text: '' });
+        }
     }
 
     if (textNode.children.length > 1) {

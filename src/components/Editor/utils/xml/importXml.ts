@@ -38,84 +38,11 @@ const convertSlate = (object: any): Descendant[] => {
         const values = Array.isArray(value) ? value : [value];
 
         if (LIST_TAGS.includes(key)) {
-            const node: OrderedList = {
-                type: ElementType.ORDERED_LIST,
-                meta: {
-                    type: key as MetaType,
-                },
-                children: [],
-            }
-
-            if (value['@_nr-type']) {
-                node.meta.nrType = value['@_nr-type'];
-            }
-
-            values.forEach((element) => {
-                const listItem: Descendant = {
-                    type: ElementType.LIST_ITEM,
-                    meta: {
-                        type: key as MetaType,
-                        nr: element['@_nr'],
-                    },
-                    children: [],
-                }
-
-                if (element['@_nr-type'] || element['@_type']) {
-                    listItem.meta.nrType = element['@_nr-type'] ?? element['@_type'];
-                }
-
-                if (element['@_roman-nr']) {
-                    listItem.meta.romanNr = element['@_roman-nr'];
-                }
-
-                if (element['@_style-note']) {
-                    listItem.meta.styleNote = element['@_style-note'];
-                }
-
-                if (element['nr-title']) {
-                    listItem.meta.title = element['nr-title'];
-                }
-
-                const textNode: ListItemText = {
-                    type: ElementType.LIST_ITEM_TEXT,
-                    children: [],
-                };
-                listItem.children.push(textNode);
-
-                if (listItem.meta.title || element['#text']) {
-                    textNode.children.push({ text: listItem.meta.title ?? element['#text'] });
-                }
-
-                convertSlate(element).forEach((child) => {
-                    if (Text.isText(child)) {
-                        if (!child.text) {
-                            return null;
-                        }
-
-                        textNode.children.push(child);
-                    } else if (isListItemText(child)) {
-                        textNode.children.push(...child.children);
-                    } else {
-                        listItem.children.push(child);
-                    }
-                });
-
-                normalizeChildren(textNode.children);
-
-                node.children.push(listItem);
-            })
-
-            nodes.push(node);
+            nodes.push(convertList(key, values));
         }
 
         if (key === 'sen') {
-            const texts = parseSenTag(values).filter(Boolean).map(text => ({ text }));
-            if (texts.length > 0) {
-                nodes.push({
-                    type: ElementType.LIST_ITEM_TEXT,
-                    children: texts,
-                })
-            }
+            nodes.push(convertSen(values));
         }
     }
 
@@ -124,23 +51,108 @@ const convertSlate = (object: any): Descendant[] => {
     return nodes;
 }
 
-const parseSenTag = (sen: any[]): string[] => {
-    return sen.map((child) => {
-        if (typeof child === 'string') {
-            return child;
+const convertList = (key: string, values: any[]): Descendant => {
+    const node: OrderedList = {
+        type: ElementType.ORDERED_LIST,
+        meta: {
+            type: key as MetaType,
+        },
+        children: [],
+    }
+
+    if (values[0]['@_nr-type']) {
+        node.meta.nrType = values[0]['@_nr-type'];
+    }
+
+    values.forEach((element) => {
+        const listItem: Descendant = {
+            type: ElementType.LIST_ITEM,
+            meta: {
+                type: key as MetaType,
+                nr: element['@_nr'],
+            },
+            children: [],
         }
 
-        if (child['#text']) {
-            return `${child['#text']}`;
+        if (element['@_nr-type'] || element['@_type']) {
+            listItem.meta.nrType = element['@_nr-type'] ?? element['@_type'];
         }
 
-        // TODO: handle links
-        // if (child['a']) {
-        //     return child['@_href'];
-        // }
+        if (element['@_roman-nr']) {
+            listItem.meta.romanNr = element['@_roman-nr'];
+        }
 
-        return '';
-    });
+        if (element['@_style-note']) {
+            listItem.meta.styleNote = element['@_style-note'];
+        }
+
+        if (element['nr-title']) {
+            listItem.meta.title = element['nr-title'];
+        }
+
+        const textNode: ListItemText = {
+            type: ElementType.LIST_ITEM_TEXT,
+            //TODO: remove { text: '' } and investigate why only in the browser text 
+            //      nodes are randomly empty when there is actually text content
+            children: [{ text: '' }], 
+        };
+        listItem.children.push(textNode);
+
+        if (listItem.meta.title) {
+            textNode.children.push({
+                title: true,
+                text: listItem.meta.title,
+            });
+        }
+
+        if (element['#text']) {
+            textNode.children.push({
+                nr: element['@_nr'] ?? '1',
+                text: element['#text'],
+            });
+        }
+
+        convertSlate(element).forEach((child) => {
+            if (Text.isText(child)) {
+                if (!child.text) {
+                    return null;
+                }
+
+                textNode.children.push(child);
+            } else if (isListItemText(child)) {
+                textNode.children.push(...child.children);
+            } else {
+                listItem.children.push(child);
+            }
+        });
+
+        normalizeChildren(textNode.children);
+
+        node.children.push(listItem);
+    })
+
+    return node
+}
+
+const convertSen = (sentences: any[]): Descendant => {
+    const texts: Descendant[] = sentences
+        .filter((child) => !child['a'])
+        .map((child, index) => {
+            const nr = child['@_nr'] ?? '1';
+            const text = child['#text'] ?? child ?? '';
+
+            // TODO: handle links
+            // if (child['a']) {
+            //     return child['@_href'];
+            // }
+
+            return { text, nr };
+        });
+
+    return {
+        type: ElementType.LIST_ITEM_TEXT,
+        children: texts,
+    }
 }
 
 /**

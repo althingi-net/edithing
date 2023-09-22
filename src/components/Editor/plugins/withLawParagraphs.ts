@@ -75,7 +75,11 @@ const setListItemTitle = (editor: Editor, path: number[], meta: any, previousTit
     const title = createLawTitle(meta.nr, meta.type, previousTitle);
 
     if (title) {
-        Transforms.insertText(editor, title, { at: [...path, 0, 0] })
+        Transforms.insertText(editor, '', { at: [...path, 0, 0] });
+        Transforms.insertNodes(editor, {
+            text: title,
+            title: true,
+        }, { at: [...path, 0, 0] });
     }
 }
 
