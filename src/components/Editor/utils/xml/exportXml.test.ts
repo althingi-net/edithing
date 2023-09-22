@@ -1,6 +1,6 @@
 import { Descendant } from "slate";
 import beautify from "xml-beautifier";
-import { MetaType, createLetterNumart, createList, createListItem } from "../../Slate";
+import { MetaType, createLetterNumart, createList, createListItem, createListItemWithName } from "../../Slate";
 import exportXml from "./exportXml";
 
 test('export chapters', () => {
@@ -102,6 +102,24 @@ test('export title from LIST_ITEM_TEXT', () => {
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>title</nr-title>
+            <sen nr="1">text1</sen>
+            <sen nr="2">text2</sen>
+        </chapter>
+    `;
+
+    expect(exportXml(input)).toBe(beautify(output));
+});
+
+test('export name from LIST_ITEM_TEXT', () => {
+    const input: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItemWithName(MetaType.CHAPTER, '1', 'title', 'name', ['text1', 'text2']),
+        ]),
+    ];
+    const output = `
+        <chapter nr="1" nr-type="roman" roman-nr="I">
+            <nr-title>title</nr-title>
+            <name>name</name>
             <sen nr="1">text1</sen>
             <sen nr="2">text2</sen>
         </chapter>

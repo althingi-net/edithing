@@ -90,6 +90,10 @@ const convertList = (key: string, values: any[]): Descendant => {
             listItem.meta.title = element['nr-title'];
         }
 
+        if (element['name']) {
+            listItem.meta.name = element['name'];
+        }
+
         const textNode: ListItemText = {
             type: ElementType.LIST_ITEM_TEXT,
             children: [], 
@@ -100,6 +104,13 @@ const convertList = (key: string, values: any[]): Descendant => {
             textNode.children.push({
                 title: true,
                 text: listItem.meta.title,
+            });
+        }
+
+        if (listItem.meta.name) {
+            textNode.children.push({
+                name: true,
+                text: listItem.meta.name,
             });
         }
 

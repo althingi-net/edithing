@@ -1,5 +1,5 @@
 import { onKeyDown } from '@prezly/slate-lists';
-import { Col, Collapse, Row } from 'antd';
+import { Button, Col, Collapse, Row } from 'antd';
 import { FC, useEffect, useMemo, useState } from "react";
 import { CodeBlock } from 'react-code-blocks';
 import { Descendant } from "slate";
@@ -94,7 +94,7 @@ const Editor: FC<Props> = ({ file }) => {
 
     return (
         <Slate editor={editor} initialValue={slate} onChange={updateSlate}>
-            <div style={{ height: 'calc(100vh - 160px)' }}>
+            <div style={{ minHeight: 'calc(100vh - 160px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12}>
                         <div style={{ height: '100%' }}>

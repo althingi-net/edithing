@@ -1,5 +1,5 @@
 import { Descendant } from "slate";
-import { createList, MetaType, createListItem, createNumericNumart, createLetterNumart, createInlineLetterNumart } from "../../Slate";
+import { createList, MetaType, createListItem, createNumericNumart, createLetterNumart, createInlineLetterNumart, createListItemWithName } from "../../Slate";
 import importXml from "./importXml";
 import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
 
@@ -101,6 +101,25 @@ test('<title>', () => {
     const output: Descendant[] = [
         createList(MetaType.SUBART, [
             createListItem(MetaType.SUBART, '1', '1. gr.'),
+        ]),
+    ];
+
+    expect(importXml(input).slate).toStrictEqual(output);
+});
+
+test('<name>', () => {
+    const input = `
+        <law>
+            <art nr="1">
+                <nr-title>1. gr.</nr-title>
+                <name>Markmið.</name>
+                <sen nr="1">text</sen>
+            </art>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.ART, [
+            createListItemWithName(MetaType.ART, '1', '1. gr.', 'Markmið.', 'text'),
         ]),
     ];
 

@@ -10,7 +10,7 @@ declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor
         Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | OrderedList
-        Text: { text: string, title?: boolean, nr?: string }
+        Text: { text: string, title?: boolean, name?: boolean, nr?: string, bold?: boolean }
     }
 }
 
@@ -48,6 +48,9 @@ export type ListItem = {
          * will generate a XML tag "title" in the export.  
          */
         title?: string;
+
+        /** Same behavior as the title, displayed right afterwards */
+        name?: string;
 
         /**
          * Defines display of this node
@@ -109,13 +112,16 @@ export function renderElement({ element, attributes, children }: RenderElementPr
 }
 
 export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
-    // if (leaf.title) {
-    //     return <span {...attributes} style={{ fontWeight: 'bold' }}>{children}</span>;
-    // }
+    if (leaf.title) {
+        return <span {...attributes} style={{ fontWeight: 'bold', marginRight: '10px' }}>{children}</span>;
+    }
+    if (leaf.name) {
+        return <span {...attributes} style={{ fontStyle: 'italic', marginRight: '10px' }}>{children}</span>;
+    }
 
-    // if (leaf.nr) {
-    //     return <span {...attributes}>{children}</span>;
-    // }
+    if (leaf.bold) {
+        return <span {...attributes} style={{ fontWeight: 'bold' }}>{children}</span>;
+    }
 
     return <span {...attributes}>{children}</span>;
 }
@@ -238,6 +244,26 @@ export const createListItem = (type: MetaType, nr: string, title?: string, text?
 
     return node;
 };
+
+export const createListItemWithName = (type: MetaType, nr: string, title?: string, name?: string, text?: string | string[], children: Descendant[] = []): ListItem => {
+    const listItem = createListItem(type, nr, title, text, children);
+
+    if (name) {
+        listItem.meta.name = name;
+        
+        const textNode = listItem.children[0] as ListItemText;
+        
+        const title = textNode.children.shift();
+        textNode.children.unshift({ text: name, name: true });
+
+        if (title) {
+            textNode.children.unshift(title);
+        }
+    }
+
+    return listItem;
+}
+
 
 export const createNumericNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
     const node = createListItem(MetaType.NUMART, nr, title, text, children);

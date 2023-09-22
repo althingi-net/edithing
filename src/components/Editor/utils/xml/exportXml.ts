@@ -51,6 +51,7 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
         const { meta } = node;
         const { type, nr, nrType, romanNr } = meta;
         let title = meta.title;
+        let name = meta.name;
 
         const attributes = [];
 
@@ -74,8 +75,13 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
         if (isListItemText(listItemText)) {
             sentences = listItemText.children;
             
-            if (title && isListItemText(listItemText)) {
+            if (title) {
                 title = sentences.slice(0, 1).map(item => item.text).join('');
+                sentences = sentences.slice(1)
+            }
+            
+            if (name) {
+                name = sentences.slice(0, 1).map(item => item.text).join('');
                 sentences = sentences.slice(1)
             }
         }
@@ -83,6 +89,7 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
         const xml = `
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
+                ${name ? `<name>${name}</name>` : ''}
                 ${sentences.map((sentence, index) => `<sen nr="${index + 1}">${sentence.text}</sen>`).join('')}
                 ${otherChildren.map((child, index) => convertSlate(root, child, [...path, index])).join('')}
             </${type}>
