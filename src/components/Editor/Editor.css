@@ -9,6 +9,10 @@
     border: 1px solid #ccc;
 }
 
+.ordered-list .ordered-list {
+    padding-left: 0px;
+}
+
 .list-item {
     list-style-type: square;
 }

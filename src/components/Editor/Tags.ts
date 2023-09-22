@@ -21,13 +21,13 @@ export const TAGS: { [key: string]: TagConfig } = {
     'subart': {
         type: 'subart',
         isList: true,
-        display: 'list',
+        display: 'inline',
         canHave: ['paragraph'],
     },
     'numart': {
         type: 'numart',
         isList: true,
-        display: 'list',
+        display: 'inline',
         canHave: ['paragraph', 'sen', 'numart'],
     },
     'paragraph': {
