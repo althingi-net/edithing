@@ -8,3 +8,34 @@
     padding: 10px;
     border: 1px solid #ccc;
 }
+
+.list-item.chapter {
+    margin-top: 1.5em;
+}
+
+.list-item.numart {
+    text-indent: 1.04em;
+}
+
+.list-item.paragraph {
+    text-indent: 1.04em;
+}
+
+.title {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.name {
+    font-style: italic;
+    margin-right: 5px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.chapter > .list-item-text > span > .name {
+    font-weight: bold;
+    font-style: normal;
+}
