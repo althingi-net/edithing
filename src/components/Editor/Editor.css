@@ -9,6 +9,10 @@
     border: 1px solid #ccc;
 }
 
+.list-item {
+    list-style-type: square;
+}
+
 .list-item.chapter {
     margin-top: 1.5em;
 }
