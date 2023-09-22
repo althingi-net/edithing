@@ -7,13 +7,14 @@ import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
 import CopyClipboardButton from './CopyClipboardButton';
 import NodeMetaForm from './NodeMetaForm';
-import { renderElement } from "./Slate";
+import { renderElement, renderLeaf } from "./Slate";
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 import compareDocuments from './utils/changelog/compareDocuments';
 import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
+import './Editor.css';
 
 interface Props {
     file: GithubFile;
@@ -98,9 +99,10 @@ const Editor: FC<Props> = ({ file }) => {
                     <Col span={12}>
                         <div style={{ height: '100%' }}>
                             <Editable
-                                style={{ width: "100%", height: "100%", padding: "10px", border: "1px solid #ccc" }}
+                                className='editor'
                                 onKeyDown={(event) => onKeyDown(editor, event)}
                                 renderElement={renderElement}
+                                renderLeaf={renderLeaf}
                             />
                         </div>
                     </Col>

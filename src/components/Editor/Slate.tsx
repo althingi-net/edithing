@@ -1,7 +1,7 @@
 import { ListsSchema, ListType } from "@prezly/slate-lists";
 import { Descendant, BaseEditor, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
-import { ReactEditor, RenderElementProps } from "slate-react";
+import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 import convertRomanNumber from "./utils/convertRomanNumber";
 import { TAGS } from "./Tags";
 
@@ -106,6 +106,18 @@ export function renderElement({ element, attributes, children }: RenderElementPr
         default:
             return <span {...attributes}>{children}</span>;
     }
+}
+
+export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
+    // if (leaf.title) {
+    //     return <span {...attributes} style={{ fontWeight: 'bold' }}>{children}</span>;
+    // }
+
+    // if (leaf.nr) {
+    //     return <span {...attributes}>{children}</span>;
+    // }
+
+    return <span {...attributes}>{children}</span>;
 }
 
 export const schema: ListsSchema = {
