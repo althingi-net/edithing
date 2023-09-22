@@ -1,20 +1,21 @@
 import { onKeyDown } from '@prezly/slate-lists';
-import { Button, Col, Collapse, Row } from 'antd';
+import { Col, Collapse, Row } from 'antd';
 import { FC, useEffect, useMemo, useState } from "react";
 import { CodeBlock } from 'react-code-blocks';
 import { Descendant } from "slate";
 import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
 import CopyClipboardButton from './CopyClipboardButton';
+import './Editor.css';
 import NodeMetaForm from './NodeMetaForm';
-import { renderElement, renderLeaf } from "./Slate";
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
+import renderElement from './plugins/renderElement';
+import renderLeaf from './plugins/renderLeaf';
 import compareDocuments from './utils/changelog/compareDocuments';
 import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
-import './Editor.css';
 
 interface Props {
     file: GithubFile;

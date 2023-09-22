@@ -1,10 +1,8 @@
 import { ListsSchema, ListType } from "@prezly/slate-lists";
-import { Descendant, BaseEditor, Element, Node, Text } from "slate";
+import { BaseEditor, Descendant, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
-import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
+import { ReactEditor } from "slate-react";
 import convertRomanNumber from "./utils/convertRomanNumber";
-import { TAGS } from "./Tags";
-
 
 declare module 'slate' {
     interface CustomTypes {
@@ -80,51 +78,6 @@ export const LIST_TAGS = [
     'numart',
     'paragraph',
 ];
-
-export function renderElement({ element, attributes, children }: RenderElementProps) {
-    const config = TAGS[element.meta?.type];
-
-    if (config) {
-        if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
-            return <span {...attributes}>{children}</span>;
-        }
-
-        if (config.display === 'block') {
-            return <div {...attributes}>{children}</div>;
-        }
-    }
-
-    switch (element.type) {
-        case ElementType.ORDERED_LIST:
-            // @ts-ignore
-            return <ul {...attributes}>{children}</ul>;
-        case ElementType.UNORDERED_LIST:
-            return <ul {...attributes}>{children}</ul>;
-        case ElementType.LIST_ITEM:
-            // @ts-ignore
-            return <li value={element.value} {...attributes}>{children}</li>;
-        case ElementType.LIST_ITEM_TEXT:
-            return <span {...attributes}>{children}</span>;
-        case ElementType.PARAGRAPH:
-        default:
-            return <span {...attributes}>{children}</span>;
-    }
-}
-
-export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
-    if (leaf.title) {
-        return <span {...attributes} style={{ fontWeight: 'bold', marginRight: '10px' }}>{children}</span>;
-    }
-    if (leaf.name) {
-        return <span {...attributes} style={{ fontStyle: 'italic', marginRight: '10px' }}>{children}</span>;
-    }
-
-    if (leaf.bold) {
-        return <span {...attributes} style={{ fontWeight: 'bold' }}>{children}</span>;
-    }
-
-    return <span {...attributes}>{children}</span>;
-}
 
 export const schema: ListsSchema = {
     isConvertibleToListTextNode(node) {
