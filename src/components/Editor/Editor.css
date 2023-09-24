@@ -39,9 +39,17 @@
     text-indent: 1.04em;
 }
 
-.title {
+.chapter > .list-item-text > span > .title,
+.art > .list-item-text > span > .title {
     font-weight: bold;
     margin-right: 5px;
+}
+
+.ordered-list.numart .title {
+    margin-left: 1.04em;
+}
+.ordered-list.numart .title::after {
+    content: ' ';
 }
 
 .name {
