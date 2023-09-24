@@ -3,10 +3,10 @@ import { Button } from "antd";
 import { FC, useEffect, useState } from "react";
 
 interface Props {
-    text?: string;
+    content?: any;
 }
 
-const CopyClipboardButton: FC<Props> = ({ text }) => {
+const CopyClipboardButton: FC<Props> = ({ content: text }) => {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const CopyClipboardButton: FC<Props> = ({ text }) => {
     return (
         <Button
             onClick={(event) => {
-                navigator.clipboard.writeText(text);
+                navigator.clipboard.writeText(typeof text === 'string' ? text : JSON.stringify(text, null, 2));
                 setCopied(true);
                 event.stopPropagation();
             }}

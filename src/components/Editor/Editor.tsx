@@ -52,7 +52,7 @@ const Editor: FC<Props> = ({ file }) => {
 
         const slateState = JSON.stringify(debouncedSlate, null, 2);
         const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
-        const changelog = JSON.stringify(compareDocuments(originalDocument.slate, debouncedSlate), null, 2);
+        const changelog = compareDocuments(originalDocument.slate, debouncedSlate);
 
         return (
             <div style={{ height: '100%' }}>
@@ -60,29 +60,32 @@ const Editor: FC<Props> = ({ file }) => {
                     <Collapse.Panel header="Paragraph Configuration" key="1">
                         <NodeMetaForm />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Old XML" key="2" extra={<CopyClipboardButton text={xml} />}>
+                    <Collapse.Panel header="Old XML" key="2" extra={<CopyClipboardButton content={xml} />}>
                         <CodeBlock
                             text={xml}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Slate" key="3" extra={<CopyClipboardButton text={slateState} />}>
+                    <Collapse.Panel header="Slate" key="3" extra={<CopyClipboardButton content={slateState} />}>
                         <CodeBlock
                             text={slateState}
                             language={'json'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="New XML" key="4" extra={<CopyClipboardButton text={xmlExport} />}>
+                    <Collapse.Panel header="New XML" key="4" extra={<CopyClipboardButton content={xmlExport} />}>
                         <CodeBlock
                             text={xmlExport}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Changes" key="5" extra={<CopyClipboardButton text={changelog} />}>
-                        <CodeBlock
-                            text={changelog}
-                            language={'json'}
-                        />
+                    <Collapse.Panel header="Changes" key="5" extra={<CopyClipboardButton content={changelog} />}>
+                        {changelog.length === 0 ? 'No changes' : (
+                            changelog.map((change, index) => (
+                                <div key={index}>
+                                    {change}
+                                </div>
+                            ))
+                        )}
                     </Collapse.Panel>
                 </Collapse>
             </div>
