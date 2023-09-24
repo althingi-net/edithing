@@ -16,6 +16,7 @@ import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
+import useEvents from './utils/changelog/useEvents';
 
 interface Props {
     file: GithubFile;
@@ -23,11 +24,16 @@ interface Props {
 
 const Editor: FC<Props> = ({ file }) => {
     console.log("Render Editor");
-    const [editor] = useState(createEditorWithPlugins)
+    const [editor] = useState(createEditorWithPlugins);
     const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
     const [slate, setSlate] = useState<Descendant[] | null>(null);
     const debouncedSlate = useDebounce(slate, 500);
-    const [xml, setXml] = useState<string>()
+    const [xml, setXml] = useState<string>();
+    const events = useEvents(editor);
+
+    useEffect(() => {
+        console.log('events', events);
+    }, [events]);
 
     useEffect(() => {
         downloadGitFile(file.path).then(setXml);
@@ -52,7 +58,7 @@ const Editor: FC<Props> = ({ file }) => {
 
         const slateState = JSON.stringify(debouncedSlate, null, 2);
         const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
-        const changelog = compareDocuments(originalDocument.slate, debouncedSlate);
+        const changelog = compareDocuments(originalDocument.slate, debouncedSlate, events);
 
         return (
             <div style={{ height: '100%' }}>
@@ -82,7 +88,8 @@ const Editor: FC<Props> = ({ file }) => {
                         {changelog.length === 0 ? 'No changes' : (
                             changelog.map((change, index) => (
                                 <div key={index}>
-                                    {change}
+                                    <center>{index + 1}. gr.</center>
+                                    <div>{change}</div>
                                 </div>
                             ))
                         )}

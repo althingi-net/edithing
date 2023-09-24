@@ -1,6 +1,7 @@
-import { Descendant } from "slate";
+import { Descendant, Operation } from "slate";
 import { MetaType, createList, createListItem } from "../../Slate";
 import compareDocuments from "./compareDocuments";
+import { Event } from "./useEvents";
 
 
 // test('renaming a paragraph and adding the same one again with a different text', () => {
@@ -19,8 +20,53 @@ import compareDocuments from "./compareDocuments";
 //         'Paragraph 1. was created: "New Text"',
 //     ];
 
-//     expect(compareDocuments(inputA, inputB)).toStrictEqual(output);
+//     expect(compareDocuments(inputA, inputB, [])).toStrictEqual(output);
 // });
+
+/*
+[
+    {
+        "id": "chapter-1.art-1.subart-1.paragraph-1",
+        "type": "insert_text"
+    },
+    {
+        "id": "chapter-1.art-1.subart-1.paragraph-1",
+        "type": "remove_text"
+    },
+    {
+        "id": "chapter-1.art-1.subart-1.paragraph-1",
+        "type": "remove_node"
+    },
+    {
+        "id": "chapter-1.art-1.subart-1.paragraph-1",
+        "type": "move_node"
+    },
+    {
+        "id": "chapter-1.subart-1",
+        "type": "insert_text"
+    },
+    {
+        "id": "chapter-1.art-1",
+        "type": "insert_node"
+    },
+    {
+        "id": "chapter-1.art-1",
+        "type": "set_node"
+    },
+    {
+        "id": "chapter-1.art-3.subart-1.paragraph-1",
+        "type": "insert_text"
+    },
+    {
+        "id": "chapter-1.art-3.subart-1.paragraph-1.numart-5.paragraph-1",
+        "type": "insert_text"
+    },
+    {
+        "id": "chapter-1.art-2.subart-1.paragraph-1",
+        "type": "insert_text"
+    }
+]
+*/
 
 test('Removed paragraph 2', () => {
     const inputA: Descendant[] = [
@@ -36,12 +82,15 @@ test('Removed paragraph 2', () => {
             createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
         ]),
     ];
-
-    const output = [
-        'Paragraph 2. was removed',
+    const events: Event[] = [
+        { id: 'paragraph-2', type: 'remove_node' },
     ];
 
-    expect(compareDocuments(inputA, inputB)).toStrictEqual(output);
+    const output = [
+        '2. paragraph of the law was removed.',
+    ];
+
+    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
 });
 
 test('Added paragraph 2', () => {
@@ -56,12 +105,15 @@ test('Added paragraph 2', () => {
             createListItem(MetaType.PARAGRAPH, '2', 'New Text'),
         ]),
     ];
-
-    const output = [
-        'Paragraph 2. was added with "New Text"',
+    const events: Event[] = [
+        { id: 'paragraph-2', type: 'insert_text' },
     ];
 
-    expect(compareDocuments(inputA, inputB)).toStrictEqual(output);
+    const output = [
+        '2. paragraph of the law was added: New Text',
+    ];
+
+    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
 });
 
 test('Changed paragraph 1', () => {
@@ -75,12 +127,16 @@ test('Changed paragraph 1', () => {
             createListItem(MetaType.PARAGRAPH, '1', 'Hello z'),
         ]),
     ];
-
-    const output = [
-        'Paragraph 1. was changed from "Hello World" to "Hello z"',
+    const events: Event[] = [
+        { id: 'paragraph-1', type: 'remove_text' },
+        { id: 'paragraph-1', type: 'insert_text' },
     ];
 
-    expect(compareDocuments(inputA, inputB)).toStrictEqual(output);
+    const output = [
+        '1. paragraph of the law shall be: Hello z',
+    ];
+
+    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
 });
 
 test('Changed Chapter 1 Paragraph 2', () => {
@@ -104,10 +160,48 @@ test('Changed Chapter 1 Paragraph 2', () => {
             ]),
         ]),
     ];
-
-    const output = [
-        'Chapter 1. Paragraph 2. was changed from "Hello World" to "Hello z"',
+    const events: Event[] = [
+        { id: 'chapter-1.paragraph-2', type: 'remove_text' },
+        { id: 'chapter-1.paragraph-2', type: 'insert_text' },
     ];
 
-    expect(compareDocuments(inputA, inputB)).toStrictEqual(output);
+    const output = [
+        '1. chapter 2. paragraph of the law shall be: Hello z',
+    ];
+
+    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
+});
+
+test('Merge events for the same id', () => {
+    const inputA: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
+                createList(MetaType.PARAGRAPH, [
+                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+                    createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+                ]),
+            ]),
+        ]),
+    ];
+    const inputB: Descendant[] = [
+        createList(MetaType.CHAPTER, [
+            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
+                createList(MetaType.PARAGRAPH, [
+                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+                    createListItem(MetaType.PARAGRAPH, '2', 'Hello z'),
+                ]),
+            ]),
+        ]),
+    ];
+    const events: Event[] = [
+        { id: 'chapter-1.paragraph-2', type: 'remove_node' },
+        { id: 'chapter-1.paragraph-2', type: 'set_node' },
+        { id: 'chapter-1.paragraph-2', type: 'insert_text' },
+    ];
+
+    const output = [
+        '1. chapter 2. paragraph of the law shall be: Hello z',
+    ];
+
+    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
 });
