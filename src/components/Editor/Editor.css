@@ -14,7 +14,17 @@
 }
 
 .list-item {
-    list-style-type: square;
+    list-style-type: none;
+}
+
+.list-item .art > .list-item-text > span > .title::before {
+    content: url('../../images/marker-art.png');
+    margin-right: 6px;
+}
+
+.list-item .subart > .paragraph::before {
+    content: url('../../images/marker-subart.png');
+    margin-right: 6px;
 }
 
 .list-item.chapter {
