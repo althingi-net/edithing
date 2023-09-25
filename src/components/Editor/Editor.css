@@ -31,30 +31,22 @@
     margin-top: 1.5em;
 }
 
-.list-item.numart {
-    text-indent: 1.04em;
-}
-
-.list-item.paragraph {
-    text-indent: 1.04em;
+.name::after,
+.title::after {
+    content: ' ';
 }
 
 .chapter > .list-item-text > span > .title,
 .art > .list-item-text > span > .title {
     font-weight: bold;
-    margin-right: 5px;
 }
 
-.ordered-list.numart .title {
+.numart .title {
     margin-left: 1.04em;
-}
-.ordered-list.numart .title::after {
-    content: ' ';
 }
 
 .name {
     font-style: italic;
-    margin-right: 5px;
 }
 
 .bold {
