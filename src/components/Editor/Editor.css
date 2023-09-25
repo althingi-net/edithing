@@ -14,29 +14,39 @@
 }
 
 .list-item {
-    list-style-type: square;
+    list-style-type: none;
+}
+
+.list-item .art > .list-item-text > span > .title::before {
+    content: url('../../images/marker-art.png');
+    margin-right: 6px;
+}
+
+.list-item .subart > .paragraph::before {
+    content: url('../../images/marker-subart.png');
+    margin-right: 6px;
 }
 
 .list-item.chapter {
     margin-top: 1.5em;
 }
 
-.list-item.numart {
-    text-indent: 1.04em;
+.name::after,
+.title::after {
+    content: ' ';
 }
 
-.list-item.paragraph {
-    text-indent: 1.04em;
-}
-
-.title {
+.chapter > .list-item-text > span > .title,
+.art > .list-item-text > span > .title {
     font-weight: bold;
-    margin-right: 5px;
+}
+
+.numart .title {
+    margin-left: 1.04em;
 }
 
 .name {
     font-style: italic;
-    margin-right: 5px;
 }
 
 .bold {
