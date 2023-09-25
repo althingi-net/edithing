@@ -1,0 +1,59 @@
+.editor {
+    font-family: "Droid Serif", serif;
+    color: #242424;
+    line-height: 1.5em;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.ordered-list .ordered-list {
+    padding-left: 0px;
+}
+
+.list-item {
+    list-style-type: none;
+}
+
+.list-item .art > .list-item-text > span > .title::before {
+    content: url('../../images/marker-art.png');
+    margin-right: 6px;
+}
+
+.list-item .subart > .paragraph::before {
+    content: url('../../images/marker-subart.png');
+    margin-right: 6px;
+}
+
+.list-item.chapter {
+    margin-top: 1.5em;
+}
+
+.name::after,
+.title::after {
+    content: ' ';
+}
+
+.chapter > .list-item-text > span > .title,
+.art > .list-item-text > span > .title {
+    font-weight: bold;
+}
+
+.numart .title {
+    margin-left: 1.04em;
+}
+
+.name {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.chapter > .list-item-text > span > .name {
+    font-weight: bold;
+    font-style: normal;
+}
