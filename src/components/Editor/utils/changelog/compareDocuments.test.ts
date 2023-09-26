@@ -1,4 +1,4 @@
-import { Descendant, Operation } from "slate";
+import { Descendant } from "slate";
 import { MetaType, createList, createListItem } from "../../Slate";
 import compareDocuments from "./compareDocuments";
 import { Event } from "./useEvents";
@@ -156,6 +156,34 @@ test('Merge events for the same id', () => {
 
     const output = [
         '1. chapter. of the law shall be: Hello z',
+    ];
+
+    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
+});
+
+test('Sort entries by ascending id', () => {
+    const inputA: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+            createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+            createListItem(MetaType.PARAGRAPH, '3', 'Hello World'),
+        ]),
+    ];
+    const inputB: Descendant[] = [
+        createList(MetaType.PARAGRAPH, [
+            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+            createListItem(MetaType.PARAGRAPH, '2', 'Hello 2'),
+            createListItem(MetaType.PARAGRAPH, '3', 'Hello 3'),
+        ]),
+    ];
+    const events: Event[] = [
+        { id: 'paragraph-3', type: 'insert_text' },
+        { id: 'paragraph-2', type: 'insert_text' },
+    ];
+
+    const output = [
+        ' of the law shall be: Hello 2',
+        ' of the law shall be: Hello 3',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);

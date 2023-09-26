@@ -41,7 +41,7 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
 
     const appliedEvents: string[] = [];
 
-    // sort changelog based on order in events, in reverse to ignore events that were deleted
+    // sort changelog based on order in events in reverse to ignore events that were deleted
     const sortedChangelog = [...events]
         .reverse()
         .map(event => {
@@ -57,8 +57,9 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
             appliedEvents.push(event.id);
             return changelogEntry;
         })
-        .filter(Boolean)
-        .reverse() as Changelog[];
+        .filter((entry): entry is Changelog => entry !== null)
+        // Sort changelog based on id, ascending
+        .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1) as Changelog[];
 
     return sortedChangelog.map(entry => {
         if (entry.type === 'add') {
