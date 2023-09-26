@@ -5,15 +5,12 @@ import { Event } from "./useEvents";
 import { type } from "os";
 
 const TEXTS: { [key: string]: string } = {
-    // sen: 'sentence',
-    // art: 'article',
-    // subart: 'paragraph',
-    // chapter: 'chapter',
+    chapter: 'chapter',
+    art: 'gr',
+    subart: 'mgr',
+    numart: 'mgr',
+    sen: 'málsl',
 }
-
-// edit 1.
-// edit 2.
-// delete 1.
 
 interface Changelog {
     id: string;
@@ -87,10 +84,10 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
 
 const parseIdToDisplay = (id: string) => {
     return id.split('.')
-        .map((level) => {
-            const [type, nr] = level.split('-');
-            return `${nr}. ${translate(type)}`;
-        })
+        .map(level => level.split('-'))
+        .filter(([type, nr]) => type !== 'paragraph')
+        .map(([type, nr]) => `${nr}. ${translate(type)}.`)
+        .reverse()
         .join(' ');
 }
 
