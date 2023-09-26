@@ -1,17 +1,30 @@
-import { Path, Node, Element } from "slate";
-import { ListItem, ElementType } from "../../Slate";
+import { Node, Path, Text } from "slate";
+import { isListItem } from "../../Slate";
 
 const getParagraphId = (root: Node, path: Path) => {
-    return Array.from(Node.ancestors(root, path))
+    const ids =  Array.from(Node.ancestors(root, path))
         .map(([node]) => {
-            if (Element.isElementType<ListItem>(node, ElementType.LIST_ITEM)) {
+            if (isListItem(node)) {
                 return `${node.meta.type}-${node.meta.nr}`;
             }
 
             return '';
         })
-        .filter(Boolean)
-        .join('.');
+        .filter(Boolean);
+
+    const node = Node.get(root, path);
+
+    if (Text.isText(node)) {
+        const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
+
+        if (node.nr) {
+            ids.push(`${tag}-${node.nr}`);
+        } else {
+            ids.push(`${tag}`);
+        }
+    }
+
+    return ids.join('.');
 }
 
 export default getParagraphId;

@@ -82,7 +82,7 @@ const parseIdToDisplay = (id: string) => {
     return id.split('.')
         .map(level => level.split('-'))
         .filter(([type, nr]) => type !== 'paragraph')
-        .map(([type, nr]) => `${nr}. ${translate(type)}.`)
+        .map(([type, nr]) => nr ? `${nr}. ${translate(type)}.` : `${translate(type)}.`)
         .reverse()
         .join(' ');
 }

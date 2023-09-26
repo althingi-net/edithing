@@ -23,9 +23,9 @@ const useEvents = (editor: Editor) => {
 
             setEvents((events) => {
                 // ignore events that are not the lowest child
-                if (events.find(event => event.id.includes(id) && event.type === operation.type)) {
-                    return events;
-                }
+                // if (events.find(event => event.id.includes(id) && event.type === operation.type)) {
+                //     return events;
+                // }
 
                 return [...events, { id, type: operation.type}]
             });

@@ -209,7 +209,7 @@ export const createListItemWithName = (type: MetaType, nr: string, title?: strin
         const title = textNode.children.shift();
         textNode.children.unshift({ text: name, name: true });
 
-        if (title) {
+        if (title && title.text !== '') {
             textNode.children.unshift(title);
         }
     }

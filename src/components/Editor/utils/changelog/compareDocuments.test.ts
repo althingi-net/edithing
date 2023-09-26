@@ -38,11 +38,11 @@ test('Removed paragraph 2', () => {
         ]),
     ];
     const events: Event[] = [
-        { id: 'paragraph-2', type: 'remove_node' },
+        { id: 'paragraph-2.title', type: 'remove_node' },
     ];
 
     const output = [
-        ' of the law was removed.',
+        'title. of the law was removed.',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -61,11 +61,11 @@ test('Added paragraph 2', () => {
         ]),
     ];
     const events: Event[] = [
-        { id: 'paragraph-2', type: 'insert_text' },
+        { id: 'paragraph-2.title', type: 'insert_text' },
     ];
 
     const output = [
-        ' of the law was added: New Text',
+        'title. of the law was added: New Text ',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -83,12 +83,12 @@ test('Changed paragraph 1', () => {
         ]),
     ];
     const events: Event[] = [
-        { id: 'paragraph-1', type: 'remove_text' },
-        { id: 'paragraph-1', type: 'insert_text' },
+        { id: 'paragraph-1.title', type: 'remove_text' },
+        { id: 'paragraph-1.title', type: 'insert_text' },
     ];
 
     const output = [
-        ' of the law shall be: Hello z',
+        'title. of the law shall be: Hello z ',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -116,12 +116,12 @@ test('Changed Chapter 1 Paragraph 2', () => {
         ]),
     ];
     const events: Event[] = [
-        { id: 'chapter-1.paragraph-2', type: 'remove_text' },
-        { id: 'chapter-1.paragraph-2', type: 'insert_text' },
+        { id: 'chapter-1.paragraph-2.title', type: 'remove_text' },
+        { id: 'chapter-1.paragraph-2.title', type: 'insert_text' },
     ];
 
     const output = [
-        '1. chapter. of the law shall be: Hello z',
+        'title. 1. chapter. of the law shall be: Hello z ',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -151,11 +151,11 @@ test('Merge events for the same id', () => {
     const events: Event[] = [
         { id: 'chapter-1.paragraph-2', type: 'remove_node' },
         { id: 'chapter-1.paragraph-2', type: 'set_node' },
-        { id: 'chapter-1.paragraph-2', type: 'insert_text' },
+        { id: 'chapter-1.paragraph-2.title', type: 'insert_text' },
     ];
 
     const output = [
-        '1. chapter. of the law shall be: Hello z',
+        'title. 1. chapter. of the law shall be: Hello z ',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -177,13 +177,13 @@ test('Sort entries by ascending id', () => {
         ]),
     ];
     const events: Event[] = [
-        { id: 'paragraph-3', type: 'insert_text' },
-        { id: 'paragraph-2', type: 'insert_text' },
+        { id: 'paragraph-3.title', type: 'insert_text' },
+        { id: 'paragraph-2.title', type: 'insert_text' },
     ];
 
     const output = [
-        ' of the law shall be: Hello 2',
-        ' of the law shall be: Hello 3',
+        'title. of the law shall be: Hello 2 ',
+        'title. of the law shall be: Hello 3 ',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
