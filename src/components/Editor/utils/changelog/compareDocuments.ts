@@ -1,8 +1,7 @@
 import { Descendant } from "slate";
-import flattenSlateParagraphs from "./flattenSlateParagraphs";
 import { ElementType } from "../../Slate";
+import flattenSlateParagraphs from "./flattenSlateParagraphs";
 import { Event } from "./useEvents";
-import { type } from "os";
 
 const TEXTS: { [key: string]: string } = {
     chapter: 'chapter',
@@ -39,8 +38,6 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
         ...removed.map<Changelog>(text => ({ id: text.id, type: 'delete', text: text.content })),
         ...changed.map<Changelog>(text => ({ id: text.id, type: 'change', text: text.content })),
     ];
-    console.log('events', events);
-    console.log('changelog', changelog);
 
     const appliedEvents: string[] = [];
 
@@ -62,8 +59,6 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
         })
         .filter(Boolean)
         .reverse() as Changelog[];
-    
-    console.log('sortedChangelog', sortedChangelog);
 
     return sortedChangelog.map(entry => {
         if (entry.type === 'add') {

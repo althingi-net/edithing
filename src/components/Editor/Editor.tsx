@@ -23,17 +23,12 @@ interface Props {
 }
 
 const Editor: FC<Props> = ({ file }) => {
-    console.log("Render Editor");
     const [editor] = useState(createEditorWithPlugins);
     const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
     const [slate, setSlate] = useState<Descendant[] | null>(null);
     const debouncedSlate = useDebounce(slate, 500);
     const [xml, setXml] = useState<string>();
     const events = useDebounce(useEvents(editor), 500);
-
-    useEffect(() => {
-        console.log('events', events);
-    }, [events]);
 
     useEffect(() => {
         downloadGitFile(file.path).then(setXml);

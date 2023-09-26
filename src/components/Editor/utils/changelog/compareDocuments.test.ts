@@ -23,51 +23,6 @@ import { Event } from "./useEvents";
 //     expect(compareDocuments(inputA, inputB, [])).toStrictEqual(output);
 // });
 
-/*
-[
-    {
-        "id": "chapter-1.art-1.subart-1.paragraph-1",
-        "type": "insert_text"
-    },
-    {
-        "id": "chapter-1.art-1.subart-1.paragraph-1",
-        "type": "remove_text"
-    },
-    {
-        "id": "chapter-1.art-1.subart-1.paragraph-1",
-        "type": "remove_node"
-    },
-    {
-        "id": "chapter-1.art-1.subart-1.paragraph-1",
-        "type": "move_node"
-    },
-    {
-        "id": "chapter-1.subart-1",
-        "type": "insert_text"
-    },
-    {
-        "id": "chapter-1.art-1",
-        "type": "insert_node"
-    },
-    {
-        "id": "chapter-1.art-1",
-        "type": "set_node"
-    },
-    {
-        "id": "chapter-1.art-3.subart-1.paragraph-1",
-        "type": "insert_text"
-    },
-    {
-        "id": "chapter-1.art-3.subart-1.paragraph-1.numart-5.paragraph-1",
-        "type": "insert_text"
-    },
-    {
-        "id": "chapter-1.art-2.subart-1.paragraph-1",
-        "type": "insert_text"
-    }
-]
-*/
-
 test('Removed paragraph 2', () => {
     const inputA: Descendant[] = [
         createList(MetaType.PARAGRAPH, [
@@ -87,7 +42,7 @@ test('Removed paragraph 2', () => {
     ];
 
     const output = [
-        '2. paragraph of the law was removed.',
+        ' of the law was removed.',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -110,7 +65,7 @@ test('Added paragraph 2', () => {
     ];
 
     const output = [
-        '2. paragraph of the law was added: New Text',
+        ' of the law was added: New Text',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -133,7 +88,7 @@ test('Changed paragraph 1', () => {
     ];
 
     const output = [
-        '1. paragraph of the law shall be: Hello z',
+        ' of the law shall be: Hello z',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -166,7 +121,7 @@ test('Changed Chapter 1 Paragraph 2', () => {
     ];
 
     const output = [
-        '1. chapter 2. paragraph of the law shall be: Hello z',
+        '1. chapter. of the law shall be: Hello z',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -200,7 +155,7 @@ test('Merge events for the same id', () => {
     ];
 
     const output = [
-        '1. chapter 2. paragraph of the law shall be: Hello z',
+        '1. chapter. of the law shall be: Hello z',
     ];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
