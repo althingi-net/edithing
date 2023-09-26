@@ -29,7 +29,7 @@ const Editor: FC<Props> = ({ file }) => {
     const [slate, setSlate] = useState<Descendant[] | null>(null);
     const debouncedSlate = useDebounce(slate, 500);
     const [xml, setXml] = useState<string>();
-    const events = useEvents(editor);
+    const events = useDebounce(useEvents(editor), 500);
 
     useEffect(() => {
         console.log('events', events);
@@ -97,7 +97,7 @@ const Editor: FC<Props> = ({ file }) => {
                 </Collapse>
             </div>
         );
-    }, [debouncedSlate, originalDocument, xml]);
+    }, [debouncedSlate, events, originalDocument, xml]);
 
     if (!slate || !originalDocument || !debouncedSlate) {
         return null;
