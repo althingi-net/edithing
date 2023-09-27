@@ -2,7 +2,13 @@ import { Path, Node, Element, Text } from "slate";
 import { ElementType } from "../../Slate";
 import getParagraphId from "./getParagraphId";
 
-const flattenSlateParagraphs = (root: Node) => {
+export interface FlattenedParagraph {
+    path: Path;
+    content: string;
+    id: string;
+}
+
+const flattenSlateParagraphs = (root: Node): FlattenedParagraph[] => {
     const list: { path: Path, content: string, id: string }[] = [];
 
     Array.from(Node.nodes(root)).forEach(([node, path]) => {

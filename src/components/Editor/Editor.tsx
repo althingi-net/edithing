@@ -17,6 +17,7 @@ import downloadGitFile from './utils/xml/downloadGitFile';
 import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
 import useEvents from './utils/changelog/useEvents';
+import LawChanges from './LawChanges';
 
 interface Props {
     file: GithubFile;
@@ -29,6 +30,10 @@ const Editor: FC<Props> = ({ file }) => {
     const debouncedSlate = useDebounce(slate, 500);
     const [xml, setXml] = useState<string>();
     const events = useDebounce(useEvents(editor), 500);
+
+    useEffect(() => {
+        console.log('events', events);
+    }, [events]);
 
     useEffect(() => {
         downloadGitFile(file.path).then(setXml);
@@ -80,14 +85,7 @@ const Editor: FC<Props> = ({ file }) => {
                         />
                     </Collapse.Panel>
                     <Collapse.Panel header="Changes" key="5" extra={<CopyClipboardButton content={changelog} />}>
-                        {changelog.length === 0 ? 'No changes' : (
-                            changelog.map((change, index) => (
-                                <div key={index}>
-                                    <center>{index + 1}. gr.</center>
-                                    <div>{change}</div>
-                                </div>
-                            ))
-                        )}
+                        <LawChanges changelog={changelog} />
                     </Collapse.Panel>
                 </Collapse>
             </div>

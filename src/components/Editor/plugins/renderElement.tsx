@@ -1,6 +1,6 @@
 import { RenderElementProps } from "slate-react";
 import { ElementType } from "../Slate";
-import { TAGS } from "../Tags";
+import { TAGS } from "../../../config/tags";
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
     const config = TAGS[element.meta?.type];
