@@ -1,5 +1,5 @@
 import { createEditor } from "slate";
-import getSiblingAbove from "./getSiblingAbove";
+import getPreviousSibling from "./getPreviousSibling";
 import { createListItem, MetaType, createList } from "../Slate";
 
 test('get first sibling with 3 nodes', () => {
@@ -14,7 +14,7 @@ test('get first sibling with 3 nodes', () => {
         ]),
     ];
 
-    expect(getSiblingAbove(editor, [0, 1])).toEqual(firstChild);
+    expect(getPreviousSibling(editor, [0, 1])).toEqual(firstChild);
 });
 
 test('get second sibling with 3 nodes', () => {
@@ -29,5 +29,5 @@ test('get second sibling with 3 nodes', () => {
         ]),
     ];
 
-    expect(getSiblingAbove(editor, [0, 2])).toEqual(secondChild);
+    expect(getPreviousSibling(editor, [0, 2])).toEqual(secondChild);
 });

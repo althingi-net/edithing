@@ -1,7 +1,7 @@
 import { Editor, Element, Node, Path } from 'slate';
 import { ListItem, isList, isListItem } from '../Slate';
 import createListMeta from './createListMeta';
-import getSiblingAbove from './getSiblingAbove';
+import getPreviousSibling from './getPreviousSibling';
 import increaseRomanNumber from './increaseRomanNumber';
 
 const createMeta = <T extends Element>(editor: Editor, node: T, path: Path): T['meta'] => {
@@ -15,7 +15,7 @@ const createMeta = <T extends Element>(editor: Editor, node: T, path: Path): T['
     }
 
     if (isListItem(node)) {
-        const siblingAbove = getSiblingAbove(editor, path);
+        const siblingAbove = getPreviousSibling(editor, path);
         if (siblingAbove && isListItem(siblingAbove)) {
             const { nr, romanNr, nrType, type, title } = siblingAbove.meta;
             
