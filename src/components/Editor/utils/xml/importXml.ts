@@ -2,6 +2,7 @@ import { XMLParser } from "fast-xml-parser";
 import { Descendant, Text } from "slate";
 import DocumentMeta from "../../../../models/DocumentMeta";
 import { ElementType, LIST_TAGS, ListItemText, MetaType, OrderedList, isListItemText } from "../../Slate";
+import normalizeChildren from "../slate/normalizeChildren";
 
 const importXml = (xml: string) => {
     const object = parseXml(xml);
@@ -45,8 +46,6 @@ const convertSlate = (object: any): Descendant[] => {
             nodes.push(convertSen(values));
         }
     }
-
-    normalizeChildren(nodes);
 
     return nodes;
 }
@@ -135,7 +134,7 @@ const convertList = (key: string, values: any[]): Descendant => {
             }
         });
 
-        normalizeChildren(textNode.children);
+        normalizeChildren(textNode);
 
         node.children.push(listItem);
     })
@@ -164,17 +163,6 @@ const convertSen = (sentences: any[]): Descendant => {
     }
 }
 
-/**
- * Adds empty text node to given nodes array if that array is empty. 
- * Slate's most deepest nodes always need to have an empty text node if there is nothing else to allow user to put the cursor there
- * Note: Mutates array
- * @param nodes 
- */
-const normalizeChildren = (nodes: Descendant[]) => {
-    if (nodes.length === 0) {
-        nodes.push({ text: '' })
-    }
-}
 
 
 export default importXml;
