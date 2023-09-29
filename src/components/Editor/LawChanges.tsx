@@ -1,7 +1,9 @@
 import { FC, useState } from "react";
 import Changelog from "../../models/Changelog";
 import parseIdToDisplay from "./utils/changelog/parseidToDisplay";
-import { Switch } from "antd";
+import { Switch, Typography } from "antd";
+
+const { Text } = Typography;
 
 interface Props {
     changelog: Changelog[];
@@ -75,14 +77,14 @@ const embedChangesToText = (changes: NonNullable<Changelog['changes']>) => {
         <span>
             {changes.map(([type, value]) => {
                 if (type === 1) {
-                    return <span style={{ backgroundColor: 'green' }}>{value}</span>
+                    return <Text type="success" strong>{value}</Text>
                 }
 
                 if (type === -1) {
-                    return <span style={{ backgroundColor: 'red', textDecoration: 'line-through' }}>{value}</span>
+                    return <Text type="danger" delete strong>{value}</Text>
                 }
 
-                return <span>{value}</span>;
+                return <Text>{value}</Text>;
             })}
         </span>
     )
