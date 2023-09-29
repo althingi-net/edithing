@@ -20,7 +20,7 @@ interface Options {
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItem => {
     const { title, name, text, nrType, styleNote } = options;
 
-    const textNode: ListItemText = {
+    const textElement: ListItemText = {
         type: ElementType.LIST_ITEM_TEXT,
         children: [],
     }
@@ -32,19 +32,19 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
             nr,
         },
         children: [
-            textNode,
+            textElement,
             ...children
         ],
     };
 
     if (name) {
         listItem.meta.name = name;
-        textNode.children.unshift({ text: name, name: true });
+        textElement.children.unshift({ text: name, name: true });
     }
 
     if (title) {
         listItem.meta.title = title;
-        textNode.children.unshift({ text: title, title: true });
+        textElement.children.unshift({ text: title, title: true });
     }
 
     if (nrType) {
@@ -57,17 +57,17 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     if (text) {
         if (Array.isArray(text)) {
-            textNode.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
+            textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
         } else {
-            textNode.children.push({ text, nr: '1' });
+            textElement.children.push({ text, nr: '1' });
         }
     } else {
-        textNode.children.push({ text: '' });
+        textElement.children.push({ text: '' });
     }
 
     // remove empty text nodes but keep at least one 
-    if (textNode.children.length > 1) {
-        textNode.children = textNode.children.filter((item => item.text !== ''));
+    if (textElement.children.length > 1) {
+        textElement.children = textElement.children.filter((item => item.text !== ''));
     }
 
     if (type === MetaType.CHAPTER) {

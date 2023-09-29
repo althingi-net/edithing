@@ -3,19 +3,19 @@ import { Element, Text } from "slate";
 /**
  * Adds empty text node to given Slate element if there is none.  
  * Also removes empty text nodes if there is more than one.  
- * Slate requires to have at least one text node in an element.  
- * Note: Mutates node.children.
- * @param nodes 
+ * Slate requires to have at least one text node in an element if it is empty.  
+ * Note: Mutates element.children.
+ * @param element The Slate element to normalize. 
  */
-const normalizeChildren = (node: Element) => {
+const normalizeChildren = (element: Element) => {
     // remove empty text nodes but ignore the first one
-    if (node.children.length > 1) {
-        node.children = node.children.filter((item => Text.isText(item) && item.text !== ''));
+    if (element.children.length > 1) {
+        element.children = element.children.filter((item => Text.isText(item) && item.text !== ''));
     }
 
     // add required empty text node if there is none
-    if (node.children.length === 0) {
-        node.children.push({ text: '' })
+    if (element.children.length === 0) {
+        element.children.push({ text: '' })
     }
 }
 
