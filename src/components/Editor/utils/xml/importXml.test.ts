@@ -1,7 +1,9 @@
 import { Descendant } from "slate";
-import { createList, MetaType, createListItem, createNumericNumart, createLetterNumart, createInlineLetterNumart, createListItemWithName } from "../../Slate";
 import importXml from "./importXml";
 import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
+import { MetaType } from "../../Slate";
+import createList from "../slate/createList";
+import createListItem from "../slate/createListItem";
 
 test('import xml', () => {
     const input = `
@@ -31,8 +33,8 @@ test('import xml', () => {
             ministerClause: 'links',
         },
         slate: [
-            createList(MetaType.CHAPTER, [
-                createListItem(MetaType.CHAPTER, '1', 'I.', 'Sendiráð skulu.'),
+            createList(MetaType.CHAPTER, {}, [
+                createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: 'Sendiráð skulu.' }),
             ]),
         ],
     };
@@ -50,8 +52,8 @@ test('<chapter> to <ol><li>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
         ]),
     ];
 
@@ -67,8 +69,8 @@ test('<art> to <ol><li>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.ART, [
-            createListItem(MetaType.ART, '1', '1. gr.'),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: '1. gr.' }),
         ]),
     ];
 
@@ -82,7 +84,7 @@ test('<subart> to <ol><li>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.SUBART, [
+        createList(MetaType.SUBART, {}, [
             createListItem(MetaType.SUBART, '1'),
         ]),
     ];
@@ -99,8 +101,8 @@ test('<title>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.SUBART, [
-            createListItem(MetaType.SUBART, '1', '1. gr.'),
+        createList(MetaType.SUBART, {}, [
+            createListItem(MetaType.SUBART, '1', { title: '1. gr.' }),
         ]),
     ];
 
@@ -118,8 +120,8 @@ test('<name>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.ART, [
-            createListItemWithName(MetaType.ART, '1', '1. gr.', 'Markmið.', 'text'),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: '1. gr.', name: 'Markmið.', text: 'text' }),
         ]),
     ];
 
@@ -133,7 +135,7 @@ test('<paragraph> to <ol><li>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
+        createList(MetaType.PARAGRAPH, {}, [
             createListItem(MetaType.PARAGRAPH, '1'),
         ]),
     ];
@@ -151,8 +153,8 @@ test('<paragraph><sen><sen> to <ol><li><p>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, ['one.', 'two.']),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { text: ['one.', 'two.'] }),
         ]),
     ];
 
@@ -167,9 +169,9 @@ test('multiple <paragraph> to <ol><li>', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, 'first'),
-            createListItem(MetaType.PARAGRAPH, '2', undefined, 'second'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { text: 'first' }),
+            createListItem(MetaType.PARAGRAPH, '2', { text: 'second' }),
         ]),
     ];
 
@@ -190,12 +192,12 @@ test('numart', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.NUMART, [
-            createNumericNumart('1', undefined, undefined, [
-                createList(MetaType.NUMART, [
-                    createInlineLetterNumart('a', undefined, undefined, [
-                        createList(MetaType.PARAGRAPH, [
-                            createListItem(MetaType.PARAGRAPH, '1', 'a.', 'Sendiráðin í Genf.'),
+        createList(MetaType.NUMART, {}, [
+            createListItem(MetaType.NUMART, '1', { nrType: 'numeric' }, [
+                createList(MetaType.NUMART, {}, [
+                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet', styleNote: 'inline-with-parent' }, [
+                        createList(MetaType.PARAGRAPH, {}, [
+                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Sendiráðin í Genf.' }),
                         ]),
                     ]),
                 ]),
@@ -217,8 +219,8 @@ test('multiple sen', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'a.', ['Sendiráð skulu.', 'Sendiráðin í Genf.']),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
         ]),
     ];
 
@@ -241,12 +243,12 @@ test('title+sen+numart need to become one ListItem', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', '2.', 'Umdæmi sendiráða skulu vera sem hér segir:', [
-                createList(MetaType.NUMART, [
-                    createLetterNumart('a', undefined, undefined, [
-                        createList(MetaType.PARAGRAPH, [
-                            createListItem(MetaType.PARAGRAPH, '1', 'a.', ['Berlín.']),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
+                createList(MetaType.NUMART, {}, [
+                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet' }, [
+                        createList(MetaType.PARAGRAPH, {}, [
+                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Berlín.' }),
                         ]),
                     ]),
                 ]),
@@ -269,8 +271,8 @@ test('sen link', () => {
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, 'Úrskurður þessi öðlast þegar gildi.'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { text: 'Úrskurður þessi öðlast þegar gildi.' }),
         ]),
     ];
 

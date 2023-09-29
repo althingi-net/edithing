@@ -1,16 +1,18 @@
 import { createEditor } from "slate";
 import getPreviousSibling from "./getPreviousSibling";
-import { createListItem, MetaType, createList } from "../Slate";
+import { MetaType } from "../Slate";
+import createList from "./slate/createList";
+import createListItem from "./slate/createListItem";
 
 test('get first sibling with 3 nodes', () => {
     const editor = createEditor();
 
-    const firstChild = createListItem(MetaType.CHAPTER, '1', 'I.');
+    const firstChild = createListItem(MetaType.CHAPTER, '1');
     editor.children = [
-        createList(MetaType.CHAPTER, [
+        createList(MetaType.CHAPTER, {}, [
             firstChild,
-            createListItem(MetaType.CHAPTER, '2', 'II.'),
-            createListItem(MetaType.CHAPTER, '3', 'III.'),
+            createListItem(MetaType.CHAPTER, '2'),
+            createListItem(MetaType.CHAPTER, '3'),
         ]),
     ];
 
@@ -20,12 +22,12 @@ test('get first sibling with 3 nodes', () => {
 test('get second sibling with 3 nodes', () => {
     const editor = createEditor();
 
-    const secondChild = createListItem(MetaType.CHAPTER, '2', 'II.');
+    const secondChild = createListItem(MetaType.CHAPTER, '2');
     editor.children = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1'),
             secondChild,
-            createListItem(MetaType.CHAPTER, '3', 'III.'),
+            createListItem(MetaType.CHAPTER, '3'),
         ]),
     ];
 

@@ -1,18 +1,19 @@
 import { Descendant } from "slate";
-import { MetaType, createList, createListItem } from "../../Slate";
 import compareDocuments from "./compareDocuments";
 import { Event } from "./useEvents";
 import Changelog from "../../../../models/Changelog";
-
+import { MetaType } from "../../Slate";
+import createList from "../slate/createList";
+import createListItem from "../slate/createListItem";
 
 // test('renaming a paragraph and adding the same one again with a different text', () => {
 //     const inputA = `
 //         <paragraph nr="1">Hello World</paragraph>
 //     `;
 //     const inputB: Node = createSlateRoot([
-//         createList(MetaType.PARAGRAPH, [
-//             createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
-//             createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+//         createList(MetaType.PARAGRAPH, {}, [
+//             createListItem(MetaType.PARAGRAPH, '1', { title: 'New Text' }),
+//             createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
 //         ]),
 //     ]);
 
@@ -26,16 +27,16 @@ import Changelog from "../../../../models/Changelog";
 
 test('Removed paragraph 2', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'New Text' }),
         ]),
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'New Text'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'New Text' }),
         ]),
     ];
     const events: Event[] = [
@@ -52,14 +53,14 @@ test('Removed paragraph 2', () => {
 
 test('Added paragraph 2', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-            createListItem(MetaType.PARAGRAPH, '2', 'New Text'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+            createListItem(MetaType.PARAGRAPH, '2', { title: 'New Text' }),
         ]),
     ];
     const events: Event[] = [
@@ -77,13 +78,13 @@ test('Added paragraph 2', () => {
 
 test('Changed paragraph 1', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'Hello z'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello z' }),
         ]),
     ];
     const events: Event[] = [
@@ -115,21 +116,21 @@ test('Changed paragraph 1', () => {
 
 test('Changed Chapter 1 Paragraph 2', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-                    createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
                 ]),
             ]),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-                    createListItem(MetaType.PARAGRAPH, '2', 'Hello z'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello z' }),
                 ]),
             ]),
         ]),
@@ -163,21 +164,21 @@ test('Changed Chapter 1 Paragraph 2', () => {
 
 test('Merge events for the same id', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-                    createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
                 ]),
             ]),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-                    createListItem(MetaType.PARAGRAPH, '2', 'Hello z'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello z' }),
                 ]),
             ]),
         ]),
@@ -212,17 +213,17 @@ test('Merge events for the same id', () => {
 
 test('Sort entries by ascending id', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-            createListItem(MetaType.PARAGRAPH, '2', 'Hello World'),
-            createListItem(MetaType.PARAGRAPH, '3', 'Hello World'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+            createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
+            createListItem(MetaType.PARAGRAPH, '3', { title: 'Hello World' }),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', 'Hello World'),
-            createListItem(MetaType.PARAGRAPH, '2', 'Hello 2'),
-            createListItem(MetaType.PARAGRAPH, '3', 'Hello 3'),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
+            createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello 2' }),
+            createListItem(MetaType.PARAGRAPH, '3', { title: 'Hello 3' }),
         ]),
     ];
     const events: Event[] = [
@@ -271,21 +272,21 @@ test('Sort entries by ascending id', () => {
 
 test('Added word in sen 2', () => {
     const inputA: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'title 1', ['sen1', 'sen2']),
-                    createListItem(MetaType.PARAGRAPH, '2', 'title 2', ['sen1', 'sen2']),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title: 'title 1', text: ['sen1', 'sen2'] }),
+                    createListItem(MetaType.PARAGRAPH, '2', { title: 'title 2', text: ['sen1', 'sen2'] }),
                 ]),
             ]),
         ]),
     ];
     const inputB: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'title 1', ['sen1', 'sen2 hello']),
-                    createListItem(MetaType.PARAGRAPH, '2', 'title 2', ['sen1', 'sen2 newword']),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title: 'title 1', text: ['sen1', 'sen2 hello'] }),
+                    createListItem(MetaType.PARAGRAPH, '2', { title: 'title 2', text: ['sen1', 'sen2 newword'] }),
                 ]),
             ]),
         ]),

@@ -1,12 +1,14 @@
 import { Node } from "slate";
+import { createSlateRoot, MetaType } from "../../Slate";
+import createList from "../slate/createList";
+import createListItem from "../slate/createListItem";
 import getParagraphId from "./getParagraphId";
-import { createSlateRoot, createList, MetaType, createListItem, createListItemWithName } from "../../Slate";
 
 test('getParagraphId 1 level deep', () => {
     const input: Node = createSlateRoot([
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.'),
-            createListItem(MetaType.CHAPTER, '2', 'II.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title:  'I.' }),
+            createListItem(MetaType.CHAPTER, '2', { title:  'II.' }),
         ]),
     ]);
     const output = `${MetaType.CHAPTER}-2`;
@@ -16,10 +18,10 @@ test('getParagraphId 1 level deep', () => {
 
 test('getParagraphId 2 levels deep', () => {
     const input: Node = createSlateRoot([
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '2', 'II.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'one. two.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title:  'one. two.' }),
                 ]),
             ]),
         ]),
@@ -31,10 +33,10 @@ test('getParagraphId 2 levels deep', () => {
 
 test('name', () => {
     const input: Node = createSlateRoot([
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '2', 'II.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItemWithName(MetaType.PARAGRAPH, '1', undefined, 'one. two.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { name: 'one. two.' }),
                 ]),
             ]),
         ]),
@@ -46,10 +48,10 @@ test('name', () => {
 
 test('title', () => {
     const input: Node = createSlateRoot([
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '2', 'II.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', 'one. two.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { title:  'one. two.' }),
                 ]),
             ]),
         ]),
@@ -61,10 +63,10 @@ test('title', () => {
 
 test('sentence', () => {
     const input: Node = createSlateRoot([
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '2', 'II.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', undefined, 'one. two.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { text: 'one. two.' }),
                 ]),
             ]),
         ]),

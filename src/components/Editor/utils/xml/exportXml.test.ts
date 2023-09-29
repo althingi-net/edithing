@@ -1,18 +1,20 @@
 import { Descendant } from "slate";
 import beautify from "xml-beautifier";
-import { MetaType, createLetterNumart, createList, createListItem, createListItemWithName } from "../../Slate";
 import exportXml from "./exportXml";
+import { MetaType } from "../../Slate";
+import createList from "../slate/createList";
+import createListItem from "../slate/createListItem";
 
 test('export chapters', () => {
     const input: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.', undefined, [
-                createList(MetaType.PARAGRAPH, [
-                    createListItem(MetaType.PARAGRAPH, '1', undefined, 'one.'),
-                    createListItem(MetaType.PARAGRAPH, '2', undefined, 'two.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { text: 'one.' }),
+                    createListItem(MetaType.PARAGRAPH, '2', { text: 'two.' }),
                 ]),
             ]),
-            createListItem(MetaType.CHAPTER, '2', 'II.'),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
         ]),
     ];
     const output = `
@@ -48,8 +50,8 @@ test('export xml header', () => {
 
 test('export document meta data', () => {
     const input: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
         ]),
     ];
     const documentMeta = {
@@ -80,8 +82,8 @@ test('export document meta data', () => {
 
 test('export no title if meta.title is undefined', () => {
     const input: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', undefined, 'some text'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { text: 'some text' }),
         ]),
     ];
     const output = `
@@ -95,8 +97,8 @@ test('export no title if meta.title is undefined', () => {
 
 test('export title from LIST_ITEM_TEXT', () => {
     const input: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'title', ['text1', 'text2']),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'title', text: ['text1', 'text2'] }),
         ]),
     ];
     const output = `
@@ -112,8 +114,8 @@ test('export title from LIST_ITEM_TEXT', () => {
 
 test('export name from LIST_ITEM_TEXT', () => {
     const input: Descendant[] = [
-        createList(MetaType.CHAPTER, [
-            createListItemWithName(MetaType.CHAPTER, '1', 'title', 'name', ['text1', 'text2']),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'title', name: 'name', text: ['text1', 'text2'] }),
         ]),
     ];
     const output = `
@@ -130,8 +132,8 @@ test('export name from LIST_ITEM_TEXT', () => {
 
 test('sen being exported', () => {
     const input: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', undefined, ['one.', 'two.']),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { text: ['one.', 'two.'] }),
         ]),
     ];
     const output = `
@@ -146,12 +148,12 @@ test('sen being exported', () => {
 
 test('do not modify input', () => {
     const input: Descendant[] = [
-        createList(MetaType.PARAGRAPH, [
-            createListItem(MetaType.PARAGRAPH, '1', '2.', 'Umdæmi sendiráða skulu vera sem hér segir:', [
-                createList(MetaType.NUMART, [
-                    createLetterNumart('a', undefined, undefined, [
-                        createList(MetaType.PARAGRAPH, [
-                            createListItem(MetaType.PARAGRAPH, '1', 'a.', ['Berlín.']),
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
+                createList(MetaType.NUMART, {}, [
+                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet' }, [
+                        createList(MetaType.PARAGRAPH, {}, [
+                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Berlín.' }),
                         ]),
                     ]),
                 ]),
