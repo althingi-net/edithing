@@ -6,7 +6,6 @@ import CopyClipboardButton from "./CopyClipboardButton";
 import LawChanges from "./LawChanges";
 import NodeMetaForm from "./NodeMetaForm";
 import compareDocuments from "./utils/changelog/compareDocuments";
-import useEvents from "./utils/changelog/useEvents";
 import useDebounce from "./utils/useDebounce";
 import exportXml from "./utils/xml/exportXml";
 import importXml from "./utils/xml/importXml";
@@ -21,16 +20,15 @@ const EditorSidePanel: FC<Props> = (props) => {
 
     const slate = useSlate();
     const debouncedSlate = useDebounce(slate.children, 500);
-    const events = useDebounce(useEvents(slate), 500);
 
     return useMemo(() => {
-        if (!debouncedSlate || !events) {
+        if (!debouncedSlate) {
             return null;
         }
 
         const slateState = JSON.stringify(debouncedSlate, null, 2);
         const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
-        const changelog = compareDocuments(originalDocument.slate, debouncedSlate, events);
+        const changelog = compareDocuments(originalDocument.slate, debouncedSlate, slate.events);
 
         return (
             <div style={{ height: '100%' }}>
@@ -62,7 +60,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                 </Collapse>
             </div>
         );
-    }, [debouncedSlate, events, originalDocument, xml]);
+    }, [debouncedSlate, originalDocument, xml, slate.events]);
 }
 
 export default EditorSidePanel;
