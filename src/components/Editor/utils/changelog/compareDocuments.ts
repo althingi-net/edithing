@@ -1,9 +1,9 @@
 import { Descendant } from "slate";
 import { ElementType } from "../../Slate";
 import flattenSlateParagraphs, { FlattenedParagraph } from "./flattenSlateParagraphs";
-import { Event } from "./useEvents";
 import Diff from 'text-diff';
 import Changelog from "../../../../models/Changelog";
+import { Event } from "../../plugins/withEvents";
 
 const diff = new Diff();
 

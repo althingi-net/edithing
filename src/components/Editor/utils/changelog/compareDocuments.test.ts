@@ -1,10 +1,10 @@
 import { Descendant } from "slate";
 import compareDocuments from "./compareDocuments";
-import { Event } from "./useEvents";
 import Changelog from "../../../../models/Changelog";
 import { MetaType } from "../../Slate";
 import createList from "../slate/createList";
 import createListItem from "../slate/createListItem";
+import { Event } from "../../plugins/withEvents";
 
 // test('renaming a paragraph and adding the same one again with a different text', () => {
 //     const inputA = `

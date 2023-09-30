@@ -12,6 +12,7 @@ import renderLeaf from './plugins/renderLeaf';
 import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import importXml from './utils/xml/importXml';
+import Toolbar from './Toolbar';
 
 interface Props {
     file: GithubFile;
@@ -46,6 +47,7 @@ const Editor: FC<Props> = ({ file }) => {
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12}>
                         <div style={{ height: '100%' }}>
+                            <Toolbar />
                             <Editable
                                 className='editor'
                                 onKeyDown={(event) => onKeyDown(editor, event)}
