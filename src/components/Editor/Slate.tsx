@@ -2,10 +2,11 @@ import { ListsSchema, ListType } from "@prezly/slate-lists";
 import { BaseEditor, Descendant, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
+import { EventsEditor } from "./plugins/withEvents";
 
 declare module 'slate' {
     interface CustomTypes {
-        Editor: BaseEditor & ReactEditor & HistoryEditor
+        Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor
         Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | OrderedList
         Text: { text: string, title?: boolean, name?: boolean, nr?: string, bold?: boolean }
     }
@@ -35,7 +36,7 @@ export type ListItem = {
     meta: {
         type: MetaType;
         nr: string;
-        nrType?: string; // roman, numeric, alphabet, mixed
+        nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
         romanNr?: string;
         
         /** 

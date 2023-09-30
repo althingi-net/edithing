@@ -2,13 +2,8 @@ import { Descendant } from "slate";
 import { MetaType, ListItem, ListItemText, ElementType } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
 
-interface Options {
-    title?: string;
-    name?: string;
+interface Options extends Omit<ListItem['meta'], 'children' | 'nr' | 'type'> {
     text?: string | string[];
-    // Number Type, undefined means numeric for art/sub, roman for chapter, numeric for numart
-    nrType?: 'roman' | 'numeric' | 'alphabet';
-    styleNote?: 'inline-with-parent';
 }
 
 /**
@@ -18,7 +13,7 @@ interface Options {
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItem => {
-    const { title, name, text, nrType, styleNote } = options;
+    const { title, name, text, nrType, styleNote, romanNr } = options;
 
     const textElement: ListItemText = {
         type: ElementType.LIST_ITEM_TEXT,
@@ -72,7 +67,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     if (type === MetaType.CHAPTER) {
         listItem.meta.nrType = 'roman';
-        listItem.meta.romanNr = convertRomanNumber(nr);
+        listItem.meta.romanNr = romanNr ?? convertRomanNumber(nr);
     }
 
     if (type === MetaType.NUMART && !nrType) {
