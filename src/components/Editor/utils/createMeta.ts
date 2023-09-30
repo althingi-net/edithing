@@ -1,8 +1,8 @@
 import { Editor, Element, Node, Path } from 'slate';
 import { ListItem, isList, isListItem } from '../Slate';
 import createListMeta from './createListMeta';
-import getSiblingAbove from './getSiblingAbove';
-import increaseRomanNumber from './increaseRomanNumber';
+import getPreviousSibling from './getPreviousSibling';
+import createListItemMetaFromSibling from './slate/createListItemMetaFromSibling';
 
 const createMeta = <T extends Element>(editor: Editor, node: T, path: Path): T['meta'] => {
     if (isList(node)) {
@@ -15,32 +15,9 @@ const createMeta = <T extends Element>(editor: Editor, node: T, path: Path): T['
     }
 
     if (isListItem(node)) {
-        const siblingAbove = getSiblingAbove(editor, path);
+        const siblingAbove = getPreviousSibling(editor, path);
         if (siblingAbove && isListItem(siblingAbove)) {
-            const { nr, romanNr, nrType, type, title } = siblingAbove.meta;
-            
-            const meta: ListItem['meta'] = {
-                type,
-                nr: `${(Number(nr) ?? 0) + 1}`
-            };
-
-            if (nrType) {
-                meta.nrType = nrType;
-            }
-
-            if (romanNr) {
-                meta.romanNr = increaseRomanNumber(romanNr);
-            }
-
-            if (title) {
-                if (romanNr && meta.romanNr) {
-                    meta.title = `${title.replace(romanNr, meta.romanNr)}`;
-                } else {
-                    meta.title = `${title.replace(nr, meta.nr)}`;
-                }
-            }
-
-            return meta;
+            return createListItemMetaFromSibling(siblingAbove);
         } else {
             const nextParent = Editor.above(editor, { at: path, match: n => isList(n) && !!n.meta });
             const meta = createListMeta(nextParent?.[0]) as ListItem['meta'];

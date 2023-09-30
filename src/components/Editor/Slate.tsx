@@ -2,11 +2,11 @@ import { ListsSchema, ListType } from "@prezly/slate-lists";
 import { BaseEditor, Descendant, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
-import convertRomanNumber from "./utils/convertRomanNumber";
+import { EventsEditor } from "./plugins/withEvents";
 
 declare module 'slate' {
     interface CustomTypes {
-        Editor: BaseEditor & ReactEditor & HistoryEditor
+        Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor
         Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | OrderedList
         Text: { text: string, title?: boolean, name?: boolean, nr?: string, bold?: boolean }
     }
@@ -36,7 +36,7 @@ export type ListItem = {
     meta: {
         type: MetaType;
         nr: string;
-        nrType?: string; // roman, numeric, alphabet, mixed
+        nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
         romanNr?: string;
         
         /** 
@@ -135,110 +135,3 @@ export const createSlateRoot = (children: Descendant[]): Node => ({
     type: ElementType.EDITOR,
     children,
 });
-
-export const createList = (type: MetaType, children: Descendant[]): Descendant => {
-    const node: OrderedList = {
-        type: ElementType.ORDERED_LIST,
-        meta: {
-            type: type,
-        },
-        children,
-    }
-
-    if (type === MetaType.CHAPTER) {
-        node.meta.nrType = 'roman';
-    }
-
-    return node;
-};
-
-export const createListItem = (type: MetaType, nr: string, title?: string, text?: string | string[], children: Descendant[] = []): ListItem => {
-    const textNode: ListItemText = {
-        type: ElementType.LIST_ITEM_TEXT,
-        children: [],
-    }
-    
-    const node: ListItem = {
-        type: ElementType.LIST_ITEM,
-        meta: {
-            type: type,
-            nr,
-        },
-        children: [
-            textNode,
-            ...children
-        ],
-    };
-
-    if (title) {
-        node.meta.title = title;
-
-        textNode.children.unshift({ text: title, title: true });
-    }
-
-    if (Array.isArray(text)) {
-        textNode.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
-    } else {
-        if (text) {
-            textNode.children.push({ text, nr: '1' });
-        } else {
-            textNode.children.push({ text: '' });
-        }
-    }
-
-    if (textNode.children.length > 1) {
-        textNode.children = textNode.children.filter((item => item.text !== ''));
-    }
-
-    if (type === MetaType.CHAPTER) {
-        node.meta.nrType = 'roman';
-        node.meta.romanNr = convertRomanNumber(nr);
-    }
-
-    return node;
-};
-
-export const createListItemWithName = (type: MetaType, nr: string, title?: string, name?: string, text?: string | string[], children: Descendant[] = []): ListItem => {
-    const listItem = createListItem(type, nr, title, text, children);
-
-    if (name) {
-        listItem.meta.name = name;
-        
-        const textNode = listItem.children[0] as ListItemText;
-        
-        const title = textNode.children.shift();
-        textNode.children.unshift({ text: name, name: true });
-
-        if (title) {
-            textNode.children.unshift(title);
-        }
-    }
-
-    return listItem;
-}
-
-
-export const createNumericNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
-    const node = createListItem(MetaType.NUMART, nr, title, text, children);
-
-    node.meta.nrType = 'numeric';
-
-    return node;
-}
-
-export const createInlineLetterNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
-    const node = createListItem(MetaType.NUMART, nr, title, text, children);
-
-    node.meta.nrType = 'alphabet';
-    node.meta.styleNote = 'inline-with-parent';
-
-    return node;
-}
-
-export const createLetterNumart = (nr: string, title?: string, text?: string, children: Descendant[] = []): ListItem => {
-    const node = createListItem(MetaType.NUMART, nr, title, text, children);
-
-    node.meta.nrType = 'alphabet';
-
-    return node;
-}

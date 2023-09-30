@@ -4,11 +4,14 @@ import { withHistory } from "slate-history";
 import { withReact } from "slate-react";
 import { schema } from "../Slate";
 import withLawParagraphs from "./withLawParagraphs";
+import withEvents from "./withEvents";
 
 const createEditorWithPlugins = () => withLawParagraphs(
-    withLists(schema)(
-        withHistory(
-            withReact(createEditor())
+    withEvents(
+        withLists(schema)(
+            withHistory(
+                withReact(createEditor())
+            )
         )
     )
 );

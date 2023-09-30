@@ -1,25 +1,11 @@
 import { Descendant } from "slate";
-import flattenSlateParagraphs from "./flattenSlateParagraphs";
 import { ElementType } from "../../Slate";
-import { Event } from "./useEvents";
-import { type } from "os";
+import flattenSlateParagraphs, { FlattenedParagraph } from "./flattenSlateParagraphs";
+import Diff from 'text-diff';
+import Changelog from "../../../../models/Changelog";
+import { Event } from "../../plugins/withEvents";
 
-const TEXTS: { [key: string]: string } = {
-    // sen: 'sentence',
-    // art: 'article',
-    // subart: 'paragraph',
-    // chapter: 'chapter',
-}
-
-// edit 1.
-// edit 2.
-// delete 1.
-
-interface Changelog {
-    id: string;
-    text?: string;
-    type: 'add' | 'change' | 'delete';
-}
+const diff = new Diff();
 
 const compareDocuments = (original: Descendant[], current: Descendant[], events: Event[]) => {
     const originalTexts = flattenSlateParagraphs({
@@ -31,24 +17,47 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
         children: current,
     });
 
-    
-    const added = newTexts.filter(newText => !originalTexts.find(originalText => originalText.id === newText.id));
-    const removed = originalTexts.filter(originalText => !newTexts.find(newText => newText.id === originalText.id));
-    const changed = newTexts.filter(newText => originalTexts.find(originalText => originalText.id === newText.id && originalText.content !== newText.content));
+    const changelog = createChangelog(originalTexts, newTexts);
+    return sortChangelog(changelog, events)
+}
 
+const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[]) => {
+    const changelog: Changelog[] = [];
 
-    const changelog: Changelog[] = [
-        ...added.map<Changelog>(text => ({ id: text.id, type: 'add', text: text.content })),
-        ...removed.map<Changelog>(text => ({ id: text.id, type: 'delete', text: text.content })),
-        ...changed.map<Changelog>(text => ({ id: text.id, type: 'change', text: text.content })),
-    ];
-    console.log('events', events);
-    console.log('changelog', changelog);
+    for (const newText of newTexts) {
+        // Find added texts
+        const originalText = originalTexts.find(text => text.id === newText.id || text.content === newText.content);
+        if (!originalText) {
+            changelog.push({ id: newText.id, type: 'add', text: newText.content });
+            continue;
+        }
 
+        // Find changed texts
+        if (originalText.content !== newText.content) {
+            const changes = diff.main(originalText.content, newText.content);
+            diff.cleanupSemantic(changes);
+            changelog.push({ id: newText.id, type: 'change', text: newText.content, changes });
+        }
+    }
+
+    // Find deleted texts
+    for (const originalText of originalTexts) {
+        const newText = newTexts.find(text => text.id === originalText.id || text.content === originalText.content);
+        if (!newText) {
+            changelog.push({ id: originalText.id, type: 'delete' });
+        }
+    }
+
+    return changelog;
+}
+
+/**
+ * Sort Changelog based on events. Events are processed in reverse order to ignore events that are undone.
+ */
+const sortChangelog = (changelog: Changelog[], events: Event[]) => {
     const appliedEvents: string[] = [];
 
-    // sort changelog based on order in events, in reverse to ignore events that were deleted
-    const sortedChangelog = [...events]
+    return [...events]
         .reverse()
         .map(event => {
             const changelogEntry = changelog.find(entry => entry.id === event.id);
@@ -63,43 +72,9 @@ const compareDocuments = (original: Descendant[], current: Descendant[], events:
             appliedEvents.push(event.id);
             return changelogEntry;
         })
-        .filter(Boolean)
-        .reverse() as Changelog[];
-    
-    console.log('sortedChangelog', sortedChangelog);
-
-    return sortedChangelog.map(entry => {
-        if (entry.type === 'add') {
-            return `${parseIdToDisplay(entry.id)} of the law was added: ${entry.text}`;
-        }
-
-        if (entry.type === 'delete') {
-            return `${parseIdToDisplay(entry.id)} of the law was removed.`;
-        }
-
-        if (entry.type === 'change') {
-            return `${parseIdToDisplay(entry.id)} of the law shall be: ${entry.text}`;
-        }
-
-        return '';
-    });
-}
-
-const parseIdToDisplay = (id: string) => {
-    return id.split('.')
-        .map((level) => {
-            const [type, nr] = level.split('-');
-            return `${nr}. ${translate(type)}`;
-        })
-        .join(' ');
-}
-
-const translate = (word: string) => {
-    if (TEXTS[word]) {
-        return TEXTS[word];
-    }
-
-    return word;
+        .filter((entry): entry is Changelog => entry !== null)
+        // Sort changelog based on id, ascending
+        .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1) as Changelog[];
 }
 
 export default compareDocuments;

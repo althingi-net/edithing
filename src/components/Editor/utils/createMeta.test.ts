@@ -1,13 +1,15 @@
 import { createEditor } from "slate";
-import { createListItem, MetaType, createList, OrderedList } from "../Slate";
 import createMeta from "./createMeta"
+import { MetaType, OrderedList } from "../Slate";
+import createList from "./slate/createList";
+import createListItem from "./slate/createListItem";
 
 test('List: sibling above', () => {
     const editor = createEditor();
 
     editor.children = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1'),
         ]),
     ];
 
@@ -22,10 +24,10 @@ test('List: sibling above', () => {
 test('ListItem: sibling above', () => {
     const editor = createEditor();
 
-    const node = createListItem(MetaType.CHAPTER, '2', 'II.');
+    const node = createListItem(MetaType.CHAPTER, '2');
     editor.children = [
-        createList(MetaType.CHAPTER, [
-            createListItem(MetaType.CHAPTER, '1', 'I.'),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1'),
             node,
         ]),
     ];
@@ -35,7 +37,6 @@ test('ListItem: sibling above', () => {
         nrType: 'roman',
         nr: '2',
         romanNr: 'II',
-        title: 'II.',
     };
 
     expect(createMeta(editor, node, [0, 1])).toEqual(output);

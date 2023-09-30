@@ -10,6 +10,24 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 3. Run `npm i` to install npm packages
 4. Run `npm start` to run the app locally
 
+## Terms
+
+### Editor Node
+Root node at the top of the editor containing children
+
+### Node
+Can be Block Element, Text Node, Inline Node, Void Node
+
+### (Block) Element
+Element that can contain any Node. Itself is always a block but can contain mix of block and inline Nodes.
+An empty element must always have an empty text node as child.
+
+### Text Node / Inline Node
+Leaf-level Text nodes which contain the document's text. Can contain formatting within custom properties.
+
+### Void Node
+An element treated not as text but as a black box, e.g. for embedded images, videos and so on.
+
 ## Available Scripts
 
 In the project directory, you can run:

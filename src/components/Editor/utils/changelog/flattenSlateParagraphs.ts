@@ -1,21 +1,34 @@
-import { Path, Node, Element } from "slate";
+import { Path, Node, Element, Text } from "slate";
 import { ElementType } from "../../Slate";
 import getParagraphId from "./getParagraphId";
 
-const flattenSlateParagraphs = (root: Node) => {
+export interface FlattenedParagraph {
+    path: Path;
+    content: string;
+    id: string;
+}
+
+const flattenSlateParagraphs = (root: Node): FlattenedParagraph[] => {
     const list: { path: Path, content: string, id: string }[] = [];
 
     Array.from(Node.nodes(root)).forEach(([node, path]) => {
         if (Element.isElementType(node, ElementType.LIST_ITEM_TEXT)) {
-            const text = Node.string(node);
+            node.children.forEach((child, index) => {
+                if (Text.isText(child) && child.text) {
+                    let text = child.text;
+                    const childPath = [...path, index];
 
-            if (text) {
-                list.push({
-                    id: getParagraphId(root, path),
-                    content: text,
-                    path,
-                });
-            }
+                    if (child.title || child.name) {
+                        text += ' ';
+                    }
+
+                    list.push({
+                        id: getParagraphId(root, childPath),
+                        content: text,
+                        path: childPath,
+                    });
+                }
+            });
         }
     });
 
