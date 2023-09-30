@@ -14,6 +14,10 @@ const getParagraphId = (root: Node, path: Path) => {
 
     const node = Node.get(root, path);
 
+    if (isListItem(node)) {
+        ids.push(`${node.meta.type}-${node.meta.nr}`);
+    }
+
     if (Text.isText(node)) {
         const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
 

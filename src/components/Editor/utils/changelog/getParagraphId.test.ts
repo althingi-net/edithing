@@ -75,3 +75,18 @@ test('sentence', () => {
 
     expect(getParagraphId(input, [0, 0, 1, 0, 0, 0])).toBe(output);
 });
+
+test('include target node itself if its a listItem', () => {
+    const input: Node = createSlateRoot([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
+                createList(MetaType.PARAGRAPH, {}, [
+                    createListItem(MetaType.PARAGRAPH, '1', { text: 'one. two.' }),
+                ]),
+            ]),
+        ]),
+    ]);
+    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1`;
+
+    expect(getParagraphId(input, [0, 0, 1, 0])).toBe(output);
+});
