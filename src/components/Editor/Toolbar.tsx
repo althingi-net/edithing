@@ -1,6 +1,6 @@
 import { Button, Checkbox, Modal, Space } from "antd";
 import { useState } from "react";
-import { useSlateStatic } from "slate-react";
+import { ReactEditor, useSlateStatic } from "slate-react";
 import { MetaType } from "./Slate";
 import createLawList from "./actions/createLawList";
 
@@ -11,8 +11,7 @@ const Toolbar = () => {
     const [bumpVersionNumber, setBumpVersionNumber] = useState(true);
     console.log('bumpVersionNumber', bumpVersionNumber)
 
-    const handleChapterClick = async () => {
-
+    const handleChapterClick: React.MouseEventHandler<HTMLElement> = async (event) => {
         const confirm = await modal.confirm({
             title: 'Add new Chapter',
             content: (
@@ -28,17 +27,17 @@ const Toolbar = () => {
             ),
         })
 
-
-        if (!editor.selection) {
-            console.error('Please put the cursor at the desired location in the text.');
-            return;
-        }
-
-        if (confirm && editor.selection) {
-            createLawList(editor, MetaType.CHAPTER, bumpVersionNumber)
-        }
-
-        console.log('res', confirm)
+        setTimeout(() => {
+            if (!editor.selection) {
+                console.error('Please put the cursor at the desired location in the text.');
+                return;
+            }
+    
+            if (confirm && editor.selection) {
+                ReactEditor.focus(editor);
+                createLawList(editor, MetaType.CHAPTER, bumpVersionNumber)
+            }
+        }, 500)
     }
 
     const handleArtClick = () => {

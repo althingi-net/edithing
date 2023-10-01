@@ -23,7 +23,7 @@ const createLawList = (editor: Editor, type: MetaType, bumpVersionNumber = true)
     const newNode = createListItem(type, meta.nr, { ...meta })
     const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1])
 
-    editor.insertNode(newNode, { at: newPath })
+    editor.insertNode(newNode, { at: newPath, select: true })
 
     if (bumpVersionNumber) {
         incrementFollowingSiblings(editor, newPath)
