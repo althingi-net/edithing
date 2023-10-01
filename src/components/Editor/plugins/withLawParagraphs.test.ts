@@ -1,5 +1,5 @@
 import { Editor } from "slate";
-import { MetaType, ElementType } from "../Slate";
+import { ElementType, MetaType } from "../Slate";
 import createList from "../utils/slate/createList";
 import createListItem from "../utils/slate/createListItem";
 import createEditorWithPlugins from "./createEditorWithPlugins";

@@ -16,6 +16,7 @@ const withLawParagraphs = (editor: Editor) => {
             if (isList(node)) {
                 const meta = createMeta(editor, node, path);
                 setMeta(editor, path, meta);
+                return;
             }
 
             if (isListItem(node)) {
@@ -25,6 +26,7 @@ const withLawParagraphs = (editor: Editor) => {
                     setListItemTitle(editor, path, meta, meta.title);
                 }
                 incrementFollowingSiblings(editor, path);
+                return;
             }
         }
 
