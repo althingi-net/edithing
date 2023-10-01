@@ -4,8 +4,9 @@ import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
 import { MetaType } from "../../Slate";
 import createList from "../slate/createList";
 import createListItem from "../slate/createListItem";
+import { TAGS } from "../../../../config/tags";
 
-test('import xml', () => {
+test('import meta and law chapters', () => {
     const input = `
         <?xml version="1.0" encoding="utf-8"?>
         <law nr="33" year="1944">
@@ -43,7 +44,7 @@ test('import xml', () => {
 });
 
 
-test('<chapter> to <ol><li>', () => {
+test('roman list item', () => {
     const input = `
         <law>
             <chapter nr="1" nr-type="roman" roman-nr="I">
@@ -60,7 +61,7 @@ test('<chapter> to <ol><li>', () => {
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('<art> to <ol><li>', () => {
+test('list item with title', () => {
     const input = `
         <law>
             <art nr="1">
@@ -77,39 +78,22 @@ test('<art> to <ol><li>', () => {
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('<subart> to <ol><li>', () => {
+test('empty list item', () => {
     const input = `
         <law>
-            <subart nr="1"></subart>
+            <art nr="1"></art>
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.SUBART, {}, [
-            createListItem(MetaType.SUBART, '1'),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1'),
         ]),
     ];
 
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('<title>', () => {
-    const input = `
-        <law>
-            <subart nr="1">
-                <nr-title>1. gr.</nr-title>
-            </subart>
-        </law>
-    `;
-    const output: Descendant[] = [
-        createList(MetaType.SUBART, {}, [
-            createListItem(MetaType.SUBART, '1', { title: '1. gr.' }),
-        ]),
-    ];
-
-    expect(importXml(input).slate).toStrictEqual(output);
-});
-
-test('<name>', () => {
+test('list item with title+name+sen', () => {
     const input = `
         <law>
             <art nr="1">
@@ -128,65 +112,50 @@ test('<name>', () => {
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('<paragraph> to <ol><li>', () => {
+test('list item with 2 sentences', () => {
     const input = `
         <law>
-            <paragraph nr="1"></paragraph>
-        </law>
-    `;
-    const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1'),
-        ]),
-    ];
-
-    expect(importXml(input).slate).toStrictEqual(output);
-});
-
-test('<paragraph><sen><sen> to <ol><li><p>', () => {
-    const input = `
-        <law>
-            <paragraph nr="1">
+            <art nr="1">
                 <sen nr="1">one.</sen>
                 <sen nr="2">two.</sen>
-            </paragraph>
+            </art>
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { text: ['one.', 'two.'] }),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: ['one.', 'two.'] }),
         ]),
     ];
 
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('multiple <paragraph> to <ol><li>', () => {
+test('multiple list items with text', () => {
     const input = `
         <law>
-            <paragraph nr="1"><sen nr="1">first</sen></paragraph>
-            <paragraph nr="2"><sen nr="1">second</sen></paragraph>
+            <art nr="1"><sen nr="1">first</sen></art>
+            <art nr="2"><sen nr="1">second</sen></art>
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { text: 'first' }),
-            createListItem(MetaType.PARAGRAPH, '2', { text: 'second' }),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: 'first' }),
+            createListItem(MetaType.ART, '2', { text: 'second' }),
         ]),
     ];
 
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('numart', () => {
+test('multiple nested numart', () => {
     const input = `
         <law>
             <numart nr="1" type="numeric">
                 <numart nr="a" style-note="inline-with-parent" type="alphabet">
-                    <paragraph nr="1">
+                    <art nr="1">
                         <nr-title>a.</nr-title>
                         <sen nr="1">Sendiráðin í Genf.</sen>
-                    </paragraph>
+                    </art>
                 </numart>
             </numart>
         </law>
@@ -196,8 +165,8 @@ test('numart', () => {
             createListItem(MetaType.NUMART, '1', { nrType: 'numeric' }, [
                 createList(MetaType.NUMART, {}, [
                     createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet', styleNote: 'inline-with-parent' }, [
-                        createList(MetaType.PARAGRAPH, {}, [
-                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Sendiráðin í Genf.' }),
+                        createList(MetaType.ART, {}, [
+                            createListItem(MetaType.ART, '1', { title: 'a.', text: 'Sendiráðin í Genf.' }),
                         ]),
                     ]),
                 ]),
@@ -208,47 +177,47 @@ test('numart', () => {
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('multiple sen', () => {
+test('list item with title and 2 sentences', () => {
     const input = `
         <law>
-            <paragraph nr="1">
+            <art nr="1">
                 <nr-title>a.</nr-title>
                 <sen nr="1">Sendiráð skulu.</sen>
                 <sen nr="2">Sendiráðin í Genf.</sen>
-            </paragraph>
+            </art>
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: 'a.', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
         ]),
     ];
 
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('title+sen+numart need to become one ListItem', () => {
+test('title+sen+numart needs to become one ListItem', () => {
     const input = `
         <law>
-            <paragraph nr="1">
+            <art nr="1">
                 <nr-title>2.</nr-title>
                 <sen nr="1">Umdæmi sendiráða skulu vera sem hér segir:</sen>
                 <numart nr="a" type="alphabet">
-                    <paragraph nr="1">
+                    <art nr="1">
                         <nr-title>a.</nr-title>
                         <sen nr="1">Berlín.</sen>
-                    </paragraph>
+                    </art>
                 </numart>
-            </paragraph>
+            </art>
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
                 createList(MetaType.NUMART, {}, [
                     createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet' }, [
-                        createList(MetaType.PARAGRAPH, {}, [
-                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Berlín.' }),
+                        createList(MetaType.ART, {}, [
+                            createListItem(MetaType.ART, '1', { title: 'a.', text: 'Berlín.' }),
                         ]),
                     ]),
                 ]),
@@ -259,34 +228,35 @@ test('title+sen+numart need to become one ListItem', () => {
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
+// TODO: implement link handling
 test('sen link', () => {
     const input = `
         <law>
-            <paragraph nr="1">
+            <art nr="1">
                 <sen nr="1">Úrskurður þessi öðlast þegar gildi.</sen>
                 <sen nr="2">
                     <a href="http://www.althingi.is/lagasafn/leidbeiningar" title="Hér hefur annaðhvort verið fellt brott ákvæði um breytingar á öðrum lögum eða um brottfall þeirra, eða úrelt ákvæði til bráðabirgða. Sjá 7. lið í leiðbeiningum um notkun lagasafns.">…</a>
                 </sen>
-            </paragraph>
+            </art>
         </law>
     `;
     const output: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { text: 'Úrskurður þessi öðlast þegar gildi.' }),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: 'Úrskurður þessi öðlast þegar gildi.' }),
         ]),
     ];
 
     expect(importXml(input).slate).toStrictEqual(output);
 });
 
-test('ensure after editor normalization, content stays the same (if not it means there is a bug in the import)', () => {
+test('ensure after editor normalization, content stays the same (if not it means import is not clean, but previously was implemented to match the desired structure)', () => {
     const input = `
         <law>
-            <paragraph nr="1">
+            <art nr="1">
                 <nr-title>a.</nr-title>
                 <sen nr="1">Sendiráð skulu.</sen>
                 <sen nr="2">Sendiráðin í Genf.</sen>
-            </paragraph>
+            </art>
         </law>
     `;
     const inputSlate = importXml(input).slate;
@@ -296,6 +266,40 @@ test('ensure after editor normalization, content stays the same (if not it means
     editor.normalize({ force: true })
 
     expect(inputSlate).toStrictEqual(editor.children);
+});
+
+test('ignore virtual tags but still import their children', () => {
+    const input = `
+        <law>
+            <chapter nr="1" nr-type="roman" roman-nr="I">
+                <nr-title>I.</nr-title>
+                <numart nr="a" type="alphabet">
+                    <nr-title>a.</nr-title>
+                    <art nr="1">
+                        <sen nr="1">Sendiráðin í Genf.</sen>
+                    </art>
+                </numart>
+            </chapter>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+                createList(MetaType.NUMART, {}, [
+                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet',  title: 'a.', text: 'Sendiráðin í Genf.' }),
+                ]),
+            ]),
+        ]),
+    ];
+
+    // change art to be virtual
+    const oldDisplay = TAGS.art.display
+    TAGS.art.display = 'virtual';
+
+    expect(importXml(input).slate).toStrictEqual(output);
+    
+    // restore art
+    TAGS.art.display = oldDisplay;
 });
 
 // TODO: fix this test, properly its the list plugin normalization which merges the two root lists.. maybe need to have meta object flattened into the node object
@@ -311,30 +315,30 @@ test('ensure after editor normalization, content stays the same (if not it means
 //             </num-and-date>
 //             <minister-clause>&lt;small&gt; &lt;b&gt; Tók gildi 20. ágúst 2022. &lt;/b&gt; &lt;/small&gt;</minister-clause>
 //             <numart nr="2" type="numeric">
-//                 <paragraph nr="1">
+//                 <art nr="1">
 //                     <nr-title>2.</nr-title>
 //                     <sen nr="1">Umdæmi sendiráða skulu vera sem hér segir:</sen>
 //                     <numart nr="a" type="alphabet">
-//                         <paragraph nr="1">
+//                         <art nr="1">
 //                             <nr-title>a.</nr-title>
 //                             <sen nr="1">&lt;b&gt; Berlín.</sen>
 //                             <sen nr="2">&lt;/b&gt; Auk Þýskalands skal umdæmi sendiráðsins vera Tékkland.</sen>
-//                         </paragraph>
+//                         </art>
 //                     </numart>
-//                 </paragraph>
+//                 </art>
 //             </numart>
 //             <numart nr="5" type="numeric">
-//                 <paragraph nr="1">
+//                 <art nr="1">
 //                     <nr-title>5.</nr-title>
 //                     <sen nr="1">Utanríkisráðuneytið fer með fyrirsvar gagnvart öðrum alþjóðastofnunum og ríkjum sem Ísland hefur stjórnmálasamband við, m.a. með skipun sendiherra eða fastafulltrúa með búsetu í Reykjavík eftir því sem ástæða er til.</sen>
-//                 </paragraph>
+//                 </art>
 //             </numart>
-//             <paragraph nr="1">
+//             <art nr="1">
 //                 <sen nr="1">Úrskurður þessi öðlast þegar gildi.</sen>
 //                 <sen nr="2">
 //                     <a href="http://www.althingi.is/lagasafn/leidbeiningar" title="Hér hefur annaðhvort verið fellt brott ákvæði um breytingar á öðrum lögum eða um brottfall þeirra, eða úrelt ákvæði til bráðabirgða. Sjá 7. lið í leiðbeiningum um notkun lagasafns.">…</a>
 //                 </sen>
-//             </paragraph>
+//             </art>
 //         </law>    
 //     `;
 //     const inputSlate = importXml(input).slate;

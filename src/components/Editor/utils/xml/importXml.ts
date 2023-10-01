@@ -3,6 +3,7 @@ import { Descendant, Text } from "slate";
 import DocumentMeta from "../../../../models/DocumentMeta";
 import { ElementType, LIST_TAGS, ListItemText, MetaType, OrderedList, isListItemText } from "../../Slate";
 import normalizeChildren from "../slate/normalizeChildren";
+import { TAGS } from "../../../../config/tags";
 
 const importXml = (xml: string) => {
     const object = parseXml(xml);
@@ -39,6 +40,12 @@ const convertSlate = (object: any): Descendant[] => {
         const values = Array.isArray(value) ? value : [value];
 
         if (LIST_TAGS.includes(key)) {
+            // if virtual skip that tag and add children directly
+            if (TAGS[key].display === 'virtual') {
+                nodes.push(...values.map(convertSlate).flat());
+                continue;
+            }
+            
             nodes.push(convertList(key, values));
         }
 
