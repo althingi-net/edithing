@@ -22,7 +22,7 @@
     margin-right: 6px;
 }
 
-.list-item .subart > .paragraph::before {
+.list-item.subart::before {
     content: url('../../images/marker-subart.png');
     margin-right: 6px;
 }
