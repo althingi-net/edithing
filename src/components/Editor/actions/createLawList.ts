@@ -4,17 +4,18 @@ import createListItem from "../utils/slate/createListItem";
 import createListItemMetaFromSibling from "../utils/slate/createListItemMetaFromSibling";
 import findListItemAtSelection from "../utils/slate/findListItemAtSelection";
 import incrementFollowingSiblings from "../utils/slate/incrementFollowingSiblings";
+import { error } from "../../../logger";
 
 const createLawList = (editor: Editor, type: MetaType, bumpVersionNumber = true) => {
     if (!editor.selection) {
-        console.error('Please put the cursor at the desired location in the text.');
+        error('Please put the cursor at the desired location in the text.');
         return;
     }
 
     const siblingListItem = findListItemAtSelection(editor, type);
 
     if (!siblingListItem) {
-        console.error('No list found in the current selection');
+        error('No list found in the current selection');
         return;
     }
     

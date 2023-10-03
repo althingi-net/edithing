@@ -1,5 +1,6 @@
 import { Node, Path, Text } from "slate";
 import { isListItem } from "../../Slate";
+import { log } from "../../../../logger";
 
 const getParagraphId = (root: Node, path: Path) => {
     try {
@@ -31,9 +32,7 @@ const getParagraphId = (root: Node, path: Path) => {
 
         return ids.join('.');
     } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-            console.log('editor', JSON.stringify(root, null, 2));
-        }
+        log('editor state before error', JSON.stringify(root, null, 2));
         throw error;
     }
 }

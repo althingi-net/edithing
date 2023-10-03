@@ -3,13 +3,13 @@ import { useState } from "react";
 import { ReactEditor, useSlateStatic } from "slate-react";
 import { MetaType } from "./Slate";
 import createLawList from "./actions/createLawList";
+import { error } from "../../logger";
 
 
 const Toolbar = () => {
     const editor = useSlateStatic();
     const [modal, contextHolder] = Modal.useModal();
     const [bumpVersionNumber, setBumpVersionNumber] = useState(true);
-    console.log('bumpVersionNumber', bumpVersionNumber)
 
     const handleChapterClick: React.MouseEventHandler<HTMLElement> = async (event) => {
         const confirm = await modal.confirm({
@@ -18,7 +18,6 @@ const Toolbar = () => {
                 <div>
                     <p>A new chapter will be inserted after the current cursor!</p>
                     <Checkbox defaultChecked={bumpVersionNumber} onChange={(event) => {
-                        console.log('event', event)
                         setBumpVersionNumber(event.target.checked)
                     }}>
                         Increase following chapters nr attribute and title?
@@ -29,7 +28,7 @@ const Toolbar = () => {
 
         setTimeout(() => {
             if (!editor.selection) {
-                console.error('Please put the cursor at the desired location in the text.');
+                error('Please put the cursor at the desired location in the text.');
                 return;
             }
     
