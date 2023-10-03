@@ -1,7 +1,6 @@
 import { Editor, Path, Text, Transforms } from "slate";
 import { ElementType, ListItem, ListItemMeta, MetaType, isListItemText } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
-import createLawTitle from "./createLawTitle";
 import setMeta from "./setMeta";
 
 const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta) => {  
@@ -35,11 +34,10 @@ const setListItemTitle = (editor: Editor, node: ListItem, path: number[], meta: 
     }
 
     const firstTextNode = listItemText.children[0];
-    const previousTitle = Text.isText(firstTextNode) && firstTextNode.title ? firstTextNode.text : typeof meta.title === 'string' ? meta.title : '';
+    const previousTitle = Text.isText(firstTextNode) && firstTextNode.title ? firstTextNode.text : undefined;
     const titlePath = [...path, 0, 0];
-    const title = createLawTitle(meta.nr, meta.type, previousTitle);
 
-    if (title) {
+    if (meta.title) {
         const at = { anchor: { path: titlePath, offset: 0 }, focus: { path: titlePath, offset: 0 } };
 
         // replace existing title
@@ -47,7 +45,7 @@ const setListItemTitle = (editor: Editor, node: ListItem, path: number[], meta: 
             at.focus.offset = previousTitle.length;
         }
 
-        Transforms.insertNodes(editor, { text: title, title: true }, { at, select: true });
+        Transforms.insertNodes(editor, { text: meta.title, title: true }, { at, select: true });
     }
 }
 

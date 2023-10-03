@@ -1,5 +1,5 @@
 import { Editor, Node, Path } from "slate";
-import { List, isList, isListItem, MetaType } from "../../Slate";
+import { isList, isListItem, MetaType, ListMeta } from "../../Slate";
 
 const createListMeta = (editor: Editor, path: Path) => {
     if (path.length <= 2) {
@@ -10,9 +10,9 @@ const createListMeta = (editor: Editor, path: Path) => {
     return createListMetaByParent(parent);
 }
 
-const createListMetaByParent = (parent?: Node): List['meta'] => {
+const createListMetaByParent = (parent?: Node): ListMeta => {
     if (parent && (isList(parent) || isListItem(parent))) {
-        const meta: List['meta'] = {
+        const meta: ListMeta = {
             type: getChildMetaType(parent.meta?.type),
         }
 
