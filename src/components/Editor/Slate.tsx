@@ -30,31 +30,33 @@ export type OrderedList = {
     }
 }
 
+export type ListItemMeta = {
+    type: MetaType;
+    nr: string;
+    nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
+    romanNr?: string;
+    
+    /** 
+     * Redudant to the first child of the list-item-text slate node.  
+     * Export will ignore the content of this field 
+     * but uses it as flag, when set, that the node 
+     * will generate a XML tag "title" in the export.  
+     */
+    title?: string;
+
+    /** Same behavior as the title, displayed right afterwards */
+    name?: string;
+
+    /**
+     * Defines display of this node
+     */
+    styleNote?: string; // inline-with-parent
+}
+
 export type ListItem = {
     type: ElementType.LIST_ITEM;
     children: Descendant[];
-    meta: {
-        type: MetaType;
-        nr: string;
-        nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
-        romanNr?: string;
-        
-        /** 
-         * Redudant to the first child of the list-item-text slate node.  
-         * Export will ignore the content of this field 
-         * but uses it as flag, when set, that the node 
-         * will generate a XML tag "title" in the export.  
-         */
-        title?: string;
-
-        /** Same behavior as the title, displayed right afterwards */
-        name?: string;
-
-        /**
-         * Defines display of this node
-         */
-        styleNote?: string; // inline-with-parent
-    }
+    meta?: ListItemMeta;
 }
 
 export type ListItemText = {

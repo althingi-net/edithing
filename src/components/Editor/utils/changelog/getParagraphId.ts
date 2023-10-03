@@ -6,7 +6,7 @@ const getParagraphId = (root: Node, path: Path) => {
         const ids = Array.from(Node.ancestors(root, path))
             .map(([node]) => {
                 if (isListItem(node)) {
-                    return `${node.meta.type}-${node.meta.nr}`;
+                    return `${node.meta?.type}-${node.meta?.nr}`;
                 }
 
                 return '';
@@ -16,7 +16,7 @@ const getParagraphId = (root: Node, path: Path) => {
         const node = Node.get(root, path);
 
         if (isListItem(node)) {
-            ids.push(`${node.meta.type}-${node.meta.nr}`);
+            ids.push(`${node.meta?.type}-${node.meta?.nr}`);
         }
 
         if (Text.isText(node)) {

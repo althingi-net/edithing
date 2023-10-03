@@ -1,11 +1,9 @@
 import { Editor, Transforms } from "slate";
 import { isListItem } from "../../Slate";
-import createLawTitle from "../createLawTitle";
+import createLawTitle from "./createLawTitle";
 import incrementMixedNumber from "../incrementMixedNumber";
 import incrementRomanNumber from "../incrementRomanNumber";
-import getListItemTitle from "./getListItemTitle";
-import setListItemTitle from "./setListItemTitle";
-import setMeta from "./setMeta";
+import setListItemMeta from "./setListItemMeta";
 
 const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
     const previousSelection = editor.selection;
@@ -17,6 +15,10 @@ const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
         const siblingPath = [...parentPath, i];
 
         if (isListItem(sibling)) {
+            if (!sibling.meta) {
+                throw new Error('incrementFollowingSiblings: sibling.meta is undefined');
+            }
+
             const newMeta = { ...sibling.meta, nr: `${incrementMixedNumber(sibling.meta.nr, true)}` };
             if (newMeta.romanNr) {
                 newMeta.romanNr = incrementRomanNumber(newMeta.romanNr);
@@ -26,12 +28,7 @@ const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
                 newMeta.title = createLawTitle(newMeta.nr, newMeta.type, newMeta.title);
             }
 
-            setMeta(editor, siblingPath, newMeta);
-
-            const previousTitle = getListItemTitle(editor, siblingPath);
-            if (previousTitle) {
-                setListItemTitle(editor, siblingPath, newMeta, previousTitle);
-            }
+            setListItemMeta(editor, sibling, siblingPath, newMeta);
         }
     }
 

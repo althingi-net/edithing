@@ -1,11 +1,11 @@
 import { Editor, Node, NodeEntry } from "slate";
-import { ListItem, isListItem } from "../../Slate";
+import { ListItem, MetaType, isListItem } from "../../Slate";
 
 /**
  * Return a list node of the given meta type in the current selection. 
  * Above the selection if possible, otherwise below: Below is last resort if selection is to high in the hierarchy.
  */
-const findListItemAtSelection = (editor: Editor, tag: ListItem['meta']['type']): NodeEntry<ListItem> | null => {
+const findListItemAtSelection = (editor: Editor, tag: MetaType): NodeEntry<ListItem> | null => {
     if (!editor.selection) {
         return null;
     }
@@ -17,12 +17,12 @@ const findListItemAtSelection = (editor: Editor, tag: ListItem['meta']['type']):
         return null;
     }
 
-    if (isListItem(node) && node.meta.type === tag) {
+    if (isListItem(node) && node.meta?.type === tag) {
         return [node, location];
     }
 
     // check above
-    const ancestor = editor.above<ListItem>({ at: location, match: node => isListItem(node) && node.meta.type === tag })
+    const ancestor = editor.above<ListItem>({ at: location, match: node => isListItem(node) && node.meta?.type === tag })
 
     if (ancestor) {
         return ancestor;
@@ -30,7 +30,7 @@ const findListItemAtSelection = (editor: Editor, tag: ListItem['meta']['type']):
 
     // check children
     for (const [child, path] of Array.from(Node.children(editor, location, { reverse: true }))) {
-        if (isListItem(child) && child.meta.type === tag) {
+        if (isListItem(child) && child.meta?.type === tag) {
             return [child, path];
         }
     }

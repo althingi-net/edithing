@@ -4,6 +4,10 @@ import incrementMixedNumber from "../incrementMixedNumber";
 import incrementRomanNumber from "../incrementRomanNumber";
 
 const createListItemMetaFromSibling = (sibling: ListItem) => {
+    if (!sibling.meta) {
+        throw new Error('createListItemMetaFromSibling: sibling.meta is undefined');
+    }
+
     const { nr, romanNr, nrType, type, title, styleNote } = sibling.meta;
             
     const meta: ListItem['meta'] = {

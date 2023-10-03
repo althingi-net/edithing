@@ -49,6 +49,11 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
 
     if (isListItem(node)) {
         const { meta } = node;
+
+        if (!meta) {
+            throw new Error('convertSlate: meta is undefined');
+        }
+
         const { type, nr, nrType, romanNr } = meta;
         let title = meta.title;
         let name = meta.name;
