@@ -13,6 +13,7 @@ import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import importXml from './utils/xml/importXml';
 import Toolbar from './Toolbar';
+import handleKeyDown from './plugins/handleKeyDown';
 
 interface Props {
     file: GithubFile;
@@ -50,7 +51,7 @@ const Editor: FC<Props> = ({ file }) => {
                             <Toolbar />
                             <Editable
                                 className='editor'
-                                onKeyDown={(event) => onKeyDown(editor, event)}
+                                onKeyDown={(event) => handleKeyDown(editor, event)}
                                 renderElement={renderElement}
                                 renderLeaf={renderLeaf}
                             />
