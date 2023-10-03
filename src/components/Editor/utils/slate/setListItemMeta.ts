@@ -1,5 +1,5 @@
 import { Editor, Path, Text, Transforms } from "slate";
-import { ListItem, ListItemMeta, MetaType, isListItemText } from "../../Slate";
+import { ElementType, ListItem, ListItemMeta, MetaType, isListItemText } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
 import createLawTitle from "./createLawTitle";
 import setMeta from "./setMeta";
@@ -27,24 +27,27 @@ const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListI
 }
 
 const setListItemTitle = (editor: Editor, node: ListItem, path: number[], meta: ListItemMeta) => {
-    const listItemText = node.children[0];
+    let listItemText = node.children[0];
 
     if (!listItemText || !isListItemText(listItemText)) {
-        throw new Error('setListItemTitle: child of ListItem is not a ListItemText');
+        listItemText = { type: ElementType.LIST_ITEM_TEXT, children: [{ text: '' }] };
+        Transforms.insertNodes(editor, listItemText, { at: [...path, 0] });
     }
 
     const firstTextNode = listItemText.children[0];
-    const previousTitle = Text.isText(firstTextNode) && firstTextNode.title ? firstTextNode.text : undefined;
+    const previousTitle = Text.isText(firstTextNode) && firstTextNode.title ? firstTextNode.text : typeof meta.title === 'string' ? meta.title : '';
     const titlePath = [...path, 0, 0];
     const title = createLawTitle(meta.nr, meta.type, previousTitle);
 
     if (title) {
         const at = { anchor: { path: titlePath, offset: 0 }, focus: { path: titlePath, offset: 0 } };
 
+        // replace existing title
         if (previousTitle) {
-            Transforms.delete(editor, { at, distance: previousTitle.length });
+            at.focus.offset = previousTitle.length;
         }
-        Transforms.insertNodes(editor, { text: title, title: true }, { at });
+
+        Transforms.insertNodes(editor, { text: title, title: true }, { at, select: true });
     }
 }
 
