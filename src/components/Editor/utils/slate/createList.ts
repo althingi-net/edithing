@@ -1,11 +1,11 @@
 import { Descendant } from "slate";
-import { MetaType, OrderedList, ElementType } from "../../Slate";
+import { ElementType, MetaType, OrderedList } from "../../Slate";
 
 interface Options {
     nrType?: 'roman' | 'numeric' | 'alphabet';
 }
 
-const createList = (type: MetaType, options: Options = {}, children: Descendant[] = []): Descendant => {
+const createList = (type: MetaType, options: Options = {}, children: Descendant[] = []): OrderedList => {
     const { nrType } = options;
 
     const list: OrderedList = {
