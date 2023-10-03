@@ -7,6 +7,7 @@
     "@prezly/slate-lists": "^0.96.0",
     "antd": "^5.8.6",
     "fast-xml-parser": "^4.2.7",
+    "is-hotkey": "^0.2.0",
     "octokit": "^3.1.0",
     "react": "^18.2.0",
     "react-code-blocks": "^0.1.4",
