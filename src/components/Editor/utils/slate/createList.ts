@@ -1,15 +1,15 @@
 import { Descendant } from "slate";
-import { ElementType, MetaType, OrderedList } from "../../Slate";
+import { ElementType, MetaType, List } from "../../Slate";
 
 interface Options {
     nrType?: 'roman' | 'numeric' | 'alphabet';
 }
 
-const createList = (type: MetaType, options: Options = {}, children: Descendant[] = []): OrderedList => {
+const createList = (type: MetaType, options: Options = {}, children: Descendant[] = []): List => {
     const { nrType } = options;
 
-    const list: OrderedList = {
-        type: ElementType.ORDERED_LIST,
+    const list: List = {
+        type: ElementType.LIST,
         meta: {
             type: type,
         },
@@ -17,11 +17,11 @@ const createList = (type: MetaType, options: Options = {}, children: Descendant[
     }
 
     if (type === MetaType.CHAPTER) {
-        list.meta.nrType = 'roman';
+        list.meta!.nrType = 'roman';
     }
 
     if (nrType) {
-        list.meta.nrType = nrType;
+        list.meta!.nrType = nrType;
     }
 
     return list;

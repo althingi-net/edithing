@@ -3,14 +3,15 @@ import { ElementType, MetaType } from "../Slate";
 import createList from "../utils/slate/createList";
 import createListItem from "../utils/slate/createListItem";
 import createEditorWithPlugins from "./createEditorWithPlugins";
+import { onKeyDown } from "@prezly/slate-lists";
 
 test('add missing meta data to List Element', async () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
                 {
-                    type: ElementType.ORDERED_LIST,
+                    type: ElementType.LIST,
                     children: [
                         {
                             type: ElementType.LIST_ITEM,
@@ -33,7 +34,7 @@ test('add missing meta data to List Element', async () => {
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
                 createList(MetaType.ART, {}, [
                     createListItem(MetaType.ART, '1'),
                 ]),
@@ -49,7 +50,7 @@ test('add missing meta data to ListItem Element', async () => {
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.', text: '2' }),
             {
                 type: ElementType.LIST_ITEM,
                 children: [
@@ -69,7 +70,7 @@ test('add missing meta data to ListItem Element', async () => {
     const output = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.', text: '2' }),
             createListItem(MetaType.CHAPTER, '3', { title: 'III.' }),
         ]),
     ];
@@ -93,7 +94,7 @@ test('increment following siblings nr and title', async () => {
                     },
                 ],
             },
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.', text: '3' }),
         ]),
     ];
 
@@ -103,7 +104,7 @@ test('increment following siblings nr and title', async () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
             createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III.' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III.', text: '3' }),
         ]),
     ];
 

@@ -4,10 +4,16 @@ import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
 import { EventsEditor } from "./plugins/withEvents";
 
+// List items have either 1 or 2 children, always in the following order:
+// 0 - list item text
+// 1 - nested list (optional)
+export const TEXT_PATH_INDEX = 0;
+export const NESTED_LIST_PATH_INDEX = 1;
+
 declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor
-        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | OrderedList
+        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | List
         Text: { text: string, title?: boolean, name?: boolean, nr?: string, bold?: boolean }
     }
 }
@@ -15,22 +21,23 @@ declare module 'slate' {
 export enum ElementType {
     EDITOR = 'editor',
     PARAGRAPH = 'paragraph',
-    ORDERED_LIST = 'ordered-list',
-    UNORDERED_LIST = 'unordered-list',
+    LIST = 'list',
     LIST_ITEM = 'list-item',
     LIST_ITEM_TEXT = 'list-item-text',
 }
 
-export type OrderedList = {
-    type: ElementType.ORDERED_LIST;
-    children: Descendant[],
-    meta: {
-        type: MetaType;
-        nrType?: string;
-    }
+export interface ListMeta {
+    type: MetaType;
+    nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
 }
 
-export type ListItemMeta = {
+export interface List  {
+    type: ElementType.LIST;
+    children: Descendant[],
+    meta?: ListMeta
+}
+
+export interface ListItemMeta extends ListMeta {
     type: MetaType;
     nr: string;
     nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
@@ -53,13 +60,13 @@ export type ListItemMeta = {
     styleNote?: string; // inline-with-parent
 }
 
-export type ListItem = {
+export interface ListItem {
     type: ElementType.LIST_ITEM;
     children: Descendant[];
     meta?: ListItemMeta;
 }
 
-export type ListItemText = {
+export interface ListItemText {
     type: ElementType.LIST_ITEM_TEXT;
     children: Text[];
 }
@@ -88,17 +95,8 @@ export const schema: ListsSchema = {
     isDefaultTextNode(node) {
         return Element.isElementType(node, ElementType.PARAGRAPH);
     },
-    isListNode(node, type) {
-        if (type === ListType.ORDERED) {
-            return Element.isElementType(node, ElementType.ORDERED_LIST);
-        }
-        if (type === ListType.UNORDERED) {
-            return Element.isElementType(node, ElementType.UNORDERED_LIST);
-        }
-        return (
-            Element.isElementType(node, ElementType.ORDERED_LIST) ||
-            Element.isElementType(node, ElementType.UNORDERED_LIST)
-        );
+    isListNode(node) {
+        return Element.isElementType(node, ElementType.LIST);
     },
     isListItemNode(node) {
         return Element.isElementType(node, ElementType.LIST_ITEM);
@@ -110,7 +108,8 @@ export const schema: ListsSchema = {
         return { children: [{ text: '' }], ...props, type: ElementType.PARAGRAPH };
     },
     createListNode(type = ListType.UNORDERED, props = {}) {
-        const nodeType = type === ListType.ORDERED ? ElementType.ORDERED_LIST : ElementType.UNORDERED_LIST;
+        // Note: There is only one list type in this editor
+        const nodeType = type === ListType.ORDERED ? ElementType.LIST : ElementType.LIST;
         return { children: [{ text: '' }], ...props, type: nodeType };
     },
     createListItemNode(props = {}) {
@@ -121,8 +120,8 @@ export const schema: ListsSchema = {
     },
 };
 
-export const isList = (node: Node): node is OrderedList => {
-    return Element.isElementType(node, ElementType.ORDERED_LIST);
+export const isList = (node: Node): node is List => {
+    return Element.isElementType(node, ElementType.LIST);
 }
 
 export const isListItem = (node: Node): node is ListItem => {

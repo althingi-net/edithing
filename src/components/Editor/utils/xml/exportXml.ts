@@ -1,7 +1,7 @@
 import { Descendant, Editor, Element, Node, Path, Text } from "slate";
 import beautify from "xml-beautifier";
 import DocumentMeta from "../../../../models/DocumentMeta";
-import { ElementType, OrderedList, isList, isListItem, isListItemText } from "../../Slate";
+import { ElementType, List, isList, isListItem, isListItemText } from "../../Slate";
 
 
 const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: DocumentMeta): string => {
@@ -43,7 +43,7 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
 }
 
 const convertSlate = (root: Node, node: Node, path: Path): string => {
-    if (isList(node) || Element.isElementType<OrderedList>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
+    if (isList(node) || Element.isElementType<List>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
         return node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('');
     }
 
