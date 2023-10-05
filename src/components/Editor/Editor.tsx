@@ -1,4 +1,3 @@
-import { onKeyDown } from '@prezly/slate-lists';
 import { Col, Row } from 'antd';
 import { FC, useEffect, useState } from "react";
 import { Descendant } from "slate";
@@ -6,14 +5,14 @@ import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
+import Toolbar from './Toolbar';
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
+import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';
 import renderLeaf from './plugins/renderLeaf';
 import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import importXml from './utils/xml/importXml';
-import Toolbar from './Toolbar';
-import handleKeyDown from './plugins/handleKeyDown';
 
 interface Props {
     file: GithubFile;

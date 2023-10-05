@@ -1,14 +1,12 @@
 import { Button, Checkbox, Divider, Modal, Radio, Space } from "antd";
 import { useState } from "react";
+import { Path } from "slate";
 import { ReactEditor, useSlateStatic } from "slate-react";
+import { error, log } from "../../logger";
 import { MetaType } from "./Slate";
 import createLawList from "./actions/createLawList";
-import { error, log } from "../../logger";
 import findListItemAtSelection from "./utils/slate/findListItemAtSelection";
-import getParagraphId from "./utils/changelog/getParagraphId";
 import getListItemHierarchy from "./utils/slate/getListItemHierarchy";
-import { Path } from "slate";
-
 
 const Toolbar = () => {
     const editor = useSlateStatic();
@@ -72,16 +70,6 @@ const Toolbar = () => {
             }
         }, 500)
     }
-
-    const handleArtClick = () => {
-    }
-
-    const handleSubartClick = () => {
-    }
-
-    const handleSenClick = () => {
-    }
-
 
     return (
         <Space direction="horizontal" style={{ justifyContent: 'center', marginBottom: '10px', width: '100%' }}>
