@@ -1,24 +1,14 @@
 import { Node, Path, Text } from "slate";
-import { isListItem } from "../../Slate";
 import { log } from "../../../../logger";
+import getListItemHierarchy from "../slate/getListItemHierarchy";
+
 
 const getParagraphId = (root: Node, path: Path) => {
     try {
-        const ids = Array.from(Node.ancestors(root, path))
-            .map(([node]) => {
-                if (isListItem(node)) {
-                    return `${node.meta?.type}-${node.meta?.nr}`;
-                }
-
-                return '';
-            })
-            .filter(Boolean);
+        const ids = getListItemHierarchy(root, path)
+            .map(([listItem]) => `${listItem.meta?.type}-${listItem.meta?.nr}`);
 
         const node = Node.get(root, path);
-
-        if (isListItem(node)) {
-            ids.push(`${node.meta?.type}-${node.meta?.nr}`);
-        }
 
         if (Text.isText(node)) {
             const tag = node.title ? 'title' : node.name ? 'name' : 'sen';

@@ -1,5 +1,5 @@
 // import { ListType, onKeyDown } from "@prezly/slate-lists";
-import isHotkey from 'is-hotkey';
+// import isHotkey from 'is-hotkey';
 // import { KeyboardEvent } from "react";
 // import { Editor, Element, Location, Node, NodeEntry, Path, Point, Range, Span, Transforms } from "slate";
 // import { NESTED_LIST_PATH_INDEX, schema } from "../Slate";
@@ -9,20 +9,20 @@ import { KeyboardEvent } from "react";
 import { Editor } from "slate";
 
 // const isTabKey = isHotkey('tab');
-const isShiftTabKey = isHotkey('shift+tab');
+// const isShiftTabKey = isHotkey('shift+tab');
 
 const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => {
     // return onTabIncreaseListDepth(editor, event)
         
-    if (isShiftTabKey(event)) {
-        const anchorPath = editor.selection?.anchor.path;
-        const focusPath = editor.selection?.focus.path;
+    // if (isShiftTabKey(event)) {
+    //     const anchorPath = editor.selection?.anchor.path;
+    //     const focusPath = editor.selection?.focus.path;
 
-        if (anchorPath && focusPath) {
-            // const node = findListItemAtSelection()
-            // TODO: check for list item and if there is another parent above, if not do nothing
-        }
-    }
+    //     if (anchorPath && focusPath) {
+    //         // const node = findListItemAtSelection()
+    //         // TODO: check for list item and if there is another parent above, if not do nothing
+    //     }
+    // }
 
     return onKeyDown(editor, event);
 }

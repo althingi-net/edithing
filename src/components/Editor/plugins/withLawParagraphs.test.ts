@@ -36,7 +36,7 @@ test('add missing meta data to List Element', async () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
                 createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1'),
+                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
                 ]),
             ]),
         ]),
