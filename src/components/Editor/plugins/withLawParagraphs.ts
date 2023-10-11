@@ -162,7 +162,7 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
             const hasName = name != null;
 
             if (hasTitle) {
-                if (index === 0 && !child.title) {
+                if (index === 0 && (!child.title || child.name || child.nr)) {
                     const at = [...path, index];
                     log('enforce title', { node, path, child, index, title });
                     Transforms.removeNodes(editor, { at });
@@ -170,7 +170,7 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
                     return true;
                 }
 
-                if (index === 1 && hasName && !child.name) {
+                if (index === 1 && hasName && (!child.name || child.title || child.nr)) {
                     const at = [...path, index];
                     log('enforce name', { node, path, child, index, name });
                     Transforms.removeNodes(editor, { at });
@@ -178,7 +178,7 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
                     return true;
                 }
             } else {
-                if (index === 0 && hasName && !child.name) {
+                if (index === 0 && hasName && (!child.name || child.title || child.nr)) {
                     const at = [...path, index];
                     log('enforce name', { node, path, child, index, name });
                     Transforms.removeNodes(editor, { at });
