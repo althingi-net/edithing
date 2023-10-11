@@ -1,6 +1,6 @@
 import { Button, Checkbox, Space } from "antd";
 import { Text, Transforms } from "slate";
-import { useSlateStatic } from "slate-react";
+import { ReactEditor, useSlateStatic } from "slate-react";
 import useAddEntryButton from "./useAddEntryButton";
 import useHighlightContext from "./useHighlightContext";
 
@@ -10,15 +10,19 @@ const Toolbar = () => {
     const highlight = useHighlightContext();
 
     const addNameMark = () => {
-        Transforms.setNodes<Text>(editor, { name: true }, { match: Text.isText, split: true });
+        Transforms.mergeNodes(editor, { match: Text.isText });
+        Transforms.setNodes<Text>(editor, { name: true }, { match: Text.isText, split: true});
+        ReactEditor.focus(editor);
     };
 
     const addTitleMark = () => {
-        Transforms.setNodes<Text>(editor, { title: true }, { match: Text.isText, split: true });
+        Transforms.setNodes<Text>(editor, { title: true }, { match: Text.isText, split: true});
+        ReactEditor.focus(editor);
     };
 
     const addSentenceMark = () => {
-        Transforms.setNodes<Text>(editor, { nr: '' }, { match: Text.isText, split: true });
+        Transforms.setNodes<Text>(editor, { nr: '' }, { match: Text.isText, split: true});
+        ReactEditor.focus(editor);
     };
 
     return (
