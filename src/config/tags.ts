@@ -2,7 +2,7 @@ interface TagConfig {
     type: string;
     isList: boolean;
     canHave: string[];
-    display?: 'list' | 'block' | 'inline';
+    display?: 'list' | 'block' | 'inline' | 'virtual';
 }
 
 export const TAGS: { [key: string]: TagConfig } = {
@@ -21,7 +21,7 @@ export const TAGS: { [key: string]: TagConfig } = {
     'subart': {
         type: 'subart',
         isList: true,
-        display: 'inline',
+        display: 'list',
         canHave: ['paragraph'],
     },
     'numart': {
@@ -33,7 +33,7 @@ export const TAGS: { [key: string]: TagConfig } = {
     'paragraph': {
         type: 'paragraph',
         isList: true,
-        display: 'inline',
+        display: 'virtual',
         canHave: ['sen', 'numart'],
     },
     'sen': {

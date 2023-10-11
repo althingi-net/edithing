@@ -26,7 +26,7 @@ const NodeMetaForm: FC<Props> = () => {
     });
     const [form] = Form.useForm();
 
-    if (!listItem) {
+    if (!listItem || !listItem.meta) {
         return null;
     }
 

@@ -1,5 +1,6 @@
 import { BaseEditor, Editor, Operation } from "slate";
 import getParagraphId from "../utils/changelog/getParagraphId";
+import { log } from "../../../logger";
 
 const OPERATIONS_BEFORE = ['insert_text', 'remove_text', 'split_node', 'merge_node', 'move_node', 'remove_node'];
 const OPERATIONS_AFTER = ['insert_node', 'set_node'];
@@ -28,6 +29,8 @@ const withEvents = (editor: Editor) => {
     editor.events = [];
 
     editor.apply = (operation) => {
+        log('editor apply', operation)
+
         if (!operation
             || !OPERATIONS_BEFORE.includes(operation.type)
             || operation.type === 'set_selection'
@@ -43,13 +46,15 @@ const withEvents = (editor: Editor) => {
         }
         
         editor.events.push(event);
-        console.log('event', event)
+        log('event', event)
 
         return apply(operation);
     }
 
     editor.onChange = (options) => {
         const operation = options?.operation;
+
+        log('editor onChange', operation)
         
         if (!operation
             || !OPERATIONS_AFTER.includes(operation.type)
@@ -66,7 +71,7 @@ const withEvents = (editor: Editor) => {
         }
 
         editor.events.push(event);
-        console.log('event', event)
+        log('event', event)
 
         return onChange(options);
     }

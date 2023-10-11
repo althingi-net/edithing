@@ -1,16 +1,17 @@
 import { Editor } from "slate";
-import { MetaType, ElementType } from "../Slate";
+import { ElementType, MetaType } from "../Slate";
 import createList from "../utils/slate/createList";
 import createListItem from "../utils/slate/createListItem";
 import createEditorWithPlugins from "./createEditorWithPlugins";
+import { onKeyDown } from "@prezly/slate-lists";
 
 test('add missing meta data to List Element', async () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
                 {
-                    type: ElementType.ORDERED_LIST,
+                    type: ElementType.LIST,
                     children: [
                         {
                             type: ElementType.LIST_ITEM,
@@ -33,9 +34,9 @@ test('add missing meta data to List Element', async () => {
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
                 createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1'),
+                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
                 ]),
             ]),
         ]),
@@ -49,7 +50,7 @@ test('add missing meta data to ListItem Element', async () => {
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.', text: '2' }),
             {
                 type: ElementType.LIST_ITEM,
                 children: [
@@ -69,7 +70,7 @@ test('add missing meta data to ListItem Element', async () => {
     const output = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.', text: '2' }),
             createListItem(MetaType.CHAPTER, '3', { title: 'III.' }),
         ]),
     ];
@@ -93,7 +94,7 @@ test('increment following siblings nr and title', async () => {
                     },
                 ],
             },
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II.', text: '3' }),
         ]),
     ];
 
@@ -103,7 +104,7 @@ test('increment following siblings nr and title', async () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
             createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III.' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III.', text: '3' }),
         ]),
     ];
 
@@ -207,3 +208,52 @@ test('increment following siblings nr and title with roman nr and retain previou
 
     expect(editor.children).toEqual(output);
 });
+
+test('tab of list item will nest it and change the MetaType from Chapter to Art', async () => {
+    const editor = createEditorWithPlugins();
+    editor.children = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
+        ]),
+    ];
+    const output = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+                ]),
+            ]),
+        ]),
+    ];
+
+    editor.selection = Editor.range(editor, [0, 1, 0]);
+
+    // @ts-ignore
+    onKeyDown.onTabIncreaseListDepth(editor, new KeyboardEvent('keydown', { shiftKey: true, key: 'Tab' }));
+
+    expect(editor.children).toEqual(output);
+});
+
+// test('tab+shift at the root will do nothing', async () => {
+//     const editor = createEditorWithPlugins();
+//     editor.children = [
+//         createList(MetaType.CHAPTER, {}, [
+//             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
+//             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
+//         ]),
+//     ];
+//     const output = [
+//         createList(MetaType.CHAPTER, {}, [
+//             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
+//             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
+//         ]),
+//     ];
+
+//     editor.selection = Editor.range(editor, [0, 1, 0]);
+
+//     // @ts-ignore
+//     onKeyDown.onShiftTabDecreaseListDepth(editor, new KeyboardEvent('keydown', { shiftKey: true, key: 'Tab' }));
+
+//     expect(editor.children).toEqual(output);
+// });

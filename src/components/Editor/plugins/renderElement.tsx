@@ -21,10 +21,7 @@ export function renderElement({ element, attributes, children }: RenderElementPr
     }
 
     switch (element.type) {
-        case ElementType.ORDERED_LIST:
-            // @ts-ignore
-            return <ul className={className} {...attributes}>{children}</ul>;
-        case ElementType.UNORDERED_LIST:
+        case ElementType.LIST:
             return <ul className={className} {...attributes}>{children}</ul>;
         case ElementType.LIST_ITEM:
             // @ts-ignore

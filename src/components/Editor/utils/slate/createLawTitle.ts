@@ -1,5 +1,5 @@
-import { MetaType } from "../Slate"
-import convertRomanNumber from "./convertRomanNumber"
+import { MetaType } from "../../Slate"
+import convertRomanNumber from "../convertRomanNumber"
 
 const createLawTitle = (nr: string, type: MetaType, previousTitle?: string) => {
     if (previousTitle) {
@@ -18,7 +18,7 @@ const createLawTitle = (nr: string, type: MetaType, previousTitle?: string) => {
 
     switch (type) {
         case MetaType.CHAPTER:
-            return `${convertRomanNumber(nr)}.`
+            return `${convertRomanNumber(nr)}. kafli.`
         case MetaType.ART:
             return previousTitle ? previousTitle.replace(/\d+/, nr) :  `${nr}. gr.`
         case MetaType.SUBART:

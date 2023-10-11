@@ -1,32 +1,35 @@
-import { Editor } from "slate";
-import { MetaType } from "../Slate";
+import { onKeyDown } from "@prezly/slate-lists";
+import { Editor, Node, Path } from "slate";
+import { MetaType, isListItem } from "../Slate";
 import createListItem from "../utils/slate/createListItem";
 import createListItemMetaFromSibling from "../utils/slate/createListItemMetaFromSibling";
-import findListItemAtSelection from "../utils/slate/findListItemAtSelection";
 import incrementFollowingSiblings from "../utils/slate/incrementFollowingSiblings";
 
-const createLawList = (editor: Editor, type: MetaType, bumpVersionNumber = true) => {
-    if (!editor.selection) {
-        console.error('Please put the cursor at the desired location in the text.');
-        return;
+interface CreateLawListOptions {
+    nested?: boolean;
+    bumpVersionNumber?: boolean;
+}
+
+const createLawList = (editor: Editor, type: MetaType, path: Path, options: CreateLawListOptions = {}) => {
+    const { nested, bumpVersionNumber } = options;
+    const node = Node.get(editor, path);
+
+    if (!isListItem(node)) {
+        throw new Error('createLawList: node at path is not a list item');
     }
 
-    const siblingListItem = findListItemAtSelection(editor, type);
-
-    if (!siblingListItem) {
-        console.error('No list found in the current selection');
-        return;
-    }
-    
-    const [node, path] = siblingListItem;
     const meta = createListItemMetaFromSibling(node);
     const newNode = createListItem(type, meta.nr, { ...meta })
     const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1])
 
-    editor.insertNode(newNode, { at: newPath })
+    editor.insertNode(newNode, { at: newPath, select: true })
 
-    if (bumpVersionNumber) {
+    if (bumpVersionNumber && !nested) {
         incrementFollowingSiblings(editor, newPath)
+    }
+
+    if (nested) {
+        onKeyDown.onTabIncreaseListDepth(editor, new KeyboardEvent('keydown', { key: 'Tab' }) as any)
     }
 }
 

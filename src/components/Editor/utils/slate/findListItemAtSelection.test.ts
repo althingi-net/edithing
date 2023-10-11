@@ -35,6 +35,26 @@ test('selection in text node', () => {
     ]);
 });
 
+test('selection in text node without specified tag', () => {
+    editor.selection = {
+        anchor: {
+            path: [0, 1, 0, 0],
+            offset: 0,
+        },
+        focus: {
+            path: [0, 1, 0, 0],
+            offset: 0,
+        },
+    };
+
+    const result = findListItemAtSelection(editor);
+
+    expect(result).toStrictEqual([
+        secondListItem,
+        [0, 1],
+    ]);
+});
+
 test('selection in list item', () => {
     editor.selection = {
         anchor: {
