@@ -13,6 +13,7 @@ import renderLeaf from './plugins/renderLeaf';
 import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import importXml from './utils/xml/importXml';
+import useHighlightContext from './Toolbar/useHighlightContext';
 
 interface Props {
     file: GithubFile;
@@ -24,6 +25,7 @@ const Editor: FC<Props> = ({ file }) => {
     const [slate, setSlate] = useState<Descendant[] | null>(null);
     const debouncedSlate = useDebounce(slate, 500);
     const [xml, setXml] = useState<string>();
+    const highlight = useHighlightContext();
 
     useEffect(() => {
         downloadGitFile(file.path).then(setXml);
@@ -41,6 +43,11 @@ const Editor: FC<Props> = ({ file }) => {
         return null;
     }
 
+    const classNames = [
+        'editor',
+        highlight?.isHighlighted ? 'highlighted' : ''
+    ].join(' ')
+
     return (
         <Slate editor={editor} initialValue={slate} onChange={setSlate}>
             <div style={{ minHeight: 'calc(100vh - 160px)' }}>
@@ -49,7 +56,7 @@ const Editor: FC<Props> = ({ file }) => {
                         <div style={{ height: '100%' }}>
                             <Toolbar />
                             <Editable
-                                className='editor'
+                                className={classNames}
                                 onKeyDown={(event) => handleKeyDown(editor, event)}
                                 renderElement={renderElement}
                                 renderLeaf={renderLeaf}
@@ -61,7 +68,7 @@ const Editor: FC<Props> = ({ file }) => {
                     </Col>
                 </Row>
             </div>
-        </Slate >
+        </Slate>
     )
 }
 

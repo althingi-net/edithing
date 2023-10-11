@@ -4,6 +4,7 @@ import { useState } from 'react';
 import GithubFile from '../../models/GithubFile';
 import DocumentSelector from '../DocumentSelector/DocumentSelector';
 import Editor from '../Editor/Editor';
+import { HightlightContextProvider } from '../Editor/Toolbar/useHighlightContext';
 
 function App() {
   const [selectedFile, setSelectedFile] = useState<GithubFile | null>(null);
@@ -28,9 +29,11 @@ function App() {
 
 
   return (
-    <Layout>
-      {content}
-    </Layout>
+    <HightlightContextProvider>
+      <Layout>
+        {content}
+      </Layout>
+    </HightlightContextProvider>
   );
 }
 
