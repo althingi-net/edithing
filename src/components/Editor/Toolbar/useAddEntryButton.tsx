@@ -1,21 +1,21 @@
-import { Button, Checkbox, Divider, Modal, Radio, Space } from "antd";
+import { Modal, Radio, Divider, Checkbox, Button } from "antd";
 import { useState } from "react";
 import { Path } from "slate";
-import { ReactEditor, useSlateStatic } from "slate-react";
-import { error, log } from "../../logger";
-import { MetaType } from "./Slate";
-import createLawList from "./actions/createLawList";
-import findListItemAtSelection from "./utils/slate/findListItemAtSelection";
-import getListItemHierarchy from "./utils/slate/getListItemHierarchy";
+import { useSlateStatic, ReactEditor } from "slate-react";
+import { error, log } from "../../../logger";
+import { MetaType } from "../Slate";
+import createLawList from "../actions/createLawList";
+import findListItemAtSelection from "../utils/slate/findListItemAtSelection";
+import getListItemHierarchy from "../utils/slate/getListItemHierarchy";
 
-const Toolbar = () => {
+const useAddEntryButton = () => {
     const editor = useSlateStatic();
     const [modal, contextHolder] = Modal.useModal();
     const [bumpVersionNumber, setBumpVersionNumber] = useState(true);
     const [locationToAdd, setLocationToAdd] = useState<'nested-list' | Path>();
     const [type, setType] = useState<MetaType>(MetaType.CHAPTER);
 
-    const handleChapterClick: React.MouseEventHandler<HTMLElement> = async (event) => {
+    const handleAddListEntryClick: React.MouseEventHandler<HTMLElement> = async (event) => {
         const listItem = findListItemAtSelection(editor);
 
         if (!listItem) {
@@ -72,13 +72,13 @@ const Toolbar = () => {
     }
 
     return (
-        <Space direction="horizontal" style={{ justifyContent: 'center', marginBottom: '10px', width: '100%' }}>
-            <Button type="primary" onClick={handleChapterClick} key='cha'>
+        <>
+            <Button type="primary" onClick={handleAddListEntryClick}>
                 Add Entry
             </Button>
             {contextHolder}
-        </Space>
-    )
+        </>
+    );
 }
 
-export default Toolbar;
+export default useAddEntryButton;

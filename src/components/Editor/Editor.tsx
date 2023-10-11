@@ -5,7 +5,7 @@ import { Editable, Slate } from "slate-react";
 import GithubFile from "../../models/GithubFile";
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
-import Toolbar from './Toolbar';
+import Toolbar from './Toolbar/Toolbar';
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';

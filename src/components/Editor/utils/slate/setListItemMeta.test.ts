@@ -48,7 +48,7 @@ test('update existing title', () => {
 
 test('remove existing title', () => {
     const editor = createEditorWithPlugins();
-    const node = createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' });
+    const node = createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'text' });
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
             node,
@@ -56,7 +56,7 @@ test('remove existing title', () => {
     ];
     const output = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '2'),
+            createListItem(MetaType.CHAPTER, '2', { text: 'text' }),
         ]),
     ];
 
