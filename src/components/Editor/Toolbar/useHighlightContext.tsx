@@ -8,7 +8,7 @@ type HighlightContextType = {
 const HighlightContext = createContext<HighlightContextType | null>(null)
 
 export const HightlightContextProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [isHighlighted, setHighlighted] = useState(false);
+    const [isHighlighted, setHighlighted] = useState(true);
 
     return (
         <HighlightContext.Provider value={{ isHighlighted, setHighlighted }}>
