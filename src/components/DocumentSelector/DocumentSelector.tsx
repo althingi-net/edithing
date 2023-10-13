@@ -1,28 +1,14 @@
 import { Button, List, Space } from "antd";
-import { FC, useEffect, useState } from "react";
-import GithubFile from "../../models/GithubFile";
-import getLawEntries from "./getLawEntries";
 import Search from "antd/es/input/Search";
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import GithubFile from "../../models/GithubFile";
+import useLawListContext from "./useLawListContext";
 
-interface Props {
-    onFileSelect: (file: GithubFile) => void;
-}
-
-const filterLawEntry = (filter: string) => (item: GithubFile) => {
-    const filterLower = filter.toLowerCase();
-
-    return item.name.toLowerCase().includes(filterLower) ||
-        item.identifier.toLowerCase().includes(filterLower) ||
-        item.date.toLowerCase().includes(filterLower);
-}
-
-const DocumentSelector: FC<Props> = ({ onFileSelect }) => {
-    const [data, setData] = useState<GithubFile[]>([]);
+const DocumentSelector: FC = () => {
     const [filter, setFilter] = useState('');
-
-    useEffect(() => {
-        getLawEntries().then(setData);
-    }, []);
+    const navigate = useNavigate();
+    const { lawList } = useLawListContext();
 
     return (
         <Space size='large'>
@@ -36,11 +22,11 @@ const DocumentSelector: FC<Props> = ({ onFileSelect }) => {
                     </>
                 )}
                 bordered
-                dataSource={data.filter(filterLawEntry(filter))}
+                dataSource={lawList.filter(filterLawEntry(filter))}
                 renderItem={(item) =>
                     <List.Item
                         style={{ width: '100%' }}
-                        actions={[<Button onClick={() => onFileSelect(item)}>Edit</Button>]}
+                        actions={[<Button onClick={() => navigate(`/law/${item.identifier}`)}>Edit</Button>]}
                     >
                         <List.Item.Meta
                             title={`${item.identifier} - ${item.date}`}
@@ -52,6 +38,14 @@ const DocumentSelector: FC<Props> = ({ onFileSelect }) => {
             />
         </Space >
     )
+}
+
+const filterLawEntry = (filter: string) => (item: GithubFile) => {
+    const filterLower = filter.toLowerCase();
+
+    return item.name.toLowerCase().includes(filterLower) ||
+        item.identifier.toLowerCase().includes(filterLower) ||
+        item.date.toLowerCase().includes(filterLower);
 }
 
 export default DocumentSelector;
