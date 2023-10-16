@@ -1,4 +1,3 @@
-import { ListsSchema, ListType } from "@prezly/slate-lists";
 import { BaseEditor, Descendant, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
@@ -13,8 +12,14 @@ export const NESTED_LIST_PATH_INDEX = 1;
 declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor
-        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | List
-        Text: { text: string, title?: boolean, name?: boolean, nr?: string, bold?: boolean }
+        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItemText | ListItem | List
+        Text: {
+            text: string,
+            // title?: boolean,
+            // name?: boolean,
+            nr?: string,
+            bold?: boolean,
+        }
     }
 }
 
@@ -24,7 +29,30 @@ export enum ElementType {
     LIST = 'list',
     LIST_ITEM = 'list-item',
     LIST_ITEM_TEXT = 'list-item-text',
+    TITLE = 'title',
+    NAME = 'name',
+    // SEN = 'sen',
 }
+
+export const INLINE_TYPES = [
+    ElementType.TITLE,
+    ElementType.NAME,
+]
+
+export interface Title {
+    type: ElementType.TITLE;
+    children: Text[];
+}
+
+export interface Name {
+    type: ElementType.NAME;
+    children: Text[];
+}
+
+// export interface Sen {
+//     type: InlineType.SEN;
+//     children: Text[];
+// }
 
 export interface ListMeta {
     type: MetaType;
@@ -66,9 +94,13 @@ export interface ListItem {
     meta?: ListItemMeta;
 }
 
+export interface ListItemWithMeta extends ListItem {
+    meta: ListItemMeta;
+}
+
 export interface ListItemText {
     type: ElementType.LIST_ITEM_TEXT;
-    children: Text[];
+    children: Array<Text | Title | Name>;
 }
 
 export enum MetaType {
@@ -88,37 +120,37 @@ export const LIST_TAGS = [
     'paragraph',
 ];
 
-export const schema: ListsSchema = {
-    isConvertibleToListTextNode(node) {
-        return Element.isElementType(node, ElementType.PARAGRAPH);
-    },
-    isDefaultTextNode(node) {
-        return Element.isElementType(node, ElementType.PARAGRAPH);
-    },
-    isListNode(node) {
-        return Element.isElementType(node, ElementType.LIST);
-    },
-    isListItemNode(node) {
-        return Element.isElementType(node, ElementType.LIST_ITEM);
-    },
-    isListItemTextNode(node) {
-        return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
-    },
-    createDefaultTextNode(props = {}) {
-        return { children: [{ text: '' }], ...props, type: ElementType.PARAGRAPH };
-    },
-    createListNode(type = ListType.UNORDERED, props = {}) {
-        // Note: There is only one list type in this editor
-        const nodeType = type === ListType.ORDERED ? ElementType.LIST : ElementType.LIST;
-        return { children: [{ text: '' }], ...props, type: nodeType };
-    },
-    createListItemNode(props = {}) {
-        return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM };
-    },
-    createListItemTextNode(props = {}) {
-        return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM_TEXT };
-    },
-};
+// export const schema: ListsSchema = {
+//     isConvertibleToListTextNode(node) {
+//         return Element.isElementType(node, ElementType.PARAGRAPH);
+//     },
+//     isDefaultTextNode(node) {
+//         return Element.isElementType(node, ElementType.PARAGRAPH);
+//     },
+//     isListNode(node) {
+//         return Element.isElementType(node, ElementType.LIST);
+//     },
+//     isListItemNode(node) {
+//         return Element.isElementType(node, ElementType.LIST_ITEM);
+//     },
+//     isListItemTextNode(node) {
+//         return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
+//     },
+//     createDefaultTextNode(props = {}) {
+//         return { children: [{ text: '' }], ...props, type: ElementType.PARAGRAPH };
+//     },
+//     createListNode(type = ListType.UNORDERED, props = {}) {
+//         // Note: There is only one list type in this editor
+//         const nodeType = type === ListType.ORDERED ? ElementType.LIST : ElementType.LIST;
+//         return { children: [{ text: '' }], ...props, type: nodeType };
+//     },
+//     createListItemNode(props = {}) {
+//         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM };
+//     },
+//     createListItemTextNode(props = {}) {
+//         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM_TEXT };
+//     },
+// };
 
 export const isList = (node: Node): node is List => {
     return Element.isElementType(node, ElementType.LIST);

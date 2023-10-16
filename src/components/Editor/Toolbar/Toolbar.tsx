@@ -3,6 +3,7 @@ import { Text, Transforms } from "slate";
 import { ReactEditor, useSlateStatic } from "slate-react";
 import useAddEntryButton from "./useAddEntryButton";
 import useHighlightContext from "./useHighlightContext";
+import { ElementType } from "../Slate";
 
 const Toolbar = () => {
     const editor = useSlateStatic();
@@ -11,12 +12,12 @@ const Toolbar = () => {
 
     const addNameMark = () => {
         Transforms.mergeNodes(editor, { match: Text.isText });
-        Transforms.setNodes<Text>(editor, { name: true }, { match: Text.isText, split: true});
+        Transforms.setNodes<Text>(editor, { type: ElementType.NAME }, { match: Text.isText, split: true});
         ReactEditor.focus(editor);
     };
 
     const addTitleMark = () => {
-        Transforms.setNodes<Text>(editor, { title: true }, { match: Text.isText, split: true});
+        Transforms.setNodes<Text>(editor, { type: ElementType.TITLE }, { match: Text.isText, split: true});
         ReactEditor.focus(editor);
     };
 

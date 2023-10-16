@@ -1,6 +1,6 @@
 import { Editor, Element, Node, NodeEntry, Text, Transforms } from "slate";
 import { log } from "../../../logger";
-import { isList, isListItem, isListItemText } from "../Slate";
+import { INLINE_TYPES, ElementType, isList, isListItem, isListItemText } from "../Slate";
 import createListItemMeta from "../utils/slate/createListItemMeta";
 import createListMeta from "../utils/slate/createListMeta";
 import getParentListItem from "../utils/slate/getParentListItem";
@@ -8,15 +8,20 @@ import incrementFollowingSiblings from "../utils/slate/incrementFollowingSibling
 import setListItemMeta from "../utils/slate/setListItemMeta";
 import setMeta from "../utils/slate/setMeta";
 
+
 const withLawParagraphs = (editor: Editor) => {
-    const { normalizeNode } = editor
+    const { normalizeNode, isInline } = editor;
+
+    editor.isInline = (element) => {
+        return Text.isText(element) && (INLINE_TYPES.includes(element.type) || isInline(element));
+    }
 
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
     editor.normalizeNode = (entry) => {
         if (
-            normalizeMissingMeta(editor, entry) ||
-            normalizeMovedListItem(editor, entry) ||
-            enforceTitleNameSenLayout(editor, entry)
+            normalizeMissingMeta(editor, entry)
+            // || normalizeMovedListItem(editor, entry)
+            || enforceTitleNameSenLayout(editor, entry)
         ) {
             return;
         }
@@ -31,7 +36,7 @@ const withLawParagraphs = (editor: Editor) => {
 const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {
     const [node, path] = entry
 
-    if (Element.isElement(node) && !node['meta']) {
+    if (Element.isElement(node) && !('meta' in node)) {
         if (isList(node)) {
             const meta = createListMeta(editor, path);
             log('add missing meta to list', { node, path, meta })
@@ -146,58 +151,92 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
     }
 
     // remove empty text node in front of others
-    if (node.children.length > 1 && node.children[0].text === '') {
+    // if (node.children.length > 1 && node.children[0].text === '') {
+    //     const at = [...path, 0];
+    //     Transforms.removeNodes(editor, { at });
+    //     return true;
+    // }
+
+    const { meta: { title, name } } = listItem;
+    const shouldHaveTitle = title != null;
+    const shouldHaveName = name != null;
+    let hasTitle = false;
+    let hasName = false;
+
+    // check if it has title and name
+    node.children.forEach((child) => {
+        if (Text.isText(child)) {
+            return;
+        }
+
+        if (child.type === ElementType.TITLE) {
+            hasTitle = true;
+        }
+
+        if (child.type === ElementType.NAME) {
+            hasName = true;
+        }
+    });
+
+    if (shouldHaveName && !hasName) {
         const at = [...path, 0];
-        Transforms.removeNodes(editor, { at });
+        log('enforce name', { node, path, title });
+        Transforms.insertNodes<Text>(editor, { type: ElementType.NAME, children: [{ text: '' }] }, { at });
         return true;
     }
 
-    const { meta: { title, name } } = listItem;
-    // let hasChanges = false;
+    if (shouldHaveTitle && !hasTitle) {
+        const at = [...path, 0];
+        log('enforce title', { node, path, title });
+        Transforms.insertNodes<Text>(editor, { type: ElementType.TITLE, children: [{ text: '' }] }, { at });
+        return true;
+    }
 
-    // Editor.withoutNormalizing(editor, () => {
-        node.children.forEach((child, index) => {
-            const text = child.text;
-            const hasTitle = title != null;
-            const hasName = name != null;
+    // node.children.forEach((child, index) => {
+    //     const text = child.text;
 
-            if (hasTitle) {
-                if (index === 0 && (!child.title || child.name || child.nr)) {
-                    const at = [...path, index];
-                    log('enforce title', { node, path, child, index, title });
-                    Transforms.removeNodes(editor, { at });
-                    Transforms.insertNodes<Text>(editor, { text, title: true }, { at });
-                    return true;
-                }
+    //     // if it has title now but didnt have before: insert title
+    //     // if it has name now but didnt have before: insert name
 
-                if (index === 1 && hasName && (!child.name || child.title || child.nr)) {
-                    const at = [...path, index];
-                    log('enforce name', { node, path, child, index, name });
-                    Transforms.removeNodes(editor, { at });
-                    Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
-                    return true;
-                }
-            } else {
-                if (index === 0 && hasName && (!child.name || child.title || child.nr)) {
-                    const at = [...path, index];
-                    log('enforce name', { node, path, child, index, name });
-                    Transforms.removeNodes(editor, { at });
-                    Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
-                    return true;
-                }
-            }
 
-            const senStartIndex = hasTitle ? hasName ? 2 : 1 : hasName ? 1 : 0;
-            const newNr = `${index - senStartIndex + 1}`;
 
-            if (index >= senStartIndex && (!child.nr || child.title || child.name || child.nr !== newNr)) {
-                const at = [...path, index];
-                log('enforce sen', { node, path, child, index, senStartIndex, newNr });
-                Transforms.removeNodes(editor, { at });
-                Transforms.insertNodes<Text>(editor, { text, nr: newNr }, { at });
-                return true;
-            }
-        });
+
+    //     if (shouldHaveTitle) {
+    //         if (index === 0 && (child.type !== InlineType.TITLE || child.type === InlineType.NAME || child.nr)) {
+    //             const at = [...path, index];
+    //             log('enforce title', { node, path, child, index, title });
+    //             Transforms.removeNodes(editor, { at });
+    //             Transforms.insertNodes<Text>(editor, { text, title: true }, { at });
+    //             return true;
+    //         }
+
+    //         if (index === 1 && shouldHaveName && (child.type !== InlineType.NAME || child.type === InlineType.TITLE || child.nr)) {
+    //             const at = [...path, index];
+    //             log('enforce name', { node, path, child, index, name });
+    //             Transforms.removeNodes(editor, { at });
+    //             Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
+    //             return true;
+    //         }
+    //     } else {
+    //         if (index === 0 && shouldHaveName && (child.type !== InlineType.NAME || child.type === InlineType.TITLE || child.nr)) {
+    //             const at = [...path, index];
+    //             log('enforce name', { node, path, child, index, name });
+    //             Transforms.removeNodes(editor, { at });
+    //             Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
+    //             return true;
+    //         }
+    //     }
+
+    //     const senStartIndex = shouldHaveTitle ? shouldHaveName ? 2 : 1 : shouldHaveName ? 1 : 0;
+    //     const newNr = `${index - senStartIndex + 1}`;
+
+    //     if (index >= senStartIndex && (!child.nr || child.title || child.name || child.nr !== newNr)) {
+    //         const at = [...path, index];
+    //         log('enforce sen', { node, path, child, index, senStartIndex, newNr });
+    //         Transforms.removeNodes(editor, { at });
+    //         Transforms.insertNodes<Text>(editor, { text, nr: newNr }, { at });
+    //         return true;
+    //     }
     // });
 
     return false;

@@ -1,6 +1,7 @@
 import { Node, Path, Text } from "slate";
 import { log } from "../../../../logger";
 import getListItemHierarchy from "../slate/getListItemHierarchy";
+import { ElementType } from "../../Slate";
 
 
 const getParagraphId = (root: Node, path: Path) => {
@@ -11,7 +12,7 @@ const getParagraphId = (root: Node, path: Path) => {
         const node = Node.get(root, path);
 
         if (Text.isText(node)) {
-            const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
+            const tag = node.type === ElementType.TITLE ? 'title' : node.type === ElementType.NAME ? 'name' : 'sen';
 
             if (node.nr) {
                 ids.push(`${tag}-${node.nr}`);

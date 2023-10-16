@@ -1,8 +1,8 @@
-import { Descendant } from "slate";
+import { Descendant, Text } from "slate";
 import { MetaType, ListItem, ListItemText, ElementType, ListItemMeta } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
 
-interface Options extends Omit<ListItemMeta, 'children' | 'nr' | 'type'> {
+export interface Options extends Omit<ListItemMeta, 'nr' | 'type'> {
     text?: string | string[];
 }
 
@@ -34,12 +34,12 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     if (name) {
         listItem.meta!.name = name;
-        textElement.children.unshift({ text: name, name: true });
+        textElement.children.unshift({ type: ElementType.NAME, children: [{ text: name }] });
     }
 
     if (title) {
         listItem.meta!.title = title;
-        textElement.children.unshift({ text: title, title: true });
+        textElement.children.unshift({ type: ElementType.TITLE, children: [{ text: title }] });
     }
 
     if (nrType) {
@@ -62,7 +62,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     // remove empty text nodes but keep at least one 
     if (textElement.children.length > 1) {
-        textElement.children = textElement.children.filter((item => item.text !== ''));
+        textElement.children = textElement.children.filter((item => !Text.isText(item) || item.text !== ''));
     }
 
     if (type === MetaType.CHAPTER) {

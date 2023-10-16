@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { RenderLeafProps } from "slate-react";
 import useHighlightContext from "../Toolbar/useHighlightContext";
+import { ElementType } from "../Slate";
 
 export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     const highlight = useHighlightContext();
 
-    if (leaf.title) {
+    if (leaf.type === ElementType.TITLE) {
         return <span {...attributes} className="title">{children}</span>;
     }
 
-    if (leaf.name) {
+    if (leaf.type === ElementType.NAME) {
         return <span {...attributes} className="name">{children}</span>;
     }
 

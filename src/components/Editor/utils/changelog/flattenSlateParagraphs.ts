@@ -1,5 +1,5 @@
 import { Path, Node, Element, Text } from "slate";
-import { ElementType } from "../../Slate";
+import { ElementType, ElementType } from "../../Slate";
 import getParagraphId from "./getParagraphId";
 
 export interface FlattenedParagraph {
@@ -18,7 +18,7 @@ const flattenSlateParagraphs = (root: Node): FlattenedParagraph[] => {
                     let text = child.text;
                     const childPath = [...path, index];
 
-                    if (child.title || child.name) {
+                    if (child.type === ElementType.TITLE || child.type === ElementType.NAME) {
                         text += ' ';
                     }
 
