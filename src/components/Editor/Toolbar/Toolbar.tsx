@@ -4,6 +4,7 @@ import { ReactEditor, useSlateStatic } from "slate-react";
 import useAddEntryButton from "./useAddEntryButton";
 import useHighlightContext from "./useHighlightContext";
 import setTitle from "../actions/setTitle";
+import setName from "../actions/setName";
 
 const Toolbar = () => {
     const editor = useSlateStatic();
@@ -16,8 +17,7 @@ const Toolbar = () => {
     };
 
     const addNameMark = () => {
-        Transforms.mergeNodes(editor, { match: Text.isText });
-        Transforms.setNodes<Text>(editor, { name: true }, { match: Text.isText, split: true});
+        setName(editor);
         ReactEditor.focus(editor);
     };
 
