@@ -75,12 +75,12 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
             sentences = listItemText.children;
 
             if (meta.title) {
-                title = sentences.slice(0, 1).map(item => item.text).join('');
+                title = sentences.slice(0, 1).map(item => item.text).join('').trim();
                 sentences = sentences.slice(1)
             }
 
             if (meta.name) {
-                name = sentences.slice(0, 1).map(item => item.text).join('');
+                name = sentences.slice(0, 1).map(item => item.text).join('').trim();
                 sentences = sentences.slice(1)
             }
         }

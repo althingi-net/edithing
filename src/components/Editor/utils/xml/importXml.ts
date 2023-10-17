@@ -109,14 +109,14 @@ const convertList = (key: string, values: any[]): Descendant => {
         if (listItem.meta.title) {
             textNode.children.push({
                 title: true,
-                text: element['nr-title'],
+                text: element['nr-title'] + ' ',
             });
         }
 
         if (listItem.meta.name) {
             textNode.children.push({
                 name: true,
-                text: element['name'],
+                text: element['name'] + ' ',
             });
         }
 

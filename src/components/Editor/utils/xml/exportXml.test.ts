@@ -17,13 +17,13 @@ const createEditor = (input: Descendant[]): any => {
 test('export chapters', () => {
     const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [
                 createList(MetaType.PARAGRAPH, {}, [
                     createListItem(MetaType.PARAGRAPH, '1', { text: 'one.' }),
                     createListItem(MetaType.PARAGRAPH, '2', { text: 'two.' }),
                 ]),
             ]),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. ' }),
         ]),
     ]);
     const output = `
@@ -60,7 +60,7 @@ test('export xml header', () => {
 test('export document meta data', () => {
     const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
         ]),
     ]);
     const documentMeta = {
@@ -107,7 +107,7 @@ test('export no title if meta.title is undefined', () => {
 test('export title from LIST_ITEM_TEXT', () => {
     const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'title', text: ['text1', 'text2'] }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'title ', text: ['text1', 'text2'] }),
         ]),
     ]);
     const output = `
@@ -124,7 +124,7 @@ test('export title from LIST_ITEM_TEXT', () => {
 test('export name from LIST_ITEM_TEXT', () => {
     const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'title', name: 'name', text: ['text1', 'text2'] }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'title ', name: 'name ', text: ['text1', 'text2'] }),
         ]),
     ]);
     const output = `
@@ -158,11 +158,11 @@ test('sen being exported', () => {
 test('do not modify input', () => {
     const input = createEditor([
         createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: '2. ', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
                 createList(MetaType.NUMART, {}, [
                     createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet' }, [
                         createList(MetaType.PARAGRAPH, {}, [
-                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Berlín.' }),
+                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a. ', text: 'Berlín.' }),
                         ]),
                     ]),
                 ]),

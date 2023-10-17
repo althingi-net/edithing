@@ -31,11 +31,6 @@
     margin-top: 1.5em;
 }
 
-.name::after,
-.title::after {
-    content: ' ';
-}
-
 .chapter > .list-item-text > span > .title,
 .art > .list-item-text > span > .title {
     font-weight: bold;

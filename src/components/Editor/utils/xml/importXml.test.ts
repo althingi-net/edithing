@@ -35,7 +35,7 @@ test('import meta and law chapters', () => {
         },
         slate: [
             createList(MetaType.CHAPTER, {}, [
-                createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: 'Sendiráð skulu.' }),
+                createListItem(MetaType.CHAPTER, '1', { title: 'I. ', text: 'Sendiráð skulu.' }),
             ]),
         ],
     };
@@ -54,7 +54,7 @@ test('roman list item', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
         ]),
     ];
 
@@ -71,7 +71,7 @@ test('list item with title', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+            createListItem(MetaType.ART, '1', { title: '1. gr. ' }),
         ]),
     ];
 
@@ -105,7 +105,7 @@ test('list item with title+name+sen', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { title: '1. gr.', name: 'Markmið.', text: 'text' }),
+            createListItem(MetaType.ART, '1', { title: '1. gr. ', name: 'Markmið. ', text: 'text' }),
         ]),
     ];
 
@@ -166,7 +166,7 @@ test('multiple nested numart', () => {
                 createList(MetaType.NUMART, {}, [
                     createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet', styleNote: 'inline-with-parent' }, [
                         createList(MetaType.ART, {}, [
-                            createListItem(MetaType.ART, '1', { title: 'a.', text: 'Sendiráðin í Genf.' }),
+                            createListItem(MetaType.ART, '1', { title: 'a. ', text: 'Sendiráðin í Genf.' }),
                         ]),
                     ]),
                 ]),
@@ -189,7 +189,7 @@ test('list item with title and 2 sentences', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { title: 'a.', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
+            createListItem(MetaType.ART, '1', { title: 'a. ', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
         ]),
     ];
 
@@ -213,11 +213,11 @@ test('title+sen+numart needs to become one ListItem', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
+            createListItem(MetaType.ART, '1', { title: '2. ', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
                 createList(MetaType.NUMART, {}, [
                     createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet' }, [
                         createList(MetaType.ART, {}, [
-                            createListItem(MetaType.ART, '1', { title: 'a.', text: 'Berlín.' }),
+                            createListItem(MetaType.ART, '1', { title: 'a. ', text: 'Berlín.' }),
                         ]),
                     ]),
                 ]),
@@ -284,9 +284,9 @@ test('ignore virtual tags but still import their children', () => {
     `;
     const output: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [
                 createList(MetaType.NUMART, {}, [
-                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet',  title: 'a.', text: 'Sendiráðin í Genf.' }),
+                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet',  title: 'a. ', text: 'Sendiráðin í Genf.' }),
                 ]),
             ]),
         ]),
