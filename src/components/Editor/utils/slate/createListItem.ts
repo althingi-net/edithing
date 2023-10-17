@@ -2,7 +2,7 @@ import { Descendant } from "slate";
 import { MetaType, ListItem, ListItemText, ElementType, ListItemMeta } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
 
-interface Options extends Omit<ListItemMeta, 'nr' | 'type'> {
+export interface Options extends Omit<ListItemMeta, 'nr' | 'type'> {
     text?: string | string[];
 }
 

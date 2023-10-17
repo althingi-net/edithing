@@ -3,20 +3,21 @@ import { Text, Transforms } from "slate";
 import { ReactEditor, useSlateStatic } from "slate-react";
 import useAddEntryButton from "./useAddEntryButton";
 import useHighlightContext from "./useHighlightContext";
+import setTitle from "../actions/setTitle";
 
 const Toolbar = () => {
     const editor = useSlateStatic();
     const addEntryButton = useAddEntryButton();
     const highlight = useHighlightContext();
+    
+    const addTitleMark = () => {
+        setTitle(editor);
+        ReactEditor.focus(editor);
+    };
 
     const addNameMark = () => {
         Transforms.mergeNodes(editor, { match: Text.isText });
         Transforms.setNodes<Text>(editor, { name: true }, { match: Text.isText, split: true});
-        ReactEditor.focus(editor);
-    };
-
-    const addTitleMark = () => {
-        Transforms.setNodes<Text>(editor, { title: true }, { match: Text.isText, split: true});
         ReactEditor.focus(editor);
     };
 
@@ -28,11 +29,11 @@ const Toolbar = () => {
     return (
         <Space direction="horizontal" style={{ justifyContent: 'center', marginBottom: '10px', width: '100%' }}>
             {addEntryButton}
-            <Button type="primary" onClick={addNameMark}>
-                Name
-            </Button>
             <Button type="primary" onClick={addTitleMark}>
                 Title
+            </Button>
+            <Button type="primary" onClick={addNameMark}>
+                Name
             </Button>
             <Button type="primary" onClick={addSentenceMark}>
                 Sentence

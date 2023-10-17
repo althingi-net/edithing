@@ -1,6 +1,7 @@
 import { Editor, Path, Text, Transforms } from "slate";
-import { ElementType, ListItem, ListItemMeta, MetaType, isListItemText } from "../../Slate";
+import { ListItem, ListItemMeta, MetaType, isListItemText } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
+import getListItemTitle from "./getListItemTitle";
 import setMeta from "./setMeta";
 
 const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta) => {  
@@ -25,16 +26,9 @@ const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListI
     }
 }
 
+
 const setListItemTitle = (editor: Editor, node: ListItem, path: number[], meta: ListItemMeta) => {
-    let listItemText = node.children[0];
-
-    if (!listItemText || !isListItemText(listItemText)) {
-        listItemText = { type: ElementType.LIST_ITEM_TEXT, children: [{ text: '' }] };
-        Transforms.insertNodes(editor, listItemText, { at: [...path, 0] });
-    }
-
-    const firstTextNode = listItemText.children[0];
-    const previousTitle = Text.isText(firstTextNode) && firstTextNode.title ? firstTextNode.text : undefined;
+    const previousTitle = getListItemTitle(editor, path);
     const titlePath = [...path, 0, 0];
 
     if (meta.title) {

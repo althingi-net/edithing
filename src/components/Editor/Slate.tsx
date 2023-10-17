@@ -31,6 +31,10 @@ export interface ListMeta {
     nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
 }
 
+export interface ListItemWithMeta extends ListItem {
+    meta: ListItemMeta;
+}
+
 export interface List  {
     type: ElementType.LIST;
     children: Descendant[],
@@ -128,7 +132,7 @@ export const isListItem = (node: Node): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
 }
 
-export const isListItemText = (node: Node): node is ListItemText => {
+export const isListItemText = (node: any): node is ListItemText => {
     return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
 }
 
