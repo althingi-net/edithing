@@ -4,6 +4,8 @@ import { MetaType, isListItem } from "../Slate";
 import createListItem from "../utils/slate/createListItem";
 import createListItemMetaFromSibling from "../utils/slate/createListItemMetaFromSibling";
 import incrementFollowingSiblings from "../utils/slate/incrementFollowingSiblings";
+import createLawTitle from "../utils/slate/createLawTitle";
+import getListItemTitle from "../utils/slate/getListItemTitle";
 
 interface CreateLawListOptions {
     nested?: boolean;
@@ -19,7 +21,9 @@ const createLawList = (editor: Editor, type: MetaType, path: Path, options: Crea
     }
 
     const meta = createListItemMetaFromSibling(node);
-    const newNode = createListItem(type, meta.nr, { ...meta })
+    const siblingTitle = getListItemTitle(editor, path);
+    const title = meta.title && createLawTitle(meta.nr, meta.type, siblingTitle);
+    const newNode = createListItem(type, meta.nr, { ...meta, title })
     const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1])
 
     editor.insertNode(newNode, { at: newPath, select: true })
