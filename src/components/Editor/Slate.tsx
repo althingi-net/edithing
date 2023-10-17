@@ -92,37 +92,37 @@ export const LIST_TAGS = [
     'paragraph',
 ];
 
-export const schema: ListsSchema = {
-    isConvertibleToListTextNode(node) {
-        return Element.isElementType(node, ElementType.PARAGRAPH);
-    },
-    isDefaultTextNode(node) {
-        return Element.isElementType(node, ElementType.PARAGRAPH);
-    },
-    isListNode(node) {
-        return Element.isElementType(node, ElementType.LIST);
-    },
-    isListItemNode(node) {
-        return Element.isElementType(node, ElementType.LIST_ITEM);
-    },
-    isListItemTextNode(node) {
-        return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
-    },
-    createDefaultTextNode(props = {}) {
-        return { children: [{ text: '' }], ...props, type: ElementType.PARAGRAPH };
-    },
-    createListNode(type = ListType.UNORDERED, props = {}) {
-        // Note: There is only one list type in this editor
-        const nodeType = type === ListType.ORDERED ? ElementType.LIST : ElementType.LIST;
-        return { children: [{ text: '' }], ...props, type: nodeType };
-    },
-    createListItemNode(props = {}) {
-        return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM };
-    },
-    createListItemTextNode(props = {}) {
-        return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM_TEXT };
-    },
-};
+// export const schema: ListsSchema = {
+//     isConvertibleToListTextNode(node) {
+//         return Element.isElementType(node, ElementType.PARAGRAPH);
+//     },
+//     isDefaultTextNode(node) {
+//         return Element.isElementType(node, ElementType.PARAGRAPH);
+//     },
+//     isListNode(node) {
+//         return Element.isElementType(node, ElementType.LIST);
+//     },
+//     isListItemNode(node) {
+//         return Element.isElementType(node, ElementType.LIST_ITEM);
+//     },
+//     isListItemTextNode(node) {
+//         return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
+//     },
+//     createDefaultTextNode(props = {}) {
+//         return { children: [{ text: '' }], ...props, type: ElementType.PARAGRAPH };
+//     },
+//     createListNode(type = ListType.UNORDERED, props = {}) {
+//         // Note: There is only one list type in this editor
+//         const nodeType = type === ListType.ORDERED ? ElementType.LIST : ElementType.LIST;
+//         return { children: [{ text: '' }], ...props, type: nodeType };
+//     },
+//     createListItemNode(props = {}) {
+//         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM };
+//     },
+//     createListItemTextNode(props = {}) {
+//         return { children: [{ text: '' }], ...props, type: ElementType.LIST_ITEM_TEXT };
+//     },
+// };
 
 export const isList = (node: Node): node is List => {
     return Element.isElementType(node, ElementType.LIST);

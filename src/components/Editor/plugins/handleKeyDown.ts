@@ -1,5 +1,5 @@
 // import { ListType, onKeyDown } from "@prezly/slate-lists";
-// import isHotkey from 'is-hotkey';
+import isHotkey from 'is-hotkey';
 // import { KeyboardEvent } from "react";
 // import { Editor, Element, Location, Node, NodeEntry, Path, Point, Range, Span, Transforms } from "slate";
 // import { NESTED_LIST_PATH_INDEX, schema } from "../Slate";
@@ -10,10 +10,17 @@ import { Editor } from "slate";
 
 // const isTabKey = isHotkey('tab');
 // const isShiftTabKey = isHotkey('shift+tab');
+const isEnterKey = isHotkey('enter');
 
 const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => {
     // return onTabIncreaseListDepth(editor, event)
         
+    if (isEnterKey(event)) {
+        event.preventDefault();
+        console.log('enter key pressed')
+        return true;
+    }
+
     // if (isShiftTabKey(event)) {
     //     const anchorPath = editor.selection?.anchor.path;
     //     const focusPath = editor.selection?.focus.path;
