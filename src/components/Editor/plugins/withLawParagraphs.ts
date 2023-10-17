@@ -14,9 +14,9 @@ const withLawParagraphs = (editor: Editor) => {
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
     editor.normalizeNode = (entry) => {
         if (
-            normalizeMissingMeta(editor, entry) ||
-            normalizeMovedListItem(editor, entry) ||
-            enforceTitleNameSenLayout(editor, entry)
+            normalizeMissingMeta(editor, entry)
+            || normalizeMovedListItem(editor, entry)
+            // || enforceTitleNameSenLayout(editor, entry)
         ) {
             return;
         }

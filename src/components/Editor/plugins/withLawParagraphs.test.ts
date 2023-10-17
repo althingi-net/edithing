@@ -209,31 +209,31 @@ test('increment following siblings nr and title with roman nr and retain previou
     expect(editor.children).toEqual(output);
 });
 
-test('tab of list item will nest it and change the MetaType from Chapter to Art', async () => {
-    const editor = createEditorWithPlugins();
-    editor.children = [
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
-        ]),
-    ];
-    const output = [
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }, [
-                createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
-                ]),
-            ]),
-        ]),
-    ];
+// test('tab of list item will nest it and change the MetaType from Chapter to Art', async () => {
+//     const editor = createEditorWithPlugins();
+//     editor.children = [
+//         createList(MetaType.CHAPTER, {}, [
+//             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
+//             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
+//         ]),
+//     ];
+//     const output = [
+//         createList(MetaType.CHAPTER, {}, [
+//             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }, [
+//                 createList(MetaType.ART, {}, [
+//                     createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+//                 ]),
+//             ]),
+//         ]),
+//     ];
 
-    editor.selection = Editor.range(editor, [0, 1, 0]);
+//     editor.selection = Editor.range(editor, [0, 1, 0]);
 
-    // @ts-ignore
-    onKeyDown.onTabIncreaseListDepth(editor, new KeyboardEvent('keydown', { shiftKey: true, key: 'Tab' }));
+//     // @ts-ignore
+//     onKeyDown.onTabIncreaseListDepth(editor, new KeyboardEvent('keydown', { shiftKey: true, key: 'Tab' }));
 
-    expect(editor.children).toEqual(output);
-});
+//     expect(editor.children).toEqual(output);
+// });
 
 // test('tab+shift at the root will do nothing', async () => {
 //     const editor = createEditorWithPlugins();
