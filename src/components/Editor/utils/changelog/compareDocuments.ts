@@ -1,21 +1,14 @@
 import { Descendant } from "slate";
-import { ElementType } from "../../Slate";
-import flattenSlateParagraphs, { FlattenedParagraph } from "./flattenSlateParagraphs";
 import Diff from 'text-diff';
 import Changelog from "../../../../models/Changelog";
 import { Event } from "../../plugins/withEvents";
+import flattenSlateParagraphs, { FlattenedParagraph } from "./flattenSlateParagraphs";
 
 const diff = new Diff();
 
 const compareDocuments = (original: Descendant[], current: Descendant[], events: Event[]) => {
-    const originalTexts = flattenSlateParagraphs({
-        type: ElementType.EDITOR,
-        children: original,
-    });
-    const newTexts = flattenSlateParagraphs({
-        type: ElementType.EDITOR,
-        children: current,
-    });
+    const originalTexts = flattenSlateParagraphs(original);
+    const newTexts = flattenSlateParagraphs(current);
 
     const changelog = createChangelog(originalTexts, newTexts);
     return sortChangelog(changelog, events)

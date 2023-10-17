@@ -1,11 +1,11 @@
-import { Node } from "slate";
-import flattenSlateParagraphs from "./flattenSlateParagraphs";
-import { createSlateRoot, MetaType } from "../../Slate";
+import { Descendant } from "slate";
+import { MetaType } from "../../Slate";
 import createList from "../slate/createList";
 import createListItem from "../slate/createListItem";
+import flattenSlateParagraphs from "./flattenSlateParagraphs";
 
 test('flatten simple chapter>paragraph', () => {
-    const inputA: Node = createSlateRoot([
+    const inputA: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -13,7 +13,7 @@ test('flatten simple chapter>paragraph', () => {
                 ]),
             ]),
         ]),
-    ]);
+    ];
     
     const output = [{
         id: 'chapter-1.title',
@@ -29,7 +29,7 @@ test('flatten simple chapter>paragraph', () => {
 });
 
 test('flatten chapter>paragraph>sen', () => {
-    const inputA: Node = createSlateRoot([
+    const inputA: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -37,7 +37,7 @@ test('flatten chapter>paragraph>sen', () => {
                 ]),
             ]),
         ]),
-    ]);
+    ];
     
     const output = [{
         id: 'chapter-1.title',
@@ -57,7 +57,7 @@ test('flatten chapter>paragraph>sen', () => {
 });
 
 test('flatten multiple levels chapter>art>paragraph', () => {
-    const inputA: Node = createSlateRoot([
+    const inputA: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
                 createList(MetaType.ART, {}, [
@@ -69,7 +69,7 @@ test('flatten multiple levels chapter>art>paragraph', () => {
                 ]),
             ]),
         ]),
-    ]);
+    ];
     
     const output = [{
         id: 'chapter-1.title',

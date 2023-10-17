@@ -7,6 +7,7 @@ import { MetaType } from "../Slate";
 import createLawList from "../actions/createLawList";
 import findListItemAtSelection from "../utils/slate/findListItemAtSelection";
 import getListItemHierarchy from "../utils/slate/getListItemHierarchy";
+import getListItemTitle from "../utils/slate/getListItemTitle";
 
 const useAddEntryButton = () => {
     const editor = useSlateStatic();
@@ -37,7 +38,7 @@ const useAddEntryButton = () => {
                     <p>A new entry will be inserted as sibling of:</p>
                     <Radio.Group name='add' onChange={(event) => setLocationToAdd(event.target.value)}>
                         {hierarchy.map(([listItem, path]) => (
-                            <Radio value={path}>{listItem.meta?.title ?? listItem.meta?.type}</Radio>
+                            <Radio value={path}>{getListItemTitle(editor, path) || listItem.meta?.type}</Radio>
                         ))}
                         <p style={{ fontSize: '14px' }}>Or</p>
                         <Radio value='nested-list'> as a nested child</Radio>

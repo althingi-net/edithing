@@ -93,11 +93,11 @@ const convertList = (key: string, values: any[]): Descendant => {
         }
 
         if (element['nr-title']) {
-            listItem.meta.title = element['nr-title'];
+            listItem.meta.title = true;
         }
 
         if (element['name']) {
-            listItem.meta.name = element['name'];
+            listItem.meta.name = true;
         }
 
         const textNode: ListItemText = {
@@ -109,14 +109,14 @@ const convertList = (key: string, values: any[]): Descendant => {
         if (listItem.meta.title) {
             textNode.children.push({
                 title: true,
-                text: listItem.meta.title,
+                text: element['nr-title'],
             });
         }
 
         if (listItem.meta.name) {
             textNode.children.push({
                 name: true,
-                text: listItem.meta.name,
+                text: element['name'],
             });
         }
 

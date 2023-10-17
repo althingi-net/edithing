@@ -1,16 +1,11 @@
-import { Descendant, Editor, Element, Node, Path, Text } from "slate";
+import { Editor, Element, Node, Path, Text } from "slate";
 import beautify from "xml-beautifier";
 import DocumentMeta from "../../../../models/DocumentMeta";
-import { ElementType, List, isList, isListItem, isListItemText } from "../../Slate";
+import { isList, isListItem, isListItemText } from "../../Slate";
 
-
-const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: DocumentMeta): string => {
+const exportXml = (editor: Editor, addHeader = false, documentMeta?: DocumentMeta): string => {
     const xml = [];
-    const root = {
-        type: ElementType.EDITOR,
-        children: rootNodes,
-    };
-    const slateXml = convertSlate(root, root, []);
+    const slateXml = convertSlate(editor, editor, []);
 
     if (addHeader) {
         xml.push('<?xml version="1.0" encoding="utf-8"?>');
@@ -21,7 +16,7 @@ const exportXml = (rootNodes: Descendant[], addHeader = false, documentMeta?: Do
     } else {
         xml.push(slateXml);
     }
-    
+
     return beautify(xml.join(''));
 }
 
@@ -42,9 +37,9 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
     `;
 }
 
-const convertSlate = (root: Node, node: Node, path: Path): string => {
-    if (isList(node) || Element.isElementType<List>(node, ElementType.EDITOR) || Editor.isEditor(node)) {
-        return node.children.map((child, index) => convertSlate(root, child, [...path, index])).join('');
+const convertSlate = (editor: Editor, node: Node, path: Path): string => {
+    if (isList(node) || Editor.isEditor(node)) {
+        return node.children.map((child, index) => convertSlate(editor, child, [...path, index])).join('');
     }
 
     if (isListItem(node)) {
@@ -55,9 +50,6 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
         }
 
         const { type, nr, nrType, romanNr } = meta;
-        let title = meta.title;
-        let name = meta.name;
-
         const attributes = [];
 
         if (nr) {
@@ -76,16 +68,18 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
         const listItemText = node.children[0];
         const otherChildren = node.children.slice(1);
         let sentences: Text[] = [];
+        let title = '';
+        let name = '';
 
         if (isListItemText(listItemText)) {
             sentences = listItemText.children;
-            
-            if (title) {
+
+            if (meta.title) {
                 title = sentences.slice(0, 1).map(item => item.text).join('');
                 sentences = sentences.slice(1)
             }
-            
-            if (name) {
+
+            if (meta.name) {
                 name = sentences.slice(0, 1).map(item => item.text).join('');
                 sentences = sentences.slice(1)
             }
@@ -96,14 +90,18 @@ const convertSlate = (root: Node, node: Node, path: Path): string => {
                 ${title ? `<nr-title>${title}</nr-title>` : ''}
                 ${name ? `<name>${name}</name>` : ''}
                 ${sentences.map((sentence, index) => `<sen nr="${index + 1}">${sentence.text}</sen>`).join('')}
-                ${otherChildren.map((child, index) => convertSlate(root, child, [...path, index])).join('')}
+                ${otherChildren.map((child, index) => convertSlate(editor, child, [...path, index])).join('')}
             </${type}>
         `;
 
         return xml;
     }
 
-    return ''
+    if (Element.isElement(node)) {
+        return node.children.map((child, index) => convertSlate(editor, child, [...path, index])).join('');
+    }
+
+    return '';
 }
 
 export default exportXml;

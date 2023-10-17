@@ -1,4 +1,3 @@
-import { ListsSchema, ListType } from "@prezly/slate-lists";
 import { BaseEditor, Descendant, Element, Node, Text } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
@@ -19,7 +18,6 @@ declare module 'slate' {
 }
 
 export enum ElementType {
-    EDITOR = 'editor',
     PARAGRAPH = 'paragraph',
     LIST = 'list',
     LIST_ITEM = 'list-item',
@@ -53,10 +51,10 @@ export interface ListItemMeta extends ListMeta {
      * but uses it as flag, when set, that the node 
      * will generate a XML tag "title" in the export.  
      */
-    title?: string;
+    title?: boolean;
 
     /** Same behavior as the title, displayed right afterwards */
-    name?: string;
+    name?: boolean;
 
     /**
      * Defines display of this node
@@ -136,7 +134,11 @@ export const isListItemText = (node: any): node is ListItemText => {
     return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
 }
 
-export const createSlateRoot = (children: Descendant[]): Node => ({
-    type: ElementType.EDITOR,
-    children,
-});
+/**
+ * Create empty root node, for testing purposes only. This would usually be an instance of Editor.
+ * @param children 
+ * @returns root node
+ */
+export const wrapRootNode = (children: Node[]): Node => {
+    return { children } as Node;
+}

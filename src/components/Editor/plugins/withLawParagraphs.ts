@@ -158,8 +158,8 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
     // Editor.withoutNormalizing(editor, () => {
         node.children.forEach((child, index) => {
             const text = child.text;
-            const hasTitle = title != null;
-            const hasName = name != null;
+            const hasTitle = title;
+            const hasName = name;
 
             if (hasTitle) {
                 if (index === 0 && (!child.title || child.name || child.nr)) {

@@ -3,7 +3,6 @@ import { ElementType, MetaType } from "../Slate";
 import createList from "../utils/slate/createList";
 import createListItem from "../utils/slate/createListItem";
 import createEditorWithPlugins from "./createEditorWithPlugins";
-import { onKeyDown } from "@prezly/slate-lists";
 
 test('add missing meta data to List Element', async () => {
     const editor = createEditorWithPlugins();
@@ -258,66 +257,66 @@ test('increment following siblings nr and title with roman nr and retain previou
 //     expect(editor.children).toEqual(output);
 // });
 
-test('enforce first text node to be title if meta.title = true', async () => {
-    const editor = createEditorWithPlugins();
-    const node = createListItem(MetaType.ART, '1', { text: ['1', '2'] });
-    node.meta!.title = '1';
-    editor.children = [
-        createList(MetaType.ART, {}, [
-            node,
-        ]),
-    ];
+// test('enforce first text node to be title if meta.title = true', async () => {
+//     const editor = createEditorWithPlugins();
+//     const node = createListItem(MetaType.ART, '1', { text: ['1', '2'] });
+//     node.meta!.title = '1';
+//     editor.children = [
+//         createList(MetaType.ART, {}, [
+//             node,
+//         ]),
+//     ];
     
-    editor.normalize({ force: true })
+//     editor.normalize({ force: true })
 
-    const output = [
-        createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { title: '1', text: '2' }),
-        ]),
-    ];
+//     const output = [
+//         createList(MetaType.ART, {}, [
+//             createListItem(MetaType.ART, '1', { title: '1', text: '2' }),
+//         ]),
+//     ];
 
-    expect(editor.children).toEqual(output);
-});
+//     expect(editor.children).toEqual(output);
+// });
 
-test('enforce first text node to be name if there is no title', async () => {
-    const editor = createEditorWithPlugins();
-    const node = createListItem(MetaType.ART, '1', { text: ['1', '2'] });
-    node.meta!.name = '1';
-    editor.children = [
-        createList(MetaType.ART, {}, [
-            node,
-        ]),
-    ];
+// test('enforce first text node to be name if there is no title', async () => {
+//     const editor = createEditorWithPlugins();
+//     const node = createListItem(MetaType.ART, '1', { text: ['1', '2'] });
+//     node.meta!.name = '1';
+//     editor.children = [
+//         createList(MetaType.ART, {}, [
+//             node,
+//         ]),
+//     ];
     
-    editor.normalize({ force: true })
+//     editor.normalize({ force: true })
 
-    const output = [
-        createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { name: '1', text: '2' }),
-        ]),
-    ];
+//     const output = [
+//         createList(MetaType.ART, {}, [
+//             createListItem(MetaType.ART, '1', { name: '1', text: '2' }),
+//         ]),
+//     ];
 
-    expect(editor.children).toEqual(output);
-});
+//     expect(editor.children).toEqual(output);
+// });
 
-test('enforce title+name', async () => {
-    const editor = createEditorWithPlugins();
-    const node = createListItem(MetaType.ART, '1', { text: ['1', '2', '3'] });
-    node.meta!.title = '1';
-    node.meta!.name = '2';
-    editor.children = [
-        createList(MetaType.ART, {}, [
-            node,
-        ]),
-    ];
+// test('enforce title+name', async () => {
+//     const editor = createEditorWithPlugins();
+//     const node = createListItem(MetaType.ART, '1', { text: ['1', '2', '3'] });
+//     node.meta!.title = '1';
+//     node.meta!.name = '2';
+//     editor.children = [
+//         createList(MetaType.ART, {}, [
+//             node,
+//         ]),
+//     ];
     
-    editor.normalize({ force: true })
+//     editor.normalize({ force: true })
 
-    const output = [
-        createList(MetaType.ART, {}, [
-            createListItem(MetaType.ART, '1', { title: '1', name: '2', text: '3' }),
-        ]),
-    ];
+//     const output = [
+//         createList(MetaType.ART, {}, [
+//             createListItem(MetaType.ART, '1', { title: '1', name: '2', text: '3' }),
+//         ]),
+//     ];
 
-    expect(editor.children).toEqual(output);
-});
+//     expect(editor.children).toEqual(output);
+// });

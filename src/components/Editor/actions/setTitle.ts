@@ -1,7 +1,9 @@
-import { Editor, Text, Transforms } from "slate";
+import { Editor, Node, Text, Transforms } from "slate";
 import { ListItem } from "../Slate";
 import getParentListItem from "../utils/slate/getParentListItem";
 import getListItemTitle from "../utils/slate/getListItemTitle";
+import setMeta from "../utils/slate/setMeta";
+import setListItemMeta from "../utils/slate/setListItemMeta";
 
 /**
  * 
@@ -17,11 +19,12 @@ const setTitle = (
         return false;
     }
 
-    const parentListItem = getParentListItem(editor, at);
+    const entry = getParentListItem(editor, at);
 
-    if (!parentListItem) {
+    if (!entry) {
         return false;
     }
+    const [listItem, path] = entry;
 
     Transforms.setNodes<Text>(
         editor,
@@ -29,18 +32,23 @@ const setTitle = (
         { at, match: Text.isText, split: true }
     );
 
-    const text = getListItemTitle(editor, parentListItem[1]);
-    const {name, ...meta} = parentListItem[0].meta
+    const text = getListItemTitle(editor, path);
 
     if (!text) {
         throw new Error('no title text found');
     }
 
-    Transforms.setNodes<ListItem>(
-        editor,
-        { meta: { ...meta, title: text } },
-        { at: parentListItem[1] }
-    );
+    let meta = { ...listItem.meta, title: true };
+    
+    if (meta.name) {
+        const nameNode = Node.get(editor, [...path, 0, 1]);
+
+        if (!nameNode || (Text.isText(nameNode) && !nameNode.name)) {
+            delete meta.name;
+        }
+    }
+
+    setListItemMeta(editor, listItem, path, meta);
 
     return true;
 }

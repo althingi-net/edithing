@@ -28,11 +28,7 @@ const createListItemMetaFromSibling = (sibling: ListItem) => {
     }
 
     if (title) {
-        if (romanNr && meta.romanNr) {
-            meta.title = `${title.replace(romanNr, meta.romanNr)}`;
-        } else {
-            meta.title = `${title.replace(nr, meta.nr)}`;
-        }
+        meta.title = true;
     }
 
     if (styleNote) {

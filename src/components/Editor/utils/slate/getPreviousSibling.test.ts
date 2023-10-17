@@ -15,8 +15,9 @@ test('get first sibling with 3 nodes', () => {
             createListItem(MetaType.CHAPTER, '3'),
         ]),
     ];
+    const output = getPreviousSibling(editor, [0, 1]);
 
-    expect(getPreviousSibling(editor, [0, 1])).toEqual(firstChild);
+    expect(output).toEqual([firstChild, [0, 0]]);
 });
 
 test('get second sibling with 3 nodes', () => {
@@ -30,6 +31,7 @@ test('get second sibling with 3 nodes', () => {
             createListItem(MetaType.CHAPTER, '3'),
         ]),
     ];
+    const output = getPreviousSibling(editor, [0, 2]);
 
-    expect(getPreviousSibling(editor, [0, 2])).toEqual(secondChild);
+    expect(output).toEqual([secondChild, [0, 1]]);
 });

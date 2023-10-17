@@ -1,7 +1,7 @@
 import { MetaType } from "../../Slate"
 import convertRomanNumber from "../convertRomanNumber"
 
-const createLawTitle = (nr: string, type: MetaType, previousTitle?: string) => {
+const createLawTitle = (nr: string, type: MetaType, previousTitle?: string | null) => {
     if (previousTitle) {
         if (type !== MetaType.CHAPTER) {
             const digit = nr.match(/\d+/)?.[0];

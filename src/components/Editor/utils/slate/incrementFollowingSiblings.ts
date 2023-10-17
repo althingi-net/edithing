@@ -1,6 +1,5 @@
 import { Editor, Transforms } from "slate";
 import { isListItem } from "../../Slate";
-import createLawTitle from "./createLawTitle";
 import incrementMixedNumber from "../incrementMixedNumber";
 import incrementRomanNumber from "../incrementRomanNumber";
 import setListItemMeta from "./setListItemMeta";
@@ -22,10 +21,6 @@ const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
             const newMeta = { ...sibling.meta, nr: `${incrementMixedNumber(sibling.meta.nr, true)}` };
             if (newMeta.romanNr) {
                 newMeta.romanNr = incrementRomanNumber(newMeta.romanNr);
-            }
-
-            if (newMeta.title) {
-                newMeta.title = createLawTitle(newMeta.nr, newMeta.type, newMeta.title);
             }
 
             setListItemMeta(editor, sibling, siblingPath, newMeta);

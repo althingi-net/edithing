@@ -6,7 +6,7 @@ import getPreviousSibling from "./getPreviousSibling";
 import createLawTitle from "./createLawTitle";
 
 const createListItemMeta = (editor: Editor, path: Path): ListItemMeta => {
-    const sibling = getPreviousSibling(editor, path);
+    const [sibling] = getPreviousSibling(editor, path) ?? [];
     if (sibling && isListItem(sibling)) {
         return createListItemMetaFromSibling(sibling);
     } else {
@@ -21,7 +21,7 @@ const createListItemMeta = (editor: Editor, path: Path): ListItemMeta => {
         const title = createLawTitle(meta.nr, meta.type);
 
         if (title) {
-            meta.title = title;
+            meta.title = true;
         }
 
         return meta;

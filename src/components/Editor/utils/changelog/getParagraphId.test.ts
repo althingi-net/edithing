@@ -1,11 +1,11 @@
 import { Node } from "slate";
-import { createSlateRoot, MetaType } from "../../Slate";
+import { wrapRootNode, MetaType } from "../../Slate";
 import createList from "../slate/createList";
 import createListItem from "../slate/createListItem";
 import getParagraphId from "./getParagraphId";
 
 test('getParagraphId 1 level deep', () => {
-    const input: Node = createSlateRoot([
+    const input = wrapRootNode([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title:  'I.' }),
             createListItem(MetaType.CHAPTER, '2', { title:  'II.' }),
@@ -17,7 +17,7 @@ test('getParagraphId 1 level deep', () => {
 });
 
 test('getParagraphId 2 levels deep', () => {
-    const input: Node = createSlateRoot([
+    const input: Node = wrapRootNode([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -32,7 +32,7 @@ test('getParagraphId 2 levels deep', () => {
 });
 
 test('name', () => {
-    const input: Node = createSlateRoot([
+    const input: Node = wrapRootNode([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -47,7 +47,7 @@ test('name', () => {
 });
 
 test('title', () => {
-    const input: Node = createSlateRoot([
+    const input: Node = wrapRootNode([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -62,7 +62,7 @@ test('title', () => {
 });
 
 test('sentence', () => {
-    const input: Node = createSlateRoot([
+    const input: Node = wrapRootNode([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -77,7 +77,7 @@ test('sentence', () => {
 });
 
 test('include target node itself if its a listItem', () => {
-    const input: Node = createSlateRoot([
+    const input: Node = wrapRootNode([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '2', { title:  'II.' }, [
                 createList(MetaType.PARAGRAPH, {}, [

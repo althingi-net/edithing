@@ -64,7 +64,7 @@ test('merge partly selected title with part of name', () => {
     testSetTitle(
         { title: 'the first', name: 'name', text: ' chapter' },
         { title: 'the firstna', name: 'me', text: ' chapter' },
-        11,
+        8,
         4
     );
 });

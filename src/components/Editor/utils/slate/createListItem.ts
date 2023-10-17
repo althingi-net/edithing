@@ -1,9 +1,11 @@
 import { Descendant } from "slate";
-import { MetaType, ListItem, ListItemText, ElementType, ListItemMeta } from "../../Slate";
+import { ElementType, ListItem, ListItemText, MetaType, ListItemMeta } from "../../Slate";
 import convertRomanNumber from "../convertRomanNumber";
 
-export interface Options extends Omit<ListItemMeta, 'nr' | 'type'> {
+export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
+    title?: string | boolean;
+    name?: string | boolean;
 }
 
 /**
@@ -33,13 +35,19 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     };
 
     if (name) {
-        listItem.meta!.name = name;
-        textElement.children.unshift({ text: name, name: true });
+        listItem.meta!.name = true;
+
+        if (typeof name === 'string') {
+            textElement.children.unshift({ text: name, name: true });
+        }
     }
 
     if (title) {
-        listItem.meta!.title = title;
-        textElement.children.unshift({ text: title, title: true });
+        listItem.meta!.title = true;
+
+        if (typeof title === 'string') {
+            textElement.children.unshift({ text: title, title: true });
+        }
     }
 
     if (nrType) {

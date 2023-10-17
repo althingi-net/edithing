@@ -1,17 +1,20 @@
-import { Node, Editor, Path } from 'slate';
+import { Node, Editor, Path, NodeEntry } from 'slate';
 
 /**
  * Get the previous sibling of a node.
  */
-const getPreviousSibling = (editor: Editor, path: Path): Node | null => {
+const getPreviousSibling = (editor: Editor, path: Path): NodeEntry | null => {
     const parentPath = path.slice(0, -1);
-    const siblingPath = path.slice(-1)[0] - 1;
+    const siblingIndex = path.slice(-1)[0] - 1;
 
-    if (siblingPath < 0) {
+    if (siblingIndex < 0) {
         return null;
     }
   
-    return Node.get(editor, [...parentPath, siblingPath]);
+    const siblingPath = [...parentPath, siblingIndex];
+    const node = Node.get(editor, siblingPath);
+    
+    return [node, siblingPath];
 };
 
 export default getPreviousSibling;
