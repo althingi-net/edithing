@@ -23,8 +23,14 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
                         text += ' ';
                     }
 
+                    const id = getParagraphId(root, childPath);
+
+                    if (!id) {
+                        throw new Error('Could not get paragraph id');
+                    }
+
                     list.push({
-                        id: getParagraphId(root, childPath),
+                        id,
                         content: text,
                         path: childPath,
                     });
