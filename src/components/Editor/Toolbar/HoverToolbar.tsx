@@ -67,9 +67,7 @@ const FormatButton: FC<{ format: Marks, icon: any }> = ({ format, icon }) => {
     return (
         <Button
             size="small"
-            type="primary"
-            style={{ width: '30px'}}
-            ghost={!isMarkActive(editor, format)}
+            className={isMarkActive(editor, format) ? styles.active : undefined}
             onClick={() => toggleMark(editor, format)}
         >
             {icon}
