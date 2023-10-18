@@ -2,7 +2,7 @@ import { BaseEditor, Editor, Operation } from "slate";
 import getParagraphId from "../utils/changelog/getParagraphId";
 import { log } from "../../../logger";
 
-const OPERATIONS_BEFORE = ['insert_text', 'remove_text', 'split_node', 'merge_node', 'move_node', 'remove_node'];
+const OPERATIONS_BEFORE = ['insert_text', 'remove_text', 'split_node', 'merge_node', 'move_node', 'remove_node', 'set_node'];
 const OPERATIONS_AFTER = ['insert_node', 'set_node'];
 
 export interface Event {
@@ -39,14 +39,17 @@ const withEvents = (editor: Editor) => {
         }
 
         const id = getParagraphId(editor, operation.path);
-        const event: Event = { id, type: operation.type };
 
-        if (process.env.NODE_ENV !== 'production') {
-            event.original = operation;
+        if (id) {
+            const event: Event = { id, type: operation.type };
+    
+            if (process.env.NODE_ENV !== 'production') {
+                event.original = operation;
+            }
+            
+            editor.events.push(event);
+            log('event', event)
         }
-        
-        editor.events.push(event);
-        log('event', event)
 
         return apply(operation);
     }
@@ -64,14 +67,17 @@ const withEvents = (editor: Editor) => {
         }
 
         const id = getParagraphId(editor, operation.path);
-        const event: Event = { id, type: operation.type };
 
-        if (process.env.NODE_ENV !== 'production') {
-            event.original = operation;
+        if (id) {
+            const event: Event = { id, type: operation.type };
+    
+            if (process.env.NODE_ENV !== 'production') {
+                event.original = operation;
+            }
+    
+            editor.events.push(event);
+            log('event', event)
         }
-
-        editor.events.push(event);
-        log('event', event)
 
         return onChange(options);
     }
