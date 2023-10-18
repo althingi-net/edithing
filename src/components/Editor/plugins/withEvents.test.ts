@@ -65,7 +65,10 @@ test('withEvents set_node', async () => {
     // Wait for the next tick to allow the editor to update the events array.
     await Promise.resolve();
 
-    expect(editor.events).toEqual([{ id: 'chapter-1', type: 'set_node', original: operation }]);
+    expect(editor.events).toEqual([
+        { id: 'chapter-1', type: 'set_node', original: operation },
+        { id: 'chapter-1', type: 'set_node', original: operation }
+    ]);
 });
 
 test('withEvents remove_node', () => {

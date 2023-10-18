@@ -11,13 +11,21 @@ import getListItemHierarchy from "../slate/getListItemHierarchy";
 const getParagraphId = (root: Node, path: Path) => {
     const node = findNode(root, path);
 
-    // Return null to signal that the node was not found and the path is not valid.
     if (!node) {
         return null;
     }
 
-    const ids = getListItemHierarchy(root, path)
-        .map(([listItem]) => `${listItem.meta?.type}-${listItem.meta?.nr}`);
+    const levels = getListItemHierarchy(root, path);
+    const ids: string[] = [];
+
+    for (const level of levels) {
+        const [listItem] = level;
+        if (!listItem.meta) {
+            return null;
+        }
+
+        ids.push(`${listItem.meta.type}-${listItem.meta.nr}`);
+    }
 
     if (Text.isText(node)) {
         const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
