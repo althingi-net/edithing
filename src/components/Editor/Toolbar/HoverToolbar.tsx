@@ -1,10 +1,11 @@
 import { BoldOutlined } from "@ant-design/icons"
 import styles from './HoverToolbar.module.css'
-import { Button } from "antd"
+import { Button, Tooltip } from "antd"
 import { FC, useEffect, useRef } from "react"
 import { Editor, Range, Text } from "slate"
 import { useFocused, useSlate } from "slate-react"
 import Portal from "../../Portal"
+import { format } from "path"
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'>
 
@@ -65,30 +66,40 @@ const HoveringToolbar = () => {
 const FormatButton: FC<{ format: Marks, icon: any }> = ({ format, icon }) => {
     const editor = useSlate()
     return (
-        <Button
-            size="small"
-            className={isMarkActive(editor, format) ? styles.active : undefined}
-            onClick={() => toggleMark(editor, format)}
-        >
-            {icon}
-        </Button>
+        <Tooltip title={getTooltipText(format)}>
+            <Button
+                size="small"
+                className={isMarkActive(editor, format) ? styles.active : undefined}
+                onClick={() => toggleMark(editor, format)}
+            >
+                {icon}
+            </Button>
+        </Tooltip>
     )
+}
+
+const getTooltipText = (format: Marks) => {
+    switch (format) {
+        case 'bold':
+        default:
+            return `Format selected text with ${format}. Press again to remove formatting.`
+    }
 }
 
 const toggleMark = (editor: Editor, format: Marks) => {
     const isActive = isMarkActive(editor, format)
-  
+
     if (isActive) {
-      Editor.removeMark(editor, format)
+        Editor.removeMark(editor, format)
     } else {
-      Editor.addMark(editor, format, true)
+        Editor.addMark(editor, format, true)
     }
-  }
-  
-  const isMarkActive = (editor: Editor, format: Marks) => {
+}
+
+const isMarkActive = (editor: Editor, format: Marks) => {
     const marks = Editor.marks(editor)
     return marks ? marks[format] === true : false
-  }
+}
 
 
 export default HoveringToolbar;
