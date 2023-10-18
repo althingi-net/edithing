@@ -1,0 +1,21 @@
+.toolbar {
+  padding: 8px 20px;
+  position: absolute;
+  z-index: 1;
+  top: -10000px;
+  left: -10000px;
+  margin-top: -6px;
+  opacity: 0;
+  background-color: #f0f0f0;
+  border: 1px solid #b3b3b3;
+  border-radius: 20px;
+  transition: opacity 0.75s;
+
+  &>* {
+    display: inline-block;
+  }
+
+  &>*+* {
+    margin-left: 15px;
+  }
+}

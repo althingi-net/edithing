@@ -126,7 +126,7 @@ export const isList = (node: Node): node is List => {
     return Element.isElementType(node, ElementType.LIST);
 }
 
-export const isListItem = (node: Node): node is ListItem => {
+export const isListItem = (node: any): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
 }
 

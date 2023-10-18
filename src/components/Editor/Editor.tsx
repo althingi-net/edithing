@@ -14,6 +14,7 @@ import useDebounce from './utils/useDebounce';
 import downloadGitFile from './utils/xml/downloadGitFile';
 import importXml from './utils/xml/importXml';
 import useHighlightContext from './Toolbar/useHighlightContext';
+import HoveringToolbar from './Toolbar/HoverToolbar';
 
 interface Props {
     file: GithubFile;
@@ -55,6 +56,7 @@ const Editor: FC<Props> = ({ file }) => {
                     <Col span={12}>
                         <div style={{ height: '100%' }}>
                             <Toolbar />
+                            <HoveringToolbar />
                             <Editable
                                 className={classNames}
                                 onKeyDown={(event) => handleKeyDown(editor, event)}
