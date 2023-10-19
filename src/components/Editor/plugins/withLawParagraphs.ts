@@ -16,6 +16,7 @@ const withLawParagraphs = (editor: Editor) => {
         if (
             normalizeMissingMeta(editor, entry)
             || normalizeMovedListItem(editor, entry)
+            // || normalizeSentences(editor, entry)
             // || enforceTitleNameSenLayout(editor, entry)
         ) {
             return;
@@ -132,6 +133,48 @@ const normalizeMovedListItem = (editor: Editor, entry: NodeEntry) => {
     // }
 }
 
+const normalizeSentences = (editor: Editor, entry: NodeEntry) => {
+    const [node, path] = entry
+
+    if (!isListItemText(node)) {
+        return false;
+    }
+
+    const listItem = Node.parent(editor, path);
+
+    if (!isListItem(listItem) || !listItem.meta) {
+        return false;
+    }
+
+    // remove empty text node in front of others
+    if (node.children.length > 1 && node.children[0].text === '') {
+        const at = [...path, 0];
+        Transforms.removeNodes(editor, { at });
+        return true;
+    }
+
+    const { meta: { title, name } } = listItem;
+
+    node.children.forEach((child, index) => {
+        const text = child.text;
+        const hasTitle = title;
+        const hasName = name;
+
+        const senStartIndex = hasTitle ? hasName ? 2 : 1 : hasName ? 1 : 0;
+        const newNr = `${index - senStartIndex + 1}`;
+
+        if (index >= senStartIndex && (!child.nr || child.title || child.name || child.nr !== newNr)) {
+            const at = [...path, index];
+            log('enforce sen', { node, path, child, index, senStartIndex, newNr });
+            Transforms.removeNodes(editor, { at });
+            Transforms.insertNodes<Text>(editor, { text, nr: newNr }, { at });
+            return true;
+        }
+    });
+
+    return false;
+}
+
 const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
     const [node, path] = entry
 
@@ -156,48 +199,48 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
     // let hasChanges = false;
 
     // Editor.withoutNormalizing(editor, () => {
-        node.children.forEach((child, index) => {
-            const text = child.text;
-            const hasTitle = title;
-            const hasName = name;
+    node.children.forEach((child, index) => {
+        const text = child.text;
+        const hasTitle = title;
+        const hasName = name;
 
-            if (hasTitle) {
-                if (index === 0 && (!child.title || child.name || child.nr)) {
-                    const at = [...path, index];
-                    log('enforce title', { node, path, child, index, title });
-                    Transforms.removeNodes(editor, { at });
-                    Transforms.insertNodes<Text>(editor, { text, title: true }, { at });
-                    return true;
-                }
-
-                if (index === 1 && hasName && (!child.name || child.title || child.nr)) {
-                    const at = [...path, index];
-                    log('enforce name', { node, path, child, index, name });
-                    Transforms.removeNodes(editor, { at });
-                    Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
-                    return true;
-                }
-            } else {
-                if (index === 0 && hasName && (!child.name || child.title || child.nr)) {
-                    const at = [...path, index];
-                    log('enforce name', { node, path, child, index, name });
-                    Transforms.removeNodes(editor, { at });
-                    Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
-                    return true;
-                }
-            }
-
-            const senStartIndex = hasTitle ? hasName ? 2 : 1 : hasName ? 1 : 0;
-            const newNr = `${index - senStartIndex + 1}`;
-
-            if (index >= senStartIndex && (!child.nr || child.title || child.name || child.nr !== newNr)) {
+        if (hasTitle) {
+            if (index === 0 && (!child.title || child.name || child.nr)) {
                 const at = [...path, index];
-                log('enforce sen', { node, path, child, index, senStartIndex, newNr });
+                log('enforce title', { node, path, child, index, title });
                 Transforms.removeNodes(editor, { at });
-                Transforms.insertNodes<Text>(editor, { text, nr: newNr }, { at });
+                Transforms.insertNodes<Text>(editor, { text, title: true }, { at });
                 return true;
             }
-        });
+
+            if (index === 1 && hasName && (!child.name || child.title || child.nr)) {
+                const at = [...path, index];
+                log('enforce name', { node, path, child, index, name });
+                Transforms.removeNodes(editor, { at });
+                Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
+                return true;
+            }
+        } else {
+            if (index === 0 && hasName && (!child.name || child.title || child.nr)) {
+                const at = [...path, index];
+                log('enforce name', { node, path, child, index, name });
+                Transforms.removeNodes(editor, { at });
+                Transforms.insertNodes<Text>(editor, { text, name: true }, { at });
+                return true;
+            }
+        }
+
+        const senStartIndex = hasTitle ? hasName ? 2 : 1 : hasName ? 1 : 0;
+        const newNr = `${index - senStartIndex + 1}`;
+
+        if (index >= senStartIndex && (!child.nr || child.title || child.name || child.nr !== newNr)) {
+            const at = [...path, index];
+            log('enforce sen', { node, path, child, index, senStartIndex, newNr });
+            Transforms.removeNodes(editor, { at });
+            Transforms.insertNodes<Text>(editor, { text, nr: newNr }, { at });
+            return true;
+        }
+    });
     // });
 
     return false;

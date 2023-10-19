@@ -1,7 +1,5 @@
 import { Editor, Node, Text, Transforms } from "slate";
-import { ListItem } from "../Slate";
 import getParentListItem from "../utils/slate/getParentListItem";
-import setListItemMeta from "../utils/slate/setListItemMeta";
 import setMeta from "../utils/slate/setMeta";
 
 /**

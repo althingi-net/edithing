@@ -4,7 +4,7 @@ import convertRomanNumber from "../convertRomanNumber";
 import setListItemTitleFromMeta from "./setListItemTitleFromMeta";
 import setMeta from "./setMeta";
 
-const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta) => {  
+const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta, updateTitle = true) => {  
     // Add romanNr and nrType
     if (meta.type === MetaType.CHAPTER) {
         meta = {
@@ -20,7 +20,10 @@ const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListI
     }
 
     setMeta(editor, path, meta);
-    setListItemTitleFromMeta(editor, path, meta);
+
+    if (updateTitle) {
+        setListItemTitleFromMeta(editor, path, meta);
+    }
 }
 
 export default setListItemMeta;

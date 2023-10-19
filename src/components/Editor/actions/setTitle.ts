@@ -1,8 +1,5 @@
 import { Editor, Node, Text, Transforms } from "slate";
-import { ListItem } from "../Slate";
 import getParentListItem from "../utils/slate/getParentListItem";
-import getListItemTitle from "../utils/slate/getListItemTitle";
-import setMeta from "../utils/slate/setMeta";
 import setListItemMeta from "../utils/slate/setListItemMeta";
 
 /**
@@ -20,7 +17,6 @@ const setTitle = (
     }
 
     const entry = getParentListItem(editor, at);
-
     if (!entry) {
         return false;
     }
@@ -32,14 +28,7 @@ const setTitle = (
         { at, match: Text.isText, split: true }
     );
 
-    const text = getListItemTitle(editor, path);
-
-    if (!text) {
-        throw new Error('no title text found');
-    }
-
     let meta = { ...listItem.meta, title: true };
-    
     if (meta.name) {
         const nameNode = Node.get(editor, [...path, 0, 1]);
 
@@ -48,7 +37,7 @@ const setTitle = (
         }
     }
 
-    setListItemMeta(editor, listItem, path, meta);
+    setListItemMeta(editor, listItem, path, meta, false);
 
     return true;
 }
