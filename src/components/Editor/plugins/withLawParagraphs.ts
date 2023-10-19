@@ -16,7 +16,7 @@ const withLawParagraphs = (editor: Editor) => {
         if (
             normalizeMissingMeta(editor, entry)
             || normalizeMovedListItem(editor, entry)
-            // || normalizeSentences(editor, entry)
+            || normalizeSentences(editor, entry)
             // || enforceTitleNameSenLayout(editor, entry)
         ) {
             return;
@@ -146,29 +146,18 @@ const normalizeSentences = (editor: Editor, entry: NodeEntry) => {
         return false;
     }
 
-    // remove empty text node in front of others
-    if (node.children.length > 1 && node.children[0].text === '') {
-        const at = [...path, 0];
-        Transforms.removeNodes(editor, { at });
-        return true;
-    }
-
-    const { meta: { title, name } } = listItem;
+    let nr = 1;
 
     node.children.forEach((child, index) => {
-        const text = child.text;
-        const hasTitle = title;
-        const hasName = name;
-
-        const senStartIndex = hasTitle ? hasName ? 2 : 1 : hasName ? 1 : 0;
-        const newNr = `${index - senStartIndex + 1}`;
-
-        if (index >= senStartIndex && (!child.nr || child.title || child.name || child.nr !== newNr)) {
+        if (child.nr != null) {
             const at = [...path, index];
-            log('enforce sen', { node, path, child, index, senStartIndex, newNr });
-            Transforms.removeNodes(editor, { at });
-            Transforms.insertNodes<Text>(editor, { text, nr: newNr }, { at });
-            return true;
+            const newNr = `${nr}`;
+            
+            if (child.nr !== newNr) {
+                Transforms.setNodes<Text>(editor, { nr: newNr }, { at });
+            }
+
+            nr++;
         }
     });
 

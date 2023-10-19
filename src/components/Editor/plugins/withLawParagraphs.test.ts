@@ -1,5 +1,5 @@
 import { Editor } from "slate";
-import { ElementType, MetaType } from "../Slate";
+import { ElementType, ListItemText, MetaType } from "../Slate";
 import createList from "../utils/slate/createList";
 import createListItem from "../utils/slate/createListItem";
 import createEditorWithPlugins from "./createEditorWithPlugins";
@@ -320,3 +320,27 @@ test('increment following siblings nr and title with roman nr and retain previou
 
 //     expect(editor.children).toEqual(output);
 // });
+
+test('normalize sentences to have correct nr', async () => {
+    const editor = createEditorWithPlugins();
+    const node = createListItem(MetaType.ART, '1', { text: ['1', '2', '3'] });
+    const listItemText = node.children[0] as ListItemText;
+    listItemText.children[0].nr = '';
+    listItemText.children[1].nr = '5';
+    
+    editor.children = [
+        createList(MetaType.ART, {}, [
+            node,
+        ]),
+    ];
+    
+    editor.normalize({ force: true })
+
+    const output = [
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: ['1', '2', '3'] }),
+        ]),
+    ];
+
+    expect(editor.children).toEqual(output);
+});

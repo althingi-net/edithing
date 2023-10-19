@@ -4,9 +4,9 @@ import { FC, useEffect, useRef } from "react"
 import { Editor, Range, Text, Transforms } from "slate"
 import { useFocused, useSlate } from "slate-react"
 import Portal from "../../Portal"
-import styles from './HoverToolbar.module.css'
-import setTitle from "../actions/setTitle"
 import setName from "../actions/setName"
+import setTitle from "../actions/setTitle"
+import styles from './HoverToolbar.module.css'
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
