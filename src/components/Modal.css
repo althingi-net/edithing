@@ -1,0 +1,41 @@
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  backdrop-filter: blur(6px);
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  background-color: #fff;
+  min-height: 50vh;
+  box-shadow: 0px 3px 6px #00000029;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.4);
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-enter-done {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.modal-exit {
+  opacity: 0;
+  transform: scale(0.4);
+}
