@@ -23,8 +23,6 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
         };
     }, [onClose]);
 
-    console.log("modal", { isOpen })
-
     return (
         <Portal>
             <CSSTransition

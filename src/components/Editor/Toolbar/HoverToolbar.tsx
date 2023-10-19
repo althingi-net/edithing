@@ -1,12 +1,13 @@
 import { BoldOutlined } from "@ant-design/icons"
 import { Button, Tooltip } from "antd"
 import { FC, useEffect, useRef } from "react"
-import { Editor, Range, Text, Transforms } from "slate"
+import { Editor, Node, Path, Range, Text, Transforms } from "slate"
 import { useFocused, useSlate } from "slate-react"
 import Portal from "../../Portal"
-import setName from "../actions/setName"
-import setTitle from "../actions/setTitle"
 import styles from './HoverToolbar.module.css'
+import setTitle from "../actions/setTitle"
+import setName from "../actions/setName"
+import findListItemAtSelection from "../utils/slate/findListItemAtSelection"
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
@@ -85,6 +86,64 @@ const FormatButton: FC<{ format: Marks, icon: any }> = ({ format, icon }) => {
         }
 
         toggleMark(editor, format);
+    }
+
+    if (!editor.selection) {
+        return null;
+    }
+
+    const { anchor, focus } = editor.selection;
+    const titleAndNameNodes = Array.from(editor.nodes<Text>({
+        mode: 'lowest',
+        match: node => Text.isText(node) && (node.title === true || node.name === true),
+    }));
+
+    // Hide bold & sentence formatting in title and name
+    if (format === 'bold' || format === 'nr') {
+        if (titleAndNameNodes.length > 0) {
+            return null;
+        }
+    }
+
+    if (format === 'title') {
+        const [listItem, path] = findListItemAtSelection(editor) ?? [];
+
+        if (!listItem || !path) {
+            return null;
+        }
+
+        const isBackward = Range.isBackward(editor.selection);
+        const start = isBackward ? focus : anchor;
+        const listItemTextStart = [...path, 0, 0];
+        const listItemTextSecond = [...path, 0, 1];
+
+        const startText = Node.get(editor, listItemTextStart);
+        const isTitle = Text.isText(startText) && startText.title;
+        
+        const isCursorAtStart = Path.equals(start.path, listItemTextStart) && start.offset === 0;
+        const isCursorNextToTitle = Path.equals(start.path, listItemTextSecond) && start.offset === 0;
+        const isCursorInTitle = isTitle && Path.equals(start.path, listItemTextStart);
+
+        if (!isCursorAtStart && !(isTitle && isCursorNextToTitle) && !isCursorInTitle) {
+            return null;
+        }
+    }
+
+    if (format === 'name') {
+        const [listItem, path] = findListItemAtSelection(editor) ?? [];
+
+        if (!listItem || !path) {
+            return null;
+        }
+
+        const isBackward = Range.isBackward(editor.selection);
+        const start = isBackward ? focus : anchor;
+        const listItemTextStart = [...path, 0, 0];
+        const isCursorAtStart = Path.equals(start.path, listItemTextStart) && start.offset === 0;
+
+        if (!((titleAndNameNodes.length === 0 && isCursorAtStart) || titleAndNameNodes.filter(n => n[0].name).length > 0)) {
+            return null;
+        }
     }
 
     return (
