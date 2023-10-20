@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "editorconfig.editorconfig",
+        "mikestead.dotenv",
+        "dbaeumer.vscode-eslint",
+        "karlito40.fix-irregular-whitespace",
+        "orta.vscode-jest"
+    ]
+}
