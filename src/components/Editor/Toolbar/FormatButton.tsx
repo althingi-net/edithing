@@ -1,11 +1,11 @@
-import { Tooltip, Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { FC, ReactNode } from 'react';
-import { Transforms, Editor, Text, Node, Path, Range } from 'slate';
+import { Editor, Node, Path, Range, Text } from 'slate';
 import { useSlate } from 'slate-react';
 import setName from '../actions/setName';
+import setSentence from '../actions/setSentence';
 import setTitle from '../actions/setTitle';
 import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
-import setSentence from '../actions/setSentence';
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
@@ -79,8 +79,7 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
             return null;
         }
 
-        const isBackward = Range.isBackward(editor.selection);
-        const start = isBackward ? focus : anchor;
+        const start = Editor.start(editor, editor.selection);
         const listItemTextStart = [...path, 0, 0];
         const listItemTextSecond = [...path, 0, 1];
 
@@ -103,12 +102,20 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
             return null;
         }
 
-        const isBackward = Range.isBackward(editor.selection);
-        const start = isBackward ? focus : anchor;
+        const [start, end] = Editor.edges(editor, editor.selection);
         const listItemTextStart = [...path, 0, 0];
         const isCursorAtStart = Path.equals(start.path, listItemTextStart) && start.offset === 0;
+        const titleNode = Node.get(editor, listItemTextStart);
+        const isTitle = Text.isText(titleNode) && titleNode.title;
+        const isAtEndOfTitle = isTitle && Path.equals(end.path, listItemTextStart) && end.offset === titleNode.text.length;
+        const isAfterEndOfTitle = isTitle && Path.equals(start.path, listItemTextStart) && !Path.equals(end.path, listItemTextStart);
 
-        if (!((titleAndNameNodes.length === 0 && isCursorAtStart) || titleAndNameNodes.filter(n => n[0].name).length > 0)) {
+        if (!(
+            (titleAndNameNodes.length === 0 && isCursorAtStart)
+            || titleAndNameNodes.filter(n => n[0].name).length > 0
+            || isAtEndOfTitle
+            || isAfterEndOfTitle
+        )) {
             return null;
         }
     }
