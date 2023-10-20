@@ -1,9 +1,10 @@
-import { Editor } from 'slate';
 import { MetaType } from '../Slate';
 import createEditorWithPlugins from '../plugins/createEditorWithPlugins';
 import createList from '../utils/slate/createList';
 import createListItem, { Options } from '../utils/slate/createListItem';
+import createSelectionWithDistance from '../utils/slate/createSelectionWithDistance';
 import setName from './setName';
+
 
 const testSetName = (metaInput: Options, expectedMeta: Options, selectionOffset: number, selectionStart = 0) => {
     const editor = createEditorWithPlugins();
@@ -13,22 +14,7 @@ const testSetName = (metaInput: Options, expectedMeta: Options, selectionOffset:
         ]),
     ];
 
-    editor.selection = {
-        anchor: {
-            path: [0, 0, 0, 0],
-            offset: selectionStart,
-        },
-        focus: {
-            path: [0, 0, 0, 0],
-            offset: selectionOffset,
-        },
-    };
-
-    const focus = Editor.after(editor, editor.selection.anchor, { distance: selectionOffset });
-    if (!focus) {
-        throw new Error('testSetName: focus is null');
-    }
-    editor.selection.focus = focus;
+    editor.selection = createSelectionWithDistance(editor, [0, 0, 0, 0], { startOffset: selectionStart, distance: selectionOffset });
 
     setName(editor);
     editor.normalize({ force: true });
