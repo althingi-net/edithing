@@ -5,6 +5,7 @@ import { useSlate } from 'slate-react';
 import setName from '../actions/setName';
 import setTitle from '../actions/setTitle';
 import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
+import setSentence from '../actions/setSentence';
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
@@ -28,8 +29,7 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
         }
 
         if (format === 'nr') {
-            // split existing sentence and let normalization correct the number across all sentences
-            Transforms.setNodes<Text>(editor, { nr: '' }, { match: Text.isText, split: true });
+            setSentence(editor);
             return;
         }
 
