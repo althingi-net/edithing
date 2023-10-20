@@ -7,23 +7,20 @@ import getParentListItem from '../utils/slate/getParentListItem';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';
 import setListItemMeta from '../utils/slate/setListItemMeta';
 import setMeta from '../utils/slate/setMeta';
+import normalizeNode from './normalizeNode';
 
 const withLawParagraphs = (editor: Editor) => {
-    const { normalizeNode } = editor;
-
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
     editor.normalizeNode = (entry) => {
         if (
-            normalizeMissingMeta(editor, entry)
+            normalizeNode(editor, entry)
+            || normalizeMissingMeta(editor, entry)
             || normalizeMovedListItem(editor, entry)
             || normalizeSentences(editor, entry)
             // || enforceTitleNameSenLayout(editor, entry)
         ) {
             return;
         }
-
-        // Continue with original `normalizeNode` to enforce other constraints.
-        normalizeNode(entry);
     };
 
     return editor;

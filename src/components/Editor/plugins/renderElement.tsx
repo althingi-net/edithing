@@ -3,19 +3,21 @@ import { ElementType } from '../Slate';
 import { TAGS } from '../../../config/tags';
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
-    const config = TAGS[element.meta?.type];
+    const config = element.meta ? TAGS[element.meta.type] : null;
 
     const className = [
         element.type,
         element.meta?.type,
     ].join(' ');
 
-    if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
-        return <span className={className} {...attributes}>{children}</span>;
-    }
+    if (config) {
+        if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
+            return <span className={className} {...attributes}>{children}</span>;
+        }
 
-    if (config.display === 'block') {
-        return <div className={className} {...attributes}>{children}</div>;
+        if (config.display === 'block') {
+            return <div className={className} {...attributes}>{children}</div>;
+        }
     }
 
     switch (element.type) {
