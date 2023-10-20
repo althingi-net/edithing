@@ -58,7 +58,7 @@ const normalizeMovedListItem = (editor: Editor, entry: NodeEntry) => {
     const [node, path] = entry;
 
     const grandParent = getParentListItem(editor, path);
-    const isMovedDownListItem = isListItem(node) && grandParent && grandParent[0].meta?.type === node.meta?.type;
+    const isMovedDownListItem = isListItem(node) && grandParent && grandParent[0].meta.type === node.meta?.type;
 
     if (isMovedDownListItem) {
         const meta = createListItemMeta(editor, path);

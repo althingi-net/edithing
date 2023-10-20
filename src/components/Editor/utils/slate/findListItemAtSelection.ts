@@ -12,10 +12,6 @@ const findListItemAtSelection = (editor: Editor, tag?: MetaType): NodeEntry<List
 
     const { anchor, focus } = editor.selection;
     const [node, location] = Node.common(editor, anchor.path, focus.path);
-    
-    if (!location) {
-        return null;
-    }
 
     if (isListItem(node) && (!tag || tag === node.meta?.type)) {
         return [node, location];

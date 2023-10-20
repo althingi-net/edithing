@@ -31,8 +31,7 @@ const withEvents = (editor: Editor) => {
     editor.apply = (operation) => {
         log('editor apply', operation);
 
-        if (!operation
-            || !OPERATIONS_BEFORE.includes(operation.type)
+        if (!OPERATIONS_BEFORE.includes(operation.type)
             || operation.type === 'set_selection'
         ) {
             return apply(operation);

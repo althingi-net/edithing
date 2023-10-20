@@ -52,21 +52,18 @@ const parseChange = (entry: Changelog, showOnlyDifference: boolean) => {
         return `${id} of the law was removed.`;
     }
 
-    if (entry.type === 'change') {
-        if (!entry.changes) {
-            return `${id} of the law shall be: ${entry.text}`;
-        }
-        
-        if (showOnlyDifference ) {
-            return `${id} of the law shall be: ${parseTextChanges(entry.changes)}`;
-        } else {
-            return (
-                <>
-                    {id} of the law shall be: {embedChangesToText(entry.changes)}
-                </>
-            );
-        }
+    if (!entry.changes) {
+        return `${id} of the law shall be: ${entry.text}`;
+    }
 
+    if (showOnlyDifference) {
+        return `${id} of the law shall be: ${parseTextChanges(entry.changes)}`;
+    } else {
+        return (
+            <>
+                {id} of the law shall be: {embedChangesToText(entry.changes)}
+            </>
+        );
     }
 
     return '';

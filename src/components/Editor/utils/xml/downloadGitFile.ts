@@ -33,15 +33,11 @@ const downloadGitFile = async (file: string) => {
         return exampleXml;
     }
 
-    const { data, status } = await github.rest.repos.getContent({
+    const { data } = await github.rest.repos.getContent({
         owner: 'althingi-net',
         repo: 'lagasafn-xml',
         path: file,
     });
-
-    if (status !== 200) {
-        throw new Error('Failed to download file from github');
-    }
 
     // @ts-ignore
     if (data.type !== 'file') {
@@ -51,7 +47,7 @@ const downloadGitFile = async (file: string) => {
     // @ts-ignore
     if (data.encoding === 'base64') {
         // @ts-ignore
-        return decodeBase64(data?.content);
+        return decodeBase64(data.content);
     }
 
     // @ts-ignore

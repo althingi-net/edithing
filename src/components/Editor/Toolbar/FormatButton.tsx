@@ -58,7 +58,7 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
         const end = isBackward ? anchor : focus;
         const endNode = Node.get(editor, end.path);
 
-        if (!end.path || !endNode || !Text.isText(endNode)) {
+        if (!Text.isText(endNode)) {
             return null;
         }
 

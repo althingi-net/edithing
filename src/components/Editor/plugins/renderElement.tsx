@@ -10,14 +10,12 @@ export function renderElement({ element, attributes, children }: RenderElementPr
         element.meta?.type,
     ].join(' ');
 
-    if (config) {
-        if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
-            return <span className={className} {...attributes}>{children}</span>;
-        }
+    if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
+        return <span className={className} {...attributes}>{children}</span>;
+    }
 
-        if (config.display === 'block') {
-            return <div className={className} {...attributes}>{children}</div>;
-        }
+    if (config.display === 'block') {
+        return <div className={className} {...attributes}>{children}</div>;
     }
 
     switch (element.type) {

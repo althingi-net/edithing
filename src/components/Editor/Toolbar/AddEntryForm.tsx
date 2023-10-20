@@ -32,10 +32,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
         const nested = locationToAdd === 'nested-list';
         const location = nested ? listItem[1] : JSON.parse(locationToAdd) as Path;
         log('Adding new chapter at', location, { bumpVersionNumber, nested });
-        if (location) {
-            createLawList(editor, MetaType.CHAPTER, location, { nested, bumpVersionNumber });
-        }
-
+        createLawList(editor, MetaType.CHAPTER, location, { nested, bumpVersionNumber });
     };
 
     const hierarchyOptions = useMemo(() => {

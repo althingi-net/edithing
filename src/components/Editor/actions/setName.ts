@@ -35,7 +35,7 @@ const setName = (
     if (meta.title) {
         const titleNode = Node.get(editor, [...path, 0, 0]);
 
-        if (!titleNode || (Text.isText(titleNode) && !titleNode.title)) {
+        if (Text.isText(titleNode) && !titleNode.title) {
             delete meta.title;
         }
     }
