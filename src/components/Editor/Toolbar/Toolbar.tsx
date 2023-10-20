@@ -1,5 +1,5 @@
-import { Checkbox, Space } from "antd";
-import useHighlightContext from "./useHighlightContext";
+import { Checkbox, Space } from 'antd';
+import useHighlightContext from './useHighlightContext';
 
 const Toolbar = () => {
     const highlight = useHighlightContext();
@@ -10,7 +10,7 @@ const Toolbar = () => {
                 Highlight sentences
             </Checkbox>
         </Space>
-    )
-}
+    );
+};
 
 export default Toolbar;

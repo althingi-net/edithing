@@ -1,12 +1,12 @@
-import { Button } from "antd"
-import { FC, useEffect, useRef, useState } from "react"
-import { Range } from "slate"
-import { ReactEditor, useFocused, useSlate } from "slate-react"
-import Portal from "../../Portal"
-import findListItemAtSelection from "../utils/slate/findListItemAtSelection"
-import styles from './SideToolbar.module.css'
-import { PlusOutlined } from "@ant-design/icons"
-import AddEntryModal from "./AddEntryModal"
+import { Button } from 'antd';
+import { FC, useEffect, useRef, useState } from 'react';
+import { Range } from 'slate';
+import { ReactEditor, useFocused, useSlate } from 'slate-react';
+import Portal from '../../Portal';
+import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
+import styles from './SideToolbar.module.css';
+import { PlusOutlined } from '@ant-design/icons';
+import AddEntryModal from './AddEntryModal';
 
 const SideToolbar = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -60,14 +60,14 @@ const SideToolbar = () => {
                 ref={ref}
                 onMouseDown={e => {
                     // prevent toolbar from taking focus away from editor
-                    e.preventDefault()
+                    e.preventDefault();
                 }}
             >
                 <AddEntryButton />
             </div>
         </Portal>
     );
-}
+};
 
 const AddEntryButton: FC = () => {
     const [isOpen, setOpen] = useState(false);
@@ -84,7 +84,7 @@ const AddEntryButton: FC = () => {
             </Button>
         </>
     );
-}
+};
 
 
 

@@ -11,6 +11,6 @@ const useDebounce = <T>(value: T, timeout: number) => {
     }, [value, timeout]);
 
     return state;
-}
+};
 
 export default useDebounce;

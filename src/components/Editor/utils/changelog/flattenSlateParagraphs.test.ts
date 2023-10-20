@@ -1,8 +1,8 @@
-import { Descendant } from "slate";
-import { MetaType } from "../../Slate";
-import createList from "../slate/createList";
-import createListItem from "../slate/createListItem";
-import flattenSlateParagraphs from "./flattenSlateParagraphs";
+import { Descendant } from 'slate';
+import { MetaType } from '../../Slate';
+import createList from '../slate/createList';
+import createListItem from '../slate/createListItem';
+import flattenSlateParagraphs from './flattenSlateParagraphs';
 
 test('flatten simple chapter>paragraph', () => {
     const inputA: Descendant[] = [

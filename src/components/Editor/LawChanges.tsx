@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import Changelog from "../../models/Changelog";
-import parseIdToDisplay from "./utils/changelog/parseidToDisplay";
-import { Switch, Typography } from "antd";
+import { FC, useState } from 'react';
+import Changelog from '../../models/Changelog';
+import parseIdToDisplay from './utils/changelog/parseidToDisplay';
+import { Switch, Typography } from 'antd';
 
 const { Text } = Typography;
 
@@ -23,7 +23,7 @@ const LawChanges: FC<Props> = ({ changelog }) => {
             <center>{index + 1}. gr.</center>
             <div>{parseChange(change, showOnlyDifference)}</div>
         </div>
-    ))
+    ));
 
     return (
         <div>
@@ -39,7 +39,7 @@ const LawChanges: FC<Props> = ({ changelog }) => {
             {changes}
         </div>
     );
-}
+};
 
 const parseChange = (entry: Changelog, showOnlyDifference: boolean) => {
     const id = parseIdToDisplay(entry.id);
@@ -70,25 +70,25 @@ const parseChange = (entry: Changelog, showOnlyDifference: boolean) => {
     }
 
     return '';
-}
+};
 
 const embedChangesToText = (changes: NonNullable<Changelog['changes']>) => {
     return (
         <span>
             {changes.map(([type, value]) => {
                 if (type === 1) {
-                    return <Text key={value} type="success" strong>{value}</Text>
+                    return <Text key={value} type="success" strong>{value}</Text>;
                 }
 
                 if (type === -1) {
-                    return <Text key={value} type="danger" delete strong>{value}</Text>
+                    return <Text key={value} type="danger" delete strong>{value}</Text>;
                 }
 
                 return <Text key={value}>{value}</Text>;
             })}
         </span>
-    )
-}
+    );
+};
 
 const parseTextChanges = (changes: Changelog['changes']) => {
     if (!changes) {
@@ -109,6 +109,6 @@ const parseTextChanges = (changes: Changelog['changes']) => {
             return '';
         })
         .join(' ');
-}
+};
 
 export default LawChanges;

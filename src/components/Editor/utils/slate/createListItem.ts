@@ -1,6 +1,6 @@
-import { Descendant } from "slate";
-import { ElementType, ListItem, ListItemText, MetaType, ListItemMeta } from "../../Slate";
-import convertRomanNumber from "../convertRomanNumber";
+import { Descendant } from 'slate';
+import { ElementType, ListItem, ListItemText, MetaType, ListItemMeta, ListItemWithMeta } from '../../Slate';
+import convertRomanNumber from '../convertRomanNumber';
 
 export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
@@ -20,9 +20,9 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     const textElement: ListItemText = {
         type: ElementType.LIST_ITEM_TEXT,
         children: [],
-    }
+    };
     
-    const listItem: ListItem = {
+    const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
         meta: {
             type: type,
@@ -35,7 +35,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     };
 
     if (name) {
-        listItem.meta!.name = true;
+        listItem.meta.name = true;
 
         if (typeof name === 'string') {
             textElement.children.unshift({ text: name, name: true });
@@ -43,7 +43,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     }
 
     if (title) {
-        listItem.meta!.title = true;
+        listItem.meta.title = true;
 
         if (typeof title === 'string') {
             textElement.children.unshift({ text: title, title: true });
@@ -51,11 +51,11 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     }
 
     if (nrType) {
-        listItem.meta!.nrType = nrType;
+        listItem.meta.nrType = nrType;
     }
 
     if (styleNote) {
-        listItem.meta!.styleNote = styleNote;
+        listItem.meta.styleNote = styleNote;
     }
 
     if (text) {
@@ -74,12 +74,12 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     }
 
     if (type === MetaType.CHAPTER) {
-        listItem.meta!.nrType = 'roman';
-        listItem.meta!.romanNr = romanNr ?? convertRomanNumber(nr);
+        listItem.meta.nrType = 'roman';
+        listItem.meta.romanNr = romanNr ?? convertRomanNumber(nr);
     }
 
     if (type === MetaType.NUMART && !nrType) {
-        listItem.meta!.nrType = 'numeric';
+        listItem.meta.nrType = 'numeric';
     }
 
     return listItem;

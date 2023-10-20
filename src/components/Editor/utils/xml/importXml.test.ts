@@ -1,10 +1,10 @@
-import { Descendant } from "slate";
-import importXml from "./importXml";
-import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
-import { MetaType } from "../../Slate";
-import createList from "../slate/createList";
-import createListItem from "../slate/createListItem";
-import { TAGS } from "../../../../config/tags";
+import { Descendant } from 'slate';
+import importXml from './importXml';
+import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
+import { MetaType } from '../../Slate';
+import createList from '../slate/createList';
+import createListItem from '../slate/createListItem';
+import { TAGS } from '../../../../config/tags';
 
 test('import meta and law chapters', () => {
     const input = `
@@ -263,7 +263,7 @@ test('ensure after editor normalization, content stays the same (if not it means
 
     const editor = createEditorWithPlugins();
     editor.children = inputSlate;
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     expect(inputSlate).toStrictEqual(editor.children);
 });
@@ -293,7 +293,7 @@ test('ignore virtual tags but still import their children', () => {
     ];
 
     // change art to be virtual
-    const oldDisplay = TAGS.art.display
+    const oldDisplay = TAGS.art.display;
     TAGS.art.display = 'virtual';
 
     expect(importXml(input).slate).toStrictEqual(output);

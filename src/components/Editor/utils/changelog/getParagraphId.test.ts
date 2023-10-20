@@ -1,8 +1,8 @@
-import { Node } from "slate";
-import { wrapRootNode, MetaType } from "../../Slate";
-import createList from "../slate/createList";
-import createListItem from "../slate/createListItem";
-import getParagraphId from "./getParagraphId";
+import { Node } from 'slate';
+import { wrapRootNode, MetaType } from '../../Slate';
+import createList from '../slate/createList';
+import createListItem from '../slate/createListItem';
+import getParagraphId from './getParagraphId';
 
 test('getParagraphId 1 level deep', () => {
     const input = wrapRootNode([

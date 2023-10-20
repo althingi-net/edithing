@@ -1,10 +1,10 @@
-import { BoldOutlined } from "@ant-design/icons";
-import { useEffect, useRef } from "react";
-import { Editor, Range } from "slate";
-import { useFocused, useSlate } from "slate-react";
-import Portal from "../../Portal";
+import { BoldOutlined } from '@ant-design/icons';
+import { useEffect, useRef } from 'react';
+import { Editor, Range } from 'slate';
+import { useFocused, useSlate } from 'slate-react';
+import Portal from '../../Portal';
 import './HoverToolbar.css';
-import FormatButton from "./FormatButton";
+import FormatButton from './FormatButton';
 
 const HoveringToolbar = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -48,7 +48,7 @@ const HoveringToolbar = () => {
                 ref={ref}
                 onMouseDown={e => {
                     // prevent toolbar from taking focus away from editor
-                    e.preventDefault()
+                    e.preventDefault();
                 }}
             >
                 <FormatButton format="bold" icon={<BoldOutlined />} />
@@ -58,7 +58,7 @@ const HoveringToolbar = () => {
             </div>
         </Portal>
     );
-}
+};
 
 
 export default HoveringToolbar;

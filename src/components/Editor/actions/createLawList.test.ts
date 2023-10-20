@@ -1,8 +1,8 @@
-import { MetaType } from "../Slate";
-import createEditorWithPlugins from "../plugins/createEditorWithPlugins";
-import createList from "../utils/slate/createList";
-import createListItem from "../utils/slate/createListItem";
-import createLawList from "./createLawList";
+import { MetaType } from '../Slate';
+import createEditorWithPlugins from '../plugins/createEditorWithPlugins';
+import createList from '../utils/slate/createList';
+import createListItem from '../utils/slate/createListItem';
+import createLawList from './createLawList';
 
 test('create new list item and increment following siblings', () => {
     const editor = createEditorWithPlugins();
@@ -15,7 +15,7 @@ test('create new list item and increment following siblings', () => {
 
     createLawList(editor, MetaType.CHAPTER, [0, 0], { bumpVersionNumber: true });
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
@@ -37,7 +37,7 @@ test('create new list item and do not increment following siblings', () => {
 
     createLawList(editor, MetaType.CHAPTER, [0, 0], { bumpVersionNumber: false });
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
@@ -59,7 +59,7 @@ test('create new list item and nest it', () => {
 
     createLawList(editor, MetaType.CHAPTER, [0, 0], { nested: true });
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [

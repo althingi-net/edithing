@@ -42,4 +42,4 @@ export const TAGS: { [key: string]: TagConfig } = {
         display: 'inline',
         canHave: [],
     },
-}
+};

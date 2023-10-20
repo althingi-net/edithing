@@ -1,8 +1,8 @@
-import { Operation, createEditor } from "slate";
-import { MetaType } from "../Slate";
-import createList from "../utils/slate/createList";
-import createListItem from "../utils/slate/createListItem";
-import withEvents from "./withEvents";
+import { Operation, createEditor } from 'slate';
+import { MetaType } from '../Slate';
+import createList from '../utils/slate/createList';
+import createListItem from '../utils/slate/createListItem';
+import withEvents from './withEvents';
 
 const setupEditor = () => {
     const editor = withEvents(createEditor());
@@ -18,7 +18,7 @@ const setupEditor = () => {
     ];
 
     return {editor, node};
-}
+};
 
 test('withEvents remove_text', () => {
     const { editor } = setupEditor();
@@ -105,7 +105,6 @@ test('withEvents insert_node', async () => {
 test('withEvents set_node with missing meta', async () => {
     const { editor, node } = setupEditor();
     const meta = node.meta;
-    // @ts-ignore
     delete node.meta;
     const operation: Operation = { type: 'set_node', path: [0, 1],  properties: { }, newProperties: { meta } };
     

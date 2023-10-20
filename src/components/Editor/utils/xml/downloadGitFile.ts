@@ -1,5 +1,6 @@
-import github from "../../../../api/github";
-import decodeBase64 from "./decodeBase64";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import github from '../../../../api/github';
+import decodeBase64 from './decodeBase64';
 
 const exampleXml = `
     <law nr="33" year="1944">
@@ -32,29 +33,29 @@ const downloadGitFile = async (file: string) => {
         return exampleXml;
     }
 
-    const result = await github.rest.repos.getContent({
+    const { data, status } = await github.rest.repos.getContent({
         owner: 'althingi-net',
         repo: 'lagasafn-xml',
         path: file,
     });
 
-    if (result.status !== 200) {
+    if (status !== 200) {
         throw new Error('Failed to download file from github');
     }
 
     // @ts-ignore
-    if (result.data?.type !== 'file') {
+    if (data.type !== 'file') {
         throw new Error('Github url is not a file');
     }
 
     // @ts-ignore
-    if (result.data?.encoding === 'base64') {
+    if (data.encoding === 'base64') {
         // @ts-ignore
-        return decodeBase64(result.data?.content);
+        return decodeBase64(data?.content);
     }
 
     // @ts-ignore
-    return result.data?.content;
-}
+    return data.content;
+};
 
-export default downloadGitFile
+export default downloadGitFile;

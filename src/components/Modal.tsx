@@ -1,9 +1,9 @@
-import { FC, PropsWithChildren, useEffect, useRef } from "react";
-import "./Modal.css";
-import Portal from "./Portal";
-import { CSSTransition } from "react-transition-group";
-import { CloseOutlined } from "@ant-design/icons";
-import { Card, Button } from "antd";
+import { FC, PropsWithChildren, useEffect, useRef } from 'react';
+import './Modal.css';
+import Portal from './Portal';
+import { CSSTransition } from 'react-transition-group';
+import { CloseOutlined } from '@ant-design/icons';
+import { Card, Button } from 'antd';
 
 interface Props extends PropsWithChildren {
     isOpen: boolean;
@@ -14,12 +14,12 @@ interface Props extends PropsWithChildren {
 const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
     const nodeRef = useRef(null);
     useEffect(() => {
-        const closeOnEscapeKey = (event: KeyboardEvent) => event.key === "Escape" ? onClose() : null;
+        const closeOnEscapeKey = (event: KeyboardEvent) => event.key === 'Escape' ? onClose() : null;
 
-        document.body.addEventListener("keydown", closeOnEscapeKey);
+        document.body.addEventListener('keydown', closeOnEscapeKey);
 
         return () => {
-            document.body.removeEventListener("keydown", closeOnEscapeKey);
+            document.body.removeEventListener('keydown', closeOnEscapeKey);
         };
     }, [onClose]);
 
@@ -48,6 +48,6 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
             </CSSTransition>
         </Portal >
     );
-}
+};
 
 export default Modal;

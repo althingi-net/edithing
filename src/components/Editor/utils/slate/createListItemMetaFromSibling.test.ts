@@ -1,6 +1,6 @@
-import { MetaType } from "../../Slate";
-import createListItem from "./createListItem";
-import createListItemMetaFromSibling from "./createListItemMetaFromSibling";
+import { MetaType } from '../../Slate';
+import createListItem from './createListItem';
+import createListItemMetaFromSibling from './createListItemMetaFromSibling';
 
 test('copy and increase nr', () => {
     const sibling = createListItem(MetaType.CHAPTER, '1');

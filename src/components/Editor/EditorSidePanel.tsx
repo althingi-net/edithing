@@ -1,14 +1,14 @@
-import { Collapse } from "antd";
-import { FC, useMemo } from "react";
-import { CodeBlock } from "react-code-blocks";
-import { useSlate } from "slate-react";
-import CopyClipboardButton from "./CopyClipboardButton";
-import LawChanges from "./LawChanges";
-import NodeMetaForm from "./NodeMetaForm";
-import compareDocuments from "./utils/changelog/compareDocuments";
-import useDebounce from "./utils/useDebounce";
-import exportXml from "./utils/xml/exportXml";
-import importXml from "./utils/xml/importXml";
+import { Collapse } from 'antd';
+import { FC, useMemo } from 'react';
+import { CodeBlock } from 'react-code-blocks';
+import { useSlate } from 'slate-react';
+import CopyClipboardButton from './CopyClipboardButton';
+import LawChanges from './LawChanges';
+import NodeMetaForm from './NodeMetaForm';
+import compareDocuments from './utils/changelog/compareDocuments';
+import useDebounce from './utils/useDebounce';
+import exportXml from './utils/xml/exportXml';
+import importXml from './utils/xml/importXml';
 
 interface Props {
     originalDocument: ReturnType<typeof importXml>;
@@ -61,6 +61,6 @@ const EditorSidePanel: FC<Props> = (props) => {
     // Note: Important to re-render on changes of debouncedSlate.events and debouncedSlate.children
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedSlate, debouncedSlate.events, debouncedSlate.children, originalDocument, xml]);
-}
+};
 
 export default EditorSidePanel;

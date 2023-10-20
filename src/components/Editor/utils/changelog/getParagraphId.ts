@@ -1,6 +1,6 @@
-import { Node, Path, Text } from "slate";
-import findNode from "../findNode";
-import getListItemHierarchy from "../slate/getListItemHierarchy";
+import { Node, Path, Text } from 'slate';
+import findNode from '../findNode';
+import getListItemHierarchy from '../slate/getListItemHierarchy';
 
 /**
  * Return an id to identify a law paragraph down to the sentence level.
@@ -38,6 +38,6 @@ const getParagraphId = (root: Node, path: Path) => {
     }
 
     return ids.join('.');
-}
+};
 
 export default getParagraphId;

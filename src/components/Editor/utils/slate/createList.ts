@@ -1,5 +1,6 @@
-import { Descendant } from "slate";
-import { ElementType, MetaType, List } from "../../Slate";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Descendant } from 'slate';
+import { ElementType, MetaType, List } from '../../Slate';
 
 interface Options {
     nrType?: 'roman' | 'numeric' | 'alphabet';
@@ -14,7 +15,7 @@ const createList = (type: MetaType, options: Options = {}, children: Descendant[
             type: type,
         },
         children,
-    }
+    };
 
     if (type === MetaType.CHAPTER) {
         list.meta!.nrType = 'roman';

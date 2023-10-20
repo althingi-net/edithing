@@ -1,6 +1,6 @@
-import { Editor, Node, Text, Transforms } from "slate";
-import getParentListItem from "../utils/slate/getParentListItem";
-import setListItemMeta from "../utils/slate/setListItemMeta";
+import { Editor, Node, Text, Transforms } from 'slate';
+import getParentListItem from '../utils/slate/getParentListItem';
+import setListItemMeta from '../utils/slate/setListItemMeta';
 
 /**
  * 
@@ -28,7 +28,7 @@ const setTitle = (
         { at, match: Text.isText, split: true }
     );
 
-    let meta = { ...listItem.meta, title: true };
+    const meta = { ...listItem.meta, title: true };
     if (meta.name) {
         const nameNode = Node.get(editor, [...path, 0, 1]);
 
@@ -40,6 +40,6 @@ const setTitle = (
     setListItemMeta(editor, listItem, path, meta, false);
 
     return true;
-}
+};
 
 export default setTitle;

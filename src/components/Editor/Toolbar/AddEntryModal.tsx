@@ -1,6 +1,6 @@
-import { FC } from "react";
-import Modal from "../../Modal";
-import AddEntryForm from "./AddEntryForm";
+import { FC } from 'react';
+import Modal from '../../Modal';
+import AddEntryForm from './AddEntryForm';
 
 interface Props {
     isOpen: boolean;
@@ -15,6 +15,6 @@ const AddEntryModal: FC<Props> = ({ isOpen, onClose }) => {
             </div>
         </Modal>
     );
-}
+};
 
 export default AddEntryModal;

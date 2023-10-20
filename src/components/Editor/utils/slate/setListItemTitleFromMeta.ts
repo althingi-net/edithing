@@ -1,8 +1,8 @@
-import { Editor, Transforms } from "slate";
-import { ListItemMeta } from "../../Slate";
-import createLawTitle from "./createLawTitle";
-import getListItemTitle from "./getListItemTitle";
-import getPreviousSibling from "./getPreviousSibling";
+import { Editor, Transforms } from 'slate';
+import { ListItemMeta } from '../../Slate';
+import createLawTitle from './createLawTitle';
+import getListItemTitle from './getListItemTitle';
+import getPreviousSibling from './getPreviousSibling';
 
 /**
  * Update title of ListItem node based on new meta
@@ -27,6 +27,6 @@ const setListItemTitleFromMeta = (editor: Editor, path: number[], meta: ListItem
 
         Transforms.insertNodes(editor, { text: title, title: true }, { at, select: true });
     }
-}
+};
 
 export default setListItemTitleFromMeta;

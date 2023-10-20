@@ -1,4 +1,4 @@
-import { Node, Path } from "slate";
+import { Node, Path } from 'slate';
 
 const findNode = (root: Node, path: Path) => {
     try {
@@ -6,6 +6,6 @@ const findNode = (root: Node, path: Path) => {
     } catch (error) {
         return null;
     }
-}
+};
 
 export default findNode;

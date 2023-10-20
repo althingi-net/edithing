@@ -1,6 +1,6 @@
-import { Editor, Node, Text, Transforms } from "slate";
-import getParentListItem from "../utils/slate/getParentListItem";
-import setMeta from "../utils/slate/setMeta";
+import { Editor, Node, Text, Transforms } from 'slate';
+import getParentListItem from '../utils/slate/getParentListItem';
+import setMeta from '../utils/slate/setMeta';
 
 /**
  * 
@@ -29,7 +29,7 @@ const setName = (
         { at, match: Text.isText, split: true }
     );
 
-    let meta = { ...listItem.meta, name: true }
+    const meta = { ...listItem.meta, name: true };
     
     // Remove title from meta
     if (meta.title) {
@@ -43,6 +43,6 @@ const setName = (
     setMeta(editor, path, meta);
 
     return true;
-}
+};
 
 export default setName;

@@ -1,20 +1,20 @@
-import { Tooltip, Button } from "antd";
-import { FC } from "react";
-import { Transforms, Editor, Text, Node, Path, Range } from "slate";
-import { useSlate } from "slate-react";
-import setName from "../actions/setName";
-import setTitle from "../actions/setTitle";
-import findListItemAtSelection from "../utils/slate/findListItemAtSelection";
+import { Tooltip, Button } from 'antd';
+import { FC, ReactNode } from 'react';
+import { Transforms, Editor, Text, Node, Path, Range } from 'slate';
+import { useSlate } from 'slate-react';
+import setName from '../actions/setName';
+import setTitle from '../actions/setTitle';
+import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
 interface Props {
     format: Marks;
-    icon: any;
+    icon: ReactNode;
 }
 
 const FormatButton: FC<Props> = ({ format, icon }) => {
-    const editor = useSlate()
+    const editor = useSlate();
 
     const handleClick = () => {
         if (format === 'title') {
@@ -34,7 +34,7 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
         }
 
         toggleMark(editor, format);
-    }
+    };
 
     if (!editor.selection) {
         return null;
@@ -124,21 +124,21 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
             </Button>
         </Tooltip>
     );
-}
+};
 
 const getTooltipText = (format: Marks) => {
     switch (format) {
-        case 'title':
-            return `Create a title for this paragraph. Needs to be first text of paragraph`;
-        case 'name':
-            return `Create a name for this paragraph. Needs to be first text of paragraph if there is no title or be right after the title`;
-        case 'nr':
-            return `Format the selected text as its own sentence.`;
-        case 'bold':
-        default:
-            return `Format selected text with ${format}. Press again to remove formatting.`;
+    case 'title':
+        return 'Create a title for this paragraph. Needs to be first text of paragraph';
+    case 'name':
+        return 'Create a name for this paragraph. Needs to be first text of paragraph if there is no title or be right after the title';
+    case 'nr':
+        return 'Format the selected text as its own sentence.';
+    case 'bold':
+    default:
+        return `Format selected text with ${format}. Press again to remove formatting.`;
     }
-}
+};
 
 const toggleMark = (editor: Editor, format: Marks) => {
     const isActive = isMarkActive(editor, format);
@@ -148,11 +148,11 @@ const toggleMark = (editor: Editor, format: Marks) => {
     } else {
         Editor.addMark(editor, format, true);
     }
-}
+};
 
 const isMarkActive = (editor: Editor, format: Marks) => {
     const marks = Editor.marks(editor);
     return marks ? marks[format] === true : false;
-}
+};
 
 export default FormatButton;

@@ -1,10 +1,10 @@
-import { Descendant } from "slate";
-import compareDocuments from "./compareDocuments";
-import Changelog from "../../../../models/Changelog";
-import { MetaType } from "../../Slate";
-import createList from "../slate/createList";
-import createListItem from "../slate/createListItem";
-import { Event } from "../../plugins/withEvents";
+import { Descendant } from 'slate';
+import compareDocuments from './compareDocuments';
+import Changelog from '../../../../models/Changelog';
+import { MetaType } from '../../Slate';
+import createList from '../slate/createList';
+import createListItem from '../slate/createListItem';
+import { Event } from '../../plugins/withEvents';
 
 // test('renaming a paragraph and adding the same one again with a different text', () => {
 //     const inputA = `
@@ -44,8 +44,8 @@ test('Removed paragraph 2', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "paragraph-2.title",
-        type: "delete",
+        id: 'paragraph-2.title',
+        type: 'delete',
     }];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -68,9 +68,9 @@ test('Added paragraph 2', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "paragraph-2.title",
-        type: "add",
-        text: "New Text ",
+        id: 'paragraph-2.title',
+        type: 'add',
+        text: 'New Text ',
     }];
 
     expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
@@ -93,21 +93,21 @@ test('Changed paragraph 1', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "paragraph-1.title",
-        type: "change",
-        text: "Hello z ",
+        id: 'paragraph-1.title',
+        type: 'change',
+        text: 'Hello z ',
         changes: [[
             0,
-            "Hello ",
+            'Hello ',
         ], [
             -1,
-            "World",
+            'World',
         ], [
             1,
-            "z",
+            'z',
         ], [
             0,
-            " ",
+            ' ',
         ]],
     }];
 
@@ -141,21 +141,21 @@ test('Changed Chapter 1 Paragraph 2', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "chapter-1.paragraph-2.title",
-        type: "change",
-        text: "Hello z ",
+        id: 'chapter-1.paragraph-2.title',
+        type: 'change',
+        text: 'Hello z ',
         changes: [[
             0,
-            "Hello ",
+            'Hello ',
         ], [
             -1,
-            "World",
+            'World',
         ], [
             1,
-            "z",
+            'z',
         ], [
             0,
-            " ",
+            ' ',
         ]],
     }];
 
@@ -190,21 +190,21 @@ test('Merge events for the same id', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "chapter-1.paragraph-2.title",
-        type: "change",
-        text: "Hello z ",
+        id: 'chapter-1.paragraph-2.title',
+        type: 'change',
+        text: 'Hello z ',
         changes: [[
             0,
-            "Hello ",
+            'Hello ',
         ], [
             -1,
-            "World",
+            'World',
         ], [
             1,
-            "z",
+            'z',
         ], [
             0,
-            " ",
+            ' ',
         ]],
     }];
 
@@ -232,38 +232,38 @@ test('Sort entries by ascending id', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "paragraph-2.title",
-        type: "change",
-        text: "Hello 2 ",
+        id: 'paragraph-2.title',
+        type: 'change',
+        text: 'Hello 2 ',
         changes: [[
             0,
-            "Hello ",
+            'Hello ',
         ], [
             -1,
-            "World",
+            'World',
         ], [
             1,
-            "2",
+            '2',
         ], [
             0,
-            " ",
+            ' ',
         ]],
     }, {
-        id: "paragraph-3.title",
-        type: "change",
-        text: "Hello 3 ",
+        id: 'paragraph-3.title',
+        type: 'change',
+        text: 'Hello 3 ',
         changes: [[
             0,
-            "Hello ",
+            'Hello ',
         ], [
             -1,
-            "World",
+            'World',
         ], [
             1,
-            "3",
+            '3',
         ], [
             0,
-            " ",
+            ' ',
         ]],
     }];
 
@@ -296,15 +296,15 @@ test('Added word in sen 2', () => {
     ];
 
     const output: Changelog[] = [{
-        id: "chapter-1.paragraph-2.sen-2",
-        type: "change",
-        text: "sen2 newword",
+        id: 'chapter-1.paragraph-2.sen-2',
+        type: 'change',
+        text: 'sen2 newword',
         changes: [[
             0,
-            "sen2",
+            'sen2',
         ], [
             1,
-            " newword",
+            ' newword',
         ]],
     }];
 

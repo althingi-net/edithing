@@ -1,7 +1,7 @@
-import { BaseEditor, Descendant, Element, Node, Text } from "slate";
-import { HistoryEditor } from "slate-history";
-import { ReactEditor } from "slate-react";
-import { EventsEditor } from "./plugins/withEvents";
+import { BaseEditor, Descendant, Element, Node, Text } from 'slate';
+import { HistoryEditor } from 'slate-history';
+import { ReactEditor } from 'slate-react';
+import { EventsEditor } from './plugins/withEvents';
 
 // List items have either 1 or 2 children, always in the following order:
 // 0 - list item text
@@ -12,6 +12,7 @@ export const NESTED_LIST_PATH_INDEX = 1;
 declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | List
         Text: { text: string, title?: boolean, name?: boolean, nr?: string, bold?: boolean }
     }
@@ -37,6 +38,10 @@ export interface List  {
     type: ElementType.LIST;
     children: Descendant[],
     meta?: ListMeta
+}
+
+export interface ListWithMeta extends List {
+    meta: ListMeta;
 }
 
 export interface ListItemMeta extends ListMeta {
@@ -122,17 +127,17 @@ export const LIST_TAGS = [
 //     },
 // };
 
-export const isList = (node: Node): node is List => {
+export const isList = (node?: Node | null): node is List => {
     return Element.isElementType(node, ElementType.LIST);
-}
+};
 
-export const isListItem = (node: any): node is ListItem => {
+export const isListItem = (node?: Node | null): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
-}
+};
 
-export const isListItemText = (node: any): node is ListItemText => {
+export const isListItemText = (node?: Node | null): node is ListItemText => {
     return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
-}
+};
 
 /**
  * Create empty root node, for testing purposes only. This would usually be an instance of Editor.
@@ -141,4 +146,4 @@ export const isListItemText = (node: any): node is ListItemText => {
  */
 export const wrapRootNode = (children: Node[]): Node => {
     return { children } as Node;
-}
+};

@@ -1,6 +1,6 @@
-import { Descendant, Element, Node, Path, Text } from "slate";
-import { ElementType } from "../../Slate";
-import getParagraphId from "./getParagraphId";
+import { Descendant, Element, Node, Path, Text } from 'slate';
+import { ElementType } from '../../Slate';
+import getParagraphId from './getParagraphId';
 
 export interface FlattenedParagraph {
     path: Path;
@@ -40,6 +40,6 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
     });
 
     return list;
-}
+};
 
 export default flattenSlateParagraphs;

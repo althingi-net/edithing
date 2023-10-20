@@ -1,8 +1,8 @@
-import { createEditor } from "slate";
-import getPreviousSibling from "./getPreviousSibling";
-import { MetaType } from "../../Slate";
-import createList from "./createList";
-import createListItem from "./createListItem";
+import { createEditor } from 'slate';
+import getPreviousSibling from './getPreviousSibling';
+import { MetaType } from '../../Slate';
+import createList from './createList';
+import createListItem from './createListItem';
 
 test('get first sibling with 3 nodes', () => {
     const editor = createEditor();

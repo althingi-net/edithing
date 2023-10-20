@@ -1,6 +1,6 @@
-import { Editor, Location, NodeEntry } from "slate";
-import { ListItem, ListItemWithMeta, isListItem } from "../../Slate";
-import isListItemWithMeta from "./isListItemWithMeta";
+import { Editor, Location, NodeEntry } from 'slate';
+import { ListItem, ListItemWithMeta, isListItem } from '../../Slate';
+import isListItemWithMeta from './isListItemWithMeta';
 
 /**
  * Retrieves the next list item in the hierarchy above the given location.
@@ -26,6 +26,6 @@ const getParentListItem = (editor: Editor, at: Location): NodeEntry<ListItemWith
 
     return [parent, parentListItem[1]];
 
-}
+};
 
 export default getParentListItem;

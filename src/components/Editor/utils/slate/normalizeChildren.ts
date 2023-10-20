@@ -1,4 +1,4 @@
-import { Element, Text } from "slate";
+import { Element, Text } from 'slate';
 
 /**
  * Adds empty text node to given Slate element if there is none.  
@@ -15,8 +15,8 @@ const normalizeChildren = (element: Element) => {
 
     // add required empty text node if there is none
     if (element.children.length === 0) {
-        element.children.push({ text: '' })
+        element.children.push({ text: '' });
     }
-}
+};
 
 export default normalizeChildren;

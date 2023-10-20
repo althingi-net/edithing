@@ -1,7 +1,7 @@
-import { ListItem } from "../../Slate";
-import incrementLetter from "../incrementLetter";
-import incrementMixedNumber from "../incrementMixedNumber";
-import incrementRomanNumber from "../incrementRomanNumber";
+import { ListItem } from '../../Slate';
+import incrementLetter from '../incrementLetter';
+import incrementMixedNumber from '../incrementMixedNumber';
+import incrementRomanNumber from '../incrementRomanNumber';
 
 const createListItemMetaFromSibling = (sibling: ListItem) => {
     if (!sibling.meta) {
@@ -36,6 +36,6 @@ const createListItemMetaFromSibling = (sibling: ListItem) => {
     }
 
     return meta;
-}
+};
 
 export default createListItemMetaFromSibling;

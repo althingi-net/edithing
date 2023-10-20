@@ -1,9 +1,9 @@
-import { Editor } from "slate";
-import { MetaType } from "../Slate";
-import createEditorWithPlugins from "../plugins/createEditorWithPlugins";
-import createList from "../utils/slate/createList";
-import createListItem, { Options } from "../utils/slate/createListItem";
-import setName from "./setName";
+import { Editor } from 'slate';
+import { MetaType } from '../Slate';
+import createEditorWithPlugins from '../plugins/createEditorWithPlugins';
+import createList from '../utils/slate/createList';
+import createListItem, { Options } from '../utils/slate/createListItem';
+import setName from './setName';
 
 const testSetName = (metaInput: Options, expectedMeta: Options, selectionOffset: number, selectionStart = 0) => {
     const editor = createEditorWithPlugins();
@@ -24,17 +24,21 @@ const testSetName = (metaInput: Options, expectedMeta: Options, selectionOffset:
         },
     };
 
-    editor.selection.focus = Editor.after(editor, editor.selection.anchor, { distance: selectionOffset })!;
+    const focus = Editor.after(editor, editor.selection.anchor, { distance: selectionOffset });
+    if (!focus) {
+        throw new Error('testSetName: focus is null');
+    }
+    editor.selection.focus = focus;
 
     setName(editor);
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', expectedMeta),
         ]),
     ]);
-}
+};
 
 test('beginning of a list item text without prior title or name', () => {
     testSetName(

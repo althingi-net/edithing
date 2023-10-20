@@ -1,8 +1,8 @@
-import { Editor, Path } from "slate";
-import { ListItem, ListItemMeta, MetaType } from "../../Slate";
-import convertRomanNumber from "../convertRomanNumber";
-import setListItemTitleFromMeta from "./setListItemTitleFromMeta";
-import setMeta from "./setMeta";
+import { Editor, Path } from 'slate';
+import { ListItem, ListItemMeta, MetaType } from '../../Slate';
+import convertRomanNumber from '../convertRomanNumber';
+import setListItemTitleFromMeta from './setListItemTitleFromMeta';
+import setMeta from './setMeta';
 
 const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta, updateTitle = true) => {  
     // Add romanNr and nrType
@@ -11,7 +11,7 @@ const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListI
             ...meta,
             romanNr: convertRomanNumber(meta.nr),
             nrType: 'roman',
-        }
+        };
 
     // Remove romanNr and nrType
     } else if (node.meta?.type === MetaType.CHAPTER) {
@@ -24,6 +24,6 @@ const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListI
     if (updateTitle) {
         setListItemTitleFromMeta(editor, path, meta);
     }
-}
+};
 
 export default setListItemMeta;

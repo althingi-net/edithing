@@ -1,15 +1,15 @@
-import { Editor, Element, Node, NodeEntry, Text, Transforms } from "slate";
-import { log } from "../../../logger";
-import { isList, isListItem, isListItemText } from "../Slate";
-import createListItemMeta from "../utils/slate/createListItemMeta";
-import createListMeta from "../utils/slate/createListMeta";
-import getParentListItem from "../utils/slate/getParentListItem";
-import incrementFollowingSiblings from "../utils/slate/incrementFollowingSiblings";
-import setListItemMeta from "../utils/slate/setListItemMeta";
-import setMeta from "../utils/slate/setMeta";
+import { Editor, Element, Node, NodeEntry, Text, Transforms } from 'slate';
+import { log } from '../../../logger';
+import { isList, isListItem, isListItemText } from '../Slate';
+import createListItemMeta from '../utils/slate/createListItemMeta';
+import createListMeta from '../utils/slate/createListMeta';
+import getParentListItem from '../utils/slate/getParentListItem';
+import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';
+import setListItemMeta from '../utils/slate/setListItemMeta';
+import setMeta from '../utils/slate/setMeta';
 
 const withLawParagraphs = (editor: Editor) => {
-    const { normalizeNode } = editor
+    const { normalizeNode } = editor;
 
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
     editor.normalizeNode = (entry) => {
@@ -23,26 +23,26 @@ const withLawParagraphs = (editor: Editor) => {
         }
 
         // Continue with original `normalizeNode` to enforce other constraints.
-        normalizeNode(entry)
-    }
+        normalizeNode(entry);
+    };
 
-    return editor
+    return editor;
 };
 
 const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {
-    const [node, path] = entry
+    const [node, path] = entry;
 
     if (Element.isElement(node) && !node['meta']) {
         if (isList(node)) {
             const meta = createListMeta(editor, path);
-            log('add missing meta to list', { node, path, meta })
+            log('add missing meta to list', { node, path, meta });
             setMeta(editor, path, meta);
             return true;
         }
 
         if (isListItem(node)) {
             const meta = createListItemMeta(editor, path);
-            log('add missing meta to list item', { node, path, meta })
+            log('add missing meta to list item', { node, path, meta });
 
             setListItemMeta(editor, node, path, meta);
             incrementFollowingSiblings(editor, path);
@@ -52,17 +52,17 @@ const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {
     }
 
     return false;
-}
+};
 
 const normalizeMovedListItem = (editor: Editor, entry: NodeEntry) => {
-    const [node, path] = entry
+    const [node, path] = entry;
 
     const grandParent = getParentListItem(editor, path);
     const isMovedDownListItem = isListItem(node) && grandParent && grandParent[0].meta?.type === node.meta?.type;
 
     if (isMovedDownListItem) {
         const meta = createListItemMeta(editor, path);
-        log('update meta of moved list item', { node, path, meta })
+        log('update meta of moved list item', { node, path, meta });
         setListItemMeta(editor, node, path, meta);
         return true;
     }
@@ -131,10 +131,10 @@ const normalizeMovedListItem = (editor: Editor, entry: NodeEntry) => {
     //         return true;
     //     }
     // }
-}
+};
 
 const normalizeSentences = (editor: Editor, entry: NodeEntry) => {
-    const [node, path] = entry
+    const [node, path] = entry;
 
     if (!isListItemText(node)) {
         return false;
@@ -162,10 +162,10 @@ const normalizeSentences = (editor: Editor, entry: NodeEntry) => {
     });
 
     return false;
-}
+};
 
 const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
-    const [node, path] = entry
+    const [node, path] = entry;
 
     if (!isListItemText(node)) {
         return false;
@@ -233,6 +233,6 @@ const enforceTitleNameSenLayout = (editor: Editor, entry: NodeEntry) => {
     // });
 
     return false;
-}
+};
 
 export default withLawParagraphs;

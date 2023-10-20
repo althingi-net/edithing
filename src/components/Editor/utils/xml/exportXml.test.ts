@@ -1,18 +1,18 @@
-import { Descendant } from "slate";
-import beautify from "xml-beautifier";
-import exportXml from "./exportXml";
-import { MetaType } from "../../Slate";
-import createList from "../slate/createList";
-import createListItem from "../slate/createListItem";
-import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
+import { Descendant } from 'slate';
+import beautify from 'xml-beautifier';
+import exportXml from './exportXml';
+import { MetaType } from '../../Slate';
+import createList from '../slate/createList';
+import createListItem from '../slate/createListItem';
+import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
 
-const createEditor = (input: Descendant[]): any => {
+const createEditor = (input: Descendant[]) => {
     const editor = createEditorWithPlugins();
 
     editor.children = input;
 
     return editor;
-}
+};
 
 test('export chapters', () => {
     const input = createEditor([
@@ -43,7 +43,7 @@ test('export chapters', () => {
         <chapter nr="2" nr-type="roman" roman-nr="II">
             <nr-title>II.</nr-title>
         </chapter>
-    `
+    `;
 
     expect(exportXml(input)).toBe(beautify(output));
 });

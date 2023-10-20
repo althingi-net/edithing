@@ -1,9 +1,9 @@
-import { Button, List, Space } from "antd";
-import Search from "antd/es/input/Search";
-import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import GithubFile from "../../models/GithubFile";
-import useLawListContext from "./useLawListContext";
+import { Button, List, Space } from 'antd';
+import Search from 'antd/es/input/Search';
+import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import GithubFile from '../../models/GithubFile';
+import useLawListContext from './useLawListContext';
 
 const DocumentSelector: FC = () => {
     const [filter, setFilter] = useState('');
@@ -26,7 +26,7 @@ const DocumentSelector: FC = () => {
                 renderItem={(item) =>
                     <List.Item
                         style={{ width: '100%' }}
-                        actions={[<Button onClick={() => navigate(`/law/${item.identifier}`)}>Edit</Button>]}
+                        actions={[<Button key={0} onClick={() => navigate(`/law/${item.identifier}`)}>Edit</Button>]}
                     >
                         <List.Item.Meta
                             title={`${item.identifier} - ${item.date}`}
@@ -37,8 +37,8 @@ const DocumentSelector: FC = () => {
                 pagination={{ position: 'bottom', align: 'center' }}
             />
         </Space >
-    )
-}
+    );
+};
 
 const filterLawEntry = (filter: string) => (item: GithubFile) => {
     const filterLower = filter.toLowerCase();
@@ -46,6 +46,6 @@ const filterLawEntry = (filter: string) => (item: GithubFile) => {
     return item.name.toLowerCase().includes(filterLower) ||
         item.identifier.toLowerCase().includes(filterLower) ||
         item.date.toLowerCase().includes(filterLower);
-}
+};
 
 export default DocumentSelector;

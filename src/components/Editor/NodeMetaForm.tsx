@@ -1,15 +1,11 @@
-import { NumberOutlined, TagOutlined, ToolOutlined } from "@ant-design/icons";
-import { Checkbox, Form, Input, Space } from "antd";
-import { FC } from "react";
-import { useSlateSelector, useSlateStatic } from "slate-react";
-import findListItemAtSelection from "./utils/slate/findListItemAtSelection";
-import getListItemTitle from "./utils/slate/getListItemTitle";
+import { NumberOutlined, TagOutlined, ToolOutlined } from '@ant-design/icons';
+import { Checkbox, Form, Input, Space } from 'antd';
+import { FC } from 'react';
+import { useSlateSelector, useSlateStatic } from 'slate-react';
+import findListItemAtSelection from './utils/slate/findListItemAtSelection';
+import getListItemTitle from './utils/slate/getListItemTitle';
 
-interface Props {
-
-}
-
-const NodeMetaForm: FC<Props> = () => {
+const NodeMetaForm: FC = () => {
     const editor = useSlateStatic();
     const [listItem, path] = useSlateSelector(findListItemAtSelection) ?? [];
     const [form] = Form.useForm();
@@ -47,7 +43,7 @@ const NodeMetaForm: FC<Props> = () => {
                 </Space>
             </Form>
         </div>
-    )
-}
+    );
+};
 
 export default NodeMetaForm;

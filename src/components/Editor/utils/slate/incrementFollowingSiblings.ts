@@ -1,8 +1,8 @@
-import { Editor, Transforms } from "slate";
-import { isListItem } from "../../Slate";
-import incrementMixedNumber from "../incrementMixedNumber";
-import incrementRomanNumber from "../incrementRomanNumber";
-import setListItemMeta from "./setListItemMeta";
+import { Editor, Transforms } from 'slate';
+import { isListItem } from '../../Slate';
+import incrementMixedNumber from '../incrementMixedNumber';
+import incrementRomanNumber from '../incrementRomanNumber';
+import setListItemMeta from './setListItemMeta';
 
 const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
     const previousSelection = editor.selection;
@@ -31,6 +31,6 @@ const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
     if (previousSelection) {
         Transforms.setSelection(editor, previousSelection);
     }
-}
+};
 
 export default incrementFollowingSiblings;

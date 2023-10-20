@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
-import GithubFile from "../../models/GithubFile";
-import getLawEntries from "./getLawEntries";
+import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
+import GithubFile from '../../models/GithubFile';
+import getLawEntries from './getLawEntries';
 
 type LawListContextType = {
     lawList: GithubFile[];
@@ -8,7 +8,7 @@ type LawListContextType = {
 
 const LawListContext = createContext<LawListContextType>({
     lawList: [],
-})
+});
 
 export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [lawList, setLawList] = useState<GithubFile[]>([]);
@@ -21,11 +21,11 @@ export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
         <LawListContext.Provider value={{ lawList }}>
             {children}
         </LawListContext.Provider>
-    )
-}
+    );
+};
 
 const useLawListContext = () => {
-  return useContext(LawListContext);
-}
+    return useContext(LawListContext);
+};
 
 export default useLawListContext;

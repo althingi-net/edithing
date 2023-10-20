@@ -1,13 +1,13 @@
-import { Radio, Divider, Checkbox, Space, Button } from "antd";
-import { MetaType } from "../Slate";
-import getListItemTitle from "../utils/slate/getListItemTitle";
-import { FC, useMemo, useState } from "react";
-import { useSlateStatic, ReactEditor } from "slate-react";
-import { log } from "../../../logger";
-import createLawList from "../actions/createLawList";
-import findListItemAtSelection from "../utils/slate/findListItemAtSelection";
-import getListItemHierarchy from "../utils/slate/getListItemHierarchy";
-import { Path } from "slate";
+import { Radio, Divider, Checkbox, Space, Button } from 'antd';
+import { MetaType } from '../Slate';
+import getListItemTitle from '../utils/slate/getListItemTitle';
+import { FC, useMemo, useState } from 'react';
+import { useSlateStatic, ReactEditor } from 'slate-react';
+import { log } from '../../../logger';
+import createLawList from '../actions/createLawList';
+import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
+import getListItemHierarchy from '../utils/slate/getListItemHierarchy';
+import { Path } from 'slate';
 
 interface Props {
     onSubmit: () => void;
@@ -33,7 +33,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
         const location = nested ? listItem[1] : JSON.parse(locationToAdd) as Path;
         log('Adding new chapter at', location, { bumpVersionNumber, nested });
         if (location) {
-            createLawList(editor, MetaType.CHAPTER, location, { nested, bumpVersionNumber })
+            createLawList(editor, MetaType.CHAPTER, location, { nested, bumpVersionNumber });
         }
 
     };
@@ -49,8 +49,8 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
                 >
                     {getListItemTitle(editor, path) || listItem.meta?.type}
                 </Radio>
-            )
-        })
+            );
+        });
     }, [editor, listItem]);
 
     return (
@@ -77,7 +77,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
                 <Button type="primary" onClick={handleSubmit}>Add</Button>
             </Space>
         </>
-    )
-}
+    );
+};
 
 export default AddEntryForm;

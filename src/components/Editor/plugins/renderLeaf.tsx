@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { RenderLeafProps } from "slate-react";
-import useHighlightContext from "../Toolbar/useHighlightContext";
+import { RenderLeafProps } from 'slate-react';
+import useHighlightContext from '../Toolbar/useHighlightContext';
 
 export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     const highlight = useHighlightContext();
@@ -23,6 +23,6 @@ export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     }
 
     return <span {...attributes}>{children}</span>;
-}
+};
 
 export default renderLeaf;

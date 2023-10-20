@@ -1,8 +1,8 @@
 import { Col, Row } from 'antd';
-import { FC, useEffect, useState } from "react";
-import { Descendant } from "slate";
-import { Editable, Slate } from "slate-react";
-import GithubFile from "../../models/GithubFile";
+import { FC, useEffect, useState } from 'react';
+import { Descendant } from 'slate';
+import { Editable, Slate } from 'slate-react';
+import GithubFile from '../../models/GithubFile';
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
 import Toolbar from './Toolbar/Toolbar';
@@ -36,8 +36,8 @@ const Editor: FC<Props> = ({ file }) => {
     useEffect(() => {
         if (xml) {
             const result = importXml(xml);
-            setOriginalDocument(result)
-            setSlate(result.slate)
+            setOriginalDocument(result);
+            setSlate(result.slate);
         }
     }, [xml]);
 
@@ -48,7 +48,7 @@ const Editor: FC<Props> = ({ file }) => {
     const classNames = [
         'editor',
         highlight?.isHighlighted ? 'highlighted' : ''
-    ].join(' ')
+    ].join(' ');
 
     return (
         <Slate editor={editor} initialValue={slate} onChange={setSlate}>
@@ -73,7 +73,7 @@ const Editor: FC<Props> = ({ file }) => {
                 </Row>
             </div>
         </Slate>
-    )
-}
+    );
+};
 
 export default Editor;

@@ -1,7 +1,7 @@
-import { Editor, Element, Node, Path, Text } from "slate";
-import beautify from "xml-beautifier";
-import DocumentMeta from "../../../../models/DocumentMeta";
-import { isList, isListItem, isListItemText } from "../../Slate";
+import { Editor, Element, Node, Path, Text } from 'slate';
+import beautify from 'xml-beautifier';
+import DocumentMeta from '../../../../models/DocumentMeta';
+import { isList, isListItem, isListItemText } from '../../Slate';
 
 const exportXml = (editor: Editor, addHeader = false, documentMeta?: DocumentMeta): string => {
     const xml = [];
@@ -18,7 +18,7 @@ const exportXml = (editor: Editor, addHeader = false, documentMeta?: DocumentMet
     }
 
     return beautify(xml.join(''));
-}
+};
 
 const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string): string => {
     const { nr, year, name, date, original, ministerClause } = documentMeta;
@@ -35,7 +35,7 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
             ${children}
         </law>
     `;
-}
+};
 
 const convertSlate = (editor: Editor, node: Node, path: Path): string => {
     if (isList(node) || Editor.isEditor(node)) {
@@ -76,12 +76,12 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
 
             if (meta.title) {
                 title = sentences.slice(0, 1).map(item => item.text).join('').trim();
-                sentences = sentences.slice(1)
+                sentences = sentences.slice(1);
             }
 
             if (meta.name) {
                 name = sentences.slice(0, 1).map(item => item.text).join('').trim();
-                sentences = sentences.slice(1)
+                sentences = sentences.slice(1);
             }
         }
 
@@ -102,6 +102,6 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
     }
 
     return '';
-}
+};
 
 export default exportXml;

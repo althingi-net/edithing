@@ -1,8 +1,8 @@
-import { Editor } from "slate";
-import { ElementType, ListItemText, MetaType } from "../Slate";
-import createList from "../utils/slate/createList";
-import createListItem from "../utils/slate/createListItem";
-import createEditorWithPlugins from "./createEditorWithPlugins";
+import { Editor } from 'slate';
+import { ElementType, ListItemText, MetaType } from '../Slate';
+import createList from '../utils/slate/createList';
+import createListItem from '../utils/slate/createListItem';
+import createEditorWithPlugins from './createEditorWithPlugins';
 
 test('add missing meta data to List Element', async () => {
     const editor = createEditorWithPlugins();
@@ -29,7 +29,7 @@ test('add missing meta data to List Element', async () => {
         ]),
     ];
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
@@ -64,7 +64,7 @@ test('add missing meta data to ListItem Element', async () => {
         ]),
     ];
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
@@ -97,7 +97,7 @@ test('increment following siblings nr and title', async () => {
         ]),
     ];
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
@@ -131,7 +131,7 @@ test('when incrementing following siblings nr and title, retain selection on ini
     ];
 
     editor.selection = Editor.range(editor, [0, 1, 0]);
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const expectedRange = Editor.range(editor, [0, 1, 0]);
     expectedRange.anchor.offset = 3;
@@ -161,7 +161,7 @@ test('increment following siblings nr and title but retain letters after digits'
         ]),
     ];
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const output = [
         createList(MetaType.ART, {}, [
@@ -195,7 +195,7 @@ test('increment following siblings nr and title with roman nr and retain previou
         ]),
     ];
 
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
@@ -334,7 +334,7 @@ test('normalize sentences to have correct nr', async () => {
         ]),
     ];
     
-    editor.normalize({ force: true })
+    editor.normalize({ force: true });
 
     const output = [
         createList(MetaType.ART, {}, [

@@ -1,13 +1,13 @@
-import { Editor, Path } from "slate";
-import { ListItemMeta, isListItem } from "../../Slate";
-import createListItemMetaFromSibling from "./createListItemMetaFromSibling";
-import createListMeta from "./createListMeta";
-import getPreviousSibling from "./getPreviousSibling";
-import createLawTitle from "./createLawTitle";
+import { Editor, Path } from 'slate';
+import { ListItemMeta, isListItem } from '../../Slate';
+import createListItemMetaFromSibling from './createListItemMetaFromSibling';
+import createListMeta from './createListMeta';
+import getPreviousSibling from './getPreviousSibling';
+import createLawTitle from './createLawTitle';
 
 const createListItemMeta = (editor: Editor, path: Path): ListItemMeta => {
     const [sibling] = getPreviousSibling(editor, path) ?? [];
-    if (sibling && isListItem(sibling)) {
+    if (isListItem(sibling)) {
         return createListItemMetaFromSibling(sibling);
     } else {
         const meta = createListMeta(editor, path) as ListItemMeta;
@@ -26,6 +26,6 @@ const createListItemMeta = (editor: Editor, path: Path): ListItemMeta => {
 
         return meta;
     }
-}
+};
 
 export default createListItemMeta;

@@ -1,9 +1,9 @@
-import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
-import { Button } from "antd";
-import { FC, useEffect, useState } from "react";
+import { CheckOutlined, CopyOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { FC, useEffect, useState } from 'react';
 
 interface Props {
-    content?: any;
+    content?: string | object;
 }
 
 const CopyClipboardButton: FC<Props> = ({ content: text }) => {
@@ -17,7 +17,7 @@ const CopyClipboardButton: FC<Props> = ({ content: text }) => {
 
             return () => {
                 clearTimeout(timeout);
-            }
+            };
         }
     }, [copied]);
 
@@ -38,6 +38,6 @@ const CopyClipboardButton: FC<Props> = ({ content: text }) => {
             {copied ? <CheckOutlined /> : <CopyOutlined />}
         </Button>
     );
-}
+};
 
 export default CopyClipboardButton;

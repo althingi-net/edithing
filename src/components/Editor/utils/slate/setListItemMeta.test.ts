@@ -1,8 +1,8 @@
-import { ListItemMeta, MetaType } from "../../Slate";
-import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
-import createList from "./createList";
-import createListItem from "./createListItem";
-import setListItemMeta from "./setListItemMeta";
+import { ListItemMeta, MetaType } from '../../Slate';
+import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
+import createList from './createList';
+import createListItem from './createListItem';
+import setListItemMeta from './setListItemMeta';
 
 test('insert title in empty list item', () => {
     const editor = createEditorWithPlugins();

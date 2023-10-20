@@ -4,9 +4,9 @@ import isHotkey from 'is-hotkey';
 // import { Editor, Element, Location, Node, NodeEntry, Path, Point, Range, Span, Transforms } from "slate";
 // import { NESTED_LIST_PATH_INDEX, schema } from "../Slate";
 
-import { onKeyDown } from "@prezly/slate-lists";
-import { KeyboardEvent } from "react";
-import { Editor } from "slate";
+import { onKeyDown } from '@prezly/slate-lists';
+import { KeyboardEvent } from 'react';
+import { Editor } from 'slate';
 
 // const isTabKey = isHotkey('tab');
 // const isShiftTabKey = isHotkey('shift+tab');
@@ -17,7 +17,7 @@ const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => 
         
     if (isEnterKey(event)) {
         event.preventDefault();
-        console.log('enter key pressed')
+        console.log('enter key pressed');
         return true;
     }
 
@@ -32,7 +32,7 @@ const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => 
     // }
 
     return onKeyDown(editor, event);
-}
+};
 
 // export function onTabIncreaseListDepth(editor: Editor, event: KeyboardEvent) {
 //     if (isTabKey(event)) {

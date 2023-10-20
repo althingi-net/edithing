@@ -4,15 +4,15 @@ import { HightlightContextProvider } from '../Editor/Toolbar/useHighlightContext
 import Router from './Router';
 
 function App() {
-  return (
-    <HightlightContextProvider>
-      <LawListContextProvider>
-        <Layout>
-          <Router />
-        </Layout>
-      </LawListContextProvider>
-    </HightlightContextProvider>
-  );
+    return (
+        <HightlightContextProvider>
+            <LawListContextProvider>
+                <Layout>
+                    <Router />
+                </Layout>
+            </LawListContextProvider>
+        </HightlightContextProvider>
+    );
 }
 
 export default App;

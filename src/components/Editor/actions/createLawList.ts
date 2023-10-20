@@ -1,11 +1,11 @@
-import { onKeyDown } from "@prezly/slate-lists";
-import { Editor, Node, Path } from "slate";
-import { MetaType, isListItem } from "../Slate";
-import createListItem from "../utils/slate/createListItem";
-import createListItemMetaFromSibling from "../utils/slate/createListItemMetaFromSibling";
-import incrementFollowingSiblings from "../utils/slate/incrementFollowingSiblings";
-import createLawTitle from "../utils/slate/createLawTitle";
-import getListItemTitle from "../utils/slate/getListItemTitle";
+import { onKeyDown } from '@prezly/slate-lists';
+import { Editor, Node, Path } from 'slate';
+import { MetaType, isListItem } from '../Slate';
+import createListItem from '../utils/slate/createListItem';
+import createListItemMetaFromSibling from '../utils/slate/createListItemMetaFromSibling';
+import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';
+import createLawTitle from '../utils/slate/createLawTitle';
+import getListItemTitle from '../utils/slate/getListItemTitle';
 
 interface CreateLawListOptions {
     nested?: boolean;
@@ -23,18 +23,20 @@ const createLawList = (editor: Editor, type: MetaType, path: Path, options: Crea
     const meta = createListItemMetaFromSibling(node);
     const siblingTitle = getListItemTitle(editor, path);
     const title = meta.title && createLawTitle(meta.nr, meta.type, siblingTitle);
-    const newNode = createListItem(type, meta.nr, { ...meta, title })
-    const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1])
+    const newNode = createListItem(type, meta.nr, { ...meta, title });
+    const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1]);
 
-    editor.insertNode(newNode, { at: newPath, select: true })
+    editor.insertNode(newNode, { at: newPath, select: true });
 
     if (bumpVersionNumber && !nested) {
-        incrementFollowingSiblings(editor, newPath)
+        incrementFollowingSiblings(editor, newPath);
     }
 
     if (nested) {
-        onKeyDown.onTabIncreaseListDepth(editor, new KeyboardEvent('keydown', { key: 'Tab' }) as any)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const event = new KeyboardEvent('keydown', { key: 'Tab' }) as any;
+        onKeyDown.onTabIncreaseListDepth(editor, event);
     }
-}
+};
 
 export default createLawList;
