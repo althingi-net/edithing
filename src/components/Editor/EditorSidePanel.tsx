@@ -17,9 +17,7 @@ interface Props {
 
 const EditorSidePanel: FC<Props> = (props) => {
     const { originalDocument, xml } = props;
-
-    const slate = useSlate();
-    const debouncedSlate = useDebounce(slate, 500);
+    const debouncedSlate = useDebounce(useSlate(), 500);
 
     return useMemo(() => {
         if (!debouncedSlate) {
@@ -28,7 +26,7 @@ const EditorSidePanel: FC<Props> = (props) => {
 
         const slateState = JSON.stringify(debouncedSlate, null, 2);
         const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
-        const changelog = compareDocuments(originalDocument.slate, debouncedSlate.children, slate.events);
+        const changelog = compareDocuments(originalDocument.slate, debouncedSlate.children, debouncedSlate.events);
 
         return (
             <div style={{ height: '100%' }}>
@@ -60,7 +58,9 @@ const EditorSidePanel: FC<Props> = (props) => {
                 </Collapse>
             </div>
         );
-    }, [debouncedSlate, originalDocument, xml, slate.events]);
+    // Note: Important to re-render on changes of debouncedSlate.events and debouncedSlate.children
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedSlate, debouncedSlate.events, debouncedSlate.children, originalDocument, xml]);
 }
 
 export default EditorSidePanel;
