@@ -19,7 +19,7 @@ const LawChanges: FC<Props> = ({ changelog }) => {
     }
 
     const changes = changelog.map((change, index) => (
-        <div key={index}>
+        <div key={`${change.id}-${index}`}>
             <center>{index + 1}. gr.</center>
             <div>{parseChange(change, showOnlyDifference)}</div>
         </div>
@@ -77,14 +77,14 @@ const embedChangesToText = (changes: NonNullable<Changelog['changes']>) => {
         <span>
             {changes.map(([type, value]) => {
                 if (type === 1) {
-                    return <Text type="success" strong>{value}</Text>
+                    return <Text key={value} type="success" strong>{value}</Text>
                 }
 
                 if (type === -1) {
-                    return <Text type="danger" delete strong>{value}</Text>
+                    return <Text key={value} type="danger" delete strong>{value}</Text>
                 }
 
-                return <Text>{value}</Text>;
+                return <Text key={value}>{value}</Text>;
             })}
         </span>
     )
