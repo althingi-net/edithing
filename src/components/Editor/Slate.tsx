@@ -95,6 +95,10 @@ export const LIST_TAGS = [
     'paragraph',
 ];
 
+export const isMetaType = (type: string): type is MetaType => {
+    return Object.values(MetaType).includes(type as MetaType);
+};
+
 // export const schema: ListsSchema = {
 //     isConvertibleToListTextNode(node) {
 //         return Element.isElementType(node, ElementType.PARAGRAPH);

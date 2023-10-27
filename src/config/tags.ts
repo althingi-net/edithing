@@ -1,43 +1,45 @@
+import { MetaType } from '../components/Editor/Slate';
+
 interface TagConfig {
     type: string;
     isList: boolean;
-    canHave: string[];
+    canHave: MetaType[];
     display?: 'list' | 'block' | 'inline' | 'virtual';
 }
 
-export const TAGS: { [key: string]: TagConfig } = {
-    'chapter': {
-        type: 'chapter',
+export const TAGS: { [key in MetaType]: TagConfig } = {
+    [MetaType.CHAPTER]: {
+        type: MetaType.CHAPTER,
         isList: true,
         display: 'list',
-        canHave: ['art'],
+        canHave: [MetaType.ART],
     },
-    'art': {
-        type: 'art',
+    [MetaType.ART]: {
+        type: MetaType.ART,
         isList: true,
         display: 'list',
-        canHave: ['subart', 'numart'],
+        canHave: [MetaType.SUBART, MetaType.NUMART],
     },
-    'subart': {
-        type: 'subart',
+    [MetaType.SUBART]: {
+        type: MetaType.SUBART,
         isList: true,
         display: 'list',
-        canHave: ['paragraph'],
+        canHave: [MetaType.PARAGRAPH],
     },
-    'numart': {
-        type: 'numart',
+    [MetaType.NUMART]: {
+        type: MetaType.NUMART,
         isList: true,
         display: 'inline',
-        canHave: ['paragraph', 'sen', 'numart'],
+        canHave: [MetaType.PARAGRAPH, MetaType.SEN, MetaType.NUMART],
     },
-    'paragraph': {
-        type: 'paragraph',
+    [MetaType.PARAGRAPH]: {
+        type: MetaType.PARAGRAPH,
         isList: true,
         display: 'virtual',
-        canHave: ['sen', 'numart'],
+        canHave: [MetaType.SEN, MetaType.NUMART],
     },
-    'sen': {
-        type: 'sen',
+    [MetaType.SEN]: {
+        type: MetaType.SEN,
         isList: false,
         display: 'inline',
         canHave: [],

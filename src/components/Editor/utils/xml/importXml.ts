@@ -3,7 +3,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
 import { TAGS } from '../../../../config/tags';
 import DocumentMeta from '../../../../models/DocumentMeta';
-import { ElementType, LIST_TAGS, ListItemText, ListItemWithMeta, ListWithMeta, MetaType, isListItemText } from '../../Slate';
+import { ElementType, LIST_TAGS, ListItemText, ListItemWithMeta, ListWithMeta, MetaType, isListItemText, isMetaType } from '../../Slate';
 import normalizeChildren from '../slate/normalizeChildren';
 
 const importXml = (xml: string) => {
@@ -40,7 +40,7 @@ const convertSlate = (object: any): Descendant[] => {
         const value = object[key];
         const values = Array.isArray(value) ? value : [value];
 
-        if (LIST_TAGS.includes(key)) {
+        if (isMetaType(key) && LIST_TAGS.includes(key)) {
             // if virtual skip that tag and add children directly
             if (TAGS[key].display === 'virtual') {
                 nodes.push(...values.map(convertSlate).flat());
