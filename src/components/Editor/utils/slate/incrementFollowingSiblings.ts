@@ -1,10 +1,11 @@
-import { Editor, Transforms } from 'slate';
+import { Editor, Path, Transforms } from 'slate';
 import { isListItem } from '../../Slate';
 import incrementMixedNumber from '../incrementMixedNumber';
 import incrementRomanNumber from '../incrementRomanNumber';
 import setListItemMeta from './setListItemMeta';
+import { log } from '../../../../logger';
 
-const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
+const incrementFollowingSiblings = (editor: Editor, path: Path) => {
     const previousSelection = editor.selection;
     const [parent, parentPath] = Editor.parent(editor, path);
 
@@ -23,7 +24,8 @@ const incrementFollowingSiblings = (editor: Editor, path: number[]) => {
                 newMeta.romanNr = incrementRomanNumber(newMeta.romanNr);
             }
 
-            setListItemMeta(editor, sibling, siblingPath, newMeta);
+            log('incrementFollowingSiblings', { sibling, siblingPath, newMeta });
+            setListItemMeta(editor, sibling, siblingPath, newMeta, { select: false });
         }
     }
 
