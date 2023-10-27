@@ -1,5 +1,5 @@
 import { Descendant } from 'slate';
-import { ElementType, ListItem, ListItemText, MetaType, ListItemMeta, ListItemWithMeta } from '../../Slate';
+import { ElementType, ListItemMeta, ListItemText, ListItemWithMeta, MetaType } from '../../Slate';
 import convertRomanNumber from '../convertRomanNumber';
 import createListItemText from './createListItemText';
 
@@ -18,7 +18,7 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'n
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr } = options;
 
-    const textElement: ListItemText = createListItemText();
+    const textElement: ListItemText = createListItemText([]);
     
     const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
@@ -68,7 +68,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     // remove empty text nodes but keep at least one 
     if (textElement.children.length > 1) {
-        textElement.children = textElement.children.filter((item => item.text !== ''));
+        textElement.children = textElement.children.filter((item => item.text !== '' || item.title || item.name));
     }
 
     if (type === MetaType.CHAPTER) {

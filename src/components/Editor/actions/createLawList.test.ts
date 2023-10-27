@@ -48,7 +48,7 @@ test('create new list item and do not increment following siblings', () => {
     ]);
 });
 
-test('create new list item and nest it', () => {
+test('nest art under chapter', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -57,7 +57,7 @@ test('create new list item and nest it', () => {
         ]),
     ];
 
-    createLawList(editor, MetaType.CHAPTER, [0, 0], { nested: true });
+    createLawList(editor, MetaType.ART, [0, 0], { nested: true });
 
     editor.normalize({ force: true });
 
@@ -69,6 +69,81 @@ test('create new list item and nest it', () => {
                 ]),
             ]),
             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+        ]),
+    ]);
+});
+
+test('nest subart under art', () => {
+    const editor = createEditorWithPlugins();
+    editor.children = [
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: 'I. kafli.', text: 'the first chapter' }),
+            createListItem(MetaType.ART, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+        ]),
+    ];
+
+    createLawList(editor, MetaType.SUBART, [0, 0], { nested: true });
+
+    editor.normalize({ force: true });
+
+    expect(editor.children).toStrictEqual([
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: 'I. kafli.', text: 'the first chapter' }, [
+                createList(MetaType.SUBART, {}, [
+                    createListItem(MetaType.SUBART, '1', { text: '', title: '' }),
+                ]),
+            ]),
+            createListItem(MetaType.ART, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+        ]),
+    ]);
+});
+
+test('nest numart under art', () => {
+    const editor = createEditorWithPlugins();
+    editor.children = [
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: 'I. kafli.', text: 'the first chapter' }),
+            createListItem(MetaType.ART, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+        ]),
+    ];
+
+    createLawList(editor, MetaType.NUMART, [0, 0], { nested: true });
+
+    editor.normalize({ force: true });
+
+    expect(editor.children).toStrictEqual([
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { title: 'I. kafli.', text: 'the first chapter' }, [
+                createList(MetaType.NUMART, {}, [
+                    createListItem(MetaType.NUMART, '1', { text: '', title: '' }),
+                ]),
+            ]),
+            createListItem(MetaType.ART, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+        ]),
+    ]);
+});
+
+test('nest numart under numart', () => {
+    const editor = createEditorWithPlugins();
+    editor.children = [
+        createList(MetaType.NUMART, {}, [
+            createListItem(MetaType.NUMART, '1', { title: 'I. kafli.', text: 'the first chapter' }),
+            createListItem(MetaType.NUMART, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+        ]),
+    ];
+
+    createLawList(editor, MetaType.NUMART, [0, 0], { nested: true });
+
+    editor.normalize({ force: true });
+
+    expect(editor.children).toStrictEqual([
+        createList(MetaType.NUMART, {}, [
+            createListItem(MetaType.NUMART, '1', { title: 'I. kafli.', text: 'the first chapter' }, [
+                createList(MetaType.NUMART, {}, [
+                    createListItem(MetaType.NUMART, '1', { text: '', title: '' }),
+                ]),
+            ]),
+            createListItem(MetaType.NUMART, '2', { title: 'II. kafli.', text: 'the second chapter' }),
         ]),
     ]);
 });

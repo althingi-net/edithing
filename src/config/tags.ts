@@ -45,3 +45,8 @@ export const TAGS: { [key in MetaType]: TagConfig } = {
         canHave: [],
     },
 };
+
+export const getAllowedTagChildren = (type: MetaType) => {
+    return TAGS[type].canHave
+        .filter(type => TAGS[type].display !== 'virtual' && TAGS[type].isList)  ;
+};
