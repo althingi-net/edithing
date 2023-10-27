@@ -6,11 +6,9 @@ import withLawParagraphs from './withLawParagraphs';
 
 const createEditorWithPlugins = () => withLawParagraphs(
     withEvents(
-        // withLists(schema)(
         withHistory(
             withReact(createEditor())
         )
-        // )
     )
 );
 

@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@prezly/slate-lists": "^0.96.0",
     "antd": "^5.8.6",
     "fast-xml-parser": "^4.2.7",
     "is-hotkey": "^0.2.0",
@@ -60,7 +59,7 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "/node_modules/(?!@prezly/slate-lists|minify-xml).+\\.js$"
+      "/node_modules/(?!minify-xml).+\\.js$"
     ]
   }
 }
