@@ -15,7 +15,7 @@ const normalizeChildren = (element: Element) => {
 
     // add required empty text node if there is none
     if (element.children.length === 0) {
-        element.children.push({ text: '' });
+        element.children.push({ text: '', nr: '1' });
     }
 };
 

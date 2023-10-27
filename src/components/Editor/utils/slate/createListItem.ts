@@ -18,7 +18,7 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'n
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr } = options;
 
-    const textElement: ListItemText = createListItemText([]);
+    const textElement: ListItemText = createListItemText();
     
     const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
@@ -67,8 +67,10 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     }
 
     // remove empty text nodes but keep at least one 
-    if (textElement.children.length > 1) {
-        textElement.children = textElement.children.filter((item => item.text !== '' || item.title || item.name));
+    textElement.children = textElement.children.filter((item => item.text !== ''));
+
+    if (textElement.children.length === 0) {
+        textElement.children.push({ text: '', nr: '1' });
     }
 
     if (type === MetaType.CHAPTER) {
