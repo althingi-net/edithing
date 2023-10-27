@@ -1,6 +1,7 @@
 import { Descendant } from 'slate';
 import { ElementType, ListItem, ListItemText, MetaType, ListItemMeta, ListItemWithMeta } from '../../Slate';
 import convertRomanNumber from '../convertRomanNumber';
+import createListItemText from './createListItemText';
 
 export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
@@ -14,13 +15,10 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'n
  * @param type The meta type of the list item.
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
-export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItem => {
+export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr } = options;
 
-    const textElement: ListItemText = {
-        type: ElementType.LIST_ITEM_TEXT,
-        children: [],
-    };
+    const textElement: ListItemText = createListItemText();
     
     const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
@@ -34,7 +32,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
         ],
     };
 
-    if (name) {
+    if (name != null && name !== false) {
         listItem.meta.name = true;
 
         if (typeof name === 'string') {
@@ -42,7 +40,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
         }
     }
 
-    if (title) {
+    if (title != null && title !== false) {
         listItem.meta.title = true;
 
         if (typeof title === 'string') {
@@ -58,7 +56,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
         listItem.meta.styleNote = styleNote;
     }
 
-    if (text) {
+    if (text != null) {
         if (Array.isArray(text)) {
             textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
         } else {

@@ -37,7 +37,7 @@ const setTitle = (
         }
     }
 
-    setListItemMeta(editor, listItem, path, meta, false);
+    setListItemMeta(editor, listItem, path, meta, { updateTitle: false });
 
     return true;
 };

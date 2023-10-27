@@ -1,22 +1,24 @@
 import { RenderElementProps } from 'slate-react';
-import { ElementType } from '../Slate';
 import { TAGS } from '../../../config/tags';
+import { ElementType, isListItem } from '../Slate';
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
-    const config = element.meta ? TAGS[element.meta.type] : null;
-
     const className = [
         element.type,
         element.meta?.type,
     ].join(' ');
 
-    if (config) {
-        if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
-            return <span className={className} {...attributes}>{children}</span>;
-        }
+    if (isListItem(element)) {
+        const config = element.meta ? TAGS[element.meta.type] : null;
 
-        if (config.display === 'block') {
-            return <div className={className} {...attributes}>{children}</div>;
+        if (config) {
+            if (config.display === 'inline' || element.meta?.styleNote === 'inline-with-parent') {
+                return <span className={className} {...attributes}>{children}</span>;
+            }
+
+            if (config.display === 'block') {
+                return <div className={className} {...attributes}>{children}</div>;
+            }
         }
     }
 
@@ -24,7 +26,6 @@ export function renderElement({ element, attributes, children }: RenderElementPr
     case ElementType.LIST:
         return <ul className={className} {...attributes}>{children}</ul>;
     case ElementType.LIST_ITEM:
-
         return <li className={className} {...attributes}>{children}</li>;
     case ElementType.LIST_ITEM_TEXT:
         return <span className={className} {...attributes}>{children}</span>;

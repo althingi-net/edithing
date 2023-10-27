@@ -15,7 +15,7 @@ const withLawParagraphs = (editor: Editor) => {
         if (
             normalizeNode(editor, entry)
             || normalizeMissingMeta(editor, entry)
-            || normalizeMovedListItem(editor, entry)
+            // || normalizeMovedListItem(editor, entry)
             || normalizeSentences(editor, entry)
             // || enforceTitleNameSenLayout(editor, entry)
         ) {

@@ -10,7 +10,7 @@ import getPreviousSibling from './getPreviousSibling';
  * @param path to ListItem node
  * @param meta new meta of ListItem node
  */
-const setListItemTitleFromMeta = (editor: Editor, path: number[], meta: ListItemMeta) => {
+const setListItemTitleFromMeta = (editor: Editor, path: number[], meta: ListItemMeta, select = true) => {
     const sibling = getPreviousSibling(editor, path);
     const siblingTitle = sibling && getListItemTitle(editor, sibling[1]);
     const previousTitle = getListItemTitle(editor, path);
@@ -25,7 +25,7 @@ const setListItemTitleFromMeta = (editor: Editor, path: number[], meta: ListItem
             at.focus.offset = previousTitle.length;
         }
 
-        Transforms.insertNodes(editor, { text: title, title: true }, { at, select: true });
+        Transforms.insertNodes(editor, { text: title, title: true }, { at, select });
     }
 };
 

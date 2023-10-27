@@ -7,6 +7,7 @@ import isHotkey from 'is-hotkey';
 import { onKeyDown } from '@prezly/slate-lists';
 import { KeyboardEvent } from 'react';
 import { Editor } from 'slate';
+import splitListItem from '../actions/splitListItem';
 
 // const isTabKey = isHotkey('tab');
 // const isShiftTabKey = isHotkey('shift+tab');
@@ -18,7 +19,10 @@ const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => 
     if (isEnterKey(event)) {
         event.preventDefault();
         console.log('enter key pressed');
-        return true;
+
+        if (splitListItem(editor)) {
+            return true;
+        }
     }
 
     // if (isShiftTabKey(event)) {
@@ -31,7 +35,7 @@ const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => 
     //     }
     // }
 
-    return onKeyDown(editor, event);
+    // return onKeyDown(editor, event);
 };
 
 // export function onTabIncreaseListDepth(editor: Editor, event: KeyboardEvent) {
