@@ -1,5 +1,6 @@
+
 export const log = (message: string, ...args: unknown[]) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_DEBUG === 'true') {
         console.log(message, ...args);
     }
 };
