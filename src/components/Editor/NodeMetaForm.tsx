@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { useSlateSelector, useSlateStatic } from 'slate-react';
 import findListItemAtSelection from './utils/slate/findListItemAtSelection';
 import getListItemTitle from './utils/slate/getListItemTitle';
+import getListItemName from './utils/slate/getListItemName';
 
 const NodeMetaForm: FC = () => {
     const editor = useSlateStatic();
@@ -14,8 +15,9 @@ const NodeMetaForm: FC = () => {
         return null;
     }
 
-    const { title, type, nr, romanNr } = listItem.meta;
+    const { title, name, type, nr, romanNr } = listItem.meta;
     const titleText = getListItemTitle(editor, path);
+    const nameText = getListItemName(editor, path);
 
     return (
         <div>
@@ -31,6 +33,12 @@ const NodeMetaForm: FC = () => {
                     <Space direction="horizontal">
                         <Checkbox disabled checked={title}>Has title?</Checkbox>
                         {title && <Input disabled prefix={<TagOutlined />} value={titleText ?? ''} />}
+                    </Space>
+                </Form.Item>
+                <Form.Item label="Name">
+                    <Space direction="horizontal">
+                        <Checkbox disabled checked={name}>Has name?</Checkbox>
+                        {name && <Input disabled prefix={<TagOutlined />} value={nameText} />}
                     </Space>
                 </Form.Item>
                 <Space direction="horizontal">
