@@ -12,7 +12,7 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
     const list: { path: Path, content: string, id: string }[] = [];
     const root = { children: nodes } as Node;
 
-    Array.from(Node.nodes(root)).forEach(([node, path]) => {
+    for (const [node, path] of Node.nodes(root)) {
         if (Element.isElementType(node, ElementType.LIST_ITEM_TEXT)) {
             node.children.forEach((child, index) => {
                 if (Text.isText(child) && child.text) {
@@ -37,7 +37,7 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
                 }
             });
         }
-    });
+    }
 
     return list;
 };
