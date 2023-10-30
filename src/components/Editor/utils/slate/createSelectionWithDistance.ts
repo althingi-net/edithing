@@ -22,7 +22,7 @@ const createSelectionWithDistance = (editor: Editor, path: Path, options: Option
     if (distance) {
         const focus = Editor.after(editor, selection.anchor, { distance });
         if (!focus) {
-            throw new Error('testSetName: focus is null');
+            throw new Error('focus is null');
         }
         selection.focus = focus;
     }
