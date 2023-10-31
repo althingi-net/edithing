@@ -1,6 +1,7 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
 import { log } from '../../../logger';
 import { isListItemText } from '../Slate';
+import createListItemMetaFromSibling from '../utils/slate/createListItemMetaFromSibling';
 import getParentListItem from '../utils/slate/getParentListItem';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';
 import isListItemWithMeta from '../utils/slate/isListItemWithMeta';
@@ -30,13 +31,20 @@ const splitListItem = (editor : Editor) => {
                 match: n => n === listItem || n === listItemText,
             });
 
+            const newListItem = Node.get(editor, newListItemPath);
+            if (!isListItemWithMeta(newListItem)) {
+                throw new Error('splitListItem: newListItem is not a list item');
+            }
+            const meta = createListItemMetaFromSibling(listItem);
+            setMeta(editor, newListItemPath, { ...newListItem.meta, ...meta });
+
+            normalizeListItem(editor, listItemPath, false);
             normalizeListItem(editor, newListItemPath);
-            normalizeListItem(editor, listItemPath);
 
-            updateMetaAfterContentChanged(editor, newListItemPath);
             updateMetaAfterContentChanged(editor, listItemPath);
+            updateMetaAfterContentChanged(editor, newListItemPath);
 
-            incrementFollowingSiblings(editor, listItemPath);
+            incrementFollowingSiblings(editor, newListItemPath);
             
             return true;
         }

@@ -111,6 +111,14 @@ export const isListItemText = (node?: Node | null): node is ListItemText => {
     return Element.isElementType(node, ElementType.LIST_ITEM_TEXT);
 };
 
+export const isTitle = (node?: Node | null): node is Text => {
+    return Text.isText(node) && Boolean(node.title);
+};
+
+export const isName = (node?: Node | null): node is Text => {
+    return Text.isText(node) && Boolean(node.name);
+};
+
 /**
  * Create empty root node, for testing purposes only. This would usually be an instance of Editor.
  * @param children 

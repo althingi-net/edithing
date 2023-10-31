@@ -1,5 +1,5 @@
-import { Editor, Node, Path, Text } from 'slate';
-import { isListItem, isListItemText } from '../../Slate';
+import { Editor, Node, Path } from 'slate';
+import { isListItem, isListItemText, isTitle } from '../../Slate';
 
 const getListItemTitle = (editor: Editor, path: Path) => {
     const listItem = Node.get(editor, path);
@@ -13,7 +13,7 @@ const getListItemTitle = (editor: Editor, path: Path) => {
         return null;
     }
     const firstTextNode = listItemText.children[0];
-    return Text.isText(firstTextNode) && firstTextNode.title ? firstTextNode.text : null;
+    return isTitle(firstTextNode) ? firstTextNode.text : null;
 };
 
 export default getListItemTitle;

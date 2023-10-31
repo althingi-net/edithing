@@ -8,7 +8,6 @@ const isEnterKey = isHotkey('enter');
 const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => {
     if (isEnterKey(event)) {
         event.preventDefault();
-        console.log('enter key pressed');
 
         if (splitListItem(editor)) {
             return true;

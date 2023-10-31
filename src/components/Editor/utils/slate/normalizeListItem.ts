@@ -1,10 +1,10 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
-import { isListItemText } from '../../Slate';
+import { ListItemWithMeta, isListItemText, isTitle } from '../../Slate';
 import createListItemText from './createListItemText';
 import isListItemWithMeta from './isListItemWithMeta';
 import setListItemTitleFromMeta from './setListItemTitleFromMeta';
 
-const normalizeListItem = (editor: Editor, path: Path) => {
+const normalizeListItem = (editor: Editor, path: Path, select = true) => {
     const listItem = Node.get(editor, path);
 
     if (!isListItemWithMeta(listItem)) {
@@ -15,7 +15,7 @@ const normalizeListItem = (editor: Editor, path: Path) => {
         const listItemText = createListItemText();
         Transforms.insertNodes(editor, listItemText, { at: [...path, 0] });
 
-        setListItemTitleFromMeta(editor, path, listItem.meta);
+        setListItemTitleFromMeta(editor, path, listItem.meta, select);
         return true;
     }
 
@@ -27,12 +27,24 @@ const normalizeListItem = (editor: Editor, path: Path) => {
 
     const hasTitleText = listItemText.children.find(n => Text.isText(n) && n.title);
     
-    if (listItem.meta.title && (!hasTitleText || hasTitleText.text === '')) {
-        setListItemTitleFromMeta(editor, path, listItem.meta);
+    if (listItem.meta.title && (!hasTitleText || hasTitleText.text === '' || !hasTitleCorrectNumber(listItem))) {
+        setListItemTitleFromMeta(editor, path, listItem.meta, select);
         return true;
     }
 
     return false;
+};
+
+const hasTitleCorrectNumber = (listItem: ListItemWithMeta) => {
+    const listItemText = listItem.children.find(isListItemText);
+    const title = listItemText?.children.find(isTitle);
+    const nr = listItem.meta.nr;
+
+    if (!title) {
+        return false;
+    }
+
+    return title.text.includes(nr);
 };
 
 export default normalizeListItem;

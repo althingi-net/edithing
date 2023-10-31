@@ -1,6 +1,7 @@
 import { Editor, Node, Text, Transforms } from 'slate';
 import getParentListItem from '../utils/slate/getParentListItem';
 import setMeta from '../utils/slate/setMeta';
+import { isTitle } from '../Slate';
 
 /**
  * 
@@ -35,7 +36,7 @@ const setName = (
     if (meta.title) {
         const titleNode = Node.get(editor, [...path, 0, 0]);
 
-        if (Text.isText(titleNode) && !titleNode.title) {
+        if (!isTitle(titleNode)) {
             delete meta.title;
         }
     }

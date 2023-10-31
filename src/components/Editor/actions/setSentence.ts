@@ -2,6 +2,7 @@ import { Editor, Text, Transforms } from 'slate';
 import findNode from '../utils/findNode';
 import getParentListItem from '../utils/slate/getParentListItem';
 import setListItemMeta from '../utils/slate/setListItemMeta';
+import { isName, isTitle } from '../Slate';
 
 const setSentence = (
     editor: Editor,
@@ -28,7 +29,7 @@ const setSentence = (
     if (meta.title) {
         const titleNode = findNode(editor, [...path, 0, 0]);
 
-        if (!titleNode || (Text.isText(titleNode) && !titleNode.title)) {
+        if (!isTitle(titleNode)) {
             delete meta.title;
         }
     }
@@ -36,7 +37,7 @@ const setSentence = (
     if (meta.name) {
         const nameNode = findNode(editor, [...path, 0, meta.title ? 1 : 0]);
 
-        if (!nameNode || (Text.isText(nameNode) && !nameNode.name)) {
+        if (!isName(nameNode)) {
             delete meta.name;
         }
     }
