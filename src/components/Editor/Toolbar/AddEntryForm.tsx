@@ -137,7 +137,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
             <Divider />
             <Space direction="horizontal" style={{ float: 'right' }}>
                 <Button onClick={onCancel}>Cancel</Button>
-                <Button type="primary" onClick={handleSubmit}>Add</Button>
+                <Button type="primary" autoFocus onClick={handleSubmit}>Add</Button>
             </Space>
         </>
     );
