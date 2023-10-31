@@ -17,7 +17,7 @@ test('missing title', () => {
 
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli. ', text: 'the first chapter' }),
         ]),
     ]);
 });
@@ -35,7 +35,7 @@ test('empty title', () => {
 
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli. ', text: 'the first chapter' }),
         ]),
     ]);
 });

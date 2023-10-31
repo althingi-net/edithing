@@ -14,7 +14,7 @@ test('insert title in empty list item', () => {
     ];
     const output = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli. ' }),
         ]),
     ];
 
@@ -77,7 +77,7 @@ test('prepend title above existing text', () => {
     ];
     const output = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'text' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli. ', text: 'text' }),
         ]),
     ];
 

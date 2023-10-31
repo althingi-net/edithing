@@ -65,7 +65,7 @@ test('nest art under chapter', () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }, [
                 createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+                    createListItem(MetaType.ART, '1', { title: '1. gr. ' }),
                 ]),
             ]),
             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'the second chapter' }),

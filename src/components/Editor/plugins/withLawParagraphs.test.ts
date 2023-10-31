@@ -8,7 +8,7 @@ test('add missing meta data to List Element', async () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ', text: '1' }, [
                 {
                     type: ElementType.LIST,
                     children: [
@@ -33,9 +33,9 @@ test('add missing meta data to List Element', async () => {
 
     const output = [
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.', text: '1' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ', text: '1' }, [
                 createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+                    createListItem(MetaType.ART, '1', { title: '1. gr. ' }),
                 ]),
             ]),
         ]),

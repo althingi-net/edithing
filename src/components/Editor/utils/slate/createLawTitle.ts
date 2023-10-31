@@ -18,9 +18,9 @@ const createLawTitle = (nr: string, type: MetaType, previousTitle?: string | nul
 
     switch (type) {
     case MetaType.CHAPTER:
-        return `${convertRomanNumber(nr)}. kafli.`;
+        return `${convertRomanNumber(nr)}. kafli. `;
     case MetaType.ART:
-        return previousTitle ? previousTitle.replace(/\d+/, nr) :  `${nr}. gr.`;
+        return previousTitle ? previousTitle.replace(/\d+/, nr) :  `${nr}. gr. `;
     case MetaType.SUBART:
     case MetaType.PARAGRAPH:
     default:
