@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@prezly/slate-lists": "^0.96.0",
     "antd": "^5.8.6",
     "fast-xml-parser": "^4.2.7",
     "is-hotkey": "^0.2.0",
@@ -12,7 +11,9 @@
     "react": "^18.2.0",
     "react-code-blocks": "^0.1.4",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
     "react-scripts": "^5.0.1",
+    "react-transition-group": "^4.4.5",
     "romans": "^2.0.8",
     "slate": "^0.94.1",
     "slate-history": "^0.93.0",
@@ -29,7 +30,8 @@
     "@types/jest": "^29.5.5",
     "@types/node": "^20.8.0",
     "@types/react": "^18.2.23",
-    "@types/react-dom": "^18.2.8"
+    "@types/react-dom": "^18.2.8",
+    "@types/react-transition-group": "^4.4.7"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,7 +59,7 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "/node_modules/(?!@prezly/slate-lists|minify-xml).+\\.js$"
+      "/node_modules/(?!minify-xml).+\\.js$"
     ]
   }
 }

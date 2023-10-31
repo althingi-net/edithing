@@ -1,8 +1,8 @@
-import { MetaType } from "../../Slate";
-import createEditorWithPlugins from "../../plugins/createEditorWithPlugins";
-import createList from "./createList";
-import createListItem from "./createListItem";
-import findListItemAtSelection from "./findListItemAtSelection";
+import { MetaType } from '../../Slate';
+import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
+import createList from './createList';
+import createListItem from './createListItem';
+import findListItemAtSelection from './findListItemAtSelection';
 
 const firstListItem = createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' });
 const secondListItem = createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text:  'the second chapter' });

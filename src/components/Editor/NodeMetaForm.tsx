@@ -1,34 +1,23 @@
-import { FC } from "react";
-import { Node } from "slate";
-import { useSlateSelector } from "slate-react";
-import { isListItem } from "./Slate";
-import { Checkbox, Form, Input, Space } from "antd";
-import { NumberOutlined, TagOutlined, ToolOutlined } from "@ant-design/icons";
+import { NumberOutlined, TagOutlined, ToolOutlined } from '@ant-design/icons';
+import { Checkbox, Form, Input, Space } from 'antd';
+import { FC } from 'react';
+import { useSlateSelector, useSlateStatic } from 'slate-react';
+import findListItemAtSelection from './utils/slate/findListItemAtSelection';
+import getListItemTitle from './utils/slate/getListItemTitle';
+import getListItemName from './utils/slate/getListItemName';
 
-interface Props {
-
-}
-
-const NodeMetaForm: FC<Props> = () => {
-    const listItem = useSlateSelector((state) => {
-        if (!state.selection) {
-            return null;
-        }
-
-        const path = state.selection.anchor.path;
-
-        if (path.length < 3) {
-            return null;
-        }
-
-        const node = Node.get(state, state.selection.anchor.path.slice(0, -2));
-        return isListItem(node) ? node : null;
-    });
+const NodeMetaForm: FC = () => {
+    const editor = useSlateStatic();
+    const [listItem, path] = useSlateSelector(findListItemAtSelection) ?? [];
     const [form] = Form.useForm();
 
-    if (!listItem || !listItem.meta) {
+    if (!listItem || !listItem.meta || !path) {
         return null;
     }
+
+    const { title, name, type, nr, romanNr } = listItem.meta;
+    const titleText = getListItemTitle(editor, path);
+    const nameText = getListItemName(editor, path);
 
     return (
         <div>
@@ -38,25 +27,31 @@ const NodeMetaForm: FC<Props> = () => {
                 layout="vertical"
             >
                 <Form.Item label="Type">
-                    <Input disabled prefix={<ToolOutlined />} value={listItem.meta.type} />
+                    <Input disabled prefix={<ToolOutlined />} value={type} />
                 </Form.Item>
                 <Form.Item label="Title">
                     <Space direction="horizontal">
-                        <Checkbox disabled checked={!!listItem.meta.title}>Has title?</Checkbox>
-                        {listItem.meta.title && <Input disabled prefix={<TagOutlined />} value={listItem.meta.title} />}
+                        <Checkbox disabled checked={title}>Has title?</Checkbox>
+                        {title && <Input disabled prefix={<TagOutlined />} value={titleText ?? ''} />}
+                    </Space>
+                </Form.Item>
+                <Form.Item label="Name">
+                    <Space direction="horizontal">
+                        <Checkbox disabled checked={name}>Has name?</Checkbox>
+                        {name && <Input disabled prefix={<TagOutlined />} value={nameText} />}
                     </Space>
                 </Form.Item>
                 <Space direction="horizontal">
                     <Form.Item label="Nr.">
-                        <Input disabled prefix={<NumberOutlined />} value={listItem.meta.nr} />
+                        <Input disabled prefix={<NumberOutlined />} value={nr} />
                     </Form.Item>
                     <Form.Item label="Roman Nr.">
-                        <Input disabled prefix={<NumberOutlined />} value={listItem.meta.romanNr} />
+                        <Input disabled prefix={<NumberOutlined />} value={romanNr} />
                     </Form.Item>
                 </Space>
             </Form>
         </div>
-    )
-}
+    );
+};
 
 export default NodeMetaForm;

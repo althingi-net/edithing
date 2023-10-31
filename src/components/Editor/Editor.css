@@ -31,11 +31,6 @@
     margin-top: 1.5em;
 }
 
-.name::after,
-.title::after {
-    content: ' ';
-}
-
 .chapter > .list-item-text > span > .title,
 .art > .list-item-text > span > .title {
     font-weight: bold;
@@ -56,4 +51,20 @@
 .chapter > .list-item-text > span > .name {
     font-weight: bold;
     font-style: normal;
+}
+
+.highlighted .title {
+    background-color: rgb(91, 167, 234);
+}
+
+.highlighted .name {
+    background-color: rgb(239, 186, 11);
+}
+
+span.odd {
+    background-color: #999;
+}
+
+span.even {
+    background-color: #666;
 }

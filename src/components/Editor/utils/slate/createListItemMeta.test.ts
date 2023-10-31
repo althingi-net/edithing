@@ -1,8 +1,8 @@
-import { createEditor } from "slate";
-import { MetaType } from "../../Slate";
-import createList from "./createList";
-import createListItem from "./createListItem";
-import createListItemMeta from "./createListItemMeta";
+import { createEditor } from 'slate';
+import { MetaType } from '../../Slate';
+import createList from './createList';
+import createListItem from './createListItem';
+import createListItemMeta from './createListItemMeta';
 
 test('ListItem: sibling above', () => {
     const editor = createEditor();

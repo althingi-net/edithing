@@ -1,4 +1,4 @@
-import translations from "../../../../config/translations";
+import translations from '../../../../config/translations';
 
 const IGNORED_TAGS = ['paragraph'];
 
@@ -9,7 +9,7 @@ const parseIdToDisplay = (id: string) => {
         .map(([type, nr]) => nr ? `${nr}. ${translate(type)}.` : `${translate(type)}.`)
         .reverse()
         .join(' ');
-}
+};
 
 const translate = (word: string) => {
     if (translations[word]) {
@@ -17,6 +17,6 @@ const translate = (word: string) => {
     }
 
     return word;
-}
+};
 
 export default parseIdToDisplay;

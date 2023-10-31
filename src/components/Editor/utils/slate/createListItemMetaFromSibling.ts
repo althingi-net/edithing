@@ -1,7 +1,7 @@
-import { ListItem } from "../../Slate";
-import incrementLetter from "../incrementLetter";
-import incrementMixedNumber from "../incrementMixedNumber";
-import incrementRomanNumber from "../incrementRomanNumber";
+import { ListItem } from '../../Slate';
+import incrementLetter from '../incrementLetter';
+import incrementMixedNumber from '../incrementMixedNumber';
+import incrementRomanNumber from '../incrementRomanNumber';
 
 const createListItemMetaFromSibling = (sibling: ListItem) => {
     if (!sibling.meta) {
@@ -28,11 +28,7 @@ const createListItemMetaFromSibling = (sibling: ListItem) => {
     }
 
     if (title) {
-        if (romanNr && meta.romanNr) {
-            meta.title = `${title.replace(romanNr, meta.romanNr)}`;
-        } else {
-            meta.title = `${title.replace(nr, meta.nr)}`;
-        }
+        meta.title = true;
     }
 
     if (styleNote) {
@@ -40,6 +36,6 @@ const createListItemMetaFromSibling = (sibling: ListItem) => {
     }
 
     return meta;
-}
+};
 
 export default createListItemMetaFromSibling;

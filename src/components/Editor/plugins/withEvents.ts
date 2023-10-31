@@ -1,8 +1,9 @@
-import { BaseEditor, Editor, Operation } from "slate";
-import getParagraphId from "../utils/changelog/getParagraphId";
-import { log } from "../../../logger";
+import { BaseEditor, Editor, Operation } from 'slate';
+import getParagraphId from '../utils/changelog/getParagraphId';
+import { log } from '../../../logger';
+import findNode from '../utils/findNode';
 
-const OPERATIONS_BEFORE = ['insert_text', 'remove_text', 'split_node', 'merge_node', 'move_node', 'remove_node'];
+const OPERATIONS_BEFORE = ['insert_text', 'remove_text', 'split_node', 'merge_node', 'move_node', 'remove_node', 'set_node'];
 const OPERATIONS_AFTER = ['insert_node', 'set_node'];
 
 export interface Event {
@@ -29,32 +30,34 @@ const withEvents = (editor: Editor) => {
     editor.events = [];
 
     editor.apply = (operation) => {
-        log('editor apply', operation)
+        log('editor apply', operation, 'path' in operation && findNode(editor, operation.path));
 
-        if (!operation
-            || !OPERATIONS_BEFORE.includes(operation.type)
+        if (!OPERATIONS_BEFORE.includes(operation.type)
             || operation.type === 'set_selection'
         ) {
             return apply(operation);
         }
 
         const id = getParagraphId(editor, operation.path);
-        const event: Event = { id, type: operation.type };
 
-        if (process.env.NODE_ENV !== 'production') {
-            event.original = operation;
+        if (id) {
+            const event: Event = { id, type: operation.type };
+    
+            if (process.env.NODE_ENV !== 'production') {
+                event.original = operation;
+            }
+            
+            editor.events.push(event);
+            // log('event', event);
         }
-        
-        editor.events.push(event);
-        log('event', event)
 
         return apply(operation);
-    }
+    };
 
     editor.onChange = (options) => {
         const operation = options?.operation;
 
-        log('editor onChange', operation)
+        log('editor onChange', operation, operation && 'path' in operation && findNode(editor, operation.path));
         
         if (!operation
             || !OPERATIONS_AFTER.includes(operation.type)
@@ -64,19 +67,22 @@ const withEvents = (editor: Editor) => {
         }
 
         const id = getParagraphId(editor, operation.path);
-        const event: Event = { id, type: operation.type };
 
-        if (process.env.NODE_ENV !== 'production') {
-            event.original = operation;
+        if (id) {
+            const event: Event = { id, type: operation.type };
+    
+            if (process.env.NODE_ENV !== 'production') {
+                event.original = operation;
+            }
+    
+            editor.events.push(event);
+            // log('event', event);
         }
 
-        editor.events.push(event);
-        log('event', event)
-
         return onChange(options);
-    }
+    };
 
-    return editor
+    return editor;
 };
 
 export default withEvents;

@@ -1,25 +1,18 @@
-import { Descendant } from "slate";
-import { ElementType } from "../../Slate";
-import flattenSlateParagraphs, { FlattenedParagraph } from "./flattenSlateParagraphs";
+import { Descendant } from 'slate';
 import Diff from 'text-diff';
-import Changelog from "../../../../models/Changelog";
-import { Event } from "../../plugins/withEvents";
+import Changelog from '../../../../models/Changelog';
+import { Event } from '../../plugins/withEvents';
+import flattenSlateParagraphs, { FlattenedParagraph } from './flattenSlateParagraphs';
 
 const diff = new Diff();
 
 const compareDocuments = (original: Descendant[], current: Descendant[], events: Event[]) => {
-    const originalTexts = flattenSlateParagraphs({
-        type: ElementType.EDITOR,
-        children: original,
-    });
-    const newTexts = flattenSlateParagraphs({
-        type: ElementType.EDITOR,
-        children: current,
-    });
+    const originalTexts = flattenSlateParagraphs(original);
+    const newTexts = flattenSlateParagraphs(current);
 
     const changelog = createChangelog(originalTexts, newTexts);
-    return sortChangelog(changelog, events)
-}
+    return sortChangelog(changelog, events);
+};
 
 const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[]) => {
     const changelog: Changelog[] = [];
@@ -49,7 +42,7 @@ const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: Flattene
     }
 
     return changelog;
-}
+};
 
 /**
  * Sort Changelog based on events. Events are processed in reverse order to ignore events that are undone.
@@ -75,6 +68,6 @@ const sortChangelog = (changelog: Changelog[], events: Event[]) => {
         .filter((entry): entry is Changelog => entry !== null)
         // Sort changelog based on id, ascending
         .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1) as Changelog[];
-}
+};
 
 export default compareDocuments;

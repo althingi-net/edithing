@@ -1,13 +1,13 @@
-import { Operation, createEditor } from "slate";
-import { MetaType } from "../Slate";
-import createList from "../utils/slate/createList";
-import createListItem from "../utils/slate/createListItem";
-import withEvents from "./withEvents";
+import { Operation, createEditor } from 'slate';
+import { ListItem, MetaType } from '../Slate';
+import createList from '../utils/slate/createList';
+import createListItem from '../utils/slate/createListItem';
+import withEvents from './withEvents';
 
 const setupEditor = () => {
     const editor = withEvents(createEditor());
     
-    const node = createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' });
+    const node = createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }) as ListItem;
 
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -18,7 +18,7 @@ const setupEditor = () => {
     ];
 
     return {editor, node};
-}
+};
 
 test('withEvents remove_text', () => {
     const { editor } = setupEditor();
@@ -65,7 +65,10 @@ test('withEvents set_node', async () => {
     // Wait for the next tick to allow the editor to update the events array.
     await Promise.resolve();
 
-    expect(editor.events).toEqual([{ id: 'chapter-1', type: 'set_node', original: operation }]);
+    expect(editor.events).toEqual([
+        { id: 'chapter-1', type: 'set_node', original: operation },
+        { id: 'chapter-1', type: 'set_node', original: operation }
+    ]);
 });
 
 test('withEvents remove_node', () => {
@@ -101,9 +104,8 @@ test('withEvents insert_node', async () => {
 
 test('withEvents set_node with missing meta', async () => {
     const { editor, node } = setupEditor();
-    const meta = node.meta;
-    // @ts-ignore
-    delete node.meta;
+    const meta = { ...node.meta };
+    node.meta = undefined;
     const operation: Operation = { type: 'set_node', path: [0, 1],  properties: { }, newProperties: { meta } };
     
     editor.apply(operation);

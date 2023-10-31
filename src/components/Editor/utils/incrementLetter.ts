@@ -24,6 +24,6 @@ const incrementLetter = (nr: string): string => {
     } else {
         return `${nr.slice(0, nr.length - 1)}${alphabet[alphabet.indexOf(lastLetter) + 1]}`;
     }
-}
+};
 
 export default incrementLetter;

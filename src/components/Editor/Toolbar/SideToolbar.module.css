@@ -1,0 +1,27 @@
+.toolbar {
+  position: absolute;
+  /* top: -10000px;
+  left: -10000px; */
+  opacity: 0;
+  background-color: rgb(34, 34, 34);
+  border-radius: 4px;
+  transition: opacity 0.5s ease-in-out, top 0.25s ease-in-out, height 0.25s ease-in-out;
+  display: flex;
+  align-items: center;
+
+  &>* {
+    display: inline-block;
+    color: rgb(170, 170, 170);
+    border-color: transparent;
+    background-color: transparent;
+    width: 30px;
+
+    &.active {
+      color: white;
+    }
+  }
+
+  &>*+* {
+    margin-left: 15px;
+  }
+}

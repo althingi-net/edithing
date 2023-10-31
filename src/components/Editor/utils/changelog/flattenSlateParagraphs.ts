@@ -1,6 +1,6 @@
-import { Path, Node, Element, Text } from "slate";
-import { ElementType } from "../../Slate";
-import getParagraphId from "./getParagraphId";
+import { Descendant, Element, Node, Path, Text } from 'slate';
+import { ElementType } from '../../Slate';
+import getParagraphId from './getParagraphId';
 
 export interface FlattenedParagraph {
     path: Path;
@@ -8,10 +8,11 @@ export interface FlattenedParagraph {
     id: string;
 }
 
-const flattenSlateParagraphs = (root: Node): FlattenedParagraph[] => {
+const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
     const list: { path: Path, content: string, id: string }[] = [];
+    const root = { children: nodes } as Node;
 
-    Array.from(Node.nodes(root)).forEach(([node, path]) => {
+    for (const [node, path] of Node.nodes(root)) {
         if (Element.isElementType(node, ElementType.LIST_ITEM_TEXT)) {
             node.children.forEach((child, index) => {
                 if (Text.isText(child) && child.text) {
@@ -22,17 +23,23 @@ const flattenSlateParagraphs = (root: Node): FlattenedParagraph[] => {
                         text += ' ';
                     }
 
+                    const id = getParagraphId(root, childPath);
+
+                    if (!id) {
+                        throw new Error('Could not get paragraph id');
+                    }
+
                     list.push({
-                        id: getParagraphId(root, childPath),
+                        id,
                         content: text,
                         path: childPath,
                     });
                 }
             });
         }
-    });
+    }
 
     return list;
-}
+};
 
 export default flattenSlateParagraphs;

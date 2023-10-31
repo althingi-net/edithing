@@ -1,5 +1,5 @@
-import { Editor, Node, NodeEntry, Text } from "slate";
-import { ListItem, MetaType, isListItem } from "../../Slate";
+import { Editor, Node, NodeEntry, Text } from 'slate';
+import { ListItem, MetaType, isListItem } from '../../Slate';
 
 /**
  * Return a list node of the given meta type in the current selection. 
@@ -12,17 +12,13 @@ const findListItemAtSelection = (editor: Editor, tag?: MetaType): NodeEntry<List
 
     const { anchor, focus } = editor.selection;
     const [node, location] = Node.common(editor, anchor.path, focus.path);
-    
-    if (!location) {
-        return null;
-    }
 
     if (isListItem(node) && (!tag || tag === node.meta?.type)) {
         return [node, location];
     }
 
     // check above
-    const ancestor = editor.above<ListItem>({ at: location, match: node => isListItem(node) && (!tag || tag === node.meta?.type) })
+    const ancestor = editor.above<ListItem>({ at: location, match: node => isListItem(node) && (!tag || tag === node.meta?.type) });
 
     if (ancestor) {
         return ancestor;
@@ -38,6 +34,6 @@ const findListItemAtSelection = (editor: Editor, tag?: MetaType): NodeEntry<List
     }
 
     return null;
-}
+};
 
 export default findListItemAtSelection;

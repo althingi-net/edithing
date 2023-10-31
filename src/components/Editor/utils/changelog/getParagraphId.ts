@@ -1,30 +1,43 @@
-import { Node, Path, Text } from "slate";
-import { log } from "../../../../logger";
-import getListItemHierarchy from "../slate/getListItemHierarchy";
+import { Node, Path, Text } from 'slate';
+import findNode from '../findNode';
+import getListItemHierarchy from '../slate/getListItemHierarchy';
 
-
+/**
+ * Return an id to identify a law paragraph down to the sentence level.
+ * @param root Editor root node.
+ * @param path Path to the lowest level node.
+ * @returns Example: 'chapter-1.art-2.subart-1.sen-1' or null if the path is invalid.
+ */
 const getParagraphId = (root: Node, path: Path) => {
-    try {
-        const ids = getListItemHierarchy(root, path)
-            .map(([listItem]) => `${listItem.meta?.type}-${listItem.meta?.nr}`);
+    const node = findNode(root, path);
 
-        const node = Node.get(root, path);
+    if (!node) {
+        return null;
+    }
 
-        if (Text.isText(node)) {
-            const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
+    const levels = getListItemHierarchy(root, path);
+    const ids: string[] = [];
 
-            if (node.nr) {
-                ids.push(`${tag}-${node.nr}`);
-            } else {
-                ids.push(`${tag}`);
-            }
+    for (const level of levels) {
+        const [listItem] = level;
+        if (!listItem.meta) {
+            return null;
         }
 
-        return ids.join('.');
-    } catch (error) {
-        log('editor state before error', JSON.stringify(root, null, 2));
-        throw error;
+        ids.push(`${listItem.meta.type}-${listItem.meta.nr}`);
     }
-}
+
+    if (Text.isText(node)) {
+        const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
+
+        if (node.nr) {
+            ids.push(`${tag}-${node.nr}`);
+        } else {
+            ids.push(`${tag}`);
+        }
+    }
+
+    return ids.join('.');
+};
 
 export default getParagraphId;

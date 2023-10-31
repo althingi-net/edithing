@@ -1,9 +1,10 @@
-import { XMLParser } from "fast-xml-parser";
-import { Descendant, Text } from "slate";
-import DocumentMeta from "../../../../models/DocumentMeta";
-import { ElementType, LIST_TAGS, ListItemText, MetaType, List, isListItemText } from "../../Slate";
-import normalizeChildren from "../slate/normalizeChildren";
-import { TAGS } from "../../../../config/tags";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { XMLParser } from 'fast-xml-parser';
+import { Descendant, Text } from 'slate';
+import { TAGS } from '../../../../config/tags';
+import DocumentMeta from '../../../../models/DocumentMeta';
+import { ElementType, LIST_TAGS, ListItemText, ListItemWithMeta, ListWithMeta, MetaType, isListItemText, isMetaType } from '../../Slate';
+import normalizeChildren from '../slate/normalizeChildren';
 
 const importXml = (xml: string) => {
     const object = parseXml(xml);
@@ -12,12 +13,12 @@ const importXml = (xml: string) => {
     const slate = convertSlate(object['law'] || object);
 
     return { meta, slate };
-}
+};
 
 const parseXml = (xml: string) => {
     const parser = new XMLParser({ ignoreAttributes: false });
     return parser.parse(xml);
-}
+};
 
 const extractMeta = (object: any): DocumentMeta => {
     const law = object['law'] || object;
@@ -39,7 +40,7 @@ const convertSlate = (object: any): Descendant[] => {
         const value = object[key];
         const values = Array.isArray(value) ? value : [value];
 
-        if (LIST_TAGS.includes(key)) {
+        if (isMetaType(key) && LIST_TAGS.includes(key)) {
             // if virtual skip that tag and add children directly
             if (TAGS[key].display === 'virtual') {
                 nodes.push(...values.map(convertSlate).flat());
@@ -55,30 +56,30 @@ const convertSlate = (object: any): Descendant[] => {
     }
 
     return nodes;
-}
+};
 
 const convertList = (key: string, values: any[]): Descendant => {
-    const node: List = {
+    const node: ListWithMeta = {
         type: ElementType.LIST,
         meta: {
             type: key as MetaType,
         },
         children: [],
-    }
+    };
 
     if (values[0]['@_nr-type']) {
-        node.meta!.nrType = values[0]['@_nr-type'];
+        node.meta.nrType = values[0]['@_nr-type'];
     }
 
     values.forEach((element) => {
-        const listItem: Descendant = {
+        const listItem: ListItemWithMeta = {
             type: ElementType.LIST_ITEM,
             meta: {
                 type: key as MetaType,
                 nr: element['@_nr'],
             },
             children: [],
-        }
+        };
 
         if (element['@_nr-type'] || element['@_type']) {
             listItem.meta.nrType = element['@_nr-type'] ?? element['@_type'];
@@ -93,11 +94,11 @@ const convertList = (key: string, values: any[]): Descendant => {
         }
 
         if (element['nr-title']) {
-            listItem.meta.title = element['nr-title'];
+            listItem.meta.title = true;
         }
 
         if (element['name']) {
-            listItem.meta.name = element['name'];
+            listItem.meta.name = true;
         }
 
         const textNode: ListItemText = {
@@ -109,14 +110,14 @@ const convertList = (key: string, values: any[]): Descendant => {
         if (listItem.meta.title) {
             textNode.children.push({
                 title: true,
-                text: listItem.meta.title,
+                text: element['nr-title'] + ' ',
             });
         }
 
         if (listItem.meta.name) {
             textNode.children.push({
                 name: true,
-                text: listItem.meta.name,
+                text: element['name'] + ' ',
             });
         }
 
@@ -144,10 +145,10 @@ const convertList = (key: string, values: any[]): Descendant => {
         normalizeChildren(textNode);
 
         node.children.push(listItem);
-    })
+    });
 
-    return node
-}
+    return node;
+};
 
 const convertSen = (sentences: any[]): Descendant => {
     const texts: Descendant[] = sentences
@@ -167,8 +168,8 @@ const convertSen = (sentences: any[]): Descendant => {
     return {
         type: ElementType.LIST_ITEM_TEXT,
         children: texts,
-    }
-}
+    };
+};
 
 
 

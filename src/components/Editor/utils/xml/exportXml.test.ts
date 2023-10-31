@@ -1,22 +1,31 @@
-import { Descendant } from "slate";
-import beautify from "xml-beautifier";
-import exportXml from "./exportXml";
-import { MetaType } from "../../Slate";
-import createList from "../slate/createList";
-import createListItem from "../slate/createListItem";
+import { Descendant } from 'slate';
+import beautify from 'xml-beautifier';
+import exportXml from './exportXml';
+import { MetaType } from '../../Slate';
+import createList from '../slate/createList';
+import createListItem from '../slate/createListItem';
+import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
+
+const createEditor = (input: Descendant[]) => {
+    const editor = createEditorWithPlugins();
+
+    editor.children = input;
+
+    return editor;
+};
 
 test('export chapters', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [
                 createList(MetaType.PARAGRAPH, {}, [
                     createListItem(MetaType.PARAGRAPH, '1', { text: 'one.' }),
                     createListItem(MetaType.PARAGRAPH, '2', { text: 'two.' }),
                 ]),
             ]),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. ' }),
         ]),
-    ];
+    ]);
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>I.</nr-title>
@@ -34,13 +43,13 @@ test('export chapters', () => {
         <chapter nr="2" nr-type="roman" roman-nr="II">
             <nr-title>II.</nr-title>
         </chapter>
-    `
+    `;
 
     expect(exportXml(input)).toBe(beautify(output));
 });
 
 test('export xml header', () => {
-    const input: Descendant[] = [];
+    const input = createEditor([]);
     const output = `
         <?xml version="1.0" encoding="utf-8"?>
     `;
@@ -49,11 +58,11 @@ test('export xml header', () => {
 });
 
 test('export document meta data', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
         ]),
-    ];
+    ]);
     const documentMeta = {
         nr: '33',
         year: '1944',
@@ -81,11 +90,11 @@ test('export document meta data', () => {
 });
 
 test('export no title if meta.title is undefined', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { text: 'some text' }),
         ]),
-    ];
+    ]);
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <sen nr="1">some text</sen>
@@ -96,11 +105,11 @@ test('export no title if meta.title is undefined', () => {
 });
 
 test('export title from LIST_ITEM_TEXT', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'title', text: ['text1', 'text2'] }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'title ', text: ['text1', 'text2'] }),
         ]),
-    ];
+    ]);
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>title</nr-title>
@@ -113,11 +122,11 @@ test('export title from LIST_ITEM_TEXT', () => {
 });
 
 test('export name from LIST_ITEM_TEXT', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'title', name: 'name', text: ['text1', 'text2'] }),
+            createListItem(MetaType.CHAPTER, '1', { title: 'title ', name: 'name ', text: ['text1', 'text2'] }),
         ]),
-    ];
+    ]);
     const output = `
         <chapter nr="1" nr-type="roman" roman-nr="I">
             <nr-title>title</nr-title>
@@ -131,11 +140,11 @@ test('export name from LIST_ITEM_TEXT', () => {
 });
 
 test('sen being exported', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.PARAGRAPH, {}, [
             createListItem(MetaType.PARAGRAPH, '1', { text: ['one.', 'two.'] }),
         ]),
-    ];
+    ]);
     const output = `
         <paragraph nr="1">
             <sen nr="1">one.</sen>
@@ -147,19 +156,19 @@ test('sen being exported', () => {
 });
 
 test('do not modify input', () => {
-    const input: Descendant[] = [
+    const input = createEditor([
         createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: '2.', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
+            createListItem(MetaType.PARAGRAPH, '1', { title: '2. ', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
                 createList(MetaType.NUMART, {}, [
                     createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet' }, [
                         createList(MetaType.PARAGRAPH, {}, [
-                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a.', text: 'Berlín.' }),
+                            createListItem(MetaType.PARAGRAPH, '1', { title: 'a. ', text: 'Berlín.' }),
                         ]),
                     ]),
                 ]),
             ]),
         ]),
-    ];
+    ]);
 
     const original = JSON.stringify(input);
     

@@ -1,9 +1,12 @@
-import { Descendant } from "slate";
-import { MetaType, ListItem, ListItemText, ElementType, ListItemMeta } from "../../Slate";
-import convertRomanNumber from "../convertRomanNumber";
+import { Descendant } from 'slate';
+import { ElementType, ListItemMeta, ListItemText, ListItemWithMeta, MetaType } from '../../Slate';
+import convertRomanNumber from '../convertRomanNumber';
+import createListItemText from './createListItemText';
 
-interface Options extends Omit<ListItemMeta, 'children' | 'nr' | 'type'> {
+export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
+    title?: string | boolean;
+    name?: string | boolean;
 }
 
 /**
@@ -12,15 +15,12 @@ interface Options extends Omit<ListItemMeta, 'children' | 'nr' | 'type'> {
  * @param type The meta type of the list item.
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
-export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItem => {
+export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr } = options;
 
-    const textElement: ListItemText = {
-        type: ElementType.LIST_ITEM_TEXT,
-        children: [],
-    }
+    const textElement: ListItemText = createListItemText();
     
-    const listItem: ListItem = {
+    const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
         meta: {
             type: type,
@@ -32,25 +32,31 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
         ],
     };
 
-    if (name) {
-        listItem.meta!.name = name;
-        textElement.children.unshift({ text: name, name: true });
+    if (name != null && name !== false) {
+        listItem.meta.name = true;
+
+        if (typeof name === 'string') {
+            textElement.children.unshift({ text: name, name: true });
+        }
     }
 
-    if (title) {
-        listItem.meta!.title = title;
-        textElement.children.unshift({ text: title, title: true });
+    if (title != null && title !== false) {
+        listItem.meta.title = true;
+
+        if (typeof title === 'string') {
+            textElement.children.unshift({ text: title, title: true });
+        }
     }
 
     if (nrType) {
-        listItem.meta!.nrType = nrType;
+        listItem.meta.nrType = nrType;
     }
 
     if (styleNote) {
-        listItem.meta!.styleNote = styleNote;
+        listItem.meta.styleNote = styleNote;
     }
 
-    if (text) {
+    if (text != null) {
         if (Array.isArray(text)) {
             textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
         } else {
@@ -61,17 +67,19 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     }
 
     // remove empty text nodes but keep at least one 
-    if (textElement.children.length > 1) {
-        textElement.children = textElement.children.filter((item => item.text !== ''));
+    textElement.children = textElement.children.filter((item => item.text !== ''));
+
+    if (textElement.children.length === 0) {
+        textElement.children.push({ text: '', nr: '1' });
     }
 
     if (type === MetaType.CHAPTER) {
-        listItem.meta!.nrType = 'roman';
-        listItem.meta!.romanNr = romanNr ?? convertRomanNumber(nr);
+        listItem.meta.nrType = 'roman';
+        listItem.meta.romanNr = romanNr ?? convertRomanNumber(nr);
     }
 
     if (type === MetaType.NUMART && !nrType) {
-        listItem.meta!.nrType = 'numeric';
+        listItem.meta.nrType = 'numeric';
     }
 
     return listItem;

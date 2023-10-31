@@ -1,5 +1,6 @@
-import { Node, NodeEntry, Path } from "slate";
-import { isListItem, ListItem } from "../../Slate";
+import { Node, NodeEntry, Path } from 'slate';
+import { ListItem, isListItem } from '../../Slate';
+import findNode from '../findNode';
 
 const getListItemHierarchy = (root: Node, path: Path): NodeEntry<ListItem>[] => {
     const listItems = Array.from(Node.ancestors(root, path))
@@ -12,12 +13,13 @@ const getListItemHierarchy = (root: Node, path: Path): NodeEntry<ListItem>[] => 
         })
         .filter(Boolean) as NodeEntry<ListItem>[];
 
-    const node = Node.get(root, path);
+    const node = findNode(root, path);
+
     if (isListItem(node)) {
         listItems.push([node, path]);
     }
 
     return listItems;
-}
+};
 
 export default getListItemHierarchy;

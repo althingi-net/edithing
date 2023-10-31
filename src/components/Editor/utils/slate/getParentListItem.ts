@@ -1,24 +1,31 @@
-import { Editor, Node, NodeEntry, Path } from "slate";
-import { ListItem, isListItem } from "../../Slate";
+import { Editor, Location, NodeEntry } from 'slate';
+import { ListItem, ListItemWithMeta, isListItem } from '../../Slate';
+import isListItemWithMeta from './isListItemWithMeta';
 
 /**
- * Retrieves the next list item in the hierarchy above the given path.
+ * Retrieves the next list item in the hierarchy above the given location.
  * @param editor Editor
- * @param path path of list item
- * @returns ancestor list item or null
+ * @param at location to search at
+ * @returns ancestor list item
  */
-const getParentListItem = (editor: Editor, path: Path): NodeEntry<ListItem> | null => {
-    const parentParentPath = path.slice(0, -2);
+const getParentListItem = (editor: Editor, at: Location): NodeEntry<ListItemWithMeta> | null => {
+    const parentListItem = editor.above<ListItem>({
+        at,
+        match: isListItem,
+    });
 
-    if (parentParentPath.length > 0) {
-        const parentListItem = Node.get(editor, parentParentPath);
-    
-        if (isListItem(parentListItem)) {
-            return [parentListItem, parentParentPath];
-        }
+    if (!parentListItem) {
+        return null;
     }
 
-    return null;
-}
+    const [parent] = parentListItem;
+
+    if (!isListItemWithMeta(parent)) {
+        return null;
+    }
+
+    return [parent, parentListItem[1]];
+
+};
 
 export default getParentListItem;

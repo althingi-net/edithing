@@ -5,6 +5,6 @@ const translations: { [key: string]: string } = {
     subart: 'mgr',
     numart: 'mgr',
     sen: 'málsl',
-}
+};
 
 export default translations;
