@@ -14,15 +14,40 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
 
     for (const [node, path] of Node.nodes(root)) {
         if (Element.isElementType(node, ElementType.LIST_ITEM_TEXT)) {
-            node.children.forEach((child, index) => {
-                if (Text.isText(child) && child.text) {
-                    let text = child.text;
-                    const childPath = [...path, index];
+            let title = '';
+            let name = '';
 
-                    if (child.title || child.name) {
-                        text += ' ';
+            node.children.forEach((child, index) => {
+                if (Text.isText(child)) {
+                    if (child.title) {
+                        title = child.text;
+                        return;
                     }
 
+                    if (child.name) {
+                        name = child.text;
+                        return;
+                    }
+                }
+            });
+
+            if (title || name) {
+                const id = getParagraphId(root, path);
+
+                if (!id) {
+                    throw new Error('Could not get paragraph id');
+                }
+
+                list.push({
+                    id,
+                    content: title + name,
+                    path,
+                });
+            }
+
+            node.children.forEach((child, index) => {
+                if (Text.isText(child) && !child.title && !child.name) {
+                    const childPath = [...path, index];
                     const id = getParagraphId(root, childPath);
 
                     if (!id) {
@@ -31,7 +56,7 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
 
                     list.push({
                         id,
-                        content: text,
+                        content: child.text,
                         path: childPath,
                     });
                 }

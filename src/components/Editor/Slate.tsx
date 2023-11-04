@@ -99,11 +99,15 @@ export const isMetaType = (type: string): type is MetaType => {
     return Object.values(MetaType).includes(type as MetaType);
 };
 
+export const isListItemMeta = (meta: object): meta is ListItemMeta => {
+    return 'nr' in meta && 'type' in meta;
+};
+
 export const isList = (node?: Node | null): node is List => {
     return Element.isElementType(node, ElementType.LIST);
 };
 
-export const isListItem = (node?: Node | null): node is ListItem => {
+export const isListItem = (node?: Partial<Node> | null): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
 };
 

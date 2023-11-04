@@ -1,312 +1,219 @@
-import { Descendant } from 'slate';
-import compareDocuments from './compareDocuments';
-import Changelog from '../../../../models/Changelog';
+import { Descendant, Point, Transforms } from 'slate';
 import { MetaType } from '../../Slate';
+import splitListItem from '../../actions/splitListItem';
+import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
 import createList from '../slate/createList';
 import createListItem from '../slate/createListItem';
-import { Event } from '../../plugins/withEvents';
+import createSelectionWithDistance from '../slate/createSelectionWithDistance';
+import compareDocuments from './compareDocuments';
 
-// test('renaming a paragraph and adding the same one again with a different text', () => {
-//     const inputA = `
-//         <paragraph nr="1">Hello World</paragraph>
-//     `;
-//     const inputB: Node = createSlateRoot([
-//         createList(MetaType.PARAGRAPH, {}, [
-//             createListItem(MetaType.PARAGRAPH, '1', { title: 'New Text' }),
-//             createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
-//         ]),
-//     ]);
+const setupEditor = (document: Descendant[]) => {
+    const editor = createEditorWithPlugins(); 
+    editor.children = document;
 
-//     const output = [
-//         'Paragraph 1. was renamed to Paragraph 2.',
-//         'Paragraph 1. was created: "New Text"',
-//     ];
+    const originalDocument = document;
 
-//     expect(compareDocuments(inputA, inputB, [])).toStrictEqual(output);
-// });
+    return { editor, originalDocument };
+};
 
-test('Removed paragraph 2', () => {
-    const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'New Text' }),
-        ]),
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
-        ]),
-    ];
-    const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'New Text' }),
-        ]),
-    ];
-    const events: Event[] = [
-        { id: 'paragraph-2.title', type: 'remove_node' },
-    ];
-
-    const output: Changelog[] = [{
-        id: 'paragraph-2.title',
-        type: 'delete',
-    }];
-
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
-});
-
-test('Added paragraph 2', () => {
-    const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-        ]),
-    ];
-    const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-            createListItem(MetaType.PARAGRAPH, '2', { title: 'New Text' }),
-        ]),
-    ];
-    const events: Event[] = [
-        { id: 'paragraph-2.title', type: 'insert_text' },
-    ];
-
-    const output: Changelog[] = [{
-        id: 'paragraph-2.title',
-        type: 'add',
-        text: 'New Text ',
-    }];
-
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
-});
-
-test('Changed paragraph 1', () => {
-    const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-        ]),
-    ];
-    const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello z' }),
-        ]),
-    ];
-    const events: Event[] = [
-        { id: 'paragraph-1.title', type: 'remove_text' },
-        { id: 'paragraph-1.title', type: 'insert_text' },
-    ];
-
-    const output: Changelog[] = [{
-        id: 'paragraph-1.title',
-        type: 'change',
-        text: 'Hello z ',
-        changes: [[
-            0,
-            'Hello ',
-        ], [
-            -1,
-            'World',
-        ], [
-            1,
-            'z',
-        ], [
-            0,
-            ' ',
-        ]],
-    }];
-
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
-});
-
-test('Changed Chapter 1 Paragraph 2', () => {
-    const inputA: Descendant[] = [
+test('Add new chapter via enter', () => {
+    const { editor, originalDocument } = setupEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
-                createList(MetaType.PARAGRAPH, {}, [
-                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text' }),
                 ]),
             ]),
         ]),
-    ];
-    const inputB: Descendant[] = [
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
-                createList(MetaType.PARAGRAPH, {}, [
-                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello z' }),
-                ]),
-            ]),
-        ]),
-    ];
-    const events: Event[] = [
-        { id: 'chapter-1.paragraph-2.title', type: 'remove_text' },
-        { id: 'chapter-1.paragraph-2.title', type: 'insert_text' },
-    ];
+    ]); 
 
-    const output: Changelog[] = [{
-        id: 'chapter-1.paragraph-2.title',
-        type: 'change',
-        text: 'Hello z ',
-        changes: [[
-            0,
-            'Hello ',
-        ], [
-            -1,
-            'World',
-        ], [
-            1,
-            'z',
-        ], [
-            0,
-            ' ',
-        ]],
-    }];
+    editor.selection = createSelectionWithDistance(editor, [0, 0, 0, 0], { startOffset: 10 });
 
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
-});
+    splitListItem(editor);
 
-test('Merge events for the same id', () => {
-    const inputA: Descendant[] = [
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
-                createList(MetaType.PARAGRAPH, {}, [
-                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
-                ]),
-            ]),
-        ]),
-    ];
-    const inputB: Descendant[] = [
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
-                createList(MetaType.PARAGRAPH, {}, [
-                    createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-                    createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello z' }),
-                ]),
-            ]),
-        ]),
-    ];
-    const events: Event[] = [
-        { id: 'chapter-1.paragraph-2', type: 'remove_node' },
-        { id: 'chapter-1.paragraph-2', type: 'set_node' },
-        { id: 'chapter-1.paragraph-2.title', type: 'insert_text' },
-    ];
+    const output = compareDocuments(editor, originalDocument);
 
-    const output: Changelog[] = [{
-        id: 'chapter-1.paragraph-2.title',
-        type: 'change',
-        text: 'Hello z ',
-        changes: [[
-            0,
-            'Hello ',
-        ], [
-            -1,
-            'World',
-        ], [
-            1,
-            'z',
-        ], [
-            0,
-            ' ',
-        ]],
-    }];
-
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
-});
-
-test('Sort entries by ascending id', () => {
-    const inputA: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-            createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello World' }),
-            createListItem(MetaType.PARAGRAPH, '3', { title: 'Hello World' }),
-        ]),
-    ];
-    const inputB: Descendant[] = [
-        createList(MetaType.PARAGRAPH, {}, [
-            createListItem(MetaType.PARAGRAPH, '1', { title: 'Hello World' }),
-            createListItem(MetaType.PARAGRAPH, '2', { title: 'Hello 2' }),
-            createListItem(MetaType.PARAGRAPH, '3', { title: 'Hello 3' }),
-        ]),
-    ];
-    const events: Event[] = [
-        { id: 'paragraph-3.title', type: 'insert_text' },
-        { id: 'paragraph-2.title', type: 'insert_text' },
-    ];
-
-    const output: Changelog[] = [{
-        id: 'paragraph-2.title',
-        type: 'change',
-        text: 'Hello 2 ',
-        changes: [[
-            0,
-            'Hello ',
-        ], [
-            -1,
-            'World',
-        ], [
-            1,
-            '2',
-        ], [
-            0,
-            ' ',
-        ]],
+    expect(output).toStrictEqual([{
+        id: 'chapter-1',
+        text: '1. Chapter',
+        type: 'added',
     }, {
-        id: 'paragraph-3.title',
-        type: 'change',
-        text: 'Hello 3 ',
-        changes: [[
-            0,
-            'Hello ',
-        ], [
-            -1,
-            'World',
-        ], [
-            1,
-            '3',
-        ], [
-            0,
-            ' ',
-        ]],
-    }];
-
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
+        id: 'chapter-2',
+        type: 'changed',
+        text: 'II. kafli. ',
+        changes: [
+            [
+                -1,
+                '1. Chapter',
+            ],
+            [
+                1,
+                'II. kafli. ',
+            ],
+        ],
+    }]);
 });
 
-test('Added word in sen 2', () => {
-    const inputA: Descendant[] = [
+test('Change title', () => {
+    const { editor, originalDocument } = setupEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
-                createList(MetaType.PARAGRAPH, {}, [
-                    createListItem(MetaType.PARAGRAPH, '1', { title: 'title 1', text: ['sen1', 'sen2'] }),
-                    createListItem(MetaType.PARAGRAPH, '2', { title: 'title 2', text: ['sen1', 'sen2'] }),
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text' }),
                 ]),
             ]),
         ]),
-    ];
-    const inputB: Descendant[] = [
+    ]);
+
+    Transforms.insertText(editor, 'sd', { at: { path: [0, 0, 0, 0], offset: 10 } });
+    
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([{
+        id: 'chapter-1',
+        type: 'changed',
+        text: '1. Chaptersd',
+        changes: [
+            [
+                0,
+                '1. Chapter',
+            ],
+            [
+                1,
+                'sd',
+            ],
+        ],
+    }]);
+});
+
+test('Change name', () => {
+    const { editor, originalDocument } = setupEditor([
         createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
-                createList(MetaType.PARAGRAPH, {}, [
-                    createListItem(MetaType.PARAGRAPH, '1', { title: 'title 1', text: ['sen1', 'sen2 hello'] }),
-                    createListItem(MetaType.PARAGRAPH, '2', { title: 'title 2', text: ['sen1', 'sen2 newword'] }),
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text' }),
                 ]),
             ]),
         ]),
-    ];
-    const events: Event[] = [
-        { id: 'chapter-1.paragraph-2.sen-2', type: 'insert_text' },
-    ];
+    ]);
 
-    const output: Changelog[] = [{
-        id: 'chapter-1.paragraph-2.sen-2',
-        type: 'change',
-        text: 'sen2 newword',
-        changes: [[
-            0,
-            'sen2',
-        ], [
-            1,
-            ' newword',
-        ]],
-    }];
+    Transforms.insertText(editor, 'sd', { at: { path: [0, 0, 0, 1], offset: 5 } });
 
-    expect(compareDocuments(inputA, inputB, events)).toStrictEqual(output);
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([{
+        id: 'chapter-1',
+        type: 'changed',
+        text: '1. Chapter name sd',
+        changes: [
+            [
+                0,
+                '1. Chapter name ',
+            ],
+            [
+                1,
+                'sd',
+            ],
+        ],
+    }]);
+});
+
+test('Change text', () => {
+    const { editor, originalDocument } = setupEditor([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text' }),
+                ]),
+            ]),
+        ]),
+    ]);
+
+    Transforms.insertText(editor, ' sd', { at: { path: [0, 0, 1, 0, 0, 0], offset: 9 } });
+
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([{
+        id: 'chapter-1.art-1.sen-1',
+        type: 'changed',
+        text: 'some text sd',
+        changes: [
+            [
+                0,
+                'some text',
+            ],
+            [
+                1,
+                ' sd',
+            ],
+        ],
+    }]);
+});
+
+test('remove text', () => {
+    const { editor, originalDocument } = setupEditor([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text' }),
+                ]),
+            ]),
+        ]),
+    ]);
+
+    const at = createSelectionWithDistance(editor, [0, 0, 1, 0, 0, 0], { startOffset: 0, distance: 9 });
+    Transforms.delete(editor, { at });
+
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([{
+        id: 'chapter-1.art-1.sen-1',
+        type: 'deleted',
+        text: '',
+        changes: [
+            [
+                -1,
+                'some text',
+            ]
+        ],
+    }]);
+});
+
+test('sort by id ascending', () => {
+    const { editor, originalDocument } = setupEditor([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text' }),
+                ]),
+            ]),
+        ]),
+    ]);
+
+    const at = createSelectionWithDistance(editor, [0, 0, 1, 0, 0, 0], { startOffset: 0, distance: 9 });
+    Transforms.delete(editor, { at });
+    Transforms.insertText(editor, 'sd', { at: { path: [0, 0, 0, 1], offset: 5 } });
+
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([{
+        id: 'chapter-1',
+        type: 'changed',
+        text: '1. Chapter name sd',
+        changes: [
+            [
+                0,
+                '1. Chapter name ',
+            ],
+            [
+                1,
+                'sd',
+            ],
+        ],
+    }, {
+        id: 'chapter-1.art-1.sen-1',
+        type: 'deleted',
+        text: '',
+        changes: [
+            [
+                -1,
+                'some text',
+            ]
+        ],
+    }]);
 });

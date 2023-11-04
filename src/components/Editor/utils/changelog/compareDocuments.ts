@@ -1,4 +1,4 @@
-import { Descendant } from 'slate';
+import { Descendant, Editor } from 'slate';
 import Diff from 'text-diff';
 import Changelog from '../../../../models/Changelog';
 import { Event } from '../../plugins/withEvents';
@@ -6,67 +6,104 @@ import flattenSlateParagraphs, { FlattenedParagraph } from './flattenSlateParagr
 
 const diff = new Diff();
 
-const compareDocuments = (original: Descendant[], current: Descendant[], events: Event[]) => {
+const compareDocuments = (editor: Editor, original: Descendant[]) => {
     const originalTexts = flattenSlateParagraphs(original);
-    const newTexts = flattenSlateParagraphs(current);
+    const newTexts = flattenSlateParagraphs(editor.children);
 
-    const changelog = createChangelog(originalTexts, newTexts);
-    return sortChangelog(changelog, events);
+    const changelog = createChangelog(editor, originalTexts, newTexts, editor.events);
+    return sortChangelog(changelog);
 };
 
-const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[]) => {
+const createChangelog = (editor: Editor, originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[], events: Event[]) => {
     const changelog: Changelog[] = [];
-
-    for (const newText of newTexts) {
-        // Find added texts
-        const originalText = originalTexts.find(text => text.id === newText.id || text.content === newText.content);
-        if (!originalText) {
-            changelog.push({ id: newText.id, type: 'add', text: newText.content });
-            continue;
-        }
-
-        // Find changed texts
-        if (originalText.content !== newText.content) {
-            const changes = diff.main(originalText.content, newText.content);
-            diff.cleanupSemantic(changes);
-            changelog.push({ id: newText.id, type: 'change', text: newText.content, changes });
-        }
-    }
-
-    // Find deleted texts
-    for (const originalText of originalTexts) {
-        const newText = newTexts.find(text => text.id === originalText.id || text.content === originalText.content);
-        if (!newText) {
-            changelog.push({ id: originalText.id, type: 'delete' });
+    
+    for (const event of events) {
+        switch (event.type) {
+        case 'added': 
+            parseAdded(changelog, event, newTexts);
+            break;
+        case 'removed':
+            parseRemoved(changelog, event, originalTexts);
+            break;
+        case 'changed': 
+            parseChanged(changelog, event, originalTexts, newTexts);
+            break;
         }
     }
 
     return changelog;
 };
 
+const parseAdded = (
+    changelog: Changelog[],
+    event: Event,
+    newTexts: FlattenedParagraph[],
+) => {
+    const { id } = event;
+    const newText = newTexts.find(text => text.id === id);
+    changelog.push({ id, type: 'added', text: newText?.content });
+};
+
+const parseRemoved = (
+    changelog: Changelog[],
+    event: Event,
+    originalTexts: FlattenedParagraph[],
+) => {
+    const { id } = event;
+    const originalText = originalTexts.find(text => text.id === id);
+    changelog.push({ id, type: 'deleted', text: originalText?.content });
+};
+
+const parseChanged = (
+    changelog: Changelog[],
+    event: Event,
+    originalTexts: FlattenedParagraph[],
+    newTexts: FlattenedParagraph[],
+) => {
+    const { id, moved, from } = event;
+    const oldId = moved ? from : id;
+    const originalText = originalTexts.find(text => text.id === oldId);
+    const newText = newTexts.find(text => text.id === id);
+
+    if (originalText && !newText) {
+        changelog.push({ id, type: 'deleted', text: originalText.content });
+    }
+
+    if (!originalText && newText) {
+        changelog.push({ id, type: 'added', text: newText.content });
+    }
+
+    if (originalText && newText) {
+        const changes = getTextDiff(originalText, newText);
+
+        // Ignore when they are no changes
+        if (changes.length === 1 && changes[0][0] === 0) {
+            return;
+        }
+
+        if (changes.length === 1) {
+            const type = changes[0][0] === 1 ? 'added' : 'deleted';
+            changelog.push({ id, type, text: newText.content, changes });
+        } else {
+            changelog.push({ id, type: 'changed', text: newText.content, changes });
+        }
+    }
+};
+
+const getTextDiff = (originalText: FlattenedParagraph, newText: FlattenedParagraph) => {
+    const changes = diff.main(originalText.content, newText.content);
+    diff.cleanupSemantic(changes);
+    return changes;
+};
+
 /**
- * Sort Changelog based on events. Events are processed in reverse order to ignore events that are undone.
+ * Sort changelog based on id, ascending
+ * @param changelog 
+ * @param events 
+ * @returns 
  */
-const sortChangelog = (changelog: Changelog[], events: Event[]) => {
-    const appliedEvents: string[] = [];
-
-    return [...events]
-        .reverse()
-        .map(event => {
-            const changelogEntry = changelog.find(entry => entry.id === event.id);
-            if (!changelogEntry) {
-                return null;
-            }
-
-            if (appliedEvents.find(appliedEvent => appliedEvent.includes(event.id))) {
-                return null;
-            }
-
-            appliedEvents.push(event.id);
-            return changelogEntry;
-        })
-        .filter((entry): entry is Changelog => entry !== null)
-        // Sort changelog based on id, ascending
+const sortChangelog = (changelog: Changelog[]) => {
+    return [...changelog]
         .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1) as Changelog[];
 };
 

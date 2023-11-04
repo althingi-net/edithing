@@ -2,7 +2,7 @@
 interface Changelog {
     id: string;
     text?: string;
-    type: 'add' | 'change' | 'delete';
+    type: 'added' | 'changed' | 'deleted';
     changes?: [type: number, text: string][];
 }
 

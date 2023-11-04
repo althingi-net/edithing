@@ -33,7 +33,7 @@ const getParagraphId = (root: Node, path: Path) => {
         if (node.nr) {
             ids.push(`${tag}-${node.nr}`);
         } else {
-            ids.push(`${tag}`);
+            // ids.push(`${tag}`);
         }
     }
 

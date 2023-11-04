@@ -22,7 +22,7 @@ const EditorSidePanel: FC<Props> = (props) => {
     return useMemo(() => {
         const slateState = JSON.stringify(debouncedSlate, null, 2);
         const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
-        const changelog = compareDocuments(originalDocument.slate, debouncedSlate.children, debouncedSlate.events);
+        const changelog = compareDocuments(debouncedSlate, originalDocument.slate);
 
         return (
             <div style={{ height: '100%' }}>

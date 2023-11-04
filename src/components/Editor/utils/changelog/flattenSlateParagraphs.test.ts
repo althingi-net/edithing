@@ -5,7 +5,7 @@ import createListItem from '../slate/createListItem';
 import flattenSlateParagraphs from './flattenSlateParagraphs';
 
 test('flatten simple chapter>paragraph', () => {
-    const inputA: Descendant[] = [
+    const input: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -16,20 +16,20 @@ test('flatten simple chapter>paragraph', () => {
     ];
     
     const output = [{
-        id: 'chapter-1.title',
-        content: 'I. ',
-        path: [0, 0, 0, 0],
+        id: 'chapter-1',
+        content: 'I.',
+        path: [0, 0, 0],
     }, {
-        id: 'chapter-1.paragraph-1.title',
-        content: 'Hello World ',
-        path: [0, 0, 1, 0, 0, 0],
+        id: 'chapter-1.paragraph-1',
+        content: 'Hello World',
+        path: [0, 0, 1, 0, 0],
     }];
 
-    expect(flattenSlateParagraphs(inputA)).toStrictEqual(output);
+    expect(flattenSlateParagraphs(input)).toStrictEqual(output);
 });
 
 test('flatten chapter>paragraph>sen', () => {
-    const inputA: Descendant[] = [
+    const input: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
                 createList(MetaType.PARAGRAPH, {}, [
@@ -40,9 +40,9 @@ test('flatten chapter>paragraph>sen', () => {
     ];
     
     const output = [{
-        id: 'chapter-1.title',
-        content: 'I. ',
-        path: [0, 0, 0, 0],
+        id: 'chapter-1',
+        content: 'I.',
+        path: [0, 0, 0],
     }, {
         id: 'chapter-1.paragraph-1.sen-1',
         content: 's1',
@@ -53,11 +53,11 @@ test('flatten chapter>paragraph>sen', () => {
         path: [0, 0, 1, 0, 0, 1],
     }];
 
-    expect(flattenSlateParagraphs(inputA)).toStrictEqual(output);
+    expect(flattenSlateParagraphs(input)).toStrictEqual(output);
 });
 
 test('flatten multiple levels chapter>art>paragraph', () => {
-    const inputA: Descendant[] = [
+    const input: Descendant[] = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }, [
                 createList(MetaType.ART, {}, [
@@ -72,18 +72,38 @@ test('flatten multiple levels chapter>art>paragraph', () => {
     ];
     
     const output = [{
-        id: 'chapter-1.title',
-        content: 'I. ',
-        path: [0, 0, 0, 0],
+        id: 'chapter-1',
+        content: 'I.',
+        path: [0, 0, 0],
     }, {
-        id: 'chapter-1.art-1.title',
-        content: '1. gr. ',
-        path: [0, 0, 1, 0, 0, 0],
+        id: 'chapter-1.art-1',
+        content: '1. gr.',
+        path: [0, 0, 1, 0, 0],
     }, {
-        id: 'chapter-1.art-1.paragraph-1.title',
-        content: 'Hello World ',
-        path: [0, 0, 1, 0, 1, 0, 0, 0],
+        id: 'chapter-1.art-1.paragraph-1',
+        content: 'Hello World',
+        path: [0, 0, 1, 0, 1, 0, 0],
     }];
 
-    expect(flattenSlateParagraphs(inputA)).toStrictEqual(output);
+    expect(flattenSlateParagraphs(input)).toStrictEqual(output);
+});
+
+test('in order: title + name, text', () => {
+    const input: Descendant[] = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I.', name: 'kafli', text: 'text' }),
+        ]),
+    ];
+    
+    const output = [{
+        id: 'chapter-1',
+        content: 'I.kafli',
+        path: [0, 0, 0],
+    }, {
+        id: 'chapter-1.sen-1',
+        content: 'text',
+        path: [0, 0, 0, 2],
+    }];
+
+    expect(flattenSlateParagraphs(input)).toStrictEqual(output);
 });

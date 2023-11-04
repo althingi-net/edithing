@@ -44,11 +44,11 @@ const LawChanges: FC<Props> = ({ changelog }) => {
 const parseChange = (entry: Changelog, showOnlyDifference: boolean) => {
     const id = parseIdToDisplay(entry.id);
 
-    if (entry.type === 'add') {
+    if (entry.type === 'added') {
         return `${id} of the law was added: ${entry.text}`;
     }
 
-    if (entry.type === 'delete') {
+    if (entry.type === 'deleted') {
         return `${id} of the law was removed.`;
     }
 
