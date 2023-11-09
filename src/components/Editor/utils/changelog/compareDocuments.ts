@@ -10,8 +10,11 @@ const compareDocuments = (editor: Editor, original: Descendant[]) => {
     const originalTexts = flattenSlateParagraphs(original);
     const newTexts = flattenSlateParagraphs(editor.children);
 
-    const changelog = createChangelog(editor, originalTexts, newTexts, editor.events);
-    return sortChangelog(changelog);
+    let changelog = createChangelog(editor, originalTexts, newTexts, editor.events);
+    changelog = sortChangelog(changelog);
+    changelog = filterUnique(changelog);
+    
+    return changelog;
 };
 
 const createChangelog = (editor: Editor, originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[], events: Event[]) => {
@@ -50,8 +53,11 @@ const parseRemoved = (
     originalTexts: FlattenedParagraph[],
 ) => {
     const { originId } = event;
-    const originalText = originalTexts.find(text => text.id === originId);
-    changelog.push({ id: originId, type: 'deleted', text: originalText?.content });
+    originalTexts
+        .filter(text => text.id.includes(originId))
+        .forEach(text => {
+            changelog.push({ id: text.id, type: 'deleted', text: text.content });
+        });
 };
 
 const parseChanged = (
@@ -71,11 +77,11 @@ const parseChanged = (
     }
 
     if (originalText && !newText) {
-        changelog.push({ id, type: 'deleted', text: originalText.content });
+        parseRemoved(changelog, event, originalTexts);
     }
 
     if (!originalText && newText) {
-        changelog.push({ id, type: 'added', text: newText.content });
+        parseAdded(changelog, event, newTexts);
     }
 
     if (originalText && newText) {
@@ -110,6 +116,12 @@ const getTextDiff = (originalText: FlattenedParagraph, newText: FlattenedParagra
 const sortChangelog = (changelog: Changelog[]) => {
     return [...changelog]
         .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1) as Changelog[];
+};
+
+const filterUnique = (changelog: Changelog[]) => {
+    return changelog.filter((changelog, index, self) => {
+        return !index || changelog.id !== self[index - 1].id;
+    });
 };
 
 export default compareDocuments;
