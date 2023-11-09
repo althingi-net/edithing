@@ -103,7 +103,7 @@ test('increment following siblings nr and title', async () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I.' }),
             createListItem(MetaType.CHAPTER, '2', { title: 'II.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III.', text: '3' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III.', text: '3', originNr: '2' }),
         ]),
     ];
 
@@ -167,8 +167,8 @@ test('increment following siblings nr and title but retain letters after digits'
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr.' }),
             createListItem(MetaType.ART, '2', { title: '2. gr.' }),
-            createListItem(MetaType.ART, '2a', { title: '2. gr. a.' }),
-            createListItem(MetaType.ART, '3', { title: '3. gr.' }),
+            createListItem(MetaType.ART, '2a', { title: '2. gr. a.', originNr: '1a' }),
+            createListItem(MetaType.ART, '3', { title: '3. gr.', originNr: '2' }),
         ]),
     ];
 
@@ -201,7 +201,7 @@ test('increment following siblings nr and title with roman nr and retain previou
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.', originNr: '2' }),
         ]),
     ];
 

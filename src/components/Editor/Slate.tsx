@@ -47,6 +47,10 @@ export interface ListWithMeta extends List {
 export interface ListItemMeta extends ListMeta {
     type: MetaType;
     nr: string;
+
+    /** Nr at import or when first created, used by compareDocuments() to find the original paragraphId */
+    originNr: string;
+
     nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
     romanNr?: string;
     

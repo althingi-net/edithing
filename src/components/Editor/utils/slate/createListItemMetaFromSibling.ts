@@ -1,18 +1,25 @@
-import { ListItem } from '../../Slate';
+import { ListItem, ListItemMeta } from '../../Slate';
 import incrementLetter from '../incrementLetter';
 import incrementMixedNumber from '../incrementMixedNumber';
 import incrementRomanNumber from '../incrementRomanNumber';
 
-const createListItemMetaFromSibling = (sibling: ListItem) => {
+interface Options {
+    isNodeSplit?: boolean;
+}
+
+const createListItemMetaFromSibling = (sibling: ListItem, options: Options = {}) => {
     if (!sibling.meta) {
         throw new Error('createListItemMetaFromSibling: sibling.meta is undefined');
     }
 
-    const { nr, romanNr, nrType, type, title, styleNote } = sibling.meta;
+    const { isNodeSplit } = options;
+    const { nr, originNr, romanNr, nrType, type, title, styleNote } = sibling.meta;
             
-    const meta: ListItem['meta'] = {
+    const newNr = incrementMixedNumber(nr);
+    const meta: ListItemMeta = {
         type,
-        nr: `${incrementMixedNumber(nr)}`
+        nr: newNr,
+        originNr: isNodeSplit ? originNr : newNr,
     };
 
     if (nrType) {

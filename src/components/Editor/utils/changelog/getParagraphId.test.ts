@@ -41,7 +41,7 @@ test('name', () => {
             ]),
         ]),
     ]);
-    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1.name`;
+    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1`;
 
     expect(getParagraphId(input, [0, 0, 1, 0, 0, 0])).toBe(output);
 });
@@ -56,7 +56,7 @@ test('title', () => {
             ]),
         ]),
     ]);
-    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1.title`;
+    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1`;
 
     expect(getParagraphId(input, [0, 0, 1, 0, 0, 0])).toBe(output);
 });

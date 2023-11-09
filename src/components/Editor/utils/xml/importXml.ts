@@ -77,6 +77,7 @@ const convertList = (key: string, values: any[]): Descendant => {
             meta: {
                 type: key as MetaType,
                 nr: element['@_nr'],
+                originNr: element['@_nr'],
             },
             children: [],
         };

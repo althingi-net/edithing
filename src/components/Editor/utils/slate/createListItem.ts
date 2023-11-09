@@ -3,10 +3,11 @@ import { ElementType, ListItemMeta, ListItemText, ListItemWithMeta, MetaType } f
 import convertRomanNumber from '../convertRomanNumber';
 import createListItemText from './createListItemText';
 
-export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'name'> {
+export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
     title?: string | boolean;
     name?: string | boolean;
+    originNr?: string;
 }
 
 /**
@@ -16,7 +17,7 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'type' | 'title' | 'n
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
-    const { title, name, text, nrType, styleNote, romanNr } = options;
+    const { title, name, text, nrType, styleNote, romanNr, originNr } = options;
 
     const textElement: ListItemText = createListItemText();
     
@@ -25,6 +26,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
         meta: {
             type: type,
             nr,
+            originNr: originNr ?? nr,
         },
         children: [
             textElement,

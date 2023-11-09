@@ -7,6 +7,10 @@ const incrementMixedNumber = (nr: string, incrementRoot = false) => {
     const number = Number(nr.match(/\d+/)?.[0]);
     const letter = nr.match(/[a-z]+/)?.[0];
 
+    if (!number && letter) {
+        return incrementLetter(letter);
+    }
+
     if (letter) {
         if (incrementRoot) {
             return `${number + 1}${letter}`;

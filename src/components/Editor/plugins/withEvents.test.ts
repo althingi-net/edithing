@@ -25,12 +25,12 @@ test('split at end of title', () => {
 
     expect(editor.events).toEqual([{
         id: 'chapter-1',
+        originId: 'chapter-1',
         type: 'added',
     }, {
         id: 'chapter-2',
-        moved: true,
+        originId: 'chapter-1',
         type: 'changed',
-        from: 'chapter-1',
     }]);
 });
 
@@ -57,12 +57,12 @@ test('add new entry as sibling', () => {
 
     expect(editor.events).toEqual([{
         id: 'chapter-2',
+        originId: 'chapter-1',
         type: 'added',
     }, {
         id: 'chapter-3',
-        moved: true,
+        originId: 'chapter-2',
         type: 'changed',
-        from: 'chapter-2',
     }]);
 });
 
@@ -88,6 +88,7 @@ test('delete text', () => {
 
     expect(editor.events).toEqual([{
         id: 'chapter-1.art-1.sen-1',
+        originId: 'chapter-1.art-1.sen-1',
         type: 'changed',
     }]);
 });
@@ -105,14 +106,44 @@ test('delete entry', () => {
         ]),
     ];
 
-    // Simulate user selecting the first paragraph and pressing delete.
-    Transforms.delete(editor, { at: [0, 0, 1, 0, 0, 0], distance: 9 });
+    Transforms.removeNodes(editor, { at: [0, 0, 1, 0] });
 
     expect(editor.events).toEqual([{
-        id: 'chapter-1.art-1.sen-1',
+        id: 'chapter-1.art-1',
+        originId: 'chapter-1.art-1',
         type: 'removed',
     }]);
 });
+
+
+test('maintain originId across splits', () => {
+    const editor = createEditorWithPlugins(); 
+    editor.children = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter', text: 'the first chapter' }),
+        ]),
+    ];
+    editor.selection = createSelectionWithDistance(editor, [0, 0, 0, 1], { startOffset: 17 });
+    
+    splitListItem(editor);
+    splitListItem(editor);
+    
+    expect(editor.events).toEqual([{
+        id: 'chapter-1',
+        originId: 'chapter-1',
+        type: 'added',
+    }, {
+        id: 'chapter-2',
+        originId: 'chapter-1',
+        type: 'added',  // either this is changed
+    }, {
+        id: 'chapter-3',
+        originId: 'chapter-1',
+        type: 'changed', // or this is added
+    }]);
+});
+
+
 
 
 // test('delete > add = changed', () => {

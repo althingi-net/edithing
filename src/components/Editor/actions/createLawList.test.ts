@@ -20,8 +20,8 @@ test('create new list item and increment following siblings', () => {
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.', text: 'the second chapter' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', originNr: '1' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.', text: 'the second chapter', originNr: '2' }),
         ]),
     ]);
 });
@@ -42,8 +42,8 @@ test('create new list item and do not increment following siblings', () => {
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', originNr: '1' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'the second chapter', originNr: '2' }),
         ]),
     ]);
 });

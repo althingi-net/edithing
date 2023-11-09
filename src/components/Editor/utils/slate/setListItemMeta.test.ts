@@ -19,7 +19,7 @@ test('insert title in empty list item', () => {
     ];
 
     const path = [0, 0];
-    const meta: ListItemMeta = { nr: '2', type: MetaType.CHAPTER, title: true };
+    const meta: ListItemMeta = { nr: '2', originNr: '2', type: MetaType.CHAPTER, title: true };
     setListItemMeta(editor, node, path, meta);
 
     expect(editor.children).toEqual(output);
@@ -40,32 +40,11 @@ test('update existing title', () => {
     ];
 
     const path = [0, 0];
-    const meta: ListItemMeta = { nr: '2', type: MetaType.CHAPTER, title: true };
+    const meta: ListItemMeta = { nr: '2', originNr: '2', type: MetaType.CHAPTER, title: true };
     setListItemMeta(editor, node, path, meta);
 
     expect(editor.children).toEqual(output);
 });
-
-// test('remove existing title', () => {
-//     const editor = createEditorWithPlugins();
-//     const node = createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'text' });
-//     editor.children = [
-//         createList(MetaType.CHAPTER, {}, [
-//             node,
-//         ]),
-//     ];
-//     const output = [
-//         createList(MetaType.CHAPTER, {}, [
-//             createListItem(MetaType.CHAPTER, '2', { text: 'text' }),
-//         ]),
-//     ];
-
-//     const path = [0, 0];
-//     const meta: ListItemMeta = { nr: '2', type: MetaType.CHAPTER };
-//     setListItemMeta(editor, node, path, meta);
-
-//     expect(editor.children).toEqual(output);
-// });
 
 test('prepend title above existing text', () => {
     const editor = createEditorWithPlugins();
@@ -82,7 +61,7 @@ test('prepend title above existing text', () => {
     ];
 
     const path = [0, 0];
-    const meta: ListItemMeta = { nr: '2', type: MetaType.CHAPTER, title: true };
+    const meta: ListItemMeta = { nr: '2', originNr: '2', type: MetaType.CHAPTER, title: true };
     setListItemMeta(editor, node, path, meta);
 
     expect(editor.children).toEqual(output);
@@ -103,7 +82,7 @@ test('update title of existing title+name+text', () => {
     ];
 
     const path = [0, 0];
-    const meta: ListItemMeta = { nr: '2', type: MetaType.CHAPTER, title: true, name: true };
+    const meta: ListItemMeta = { nr: '2', originNr: '2', type: MetaType.CHAPTER, title: true, name: true };
     setListItemMeta(editor, node, path, meta);
 
     expect(editor.children).toEqual(output);

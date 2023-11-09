@@ -19,6 +19,7 @@ test('ListItem: sibling above', () => {
         type: MetaType.CHAPTER,
         nrType: 'roman',
         nr: '2',
+        originNr: '2',
         romanNr: 'II',
     };
 

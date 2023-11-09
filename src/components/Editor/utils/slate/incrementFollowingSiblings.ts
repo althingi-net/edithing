@@ -19,7 +19,8 @@ const incrementFollowingSiblings = (editor: Editor, path: Path) => {
                 throw new Error('incrementFollowingSiblings: sibling.meta is undefined');
             }
 
-            const newMeta = { ...sibling.meta, nr: `${incrementMixedNumber(sibling.meta.nr, true)}` };
+            const nr = incrementMixedNumber(sibling.meta.nr, true);
+            const newMeta = { ...sibling.meta, nr };
             if (newMeta.romanNr) {
                 newMeta.romanNr = incrementRomanNumber(newMeta.romanNr);
             }

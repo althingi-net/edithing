@@ -63,7 +63,7 @@ const addListItem = (editor: Editor, listItem: ListItem, path: Path, type: MetaT
     const meta = createListItemMetaFromSibling(listItem);
     const siblingTitle = getListItemTitle(editor, path);
     const title = meta.title && createLawTitle(meta.nr, meta.type, siblingTitle);
-    const newNode = createListItem(type, meta.nr, { ...meta, title, text: '' });
+    const newNode = createListItem(type, meta.nr, { ...meta, title, text: '', originNr: listItem.meta?.originNr });
     const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1]);
 
     flatInsertNodeChildren(editor, newNode, newPath, true);

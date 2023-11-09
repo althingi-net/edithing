@@ -1,15 +1,14 @@
 import { BaseEditor, Editor, Node, Operation, Text } from 'slate';
 import { log } from '../../../logger';
-import { ElementType, isListItemMeta } from '../Slate';
+import { ElementType, isListItem, isListItemMeta } from '../Slate';
 import getParagraphId from '../utils/changelog/getParagraphId';
 
 const PRE_PARSE_OPERATIONS: Operation['type'][] = ['remove_node', 'remove_text'];
 
 export interface Event {
     id: string;
+    originId: string;
     type: 'added' | 'removed' | 'changed';
-    moved?: boolean;
-    from?: string;
 }
 
 export interface EventsEditor extends BaseEditor {
@@ -63,9 +62,10 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         return;
     }
     const id = getParagraphId(editor, operation.path);
-    log('apply', operation, id);
+    const originId = getParagraphId(editor, operation.path, true);
+    log('apply', operation, { id, originId });
 
-    if (!id) {
+    if (!id || !originId) {
         log('Couldn\'t find id', operation);
         return;
     }
@@ -74,8 +74,11 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         const { meta, newMeta } = getOperationMeta(operation);
         
         if (newMeta && meta) {
-            const hasChangedNr = meta.nr !== newMeta.nr;
-            addEvent(editor, { id, type: 'changed', moved: hasChangedNr, from: moveParagraphId(id, meta.nr) });
+            return addEvent(editor, type, {
+                id,
+                originId,
+                type: 'changed',
+            });
         }
     }
 
@@ -83,7 +86,7 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         const { properties } = operation;
 
         if ('type' in properties && properties.type === ElementType.LIST_ITEM) {
-            addEvent(editor, { id, type: 'added' });
+            return addEvent(editor, type, { id, originId, type: 'added' });
         }
     }
 
@@ -91,18 +94,26 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         const { node } = operation;
 
         if (hasText(node)) {
-            addEvent(editor, { id, type: 'removed' });
+            return addEvent(editor, type, { id, originId, type: 'changed' });
+        }
+
+        if (isListItem(node)) {
+            return addEvent(editor, type, { id, originId, type: 'removed' });
         }
     }
 
     if (type === 'remove_text' || type === 'insert_text') {
-        addEvent(editor, { id, type: 'changed' });
+        return addEvent(editor, type, { id, originId, type: 'changed' });
     }
 
     if (type === 'insert_node') {
         const node = operation.node;
         if (hasText(node)) {
-            addEvent(editor, { id, type: 'added' });
+            return addEvent(editor, type, { id, originId, type: 'changed' });
+        }
+
+        if (isListItem(node)) {
+            return addEvent(editor, type, { id, originId, type: 'added' });
         }
     }
 
@@ -112,26 +123,38 @@ const hasText = (node: Node) => {
     return Text.isText(node) && node.text !== '';
 };
 
-const moveParagraphId = (id: string, newNr: string) => {
-    const idArray = id.split('');
-    idArray[id.length - 1] = newNr;
-    return idArray.join('');
-};
-
-const addEvent = (editor: Editor, event: Event) => {
-    // If paragraph is new, any following changes can be ignored
-    if (hasEvent(editor, event.id, 'added')) {
+const addEvent = (editor: Editor, type: Omit<Operation['type'], 'set_selection'>, event: Event) => {
+    if (hasEvent(editor, event.id, event.type)) {
+        log('event ignored', event, hasEvent(editor, event.id));
         return;
     }
+
+    const isTextOperation = type === 'insert_text' || type === 'remove_text';
+    const isNodeOperation = type === 'insert_node' || type === 'remove_node';
     
-    // If paragraph was changed, any following changes can be ignored
-    if (hasEvent(editor, event.id, 'changed') && event.type !== 'removed') {
-        return;
+    if (isTextOperation || isNodeOperation) {
+        if (hasEvent(editor, event.id, 'added')) {
+            log('event ignored', event, hasEvent(editor, event.id));
+            return;
+        }
     }
 
-    if (hasEvent(editor, event.id, 'removed')) {
-        event = { ...event, type: 'changed'};
-    }
+
+    // If paragraph is new, any following changes can be ignored
+    // if (hasEvent(editor, event.id, 'added')) {
+    //     log('event ignored', event, hasEvent(editor, event.id));
+    //     return;
+    // }
+    
+    // // If paragraph was changed, any following changes can be ignored
+    // if (hasEvent(editor, event.id, 'changed') && (event.type === 'changed' || event.type === 'added')) {
+    //     log('event ignored', event, hasEvent(editor, event.id));
+    //     return;
+    // }
+
+    // if (hasEvent(editor, event.id, 'removed')) {
+    //     event = { ...event, type: 'changed'};
+    // }
 
     log('event', event);
     removeEvent(editor, event.id);

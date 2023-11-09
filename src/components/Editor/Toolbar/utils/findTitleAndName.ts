@@ -9,12 +9,12 @@ interface ReturnValue {
 /**
  * Find title and name text nodes in a list item.
  * @param editor Slate editor
- * @param listItemPath Location of the list item. If not provided, the list item at the current selection will be used.
+ * @param at Location of the list item. If not provided, the list item at the current selection will be used.
  * @returns 
  */
-const findTitleAndName = (editor: Editor, listItemPath?: Location): ReturnValue => {
+const findTitleAndName = (editor: Editor, at?: Location): ReturnValue => {
     const result: ReturnValue = {};
-    const at = listItemPath ?? findListItemAtSelection(editor)?.[1];
+    at = at ?? findListItemAtSelection(editor)?.[1];
     
     if (!at) {
         return result;

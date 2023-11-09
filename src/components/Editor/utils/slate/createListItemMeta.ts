@@ -10,6 +10,7 @@ const createListItemMeta = (editor: Editor, path: Path, type?: MetaType): ListIt
         const meta: ListItemMeta = {
             type,
             nr: '1',
+            originNr: '1',
         };
 
         if (type === MetaType.CHAPTER) {
@@ -24,9 +25,12 @@ const createListItemMeta = (editor: Editor, path: Path, type?: MetaType): ListIt
     if (isListItem(sibling)) {
         return createListItemMetaFromSibling(sibling);
     } else {
-        const meta = createListMeta(editor, path) as ListItemMeta;
-
-        meta.nr = '1';
+        const listMeta = createListMeta(editor, path);
+        const meta: ListItemMeta = {
+            ...listMeta,
+            nr: '1',
+            originNr: '1',
+        };
     
         if (meta.nrType === 'roman') {
             meta.romanNr = 'I';

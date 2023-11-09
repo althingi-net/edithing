@@ -35,7 +35,7 @@ const splitListItem = (editor : Editor) => {
             if (!isListItemWithMeta(newListItem)) {
                 throw new Error('splitListItem: newListItem is not a list item');
             }
-            const meta = createListItemMetaFromSibling(listItem);
+            const meta = createListItemMetaFromSibling(listItem, { isNodeSplit: true });
             setMeta(editor, newListItemPath, { ...newListItem.meta, ...meta });
 
             normalizeListItem(editor, listItemPath, false);

@@ -20,7 +20,7 @@ test('one sibling', () => {
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'the second chapter' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', text: 'the second chapter', originNr: '1' }),
         ]),
     ]);
 });
@@ -41,8 +41,8 @@ test('two sibling', () => {
     expect(editor.children).toStrictEqual([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.', originNr: '1' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.', originNr: '2' }),
         ]),
     ]);
 });
@@ -64,7 +64,7 @@ test('inbetween', () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.' }),
             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.' }),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III. kafli.', originNr: '2' }),
         ]),
     ]);
 });

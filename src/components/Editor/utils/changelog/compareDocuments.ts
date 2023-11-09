@@ -49,9 +49,9 @@ const parseRemoved = (
     event: Event,
     originalTexts: FlattenedParagraph[],
 ) => {
-    const { id } = event;
-    const originalText = originalTexts.find(text => text.id === id);
-    changelog.push({ id, type: 'deleted', text: originalText?.content });
+    const { originId } = event;
+    const originalText = originalTexts.find(text => text.id === originId);
+    changelog.push({ id: originId, type: 'deleted', text: originalText?.content });
 };
 
 const parseChanged = (
@@ -60,10 +60,15 @@ const parseChanged = (
     originalTexts: FlattenedParagraph[],
     newTexts: FlattenedParagraph[],
 ) => {
-    const { id, moved, from } = event;
-    const oldId = moved ? from : id;
-    const originalText = originalTexts.find(text => text.id === oldId);
-    const newText = newTexts.find(text => text.id === id);
+    const { originId } = event;
+    let { id } = event;
+    const originalText = originalTexts.find(text => text.id === originId);
+    const newText = newTexts.find(text => text.id === id || text.originId === id);
+
+    // Re-assigned new id if the events target was moved later in the document
+    if (newText && newText.originId === id) {
+        id = newText.id;
+    }
 
     if (originalText && !newText) {
         changelog.push({ id, type: 'deleted', text: originalText.content });
