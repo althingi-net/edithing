@@ -87,8 +87,8 @@ test('delete text', () => {
     Transforms.delete(editor);
 
     expect(editor.events).toEqual([{
-        id: 'chapter-1.art-1.sen-1',
-        originId: 'chapter-1.art-1.sen-1',
+        id: 'chapter-1.art-1',
+        originId: 'chapter-1.art-1',
         type: 'changed',
     }]);
 });
@@ -135,11 +135,43 @@ test('maintain originId across splits', () => {
     }, {
         id: 'chapter-2',
         originId: 'chapter-1',
-        type: 'added',  // either this is changed
+        type: 'added',
     }, {
         id: 'chapter-3',
         originId: 'chapter-1',
-        type: 'changed', // or this is added
+        type: 'changed',
+    }]);
+});
+
+test('maintain originId across splits with multiple original list items', () => {
+    const editor = createEditorWithPlugins(); 
+    editor.children = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli. ', text: 'the first chapter' }),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli. ', text: 'the second chapter' }),
+        ]),
+    ];
+    editor.selection = createSelectionWithDistance(editor, [0, 0, 0, 1], { startOffset: 17 });
+    
+    splitListItem(editor);
+    splitListItem(editor);
+    
+    expect(editor.events).toEqual([{
+        id: 'chapter-1',
+        originId: 'chapter-1',
+        type: 'added',
+    }, {
+        id: 'chapter-2',
+        originId: 'chapter-1',
+        type: 'added',
+    }, {
+        id: 'chapter-3',
+        originId: 'chapter-1',
+        type: 'changed',
+    }, {
+        id: 'chapter-4',
+        originId: 'chapter-2',
+        type: 'changed',
     }]);
 });
 
@@ -166,7 +198,7 @@ test('maintain originId across splits', () => {
 //     editor.insertText('a', { at: [0, 0, 1, 0, 0, 0] });
 
 //     expect(editor.events).toEqual([{
-//         id: 'chapter-1.art-1.sen-1',
+//         id: 'chapter-1.art-1',
 //         type: 'changed',
 //     }]);
 // });

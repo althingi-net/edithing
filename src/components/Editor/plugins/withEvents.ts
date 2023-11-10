@@ -124,8 +124,10 @@ const hasText = (node: Node) => {
 };
 
 const addEvent = (editor: Editor, type: Omit<Operation['type'], 'set_selection'>, event: Event) => {
-    if (hasEvent(editor, event.id, event.type)) {
-        log('event ignored', event, hasEvent(editor, event.id));
+    const oldEvent = findEvent(editor, event.id, event.type);
+    
+    if (oldEvent && oldEvent.originId === event.originId) {
+        log('event ignored', event, findEvent(editor, event.id));
         return;
     }
 
@@ -133,8 +135,8 @@ const addEvent = (editor: Editor, type: Omit<Operation['type'], 'set_selection'>
     const isNodeOperation = type === 'insert_node' || type === 'remove_node';
     
     if (isTextOperation || isNodeOperation) {
-        if (hasEvent(editor, event.id, 'added')) {
-            log('event ignored', event, hasEvent(editor, event.id));
+        if (findEvent(editor, event.id, 'added')) {
+            log('event ignored', event, findEvent(editor, event.id));
             return;
         }
     }
@@ -165,7 +167,7 @@ const removeEvent = (editor: Editor, id: string) => {
     editor.events = editor.events.filter(event => event.id !== id);
 };
 
-const hasEvent = (editor: Editor, id: string, type?: Event['type']) => {
+const findEvent = (editor: Editor, id: string, type?: Event['type']) => {
     return editor.events.find(event => event.id === id && (!type || event.type === type));
 };
 
