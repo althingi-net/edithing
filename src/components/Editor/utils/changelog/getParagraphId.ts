@@ -1,4 +1,4 @@
-import { Node, Path, Text } from 'slate';
+import { Node, Path } from 'slate';
 import findNode from '../findNode';
 import getListItemHierarchy from '../slate/getListItemHierarchy';
 
@@ -7,7 +7,7 @@ import getListItemHierarchy from '../slate/getListItemHierarchy';
  * @param root Editor root node.
  * @param path Path to the lowest level node.
  * @param original If true, return the id using originNr instead of nr.
- * @returns Example: 'chapter-1.art-2.subart-1.sen-1' or null if the path is invalid.
+ * @returns Example: 'chapter-1.art-2.subart-1' or null if the path is invalid.
  */
 const getParagraphId = (root: Node, path: Path, original = false) => {
     const node = findNode(root, path);
@@ -27,16 +27,6 @@ const getParagraphId = (root: Node, path: Path, original = false) => {
 
         const { type, nr, originNr } = listItem.meta;
         ids.push(`${type}-${original ? originNr : nr}`);
-    }
-
-    if (Text.isText(node)) {
-        const tag = node.title ? 'title' : node.name ? 'name' : 'sen';
-
-        if (node.nr) {
-            ids.push(`${tag}-${node.nr}`);
-        } else {
-            // ids.push(`${tag}`);
-        }
     }
 
     return ids.join('.');

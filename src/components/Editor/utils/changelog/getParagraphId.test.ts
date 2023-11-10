@@ -71,7 +71,7 @@ test('sentence', () => {
             ]),
         ]),
     ]);
-    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1.sen-1`;
+    const output = `${MetaType.CHAPTER}-2.${MetaType.PARAGRAPH}-1`;
 
     expect(getParagraphId(input, [0, 0, 1, 0, 0, 0])).toBe(output);
 });

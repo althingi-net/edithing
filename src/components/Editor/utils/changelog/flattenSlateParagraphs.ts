@@ -1,7 +1,6 @@
-import { Descendant, Element, Node, Path, Text } from 'slate';
-import { ElementType, ListItemText, isListItemText } from '../../Slate';
+import { Descendant, Node, Path } from 'slate';
+import { isListItemText } from '../../Slate';
 import getParagraphId from './getParagraphId';
-import findTitleAndName from '../../Toolbar/utils/findTitleAndName';
 
 export interface FlattenedParagraph {
     path: Path;
@@ -16,67 +15,25 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
 
     for (const [node, path] of Node.nodes(root)) {
         if (isListItemText(node)) {
-            const { title, name } = extractTitleAndName(node);
-
-            if (title || name) {
-                const id = getParagraphId(root, path);
-                const originId = getParagraphId(root, path, true);
-
-                if (!id || !originId) {
-                    throw new Error('Could not get paragraph id');
-                }
-
-                list.push({
-                    id,
-                    originId,
-                    content: title + name,
-                    path,
-                });
+            const id = getParagraphId(root, path);
+            const originId = getParagraphId(root, path, true);
+            
+            if (!id || !originId) {
+                throw new Error('Could not get paragraph id');
             }
+            
+            const text = Node.string(node);
 
-            node.children.forEach((child, index) => {
-                if (Text.isText(child) && !child.title && !child.name) {
-                    const childPath = [...path, index];
-                    const id = getParagraphId(root, childPath);
-                    const originId = getParagraphId(root, childPath, true);
-
-                    if (!id || !originId) {
-                        throw new Error('Could not get paragraph id');
-                    }
-
-                    list.push({
-                        id,
-                        originId,
-                        content: child.text,
-                        path: childPath,
-                    });
-                }
+            list.push({
+                id,
+                originId,
+                content: text,
+                path,
             });
         }
     }
 
     return list;
-};
-
-const extractTitleAndName = (node: ListItemText) => {
-    let title = '';
-    let name = '';
-
-    node.children.forEach((child, index) => {
-        if (Text.isText(child)) {
-            if (child.title) {
-                title = child.text;
-                return;
-            }
-
-            if (child.name) {
-                name = child.text;
-                return;
-            }
-        }
-    });
-
-    return { title, name };
 };
 
 export default flattenSlateParagraphs;

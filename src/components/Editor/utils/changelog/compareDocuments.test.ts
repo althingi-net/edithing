@@ -131,7 +131,7 @@ test('Change text', () => {
 
     const output = compareDocuments(editor, originalDocument);
     expect(output).toStrictEqual([{
-        id: 'chapter-1.art-1.sen-1',
+        id: 'chapter-1.art-1',
         type: 'changed',
         text: 'some text sd',
         changes: [
@@ -163,7 +163,7 @@ test('remove text', () => {
 
     const output = compareDocuments(editor, originalDocument);
     expect(output).toStrictEqual([{
-        id: 'chapter-1.art-1.sen-1',
+        id: 'chapter-1.art-1',
         type: 'deleted',
         text: '',
         changes: [
@@ -206,7 +206,7 @@ test('sort by id ascending', () => {
             ],
         ],
     }, {
-        id: 'chapter-1.art-1.sen-1',
+        id: 'chapter-1.art-1',
         type: 'deleted',
         text: '',
         changes: [
@@ -256,7 +256,7 @@ test('moved nested items dont change and dont appear as new when they are edited
             ],
         ],
     }, {
-        id: 'chapter-2.art-2.sen-1',
+        id: 'chapter-2.art-2',
         type: 'changed',
         text: 'some other text sd',
         changes: [
@@ -312,14 +312,10 @@ test('repeatedly split to ensure consistent behavior', () => {
         {
             id: 'chapter-4',
             type: 'changed',
-            text: 'IV. kafli. ',
+            text: 'IV. kafli. the first chapter',
             changes: [
                 [
                     0,
-                    'I',
-                ],
-                [
-                    -1,
                     'I',
                 ],
                 [
@@ -328,14 +324,14 @@ test('repeatedly split to ensure consistent behavior', () => {
                 ],
                 [
                     0,
-                    '. kafli. ',
+                    '. kafli. the first chapter',
                 ],
             ],
         },
         {
             id: 'chapter-5',
             type: 'changed',
-            text: 'V. kafli. ',
+            text: 'V. kafli. the second chapter',
             changes: [
                 [
                     -1,
@@ -347,12 +343,12 @@ test('repeatedly split to ensure consistent behavior', () => {
                 ],
                 [
                     0,
-                    '. kafli. ',
+                    '. kafli. the second chapter',
                 ],
             ],
         },
         {
-            id: 'chapter-5.art-2.sen-1',
+            id: 'chapter-5.art-2',
             type: 'changed',
             text: 'some other text sd',
             changes: [

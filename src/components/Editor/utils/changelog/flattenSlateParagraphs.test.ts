@@ -47,15 +47,10 @@ test('flatten chapter>paragraph>sen', () => {
         content: 'I.',
         path: [0, 0, 0],
     }, {
-        id: 'chapter-1.paragraph-1.sen-1',
-        originId: 'chapter-1.paragraph-1.sen-1',
-        content: 's1',
-        path: [0, 0, 1, 0, 0, 0],
-    }, {
-        id: 'chapter-1.paragraph-1.sen-2',
-        originId: 'chapter-1.paragraph-1.sen-2',
-        content: 's2',
-        path: [0, 0, 1, 0, 0, 1],
+        id: 'chapter-1.paragraph-1',
+        originId: 'chapter-1.paragraph-1',
+        content: 's1s2',
+        path: [0, 0, 1, 0, 0],
     }];
 
     expect(flattenSlateParagraphs(input)).toStrictEqual(output);
@@ -106,13 +101,8 @@ test('in order: title + name, text', () => {
     const output = [{
         id: 'chapter-1',
         originId: 'chapter-1',
-        content: 'I.kafli',
+        content: 'I.kaflitext',
         path: [0, 0, 0],
-    }, {
-        id: 'chapter-1.sen-1',
-        originId: 'chapter-1.sen-1',
-        content: 'text',
-        path: [0, 0, 0, 2],
     }];
 
     expect(flattenSlateParagraphs(input)).toStrictEqual(output);
