@@ -1,10 +1,11 @@
-import { Button, List, Space } from 'antd';
+import { Button, Flex, List, Space } from 'antd';
 import Search from 'antd/es/input/Search';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GithubFile from '../../models/GithubFile';
 import useLawListContext from './useLawListContext';
 import useLanguageContext from '../App/useLanguageContext';
+import LanguageSelect from '../App/LanguageSelect';
 
 const DocumentSelector: FC = () => {
     const { t } = useLanguageContext();
@@ -19,7 +20,10 @@ const DocumentSelector: FC = () => {
                 style={{ minWidth: '600px', textAlign: 'left' }}
                 header={(
                     <>
-                        <h1>{t('Law Entries')}</h1>
+                        <Flex align='center'>
+                            <h1 style={{ flexGrow: 1 }}>{t('Law Entries')}</h1>
+                            <LanguageSelect />
+                        </Flex>
                         <Search placeholder="filter" allowClear onChange={(event) => setFilter(event.target.value)} />
                     </>
                 )}

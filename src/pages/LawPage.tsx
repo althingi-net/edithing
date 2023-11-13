@@ -1,14 +1,14 @@
-import { Button, Flex, Radio } from 'antd';
+import { Button, Flex } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { FC } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { useNavigate, useParams } from 'react-router-dom';
+import LanguageSelect from '../components/App/LanguageSelect';
+import useLanguageContext from '../components/App/useLanguageContext';
 import useLawListContext from '../components/DocumentSelector/useLawListContext';
 import Editor from '../components/Editor/Editor';
-import useLanguageContext from '../components/App/useLanguageContext';
 
 const LawPage: FC = () => {
-    const { t, language, setLanguage } = useLanguageContext();
+    const { t } = useLanguageContext();
     const navigate = useNavigate();
     const { nr, year } = useParams();
     const { lawList } = useLawListContext();
@@ -29,11 +29,7 @@ const LawPage: FC = () => {
             <Flex align='center' gap='20px'>
                 <Button onClick={() => navigate('/')}>{t('Back')}</Button>
                 <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
-
-                <Radio.Group value={language} onChange={(event) => setLanguage(event.target.value)}>
-                    <Radio.Button value="en"><ReactCountryFlag countryCode="GB" /></Radio.Button>
-                    <Radio.Button value="is"><ReactCountryFlag countryCode="IS" /></Radio.Button>
-                </Radio.Group>
+                <LanguageSelect />
             </Flex>
             <Editor file={lawListEntry} />
         </Content>
