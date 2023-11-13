@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import Changelog from '../../models/Changelog';
 import parseIdToDisplay from './utils/changelog/parseidToDisplay';
 import { Switch, Typography } from 'antd';
+import useLanguageContext, { Translator } from '../App/useLanguageContext';
 
 const { Text } = Typography;
 
@@ -10,18 +11,19 @@ interface Props {
 }
 
 const LawChanges: FC<Props> = ({ changelog }) => {
+    const { t } = useLanguageContext();
     const [showOnlyDifference, setShowOnlyDifference] = useState(true);
 
     if (changelog.length === 0) {
         return (
-            <span>No changes</span>
+            <span>{t('No changes')}</span>
         );
     }
 
     const changes = changelog.map((change, index) => (
         <div key={`${change.id}-${index}`}>
-            <center>{index + 1}. gr.</center>
-            <div>{parseChange(change, showOnlyDifference)}</div>
+            <center>{index + 1}. {t('art')}.</center>
+            <div>{parseChange(t, change, showOnlyDifference)}</div>
         </div>
     ));
 
@@ -29,8 +31,8 @@ const LawChanges: FC<Props> = ({ changelog }) => {
         <div>
             <center>
                 <Switch
-                    checkedChildren="Only display difference"
-                    unCheckedChildren="Show full text"
+                    checkedChildren={t('Only display differences')}
+                    unCheckedChildren={t('Show full text')}
                     checked={showOnlyDifference}
                     onChange={setShowOnlyDifference}
                 />
@@ -41,27 +43,27 @@ const LawChanges: FC<Props> = ({ changelog }) => {
     );
 };
 
-const parseChange = (entry: Changelog, showOnlyDifference: boolean) => {
-    const id = parseIdToDisplay(entry.id);
+const parseChange = (t: Translator, entry: Changelog, showOnlyDifference: boolean) => {
+    const id = parseIdToDisplay(t, entry.id);
 
     if (entry.type === 'added') {
-        return `${id} of the law was added: ${entry.text}`;
+        return `${id} ${t('of the law was added')}: ${entry.text}`;
     }
 
     if (entry.type === 'deleted') {
-        return `${id} of the law was removed.`;
+        return `${id} ${t('of the law was removed.')}`;
     }
 
     if (!entry.changes) {
-        return `${id} of the law shall be: ${entry.text}`;
+        return `${id} ${t('of the law shall be')}: ${entry.text}`;
     }
 
     if (showOnlyDifference) {
-        return `${id} of the law shall be: ${parseTextChanges(entry.changes)}`;
+        return `${id} ${t('of the law shall be')}: ${parseTextChanges(entry.changes)}`;
     } else {
         return (
             <>
-                {id} of the law shall be: {embedChangesToText(entry.changes)}
+                {id} {t('of the law shall be')}: {embedChangesToText(entry.changes)}
             </>
         );
     }

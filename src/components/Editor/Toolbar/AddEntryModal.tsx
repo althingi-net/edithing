@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Modal from '../../Modal';
 import AddEntryForm from './AddEntryForm';
+import useLanguageContext from '../../App/useLanguageContext';
 
 interface Props {
     isOpen: boolean;
@@ -8,8 +9,10 @@ interface Props {
 }
 
 const AddEntryModal: FC<Props> = ({ isOpen, onClose }) => {
+    const { t } = useLanguageContext();
+
     return (
-        <Modal title='Add new Entry' isOpen={isOpen} onClose={onClose}>
+        <Modal title={t('Add new Entry')} isOpen={isOpen} onClose={onClose}>
             <div>
                 <AddEntryForm onSubmit={onClose} onCancel={onClose} />
             </div>

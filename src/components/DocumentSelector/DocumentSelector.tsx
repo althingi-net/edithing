@@ -4,8 +4,10 @@ import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GithubFile from '../../models/GithubFile';
 import useLawListContext from './useLawListContext';
+import useLanguageContext from '../App/useLanguageContext';
 
 const DocumentSelector: FC = () => {
+    const { t } = useLanguageContext();
     const [filter, setFilter] = useState('');
     const navigate = useNavigate();
     const { lawList } = useLawListContext();
@@ -17,7 +19,7 @@ const DocumentSelector: FC = () => {
                 style={{ minWidth: '600px', textAlign: 'left' }}
                 header={(
                     <>
-                        <h1>Law Entries</h1>
+                        <h1>{t('Law Entries')}</h1>
                         <Search placeholder="filter" allowClear onChange={(event) => setFilter(event.target.value)} />
                     </>
                 )}
@@ -26,7 +28,7 @@ const DocumentSelector: FC = () => {
                 renderItem={(item) =>
                     <List.Item
                         style={{ width: '100%' }}
-                        actions={[<Button key={0} onClick={() => navigate(`/law/${item.identifier}`)}>Edit</Button>]}
+                        actions={[<Button key={0} onClick={() => navigate(`/law/${item.identifier}`)}>{t('Edit')}</Button>]}
                     >
                         <List.Item.Meta
                             title={`${item.identifier} - ${item.date}`}

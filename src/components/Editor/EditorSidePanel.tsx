@@ -9,6 +9,7 @@ import compareDocuments from './utils/changelog/compareDocuments';
 import useDebounce from './utils/useDebounce';
 import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
+import useLanguageContext from '../App/useLanguageContext';
 
 interface Props {
     originalDocument: ReturnType<typeof importXml>;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const EditorSidePanel: FC<Props> = (props) => {
+    const { t } = useLanguageContext();
     const { originalDocument, xml } = props;
     const debouncedSlate = useDebounce(useSlate(), 500);
 
@@ -27,10 +29,10 @@ const EditorSidePanel: FC<Props> = (props) => {
         return (
             <div style={{ height: '100%' }}>
                 <Collapse defaultActiveKey={[]} destroyInactivePanel>
-                    <Collapse.Panel header="Paragraph Configuration" key="1">
+                    <Collapse.Panel header={t('Paragraph Configuration')} key="1">
                         <NodeMetaForm />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Old XML" key="2" extra={<CopyClipboardButton content={xml} />}>
+                    <Collapse.Panel header={t('Old XML')} key="2" extra={<CopyClipboardButton content={xml} />}>
                         <CodeBlock
                             text={xml}
                             language={'xml'}
@@ -42,13 +44,13 @@ const EditorSidePanel: FC<Props> = (props) => {
                             language={'json'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="New XML" key="4" extra={<CopyClipboardButton content={xmlExport} />}>
+                    <Collapse.Panel header={t('New XML')} key="4" extra={<CopyClipboardButton content={xmlExport} />}>
                         <CodeBlock
                             text={xmlExport}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Changes" key="5" extra={<CopyClipboardButton content={changelog} />}>
+                    <Collapse.Panel header={t('Changes')} key="5" extra={<CopyClipboardButton content={changelog} />}>
                         <LawChanges changelog={changelog} />
                     </Collapse.Panel>
                 </Collapse>
@@ -56,7 +58,7 @@ const EditorSidePanel: FC<Props> = (props) => {
         );
     // Note: Important to re-render on changes of debouncedSlate.events and debouncedSlate.children
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedSlate, debouncedSlate.events, debouncedSlate.children, originalDocument, xml]);
+    }, [debouncedSlate, debouncedSlate.events, debouncedSlate.children, originalDocument, xml, t]);
 };
 
 export default EditorSidePanel;

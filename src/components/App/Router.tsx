@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
+import useLanguageContext from './useLanguageContext';
 
 const router = createBrowserRouter([{
     path: '/',
@@ -13,7 +14,9 @@ const router = createBrowserRouter([{
 }]);
 
 const Router: FC = () => {
-    return <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />;
+    const { t } = useLanguageContext();
+
+    return <RouterProvider router={router} fallbackElement={<p>{t('Loading...')}</p>} />;
 };
 
 export default Router;

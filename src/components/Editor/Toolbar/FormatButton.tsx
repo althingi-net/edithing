@@ -9,6 +9,7 @@ import findTitleAndName from './utils/findTitleAndName';
 import showNameFormatButton from './utils/showNameFormatButton';
 import showSentenceFormatButton from './utils/showSentenceFormatButton';
 import showTitleFormatButton from './utils/showTitleFormatButton';
+import useLanguageContext, { Translator } from '../../App/useLanguageContext';
 
 type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
@@ -19,6 +20,7 @@ interface Props {
 
 const FormatButton: FC<Props> = ({ format, icon }) => {
     const editor = useSlate();
+    const { t } = useLanguageContext();
 
     const handleClick = () => {
         if (format === 'title') {
@@ -65,7 +67,7 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
     }
 
     return (
-        <Tooltip title={getTooltipText(format)}>
+        <Tooltip title={getTooltipText(t, format)}>
             <Button
                 size="small"
                 className={isMarkActive(editor, format) ? 'active' : undefined}
@@ -77,17 +79,17 @@ const FormatButton: FC<Props> = ({ format, icon }) => {
     );
 };
 
-const getTooltipText = (format: Marks) => {
+const getTooltipText = (t: Translator, format: Marks) => {
     switch (format) {
     case 'title':
-        return 'Create a title for this paragraph. Needs to be first text of paragraph';
+        return t('Create a title for this paragraph. Needs to be first text of paragraph');
     case 'name':
-        return 'Create a name for this paragraph. Needs to be first text of paragraph if there is no title or be right after the title';
+        return t('Create a name for this paragraph. Needs to be first text of paragraph if there is no title or be right after the title');
     case 'nr':
-        return 'Format the selected text as its own sentence.';
+        return t('Format the selected text as its own sentence.');
     case 'bold':
     default:
-        return `Format selected text with ${format}. Press again to remove formatting.`;
+        return `${t('Format selected text with')} ${format}. ${t('Press again to remove formatting.')}`;
     }
 };
 

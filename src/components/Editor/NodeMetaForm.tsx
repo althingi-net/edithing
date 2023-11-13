@@ -5,8 +5,10 @@ import { useSlateSelector, useSlateStatic } from 'slate-react';
 import findListItemAtSelection from './utils/slate/findListItemAtSelection';
 import getListItemTitle from './utils/slate/getListItemTitle';
 import getListItemName from './utils/slate/getListItemName';
+import useLanguageContext from '../App/useLanguageContext';
 
 const NodeMetaForm: FC = () => {
+    const { t } = useLanguageContext();
     const editor = useSlateStatic();
     const [listItem, path] = useSlateSelector(findListItemAtSelection) ?? [];
     const [form] = Form.useForm();
@@ -26,26 +28,26 @@ const NodeMetaForm: FC = () => {
                 initialValues={listItem.meta}
                 layout="vertical"
             >
-                <Form.Item label="Type">
+                <Form.Item label={t('Type')}>
                     <Input disabled prefix={<ToolOutlined />} value={type} />
                 </Form.Item>
-                <Form.Item label="Title">
+                <Form.Item label={t('Title')}>
                     <Space direction="horizontal">
-                        <Checkbox disabled checked={title}>Has title?</Checkbox>
+                        <Checkbox disabled checked={title}>{t('Has title?')}</Checkbox>
                         {title && <Input disabled prefix={<TagOutlined />} value={titleText ?? ''} />}
                     </Space>
                 </Form.Item>
-                <Form.Item label="Name">
+                <Form.Item label={t('Name')}>
                     <Space direction="horizontal">
-                        <Checkbox disabled checked={name}>Has name?</Checkbox>
+                        <Checkbox disabled checked={name}>{t('Has name?')}</Checkbox>
                         {name && <Input disabled prefix={<TagOutlined />} value={nameText} />}
                     </Space>
                 </Form.Item>
                 <Space direction="horizontal">
-                    <Form.Item label="Nr.">
+                    <Form.Item label={t('Nr.')}>
                         <Input disabled prefix={<NumberOutlined />} value={nr} />
                     </Form.Item>
-                    <Form.Item label="Roman Nr.">
+                    <Form.Item label={t('Roman Nr.')}>
                         <Input disabled prefix={<NumberOutlined />} value={romanNr} />
                     </Form.Item>
                 </Space>

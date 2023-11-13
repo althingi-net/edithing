@@ -10,6 +10,7 @@ import getListItemHierarchy from '../utils/slate/getListItemHierarchy';
 import getListItemTitle from '../utils/slate/getListItemTitle';
 import getParentListItem from '../utils/slate/getParentListItem';
 import isListItemWithMeta from '../utils/slate/isListItemWithMeta';
+import useLanguageContext from '../../App/useLanguageContext';
 
 interface Props {
     onSubmit: () => void;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
+    const { t } = useLanguageContext();
     const editor = useSlateStatic();
     const [bumpVersionNumber, setBumpVersionNumber] = useState(true);
     const [type, setType] = useState<MetaType | null>(null);
@@ -49,11 +51,11 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
                     value={JSON.stringify(path)}
                     key={index}
                 >
-                    {getListItemTitle(editor, path) || listItem.meta?.type}
+                    {getListItemTitle(editor, path) || (listItem.meta?.type ? t(listItem.meta.type) : 'N/A')}
                 </Radio>
             );
         });
-    }, [editor, listItemPath]);
+    }, [editor, listItemPath, t]);
 
     const typeOptions = useMemo(() => {
         if (!locationToAdd) {
@@ -112,15 +114,15 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
 
         return (
             <>
-                <p style={{ fontSize: '14px' }}>Or</p>
-                <Radio value='nested-list'> as a nested child</Radio>
+                <p style={{ fontSize: '14px' }}>{t('Or')}</p>
+                <Radio value='nested-list'> {t('as a nested child')}</Radio>
             </>
         );
-    }, [listItem.meta.type]);
+    }, [listItem.meta.type, t]);
 
     return (
         <>
-            <p>A new entry will be inserted as sibling of:</p>
+            <p>{t('A new entry will be inserted as sibling of')}:</p>
             <Radio.Group name='add' value={locationToAdd} onChange={(event) => setLocationToAdd(event.target.value)}>
                 {hierarchyOptions}
                 {nestedOption}
@@ -132,12 +134,12 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
             </Radio.Group>
             <Divider />
             <Checkbox checked={bumpVersionNumber} onChange={(event) => setBumpVersionNumber(event.target.checked)}>
-                Increase following chapters nr attribute and title?
+                {t('Increase following chapters nr attribute and title?')}
             </Checkbox>
             <Divider />
             <Space direction="horizontal" style={{ float: 'right' }}>
-                <Button onClick={onCancel}>Cancel</Button>
-                <Button type="primary" autoFocus onClick={handleSubmit}>Add</Button>
+                <Button onClick={onCancel}>{t('Cancel')}</Button>
+                <Button type="primary" autoFocus onClick={handleSubmit}>{t('Add')}</Button>
             </Space>
         </>
     );
