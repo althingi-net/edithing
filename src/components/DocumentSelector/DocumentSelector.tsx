@@ -19,8 +19,8 @@ const DocumentSelector: FC = () => {
                 style={{ minWidth: '600px', textAlign: 'left' }}
                 header={(
                     <>
-                        <h1>{t('Law Entries')}</h1>
-                        <Search placeholder="filter" allowClear onChange={(event) => setFilter(event.target.value)} />
+                        <h1>{t('Legal Codex')}</h1>
+                        <Search placeholder={t('Filter')} allowClear onChange={(event) => setFilter(event.target.value)} />
                     </>
                 )}
                 bordered

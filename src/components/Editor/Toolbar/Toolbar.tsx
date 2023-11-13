@@ -9,7 +9,7 @@ const Toolbar = () => {
     return (
         <Space direction="horizontal" style={{ justifyContent: 'right', marginBottom: '10px', width: '100%' }}>
             <Checkbox checked={highlight?.isHighlighted} onChange={(event) => highlight?.setHighlighted(event.target.checked)}>
-                {t('Highlight sentences')}
+                {t('Highlight elements')}
             </Checkbox>
         </Space>
     );
