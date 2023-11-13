@@ -85,7 +85,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
 
     const typeButtons = useMemo(() => {
         return typeOptions.map((type) => {
-            const title = type.charAt(0).toUpperCase() + type.slice(1);
+            const title = t(type);
 
             return (
                 <Radio
@@ -97,7 +97,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
                 </Radio>
             );
         });
-    }, [typeOptions]);
+    }, [t, typeOptions]);
 
     useEffect(() => {
         if (typeOptions.length > 0) {
