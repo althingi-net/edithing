@@ -29,7 +29,7 @@ const EditorSidePanel: FC<Props> = (props) => {
         return (
             <div style={{ height: '100%' }}>
                 <Collapse defaultActiveKey={[]} destroyInactivePanel>
-                    <Collapse.Panel header={t('Paragraph Configuration')} key="1">
+                    <Collapse.Panel header={t('Element Configuration')} key="1">
                         <NodeMetaForm />
                     </Collapse.Panel>
                     <Collapse.Panel header={t('Old XML')} key="2" extra={<CopyClipboardButton content={xml} />}>

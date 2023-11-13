@@ -21,7 +21,7 @@ const DocumentSelector: FC = () => {
                 header={(
                     <>
                         <Flex align='center'>
-                            <h1 style={{ flexGrow: 1 }}>{t('Law Entries')}</h1>
+                            <h1 style={{ flexGrow: 1 }}>{t('Legal Codex')}</h1>
                             <LanguageSelect />
                         </Flex>
                         <Search placeholder="filter" allowClear onChange={(event) => setFilter(event.target.value)} />
