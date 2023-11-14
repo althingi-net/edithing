@@ -23,27 +23,64 @@ export interface EventsEditor extends BaseEditor {
  * and generates operations to move nodes into place.
  */
 const withEvents = (editor: Editor) => {
-    const { apply } = editor;
+    const { apply, undo, history } = editor;
+    let saveEvents = true;
 
     editor.events = [];
 
     editor.apply = (operation) => {
-        if (operation.type === 'set_selection') {
+        if (operation.type === 'set_selection' || !saveEvents) {
             return apply(operation);
         }
         
         if (PRE_PARSE_OPERATIONS.includes(operation.type)) {
-            parseOperation(editor, operation);
+            applyOperation(editor, operation);
         }
         
         apply(operation);
         
         if (!PRE_PARSE_OPERATIONS.includes(operation.type)) {
-            parseOperation(editor, operation);
+            applyOperation(editor, operation);
         }
     };
 
+    editor.undo = () => {
+        if (!history.undos.length) {
+            return;
+        }
+
+        const { operations } = history.undos[history.undos.length - 1];
+
+        [...operations]
+            .reverse()
+            .forEach((operation) => {
+                const event = parseOperation(editor, operation);
+
+                if (event) {
+                    const oldEvent = findEvent(editor, event.id);
+                
+                    if (oldEvent && oldEvent.type === event.type && event.type !== 'changed') {
+                        log('event undo', event);
+                        removeEvent(editor, event.id);
+                    }
+                }
+            });
+
+        saveEvents = false;
+        undo();
+        saveEvents = true;
+    };
+
     return editor;
+};
+
+const applyOperation = (editor: Editor, operation: Operation) => {
+    let event = parseOperation(editor, operation);
+    event = validateEvent(editor, operation.type, event);
+
+    if (event) {
+        addEvent(editor, event);
+    }
 };
 
 /**
@@ -55,7 +92,7 @@ const withEvents = (editor: Editor) => {
  * @param editor slate editor instance
  * @param operation slate operation from calls of editor.apply 
  */
-const parseOperation = (editor: Editor, operation: Operation) => {
+const parseOperation = (editor: Editor, operation: Operation): Event | undefined => {
     const { type } = operation;
     
     if (type === 'set_selection') {
@@ -74,11 +111,11 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         const { meta, newMeta } = getOperationMeta(operation);
         
         if (newMeta && meta) {
-            return addEvent(editor, type, {
+            return { 
                 id,
                 originId,
                 type: 'changed',
-            });
+            };
         }
     }
 
@@ -86,7 +123,7 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         const { properties } = operation;
 
         if ('type' in properties && properties.type === ElementType.LIST_ITEM) {
-            return addEvent(editor, type, { id, originId, type: 'added' });
+            return { id, originId, type: 'added' };
         }
     }
 
@@ -94,26 +131,26 @@ const parseOperation = (editor: Editor, operation: Operation) => {
         const { node } = operation;
 
         if (hasText(node)) {
-            return addEvent(editor, type, { id, originId, type: 'changed' });
+            return { id, originId, type: 'changed' };
         }
 
         if (isListItem(node)) {
-            return addEvent(editor, type, { id, originId, type: 'removed' });
+            return { id, originId, type: 'removed' };
         }
     }
 
     if (type === 'remove_text' || type === 'insert_text') {
-        return addEvent(editor, type, { id, originId, type: 'changed' });
+        return { id, originId, type: 'changed' };
     }
 
     if (type === 'insert_node') {
         const node = operation.node;
         if (hasText(node)) {
-            return addEvent(editor, type, { id, originId, type: 'changed' });
+            return { id, originId, type: 'changed' };
         }
 
         if (isListItem(node)) {
-            return addEvent(editor, type, { id, originId, type: 'added' });
+            return { id, originId, type: 'added' };
         }
     }
 
@@ -123,14 +160,24 @@ const hasText = (node: Node) => {
     return Text.isText(node) && node.text !== '';
 };
 
-const addEvent = (editor: Editor, type: Omit<Operation['type'], 'set_selection'>, event: Event) => {
+const validateEvent = (
+    editor: Editor,
+    type: Omit<Operation['type'], 'set_selection'>,
+    event?: Event,
+) => {
+    if (!event) {
+        return;
+    }
+
     const oldEvent = findEvent(editor, event.id, event.type);
     
+    // ignore duplicate events
     if (oldEvent && oldEvent.originId === event.originId) {
         log('event ignored', event, findEvent(editor, event.id));
         return;
     }
 
+    // a new listItem can ignore further mutations (but not split_node, because it moves content)
     const isTextOperation = type === 'insert_text' || type === 'remove_text';
     const isNodeOperation = type === 'insert_node' || type === 'remove_node';
     
@@ -141,23 +188,10 @@ const addEvent = (editor: Editor, type: Omit<Operation['type'], 'set_selection'>
         }
     }
 
+    return event;
+};
 
-    // If paragraph is new, any following changes can be ignored
-    // if (hasEvent(editor, event.id, 'added')) {
-    //     log('event ignored', event, hasEvent(editor, event.id));
-    //     return;
-    // }
-    
-    // // If paragraph was changed, any following changes can be ignored
-    // if (hasEvent(editor, event.id, 'changed') && (event.type === 'changed' || event.type === 'added')) {
-    //     log('event ignored', event, hasEvent(editor, event.id));
-    //     return;
-    // }
-
-    // if (hasEvent(editor, event.id, 'removed')) {
-    //     event = { ...event, type: 'changed'};
-    // }
-
+const addEvent = (editor: Editor, event: Event) => {
     log('event', event);
     removeEvent(editor, event.id);
     editor.events.push(event);

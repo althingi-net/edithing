@@ -1,6 +1,6 @@
 export const LANGUAGES = ['en', 'is'];
 
-/** Default language is english, so by default developers work with english and everything gets translated from english into other languages */
+/** Default language is english, all keys in translations are english therefore */
 export const DEFAULT_LANGUAGE = 'en';
 
 const translations: { [key: string]: { [key: string]: string } } = {

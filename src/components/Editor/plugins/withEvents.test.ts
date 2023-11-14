@@ -175,32 +175,17 @@ test('maintain originId across splits with multiple original list items', () => 
     }]);
 });
 
+test('add new entry and then undo should result in no events', () => {
+    const editor = createEditorWithPlugins(); 
+    editor.children = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter' }),
+        ]),
+    ];
 
+    createLawList(editor, MetaType.CHAPTER, [0, 0], { bumpVersionNumber: true });
+    editor.undo();
 
+    expect(editor.events).toEqual([]);
+});
 
-// test('delete > add = changed', () => {
-//     const editor = createEditorWithPlugins(); 
-//     editor.children = [
-//         createList(MetaType.CHAPTER, {}, [
-//             createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter' }, [
-//                 createList(MetaType.ART, {}, [
-//                     createListItem(MetaType.ART, '1', { text: 'some text' }),
-//                     createListItem(MetaType.ART, '2', { text: 'some more text' }),
-//                 ]),
-//             ]),
-//         ]),
-//     ];
-
-//     // Simulate user selecting the first paragraph and pressing delete.
-//     Transforms.delete(editor, { at: [0, 0, 1, 0, 0, 0], distance: 9 });
-
-//     // Simulate user typing 'a'.
-//     editor.insertText('a', { at: [0, 0, 1, 0, 0, 0] });
-
-//     expect(editor.events).toEqual([{
-//         id: 'chapter-1.art-1',
-//         type: 'changed',
-//     }]);
-// });
-// test('add > delete = delete');
-// test('add > move = add');
