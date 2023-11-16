@@ -3,6 +3,9 @@ import { MetaType } from '../components/Editor/Slate';
 interface TagConfig {
     type: string;
     isList: boolean;
+    hasTitle?: boolean;
+    hasName?: boolean;
+    defaultTitle?: string;
     canHave: MetaType[];
     display?: 'list' | 'block' | 'inline' | 'virtual';
 }
@@ -11,12 +14,18 @@ export const TAGS: { [key in MetaType]: TagConfig } = {
     [MetaType.CHAPTER]: {
         type: MetaType.CHAPTER,
         isList: true,
+        hasTitle: true,
+        hasName: true,
+        defaultTitle: 'I. kafli. ',
         display: 'list',
         canHave: [MetaType.ART],
     },
     [MetaType.ART]: {
         type: MetaType.ART,
         isList: true,
+        hasTitle: true,
+        hasName: true,
+        defaultTitle: '1. gr. ',
         display: 'list',
         canHave: [MetaType.SUBART, MetaType.NUMART],
     },

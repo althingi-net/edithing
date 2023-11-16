@@ -1,31 +1,31 @@
+import { TAGS } from '../../../../config/tags';
 import { MetaType } from '../../Slate';
 import convertRomanNumber from '../convertRomanNumber';
 
 const createLawTitle = (nr: string, type: MetaType, previousTitle?: string | null) => {
-    if (previousTitle) {
-        if (type !== MetaType.CHAPTER) {
-            const digit = nr.match(/\d+/)?.[0];
-    
-            if (!digit) {
-                throw new Error('No digit found in nr');
-            }
-    
-            return previousTitle.replace(/\d+/, digit);
-        } else {
-            return previousTitle.replace(/^([IVXLCDM]+)/, convertRomanNumber(nr));
+    const defaultTitle = TAGS[type].defaultTitle;
+    const title = previousTitle || defaultTitle;
+
+    if (title) {
+        if (type === MetaType.CHAPTER) {
+            return title.replace(/^([IVXLCDM]+)/, convertRomanNumber(nr));
         }
+
+        const digit = extractDigitFromNr(nr);
+        return title.replace(/\d+/, digit);
     }
 
-    switch (type) {
-    case MetaType.CHAPTER:
-        return `${convertRomanNumber(nr)}. kafli. `;
-    case MetaType.ART:
-        return previousTitle ? previousTitle.replace(/\d+/, nr) :  `${nr}. gr. `;
-    case MetaType.SUBART:
-    case MetaType.PARAGRAPH:
-    default:
-        return '';
+    return '';
+};
+
+const extractDigitFromNr = (nr: string) => {
+    const digit = nr.match(/\d+/)?.[0];
+
+    if (!digit) {
+        throw new Error('No digit found in nr');
     }
+
+    return digit;
 };
 
 export default createLawTitle;

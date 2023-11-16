@@ -3,7 +3,7 @@ import { Editor, Location, NodeEntry, Text } from 'slate';
 const findListItemMarkedText = (
     editor: Editor,
     type: 'title' | 'name' | 'sentence',
-    listItemPath: Location,
+    listItemPath?: Location,
 ): NodeEntry<Text> | null => {
     const mark = type === 'sentence' ? 'nr' : type;
     const [entry] = editor.nodes<Text>({
