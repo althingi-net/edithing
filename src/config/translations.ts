@@ -47,6 +47,8 @@ const translations: { [key: string]: { [key: string]: string } } = {
         'Format selected text with': 'Gera valinn texta:',
         'Press again to remove formatting.': 'Ýttu aftur til að fjarlægja snið.',
         'Copy content to clipboard': 'Afrita efni í klippiborð',
+        'Invalid Law Document': 'Ógilt lagasafn',
+        'At this time, only the Law Document XML format is supported.': 'Aðeins er stutt við lagasafn í XML sniði.',
     },
 };
 

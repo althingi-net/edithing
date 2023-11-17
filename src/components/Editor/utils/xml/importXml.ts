@@ -9,6 +9,10 @@ import normalizeChildren from '../slate/normalizeChildren';
 const importXml = (xml: string) => {
     const object = parseXml(xml);
 
+    if (object['law'] && object['law']['@_law-type'] !== 'law') {
+        throw new Error('Invalid law');
+    }
+
     const meta = extractMeta(object);
     const slate = convertSlate(object['law'] || object);
 

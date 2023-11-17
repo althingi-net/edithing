@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, Row, notification } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
@@ -16,12 +16,14 @@ import importXml from './utils/xml/importXml';
 import useHighlightContext from './Toolbar/useHighlightContext';
 import HoveringToolbar from './Toolbar/HoverToolbar';
 import SideToolbar from './Toolbar/SideToolbar';
+import useLanguageContext from '../App/useLanguageContext';
 
 interface Props {
     file: GithubFile;
 }
 
 const Editor: FC<Props> = ({ file }) => {
+    const { t } = useLanguageContext();
     const [editor] = useState(createEditorWithPlugins);
     const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
     const [slate, setSlate] = useState<Descendant[] | null>(null);
@@ -35,11 +37,18 @@ const Editor: FC<Props> = ({ file }) => {
 
     useEffect(() => {
         if (xml) {
-            const result = importXml(xml);
-            setOriginalDocument(result);
-            setSlate(result.slate);
+            try {
+                const result = importXml(xml);
+                setOriginalDocument(result);
+                setSlate(result.slate);
+            } catch (error) {
+                notification.error({
+                    message: t('Invalid Law Document'),
+                    description: t('At this time, only the Law Document XML format is supported.'),
+                });
+            }
         }
-    }, [xml]);
+    }, [t, xml]);
 
     if (!slate || !originalDocument || !debouncedSlate || !xml) {
         return null;

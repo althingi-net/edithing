@@ -9,7 +9,7 @@ import { TAGS } from '../../../../config/tags';
 test('import meta and law chapters', () => {
     const input = `
         <?xml version="1.0" encoding="utf-8"?>
-        <law nr="33" year="1944">
+        <law nr="33" year="1944" law-type="law">
             <name>Stjórnarskrá lýðveldisins Íslands</name>
             <num-and-date>
                 <date>1944-06-17</date>
@@ -46,7 +46,7 @@ test('import meta and law chapters', () => {
 
 test('roman list item', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>I.</nr-title>
             </chapter>
@@ -63,7 +63,7 @@ test('roman list item', () => {
 
 test('list item with title', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <nr-title>1. gr.</nr-title>
             </art>
@@ -80,7 +80,7 @@ test('list item with title', () => {
 
 test('empty list item', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1"></art>
         </law>
     `;
@@ -95,7 +95,7 @@ test('empty list item', () => {
 
 test('list item with title+name+sen', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <nr-title>1. gr.</nr-title>
                 <name>Markmið.</name>
@@ -114,7 +114,7 @@ test('list item with title+name+sen', () => {
 
 test('list item with 2 sentences', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <sen nr="1">one.</sen>
                 <sen nr="2">two.</sen>
@@ -132,7 +132,7 @@ test('list item with 2 sentences', () => {
 
 test('multiple list items with text', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1"><sen nr="1">first</sen></art>
             <art nr="2"><sen nr="1">second</sen></art>
         </law>
@@ -149,7 +149,7 @@ test('multiple list items with text', () => {
 
 test('multiple nested numart', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <numart nr="1" type="numeric">
                 <numart nr="a" style-note="inline-with-parent" type="alphabet">
                     <art nr="1">
@@ -179,7 +179,7 @@ test('multiple nested numart', () => {
 
 test('list item with title and 2 sentences', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <nr-title>a.</nr-title>
                 <sen nr="1">Sendiráð skulu.</sen>
@@ -198,7 +198,7 @@ test('list item with title and 2 sentences', () => {
 
 test('title+sen+numart needs to become one ListItem', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <nr-title>2.</nr-title>
                 <sen nr="1">Umdæmi sendiráða skulu vera sem hér segir:</sen>
@@ -231,7 +231,7 @@ test('title+sen+numart needs to become one ListItem', () => {
 // TODO: implement link handling
 test('sen link', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <sen nr="1">Úrskurður þessi öðlast þegar gildi.</sen>
                 <sen nr="2">
@@ -251,7 +251,7 @@ test('sen link', () => {
 
 test('ensure after editor normalization, content stays the same (if not it means import is not clean, but previously was implemented to match the desired structure)', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <art nr="1">
                 <nr-title>a.</nr-title>
                 <sen nr="1">Sendiráð skulu.</sen>
@@ -270,7 +270,7 @@ test('ensure after editor normalization, content stays the same (if not it means
 
 test('ignore virtual tags but still import their children', () => {
     const input = `
-        <law>
+        <law law-type="law">
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>I.</nr-title>
                 <numart nr="a" type="alphabet">
@@ -300,6 +300,18 @@ test('ignore virtual tags but still import their children', () => {
     
     // restore art
     TAGS.art.display = oldDisplay;
+});
+
+test('ignore law without law-type="law"', () => {
+    const input = `
+        <law>
+            <chapter nr="1" nr-type="roman" roman-nr="I">
+                <nr-title>I.</nr-title>
+            </chapter>
+        </law>
+    `;
+
+    expect(() => importXml(input)).toThrowError('Invalid law');
 });
 
 // TODO: fix this test, properly its the list plugin normalization which merges the two root lists.. maybe need to have meta object flattened into the node object
