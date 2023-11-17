@@ -1,4 +1,4 @@
-import { Editor, NodeEntry, Transforms } from 'slate';
+import { Editor, Transforms } from 'slate';
 import { TAGS } from '../../../config/tags';
 import findListItemMarkedText from '../Toolbar/utils/findListItemMarkedText';
 import findListItemAtSelection from '../utils/slate/findListItemAtSelection';

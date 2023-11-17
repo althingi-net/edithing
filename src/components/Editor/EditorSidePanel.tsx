@@ -10,6 +10,7 @@ import useDebounce from './utils/useDebounce';
 import exportXml from './utils/xml/exportXml';
 import importXml from './utils/xml/importXml';
 import useLanguageContext from '../App/useLanguageContext';
+import exportChangelogXml from './utils/xml/exportChangelogXml';
 
 interface Props {
     originalDocument: ReturnType<typeof importXml>;
@@ -50,7 +51,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header={t('Changes')} key="5" extra={<CopyClipboardButton content={changelog} />}>
+                    <Collapse.Panel header={t('Changes')} key="5" extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}>
                         <LawChanges changelog={changelog} />
                     </Collapse.Panel>
                 </Collapse>

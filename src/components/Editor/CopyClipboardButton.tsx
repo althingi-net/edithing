@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckOutlined, CopyOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import useLanguageContext from '../App/useLanguageContext';
 
 interface Props {
-    content?: string | object;
+    content?: string | any[];
+    transform?: (content: any[]) => string;
 }
 
-const CopyClipboardButton: FC<Props> = ({ content: text }) => {
+const CopyClipboardButton: FC<Props> = ({ content, transform }) => {
     const { t } = useLanguageContext();
     const [copied, setCopied] = useState(false);
 
@@ -23,15 +25,19 @@ const CopyClipboardButton: FC<Props> = ({ content: text }) => {
         }
     }, [copied]);
 
-    if (!text) {
+    if (!content) {
         return null;
     }
+
+    const text = typeof content === 'string' ? content
+        : transform ? transform(content)
+            : JSON.stringify(content, null, 2);
 
     return (
         <Tooltip title={t('Copy content to clipboard')}>
             <Button
                 onClick={(event) => {
-                    navigator.clipboard.writeText(typeof text === 'string' ? text : JSON.stringify(text, null, 2));
+                    navigator.clipboard.writeText(text);
                     setCopied(true);
                     event.stopPropagation();
                 }}
