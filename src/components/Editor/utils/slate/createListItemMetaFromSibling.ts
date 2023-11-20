@@ -1,7 +1,7 @@
 import { ListItem, ListItemMeta } from '../../Slate';
-import incrementLetter from '../incrementLetter';
-import incrementMixedNumber from '../incrementMixedNumber';
-import incrementRomanNumber from '../incrementRomanNumber';
+import incrementLetter from '../number/incrementLetter';
+import incrementMixedNumber from '../number/incrementMixedNumber';
+import incrementRomanNumber from '../number/incrementRomanNumber';
 
 interface Options {
     isNodeSplit?: boolean;

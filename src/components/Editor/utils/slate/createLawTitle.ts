@@ -1,6 +1,6 @@
 import { TAGS } from '../../../../config/tags';
 import { MetaType } from '../../Slate';
-import convertRomanNumber from '../convertRomanNumber';
+import convertRomanNumber from '../number/convertRomanNumber';
 
 const createLawTitle = (nr: string, type: MetaType, previousTitle?: string | null) => {
     const defaultTitle = TAGS[type].defaultTitle;

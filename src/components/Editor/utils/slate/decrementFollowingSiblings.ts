@@ -1,11 +1,11 @@
 import { Editor, Path, Transforms } from 'slate';
 import { isListItem } from '../../Slate';
-import incrementMixedNumber from '../number/incrementMixedNumber';
-import incrementRomanNumber from '../number/incrementRomanNumber';
+import decrementMixedNumber from '../number/decrementMixedNumber';
+import decrementRomanNumber from '../number/decrementRomanNumber';
 import setListItemMeta from './setListItemMeta';
 import { log } from '../../../../logger';
 
-const incrementFollowingSiblings = (editor: Editor, path: Path) => {
+const decrementFollowingSiblings = (editor: Editor, path: Path) => {
     const previousSelection = editor.selection;
     const [parent, parentPath] = Editor.parent(editor, path);
 
@@ -16,16 +16,16 @@ const incrementFollowingSiblings = (editor: Editor, path: Path) => {
 
         if (isListItem(sibling)) {
             if (!sibling.meta) {
-                throw new Error('incrementFollowingSiblings: sibling.meta is undefined');
+                throw new Error('decrementFollowingSiblings: sibling.meta is undefined');
             }
 
-            const nr = incrementMixedNumber(sibling.meta.nr, true);
+            const nr = decrementMixedNumber(sibling.meta.nr, true);
             const newMeta = { ...sibling.meta, nr };
             if (newMeta.romanNr) {
-                newMeta.romanNr = incrementRomanNumber(newMeta.romanNr);
+                newMeta.romanNr = decrementRomanNumber(newMeta.romanNr);
             }
 
-            log('incrementFollowingSiblings', { sibling, siblingPath, newMeta });
+            log('decrementFollowingSiblings', { sibling, siblingPath, newMeta });
             setListItemMeta(editor, sibling, siblingPath, newMeta, { select: false });
         }
     }
@@ -36,4 +36,4 @@ const incrementFollowingSiblings = (editor: Editor, path: Path) => {
     }
 };
 
-export default incrementFollowingSiblings;
+export default decrementFollowingSiblings;

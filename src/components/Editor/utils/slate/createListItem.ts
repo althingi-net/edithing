@@ -1,6 +1,6 @@
 import { Descendant } from 'slate';
 import { ElementType, ListItemMeta, ListItemText, ListItemWithMeta, MetaType } from '../../Slate';
-import convertRomanNumber from '../convertRomanNumber';
+import convertRomanNumber from '../number/convertRomanNumber';
 import createListItemText from './createListItemText';
 
 export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' | 'title' | 'name'> {

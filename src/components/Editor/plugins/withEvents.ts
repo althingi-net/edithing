@@ -2,6 +2,7 @@ import { BaseEditor, Editor, Node, Operation, Text } from 'slate';
 import { log } from '../../../logger';
 import { ElementType, isListItem, isListItemMeta } from '../Slate';
 import getParagraphId from '../utils/changelog/getParagraphId';
+import decrementFollowingSiblings from '../utils/slate/decrementFollowingSiblings';
 
 const PRE_PARSE_OPERATIONS: Operation['type'][] = ['remove_node', 'remove_text'];
 
@@ -23,12 +24,14 @@ export interface EventsEditor extends BaseEditor {
  * and generates operations to move nodes into place.
  */
 const withEvents = (editor: Editor) => {
-    const { apply, undo, history } = editor;
+    const { apply, undo } = editor;
     let saveEvents = true;
 
     editor.events = [];
 
     editor.apply = (operation) => {
+        decrementOnRemoveListItem(editor, operation);
+
         if (operation.type === 'set_selection' || !saveEvents) {
             return apply(operation);
         }
@@ -45,26 +48,7 @@ const withEvents = (editor: Editor) => {
     };
 
     editor.undo = () => {
-        if (!history.undos.length) {
-            return;
-        }
-
-        const { operations } = history.undos[history.undos.length - 1];
-
-        [...operations]
-            .reverse()
-            .forEach((operation) => {
-                const event = parseOperation(editor, operation);
-
-                if (event) {
-                    const oldEvent = findEvent(editor, event.id);
-                
-                    if (oldEvent && oldEvent.type === event.type && event.type !== 'changed') {
-                        log('event undo', event);
-                        removeEvent(editor, event.id);
-                    }
-                }
-            });
+        undoOperation(editor);
 
         saveEvents = false;
         undo();
@@ -72,6 +56,41 @@ const withEvents = (editor: Editor) => {
     };
 
     return editor;
+};
+
+const decrementOnRemoveListItem = (editor: Editor, operation: Operation) => {
+    if (operation.type === 'remove_node') {
+        const { node } = operation;
+
+        if (isListItem(node)) {
+            decrementFollowingSiblings(editor, operation.path);
+        }
+    }
+};
+
+const undoOperation = (editor: Editor) => {
+    const { history } = editor;
+
+    if (!history.undos.length) {
+        return;
+    }
+
+    const { operations } = history.undos[history.undos.length - 1];
+
+    [...operations]
+        .reverse()
+        .forEach((operation) => {
+            const event = parseOperation(editor, operation);
+
+            if (event) {
+                const oldEvent = findEvent(editor, event.id);
+            
+                if (oldEvent && oldEvent.type === event.type && event.type !== 'changed') {
+                    log('event undo', event);
+                    removeEvent(editor, event.id);
+                }
+            }
+        });
 };
 
 const applyOperation = (editor: Editor, operation: Operation) => {
