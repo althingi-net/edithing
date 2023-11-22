@@ -53,6 +53,11 @@ const parseRemoved = (
     originalTexts: FlattenedParagraph[],
 ) => {
     const { originId } = event;
+
+    if (!originId) {
+        return;
+    }
+
     originalTexts
         .filter(text => text.id.includes(originId))
         .forEach(text => {
@@ -92,8 +97,16 @@ const parseChanged = (
             return;
         }
 
+        
+        
         if (changes.length === 1) {
             const type = changes[0][0] === 1 ? 'added' : 'deleted';
+            
+            // Ignore when an added item was removed
+            if (newText.originId !== originId && newText.content === '' && type === 'deleted') {
+                return;
+            }
+            
             changelog.push({ id, type, text: newText.content, changes });
         } else {
             changelog.push({ id, type: 'changed', text: newText.content, changes });

@@ -5,6 +5,11 @@ import incrementRomanNumber from '../number/incrementRomanNumber';
 import setListItemMeta from './setListItemMeta';
 import { log } from '../../../../logger';
 
+/**
+ * Loops through siblings after current node and increments their nr attributes and titles
+ * @param editor 
+ * @param path Path at which to find following siblings and increment their nr attributes and titles
+ */
 const incrementFollowingSiblings = (editor: Editor, path: Path) => {
     const previousSelection = editor.selection;
     const [parent, parentPath] = Editor.parent(editor, path);

@@ -30,10 +30,10 @@ const withEvents = (editor: Editor) => {
     editor.events = [];
 
     editor.apply = (operation) => {
-        decrementOnRemoveListItem(editor, operation);
-
         if (operation.type === 'set_selection' || !saveEvents) {
-            return apply(operation);
+            apply(operation);
+            decrementOnRemoveListItem(editor, operation);
+            return;
         }
         
         if (PRE_PARSE_OPERATIONS.includes(operation.type)) {
@@ -45,6 +45,8 @@ const withEvents = (editor: Editor) => {
         if (!PRE_PARSE_OPERATIONS.includes(operation.type)) {
             applyOperation(editor, operation);
         }
+
+        decrementOnRemoveListItem(editor, operation);
     };
 
     editor.undo = () => {
@@ -111,25 +113,31 @@ const applyOperation = (editor: Editor, operation: Operation) => {
  * @param editor slate editor instance
  * @param operation slate operation from calls of editor.apply 
  */
-const parseOperation = (editor: Editor, operation: Operation): Event | undefined => {
+const parseOperation = (editor: Editor, operation: Operation): Event | null => {
     const { type } = operation;
     
     if (type === 'set_selection') {
-        return;
+        return null;
     }
     const id = getParagraphId(editor, operation.path);
-    const originId = getParagraphId(editor, operation.path, true);
+    const originId = getParagraphId(editor, operation.path, true) ?? '';
     log('apply', operation, { id, originId });
 
-    if (!id || !originId) {
-        log('Couldn\'t find id', operation);
-        return;
+    if (id == null) {
+        log('Couldn\'t find id', operation, { id, originId });
+        return null;
     }
 
-    if (type === 'set_node') {
+    if (type === 'set_node' && originId) {
         const { meta, newMeta } = getOperationMeta(operation);
-        
+
         if (newMeta && meta) {
+            // Remove event on decrementing list number
+            if (meta.nr > newMeta.nr) {
+                const oldId = replaceIdsLastNr(id, meta.nr);
+                removeEvent(editor, oldId);
+            }
+
             return { 
                 id,
                 originId,
@@ -173,6 +181,7 @@ const parseOperation = (editor: Editor, operation: Operation): Event | undefined
         }
     }
 
+    return null;
 };
 
 const hasText = (node: Node) => {
@@ -182,18 +191,29 @@ const hasText = (node: Node) => {
 const validateEvent = (
     editor: Editor,
     type: Omit<Operation['type'], 'set_selection'>,
-    event?: Event,
+    event?: Event | null,
 ) => {
     if (!event) {
-        return;
+        return null;
     }
 
-    const oldEvent = findEvent(editor, event.id, event.type);
+    const oldEvent = findEvent(editor, event.id);
+
+    if (!oldEvent) {
+        return event;
+    }
     
     // ignore duplicate events
-    if (oldEvent && oldEvent.originId === event.originId) {
+    if (oldEvent.originId === event.originId && oldEvent.type === event.type) {
         log('event ignored', event, findEvent(editor, event.id));
-        return;
+        return null;
+    }
+
+    // remove event if the listItem was added and then removed
+    if (oldEvent.type === 'added' && event.type === 'removed') {
+        log('event removed', event, findEvent(editor, event.id));
+        removeEvent(editor, event.id);
+        return null;
     }
 
     // a new listItem can ignore further mutations (but not split_node, because it moves content)
@@ -201,9 +221,9 @@ const validateEvent = (
     const isNodeOperation = type === 'insert_node' || type === 'remove_node';
     
     if (isTextOperation || isNodeOperation) {
-        if (findEvent(editor, event.id, 'added')) {
+        if (oldEvent.type === 'added') {
             log('event ignored', event, findEvent(editor, event.id));
-            return;
+            return null;
         }
     }
 
@@ -241,6 +261,14 @@ const getOperationMeta = (operation: Operation) => {
         newMeta,
         meta,
     };
+};
+
+const replaceIdsLastNr = (id: string, nr: string) => {
+    const levels = id.split('.');
+    const parts = levels[levels.length - 1].split('-');
+    parts[parts.length - 1] = nr;
+    levels[levels.length - 1] = parts.join('-');
+    return levels.join('.');
 };
 
 export default withEvents;

@@ -5,12 +5,18 @@ import decrementRomanNumber from '../number/decrementRomanNumber';
 import setListItemMeta from './setListItemMeta';
 import { log } from '../../../../logger';
 
+/**
+ * Loops through siblings starting with current node and decrements their nr attributes and titles
+ * @param editor 
+ * @param path Path at which to start decrementing
+ */
 const decrementFollowingSiblings = (editor: Editor, path: Path) => {
     const previousSelection = editor.selection;
     const [parent, parentPath] = Editor.parent(editor, path);
+    const pathIndex = path.slice(-1)[0];
 
     // loop siblings after current node
-    for (let i = path.slice(-1)[0] + 1; i < parent.children.length; i++) {
+    for (let i = pathIndex; i < parent.children.length; i++) {
         const sibling = parent.children[i];
         const siblingPath = [...parentPath, i];
 

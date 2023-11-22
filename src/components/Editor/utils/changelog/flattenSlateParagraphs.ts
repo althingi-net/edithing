@@ -16,9 +16,9 @@ const flattenSlateParagraphs = (nodes: Descendant[]): FlattenedParagraph[] => {
     for (const [node, path] of Node.nodes(root)) {
         if (isListItemText(node)) {
             const id = getParagraphId(root, path);
-            const originId = getParagraphId(root, path, true);
+            const originId = getParagraphId(root, path, true) ?? '';
             
-            if (!id || !originId) {
+            if (id == null) {
                 throw new Error('Could not get paragraph id');
             }
             

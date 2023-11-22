@@ -18,7 +18,7 @@ test('create new list item at middle of text', () => {
     expect(editor.children).toEqual([
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. Chapter', name: 'a name', text: 'some text' }),
-            createListItem(MetaType.ART, '2', { title: '2. Chapter', originNr: '1' }),
+            createListItem(MetaType.ART, '2', { title: '2. Chapter', originNr: '' }),
         ]),
     ]);
 });
@@ -36,7 +36,7 @@ test('create new list item at the end of text', () => {
     expect(editor.children).toEqual([
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. Chapter', name: 'a name', text: 'some text' }),
-            createListItem(MetaType.ART, '2', { title: '2. Chapter', originNr: '1' }),
+            createListItem(MetaType.ART, '2', { title: '2. Chapter', originNr: '' }),
         ]),
     ]);
 });

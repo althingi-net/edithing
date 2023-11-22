@@ -41,7 +41,7 @@ const createLawList = (editor: Editor, type: MetaType, path: Path, options: Crea
 const insertNestedList = (editor: Editor, newListItemPath: Path, type: MetaType) => {
     const meta = createListItemMeta(editor, newListItemPath, type);
     const title = createLawTitle(meta.nr, meta.type);
-    const listItem = createListItem(meta.type, meta.nr, { ...meta, title, text: '' });
+    const listItem = createListItem(meta.type, meta.nr, { ...meta, title, text: '', originNr: '' });
     const list = createList(meta.type, {}, [listItem]);
     
     flatInsertNodeChildren(editor, list, newListItemPath.slice(0, -1), true);
@@ -50,7 +50,7 @@ const insertNestedList = (editor: Editor, newListItemPath: Path, type: MetaType)
 const insertNestedListItem = (editor: Editor, newListItemPath: Path, type: MetaType, bumpVersionNumber?: boolean) => {
     const meta = createListItemMeta(editor, newListItemPath, type);
     const title = createLawTitle(meta.nr, meta.type);
-    const listItem = createListItem(meta.type, meta.nr, { ...meta, title, text: '' });
+    const listItem = createListItem(meta.type, meta.nr, { ...meta, title, text: '', originNr: '' });
     
     flatInsertNodeChildren(editor, listItem, newListItemPath, true);
     
@@ -63,7 +63,7 @@ const addListItem = (editor: Editor, listItem: ListItem, path: Path, type: MetaT
     const meta = createListItemMetaFromSibling(listItem);
     const siblingTitle = getListItemTitle(editor, path);
     const title = meta.title && createLawTitle(meta.nr, meta.type, siblingTitle);
-    const newNode = createListItem(type, meta.nr, { ...meta, title, text: '', originNr: listItem.meta?.originNr });
+    const newNode = createListItem(type, meta.nr, { ...meta, title, text: '', originNr: '' });
     const newPath = path.slice(0, -1).concat([path.slice(-1)[0] + 1]);
 
     flatInsertNodeChildren(editor, newNode, newPath, true);

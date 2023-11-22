@@ -15,7 +15,7 @@ test('one sibling', () => {
         ]),
     ];
 
-    decrementFollowingSiblings(editor, [0, 0]);
+    decrementFollowingSiblings(editor, [0, 1]);
     editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
@@ -36,7 +36,7 @@ test('two sibling', () => {
         ]),
     ];
 
-    decrementFollowingSiblings(editor, [0, 0]);
+    decrementFollowingSiblings(editor, [0, 1]);
     editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
@@ -58,7 +58,7 @@ test('inbetween', () => {
         ]),
     ];
 
-    decrementFollowingSiblings(editor, [0, 1]);
+    decrementFollowingSiblings(editor, [0, 2]);
     editor.normalize({ force: true });
 
     expect(editor.children).toStrictEqual([
@@ -81,7 +81,7 @@ test('retain selection on initiating node', async () => {
     ];
 
     editor.selection = Editor.range(editor, [0, 1, 0]);
-    decrementFollowingSiblings(editor, [0, 1]);
+    decrementFollowingSiblings(editor, [0, 2]);
     editor.normalize({ force: true });
 
     const expectedRange = Editor.range(editor, [0, 1, 0]);
@@ -101,7 +101,7 @@ test('decrease & increase', () => {
         ]),
     ];
 
-    decrementFollowingSiblings(editor, [0, 0]);
+    decrementFollowingSiblings(editor, [0, 1]);
     incrementFollowingSiblings(editor, [0, 0]);
     editor.normalize({ force: true });
 

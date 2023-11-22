@@ -1,5 +1,6 @@
 import { Descendant, Transforms } from 'slate';
 import { MetaType } from '../../Slate';
+import createLawList from '../../actions/createLawList';
 import splitListItem from '../../actions/splitListItem';
 import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
 import createList from '../slate/createList';
@@ -365,3 +366,114 @@ test('repeatedly split to ensure consistent behavior', () => {
     ]);
 });
 
+test('remove list item', () => {
+    const { editor, originalDocument } = setupEditor([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text of I. Chapter' }),
+                ]),
+            ]),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text of II. Chapter' }),
+                ]),
+            ]),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text of III. Chapter' }),
+                ]),
+            ]),
+        ]),
+    ]);
+
+    const at = createSelectionWithDistance(editor, [0, 1, 0, 0], { startOffset: 0, distance: 43 });
+    Transforms.delete(editor, { at });
+
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([
+        {
+            id: 'chapter-2',
+            type: 'deleted',
+            text: '',
+            changes: [
+                [
+                    -1,
+                    'II. Chapter name ',
+                ],
+            ],
+        },
+        {
+            id: 'chapter-2.art-1',
+            type: 'deleted',
+            text: 'some text of II. Chapter',
+        },
+    ]);
+});
+
+test('remove list item and add new one in same place', () => {
+    const { editor, originalDocument } = setupEditor([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text of I. Chapter' }),
+                ]),
+            ]),
+            createListItem(MetaType.CHAPTER, '2', { title: 'II. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text of II. Chapter' }),
+                ]),
+            ]),
+            createListItem(MetaType.CHAPTER, '3', { title: 'III. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { text: 'some text of III. Chapter' }),
+                ]),
+            ]),
+        ]),
+    ]);
+
+    const at = createSelectionWithDistance(editor, [0, 1, 0, 0], { startOffset: 0, distance: 43 });
+    Transforms.delete(editor, { at });
+    Transforms.removeNodes(editor, { at: [0, 1] });
+
+    createLawList(editor, MetaType.CHAPTER, [0, 0], { bumpVersionNumber: true });
+    createLawList(editor, MetaType.ART, [0, 1], { nested: true, bumpVersionNumber: true });
+
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([
+        {
+            id: 'chapter-2',
+            type: 'added',
+            text: 'II. Chapter ',
+        },
+        {
+            id: 'chapter-2.art-1',
+            type: 'added',
+            text: '1. gr. ',
+        },
+    ]);
+});
+
+test('add list item and then remove', () => {
+    const { editor, originalDocument } = setupEditor([
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+                    createListItem(MetaType.ART, '2', { title: '2. gr.' }, [
+                        createList(MetaType.SUBART, {}, [
+                            createListItem(MetaType.SUBART, '1', { text: 'some text of II. Chapter' }),
+                        ]),
+                    ]),
+                ]),
+            ]),
+        ]),
+    ]);
+
+    createLawList(editor, MetaType.ART, [0, 0, 1, 0], { bumpVersionNumber: true });
+
+    Transforms.removeNodes(editor, { at: [0, 0, 1, 1] });
+
+    const output = compareDocuments(editor, originalDocument);
+    expect(output).toStrictEqual([]);
+});

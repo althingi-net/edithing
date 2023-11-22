@@ -57,7 +57,7 @@ test('add new entry as sibling', () => {
 
     expect(editor.events).toEqual([{
         id: 'chapter-2',
-        originId: 'chapter-1',
+        originId: '',
         type: 'added',
     }, {
         id: 'chapter-3',
@@ -110,8 +110,8 @@ test('delete entry', () => {
 
     expect(editor.events).toEqual([{
         id: 'chapter-1.art-1',
-        originId: 'chapter-1.art-1',
-        type: 'removed',
+        originId: 'chapter-1.art-2',
+        type: 'changed',
     }]);
 });
 
@@ -175,7 +175,7 @@ test('maintain originId across splits with multiple original list items', () => 
     }]);
 });
 
-test('add new entry and then undo should result in no events', () => {
+test('add new entry and then undo', () => {
     const editor = createEditorWithPlugins(); 
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -187,5 +187,34 @@ test('add new entry and then undo should result in no events', () => {
     editor.undo();
 
     expect(editor.events).toEqual([]);
+});
+
+test('add new entry and then remove it', () => {
+    const editor = createEditorWithPlugins(); 
+    editor.children = [
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }, [
+                createList(MetaType.ART, {}, [
+                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+                    createListItem(MetaType.ART, '2', { title: '2. gr.' }, [
+                        createList(MetaType.SUBART, {}, [
+                            createListItem(MetaType.SUBART, '1', { text: 'some text of II. Chapter' }),
+                        ]),
+                    ]),
+                ]),
+            ]),
+        ]),
+    ];
+
+    createLawList(editor, MetaType.ART, [0, 0, 1, 0], { bumpVersionNumber: true });
+    Transforms.removeNodes(editor, { at: [0, 0, 1, 1] });
+
+    expect(editor.events).toEqual([
+        {
+            id: 'chapter-1.art-2',
+            originId: 'chapter-1.art-2',
+            type: 'changed',
+        },
+    ]);
 });
 

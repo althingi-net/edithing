@@ -26,6 +26,11 @@ const getParagraphId = (root: Node, path: Path, original = false) => {
         }
 
         const { type, nr, originNr } = listItem.meta;
+
+        if (original && !originNr) {
+            return null;
+        }
+
         ids.push(`${type}-${original ? originNr : nr}`);
     }
 
