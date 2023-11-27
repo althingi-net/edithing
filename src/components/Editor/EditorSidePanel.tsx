@@ -23,7 +23,7 @@ const EditorSidePanel: FC<Props> = (props) => {
     const debouncedSlate = useDebounce(useSlate(), 500);
 
     return useMemo(() => {
-        const slateState = JSON.stringify(debouncedSlate, null, 2);
+        const slateState = JSON.stringify(debouncedSlate.children, null, 2);
         const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
         const changelog = compareDocuments(debouncedSlate, originalDocument.slate);
 
