@@ -1,14 +1,17 @@
+import 'reflect-metadata';
 import Koa from 'koa';
-import Router from 'koa-router';
 import logger from 'koa-logger';
 import json from 'koa-json';
 import bodyParser from 'koa-bodyparser';
 import HttpStatus from 'http-status-codes';
+import { createKoaServer } from 'routing-controllers';
 
 const PORT = Number(process.env.PORT) || 3000;
 
-const app = new Koa();
-const router = new Router();
+const app = createKoaServer({
+    routePrefix: '/api',
+    controllers: [__dirname + '/controllers/*.ts'],
+}) as Koa;
 
 // Generic error handling middleware.
 app.use(async (ctx, next) => {
@@ -32,19 +35,11 @@ app.use(async (ctx, next) => {
 // Application error logging.
 app.on('error', console.error);
 
-router.get('/', async (ctx, next) => {
-    ctx.body = 'Hello World';
-
-    await next();
-});
-
 // Middleware
 app.use(json());
 app.use(logger());
 app.use(bodyParser());
 
-// Routes
-app.use(router.routes()).use(router.allowedMethods());
 
 // Start server
 app.listen(PORT, () => {
