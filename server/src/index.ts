@@ -6,7 +6,7 @@ import bodyParser from 'koa-bodyparser';
 import HttpStatus from 'http-status-codes';
 import { createKoaServer } from 'routing-controllers';
 import { koaSwagger } from 'koa2-swagger-ui';
-import setupDatabase from './setupDatabase';
+import { setupDatabase } from './config/database';
 
 const PORT = Number(process.env.PORT) || 3003;
 

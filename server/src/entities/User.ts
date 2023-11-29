@@ -1,23 +1,30 @@
-import { IsNumber } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsDate, IsNumber, IsOptional, Length } from 'class-validator';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
-class User {
+class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   @IsNumber()
-  id!: string;
+  @IsOptional()
+  id?: string;
 
   @Column()
+  @Length(2, 30)
   firstName!: string;
   
   @Column()
+  @Length(2, 30)
   lastName!: string;
 
-  @Column({ update: false })
-  createdAt!: Date;
+  @CreateDateColumn()
+  @IsDate()
+  @IsOptional()
+  createdAt?: Date;
 
-  @Column({ onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt!: Date;
+  @UpdateDateColumn()
+  @IsDate()
+  @IsOptional()
+  updatedAt?: Date;
 }
 
 export default User;

@@ -32,6 +32,7 @@
     "routing-controllers": "^0.10.4",
     "routing-controllers-openapi": "^4.0.0",
     "typeorm": "^0.3.17",
+    "typeorm-routing-controllers-extensions": "^0.2.0",
     "typescript": "^5.3.2"
   },
   "devDependencies": {
