@@ -1,11 +1,14 @@
 import { StatusCodes } from 'http-status-codes';
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from 'routing-controllers';
+import { Body, Delete, Get, HttpCode, JsonController, Param, Post, Put } from 'routing-controllers';
+import User from '../entities/User';
+// import { ResponseSchema } from 'routing-controllers-openapi';
 
-@Controller()
+@JsonController('/users')
 export class UserController {
   @Get('/users')
-    getAll() {
-        return 'This action returns all users';
+    //   @ResponseSchema(User, { isArray: true })
+    getAll(): User[] {
+        return [{ id: '1', firstName: 'First', lastName: 'Last', creationDate: new Date() }];
     }
 
   @Get('/users/:id')

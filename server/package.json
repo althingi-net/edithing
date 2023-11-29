@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "start": "nodemon --exec ts-node src/index.ts --watch src & open http://localhost:3000",
+    "test": "npm run test:lint && npm run test:types && npm run test:unit",
+    "test:lint": "eslint .",
+    "test:types": "tsc --noEmit",
+    "test:unit": "jest",
+    "start": "nodemon --exec ts-node src/index.ts --watch src & open http://localhost:3003",
     "build": "tsc",
-    "build:sdk": "openapi-code-generator --template=typescript-fetch --input ./openapi.yaml --output ../sdk --generator typescript-axios --config ./openapi-codegen-config.json"
+    "build:sdk": "openapi -i http://localhost:3003/api/spec.json -o ../client-sdk/src"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +25,7 @@
     "koa-bodyparser": "^4.4.1",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
+    "koa2-swagger-ui": "^5.10.0",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.10.4",
     "routing-controllers-openapi": "^4.0.0",
@@ -37,6 +41,8 @@
     "@typescript-eslint/parser": "^6.13.0",
     "eslint": "^8.54.0",
     "nodemon": "^3.0.1",
+    "openapi-typescript": "^6.7.1",
+    "openapi-typescript-codegen": "^0.25.0",
     "ts-node": "^10.9.1",
     "typescript-eslint": "^0.0.1-alpha.0"
   }
