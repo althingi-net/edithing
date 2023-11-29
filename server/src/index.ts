@@ -6,6 +6,7 @@ import bodyParser from 'koa-bodyparser';
 import HttpStatus from 'http-status-codes';
 import { createKoaServer } from 'routing-controllers';
 import { koaSwagger } from 'koa2-swagger-ui';
+import setupDatabase from './setupDatabase';
 
 const PORT = Number(process.env.PORT) || 3003;
 
@@ -52,6 +53,8 @@ app.use(
 );
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Server is running at http://localhost:${PORT}/`);
+setupDatabase().then(() => {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server is running at http://localhost:${PORT}/`);
+    });
 });

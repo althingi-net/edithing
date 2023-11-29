@@ -8,7 +8,7 @@ export class UserController {
   @Get('/users')
     //   @ResponseSchema(User, { isArray: true })
     getAll(): User[] {
-        return [{ id: '1', firstName: 'First', lastName: 'Last', creationDate: new Date() }];
+        return [{ id: '1', firstName: 'First', lastName: 'Last', createdAt: new Date(), updatedAt: new Date() }];
     }
 
   @Get('/users/:id')

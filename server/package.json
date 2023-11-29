@@ -26,9 +26,11 @@
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "koa2-swagger-ui": "^5.10.0",
+    "mysql2": "^3.6.5",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.10.4",
     "routing-controllers-openapi": "^4.0.0",
+    "typeorm": "^0.3.17",
     "typescript": "^5.3.2"
   },
   "devDependencies": {
