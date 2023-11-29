@@ -5,8 +5,9 @@ import json from 'koa-json';
 import bodyParser from 'koa-bodyparser';
 import HttpStatus from 'http-status-codes';
 import { createKoaServer } from 'routing-controllers';
+import { koaSwagger } from 'koa2-swagger-ui';
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3003;
 
 const app = createKoaServer({
     routePrefix: '/api',
@@ -40,6 +41,15 @@ app.use(json());
 app.use(logger());
 app.use(bodyParser());
 
+// Swagger UI
+app.use(
+    koaSwagger({
+        routePrefix: '/docs',
+        swaggerOptions: {
+            url: `http://localhost:${PORT}/api/spec.json`,
+        },
+    }),
+);
 
 // Start server
 app.listen(PORT, () => {
