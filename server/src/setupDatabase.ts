@@ -1,5 +1,4 @@
 import { DataSource } from 'typeorm';
-import User from './entities/User';
 
 const setupDatabase = async () => {
     const source = new DataSource({
@@ -9,14 +8,16 @@ const setupDatabase = async () => {
         username: 'root',
         password: 'root_password',
         database: 'test',
-        entities: ['**/entities/*.ts', '**/entities/*.js', User],
+        entities: ['**/entities/*.ts'],
         synchronize: process.env.NODE_ENV === 'development' ? true : false,
         logging: false,
     });
     
     // to initialize the initial connection with the database, register all entities
     // and "synchronize" database schema
-    return source.initialize();
+    await source.initialize();
+
+    return source;
 };
 
 export default setupDatabase;
