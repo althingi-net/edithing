@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { User } from '../models/User';
+
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -10,13 +12,13 @@ export class UserService {
 
     /**
      * Get all
-     * @returns any Successful response
+     * @returns User
      * @throws ApiError
      */
-    public static userControllerGetAll(): CancelablePromise<any> {
+    public static userControllerGetAll(): CancelablePromise<Array<User>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/users',
+            url: '/api/users/users',
         });
     }
 
@@ -31,7 +33,7 @@ export class UserService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/users',
+            url: '/api/users/users',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -48,7 +50,7 @@ export class UserService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/users/{id}',
+            url: '/api/users/users/{id}',
             path: {
                 'id': id,
             },
@@ -68,7 +70,7 @@ export class UserService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/users/{id}',
+            url: '/api/users/users/{id}',
             path: {
                 'id': id,
             },
@@ -88,7 +90,7 @@ export class UserService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/users/{id}',
+            url: '/api/users/users/{id}',
             path: {
                 'id': id,
             },

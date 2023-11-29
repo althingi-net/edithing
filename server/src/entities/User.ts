@@ -1,8 +1,10 @@
+import { IsNumber } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class User {
   @PrimaryGeneratedColumn()
+  @IsNumber()
   id!: string;
 
   @Column()
