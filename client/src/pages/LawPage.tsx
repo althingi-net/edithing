@@ -6,6 +6,7 @@ import LanguageSelect from '../components/App/LanguageSelect';
 import useLanguageContext from '../components/App/useLanguageContext';
 import useLawListContext from '../components/DocumentSelector/useLawListContext';
 import Editor from '../components/Editor/Editor';
+// import { UserService } from 'client-sdk';
 
 const LawPage: FC = () => {
     const { t } = useLanguageContext();
@@ -13,6 +14,7 @@ const LawPage: FC = () => {
     const { nr, year } = useParams();
     const { lawList } = useLawListContext();
     const lawListEntry = lawList.find(law => law.identifier === `${nr}/${year}`);
+    // const users = await UserService.userControllerGetAll();
     
     if (!lawListEntry) {
         if (lawList.length === 0) {

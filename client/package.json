@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "antd": "^5.11.1",
+    "client-sdk": "file:../client-sdk",
     "fast-xml-parser": "^4.2.7",
     "is-hotkey": "^0.2.0",
     "octokit": "^3.1.0",
