@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import passport from 'koa-passport';
-import { Body, BodyParam, HttpError, JsonController, Post, State, UseBefore } from 'routing-controllers';
+import { Body, BodyParam, Get, HttpError, JsonController, Post, State, UseBefore } from 'routing-controllers';
 import generateJwtToken from '../authentication/generateJwtToken';
 import User from '../entities/User';
 
@@ -10,7 +10,7 @@ export class AuthController {
     @UseBefore(passport.authenticate('local', { session: false }))
     async postLogin(@State('user') user: User) {
         return {
-            token: 'JWT ' + generateJwtToken(user),
+            token: generateJwtToken(user),
             user,
         };
     }
@@ -44,8 +44,14 @@ export class AuthController {
         await user.save();
 
         return {
-            token: 'JWT ' + generateJwtToken(user),
+            token: generateJwtToken(user),
             user: user.id,
         };
+    }
+
+    @Get('/me')
+    @UseBefore(passport.authenticate('jwt', { session: false }))
+    async getMe(@State('user') user: User) {
+        return user;
     }
 }

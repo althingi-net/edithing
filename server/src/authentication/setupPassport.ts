@@ -1,10 +1,10 @@
-import passport from 'koa-passport';
-import auth from '../config/auth';
-import User from '../entities/User';
-import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
-import { Strategy as LocalStrategy } from 'passport-local';
-import server from '../config/server';
 import Koa from 'koa';
+import passport from 'koa-passport';
+import { ExtractJwt, Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
+import { Strategy as LocalStrategy } from 'passport-local';
+import auth from '../config/auth';
+import server from '../config/server';
+import User from '../entities/User';
 
 const setupPassport = (app: Koa) => {
     passport.use(
@@ -28,15 +28,15 @@ const setupPassport = (app: Koa) => {
         })
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const opts = {} as any;
-    opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-    opts.secretOrKey = auth.jwt.secret;
-    opts.issuer = server.host;
-    opts.audience = server.host;
+    const opts: StrategyOptions = {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: auth.jwt.secret,
+        issuer: server.host,
+        audience: server.host,
+    };
 
     passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-        const id = Number(jwt_payload.sub);
+        const id = Number(jwt_payload.userId);
         User.findOneBy({ id })
             .then((user) => done(null, user ?? false))
             .catch(done);

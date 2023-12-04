@@ -1,10 +1,11 @@
 import { sign } from 'jsonwebtoken';
 import User from '../entities/User';
 import auth from '../config/auth';
+import server from '../config/server';
 
 const generateJwtToken = (user: User) => {
     const data = {
-        id: user.id,
+        userId: user.id,
         expiresIn: Date.now() + auth.jwt.expiresInSeconds * 1000,
     };
 
@@ -12,6 +13,8 @@ const generateJwtToken = (user: User) => {
         data,
         auth.jwt.secret,
         {
+            issuer: server.host,
+            audience: server.host,
             expiresIn: auth.jwt.expiresInSeconds,
         }
     );
