@@ -1,7 +1,7 @@
 import { DataSource, createConnection } from 'typeorm';
 
 // Note: Using new DataSource() does not work, because 3rd party libs are still using getConnection('default')
-let database = null as unknown as DataSource;
+let database: DataSource | null = null;
 
 export const setupDatabase = async () => {
     database = await createConnection({
@@ -10,7 +10,7 @@ export const setupDatabase = async () => {
         port: 3306,
         username: 'root',
         password: 'root_password',
-        database: 'test',
+        database: process.env.NODE_ENV === 'test' ? 'test' : 'app',
         entities: ['**/entities/*.ts'],
         logging: true,
     });
@@ -18,10 +18,10 @@ export const setupDatabase = async () => {
     if (!database.isInitialized) {
         await database.initialize();
     }
-    
-    if (process.env.NODE_ENV !== 'production') {
-        await database.synchronize();
-    }
+
+    await database.runMigrations();
+
+    return database;
 };
 
-export default database;
+export const getConnection = () => database;

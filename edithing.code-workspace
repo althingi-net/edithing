@@ -16,7 +16,6 @@
     "settings": {
 		"jest.disabledWorkspaceFolders": [
             "edithing",
-            "server",
             "ROOT"
         ]
     }
