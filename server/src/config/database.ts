@@ -11,7 +11,7 @@ export const setupDatabase = async () => {
         username: 'root',
         password: 'root_password',
         database: process.env.NODE_ENV === 'test' ? 'test' : 'app',
-        entities: ['**/entities/*.ts'],
+        entities: ['**/entities/**/!(*.test.ts)'],
         logging: true,
     });
 
