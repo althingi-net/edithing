@@ -8,3 +8,23 @@
 4. Run `npm run db:seed` to initialize the database with default data for development
 5. Start api server by running `npm start`
 
+## Services
+
+### Database Admin Panel
+
+http://localhost:8080/
+
+### API Docs UI
+
+http://localhost:3003/docs
+
+### API Docs Specification file
+
+http://localhost:3003/api/spec.json
+
+### MySQL Database
+
+localhost:3306
+database name: app
+user: root
+password: root_password
