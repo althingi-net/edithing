@@ -24,7 +24,7 @@ const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string):
     const { nr, year, name, date, original, ministerClause } = documentMeta;
 
     return `
-        <law nr="${nr}" year="${year}">
+        <law nr="${nr}" year="${year}" law-type="law">
             <name>${name}</name>
             <num-and-date>
                 <date>${date}</date>
