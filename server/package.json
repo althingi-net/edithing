@@ -8,9 +8,12 @@
     "test:lint": "eslint .",
     "test:types": "tsc --noEmit",
     "test:unit": "jest",
-    "start": "nodemon --exec ts-node src/index.ts --watch src & open http://localhost:3003",
+    "start": "nodemon --exec ts-node src/index.ts --watch src & open -a 'Google Chrome' http://localhost:3003",
+    "start:db": "docker-compose up -d",
+    "destroy:db": "docker-compose down -v",
     "build": "tsc",
-    "build:sdk": "openapi -i http://localhost:3003/api/spec.json -o ../client-sdk/src"
+    "build:sdk": "openapi -i http://localhost:3003/api/spec.json -o ../client-sdk/src",
+    "db:seed": "ts-node ./src/bin/seedDb.ts"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +40,7 @@
     "routing-controllers": "^0.10.4",
     "routing-controllers-openapi": "^4.0.0",
     "typeorm": "^0.3.17",
+    "typeorm-extension": "^3.2.0",
     "typeorm-routing-controllers-extensions": "^0.2.0-alpha.1",
     "typescript": "^5.3.2"
   },
