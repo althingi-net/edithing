@@ -1,17 +1,17 @@
 import { Server } from 'http';
 import supertest from 'supertest';
-import app from '../app';
-import { setupDatabase } from '../config/database';
-import seedTestDb from '../database/seedTestDb';
 import { DataSource } from 'typeorm';
+import app from '../app';
 import generateJwtToken from '../authentication/generateJwtToken';
+import { initConnection } from '../database/connection';
+import seedTestDb from '../database/seedTestDb';
 import User from '../entities/User';
 
 let server: Server | null = null;
 let db: DataSource | null = null;
 
 beforeAll(async () => {
-    db = await setupDatabase();
+    db = await initConnection();
     await seedTestDb();
     server = app.listen();
 });

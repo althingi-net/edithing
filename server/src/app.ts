@@ -12,7 +12,7 @@ import errorHandler from './middleware/errorHandler';
 
 const app = createKoaServer({
     routePrefix: '/api',
-    controllers: [__dirname + '/controllers/**/!(*.test.ts)'],
+    controllers: [__dirname + '/controllers/!(*.test).ts'],
     authorizationChecker: async (action, roles) => {
         const user = <User>action.request.user;
         // const token = action.request.headers['authorization'].split(' ')[1];
