@@ -4,6 +4,22 @@
 /* eslint-disable */
 
 export type User = {
-    id: number;
+    id?: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role?: User.role;
+    createdAt?: string;
+    updatedAt?: string;
 };
+
+export namespace User {
+
+    export enum role {
+        EDITOR = 'editor',
+        ADMIN = 'admin',
+    }
+
+
+}
 

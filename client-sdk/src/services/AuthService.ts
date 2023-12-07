@@ -8,52 +8,65 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class UserService {
+export class AuthService {
 
     /**
-     * Get all
-     * @returns User
+     * Post login
+     * @returns any Successful response
      * @throws ApiError
      */
-    public static userControllerGetAll(): CancelablePromise<Array<User>> {
+    public static authControllerPostLogin(): CancelablePromise<any> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/users',
+            method: 'POST',
+            url: '/api/auth/login',
         });
     }
 
     /**
-     * Save
+     * Post register
      * @param requestBody User
      * @returns any Successful response
      * @throws ApiError
      */
-    public static userControllerSave(
+    public static authControllerPostRegister(
         requestBody?: User,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/users',
+            url: '/api/auth/register',
             body: requestBody,
             mediaType: 'application/json',
         });
     }
 
     /**
-     * Get
-     * @param id
+     * Post activation
+     * @param requestBody
      * @returns any Successful response
      * @throws ApiError
      */
-    public static userControllerGet(
-        id: User,
+    public static authControllerPostActivation(
+        requestBody?: {
+            authenticationToken?: string;
+        },
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/auth/activate',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Get me
+     * @returns any Successful response
+     * @throws ApiError
+     */
+    public static authControllerGetMe(): CancelablePromise<any> {
+        return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/users/{id}',
-            path: {
-                'id': id,
-            },
+            url: '/api/auth/me',
         });
     }
 

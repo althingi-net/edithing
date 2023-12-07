@@ -8,51 +8,34 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class UserService {
+export class DocumentService {
 
     /**
-     * Get all
+     * Get a list of all documents stored in a xml file on github.
      * @returns User
      * @throws ApiError
      */
-    public static userControllerGetAll(): CancelablePromise<Array<User>> {
+    public static documentControllerGetAll(): CancelablePromise<Array<User>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/users',
+            url: '/api/document',
         });
     }
 
     /**
-     * Save
-     * @param requestBody User
+     * Get a document from the database if it exists, otherwise it downloads it from github and saves it to the database.
+     * @param path
      * @returns any Successful response
      * @throws ApiError
      */
-    public static userControllerSave(
-        requestBody?: User,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/users',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Get
-     * @param id
-     * @returns any Successful response
-     * @throws ApiError
-     */
-    public static userControllerGet(
-        id: User,
+    public static documentControllerGet(
+        path: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/users/{id}',
+            url: '/api/document/{path}',
             path: {
-                'id': id,
+                'path': path,
             },
         });
     }
