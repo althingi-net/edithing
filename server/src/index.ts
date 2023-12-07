@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 import server from './config/server';
 import app from './app';
 import { initConnection } from './integration/database/connection';

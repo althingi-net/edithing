@@ -1,4 +1,5 @@
-import User, { UserRole } from '../entities/User';
+import Document from '../../entities/Document';
+import User, { UserRole } from '../../entities/User';
 
 const seedTestDb = async () => {
     // Clear all data from the database.
@@ -26,6 +27,7 @@ const seedTestDb = async () => {
             role: UserRole.EDITOR,
             isActive: true,
         }),
+        Document.clear(),
     ]);
 };
 

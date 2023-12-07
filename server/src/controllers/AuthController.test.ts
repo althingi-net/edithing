@@ -3,8 +3,8 @@ import supertest from 'supertest';
 import { DataSource } from 'typeorm';
 import app from '../app';
 import generateJwtToken from '../authentication/generateJwtToken';
-import { initConnection } from '../database/connection';
-import seedTestDb from '../database/seedTestDb';
+import { initConnection } from '../integration/database/connection';
+import seedTestDb from '../integration/database/seedTestDb';
 import User from '../entities/User';
 
 let server: Server | null = null;

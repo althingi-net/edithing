@@ -103,6 +103,8 @@ const config = {
     // A preset that is used as a base for Jest's configuration
     preset: 'ts-jest',
 
+    setupFilesAfterEnv: ['<rootDir>/src/test/setupTests.ts'],
+
     // Run tests from one or more projects
     // projects: undefined,
 

@@ -1,5 +1,5 @@
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
-import { AfterLoad, BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 class Document extends BaseEntity {
@@ -24,32 +24,34 @@ class Document extends BaseEntity {
     nr!: string;
 
     /** Cached XML file content of the law document */
-    @Column()
+    @Column({ type: 'text' })
     @IsString()
     content!: string;
 
     /** Date when this document was last downloaded from Github */
-    @Column()
+    @CreateDateColumn()
     @IsDate()
     @IsOptional()
-    downloadedAt!: Date;
+    downloadedAt?: Date;
 
     /** Date when this document was last edited */
     @UpdateDateColumn()
     @IsDate()
     @IsOptional()
-    editedAt!: Date;
+    editedAt?: Date;
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    encodeContent() {
-        this.content = Buffer.from(this.content).toString('base64');
-    }
+    /** Encode content to reduce size in database */
+    // @BeforeInsert()
+    // @BeforeUpdate()
+    // encodeContent() {
+    //     this.content = Buffer.from(this.content).toString('base64');
+    // }
 
-    @AfterLoad()
-    decodeContent() {
-        this.content = Buffer.from(this.content, 'base64').toString('utf-8');
-    }
+    /** Decode content */
+    // @AfterLoad()
+    // decodeContent() {
+    //     this.content = Buffer.from(this.content, 'base64').toString('utf-8');
+    // }
 }
 
 export default Document;
