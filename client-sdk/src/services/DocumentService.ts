@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { User } from '../models/User';
+import type { GithubFile } from '../models/GithubFile';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -12,10 +12,10 @@ export class DocumentService {
 
     /**
      * Get a list of all documents stored in a xml file on github.
-     * @returns User
+     * @returns GithubFile
      * @throws ApiError
      */
-    public static documentControllerGetAll(): CancelablePromise<Array<User>> {
+    public static documentControllerGetAll(): CancelablePromise<Array<GithubFile>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/document',

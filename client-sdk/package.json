@@ -2,10 +2,30 @@
   "name": "client-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.m.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle --tsconfig tsconfig.json",
+    "dev": "microbundle watch --tsconfig tsconfig.json"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "microbundle": "^0.15.1",
+    "typescript": "^5.3.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
