@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Document } from '../models/Document';
 import type { GithubFile } from '../models/GithubFile';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -24,18 +25,21 @@ export class DocumentService {
 
     /**
      * Get a document from the database if it exists, otherwise it downloads it from github and saves it to the database.
-     * @param path
-     * @returns any Successful response
+     * @param nr
+     * @param year
+     * @returns Document
      * @throws ApiError
      */
     public static documentControllerGet(
-        path: string,
-    ): CancelablePromise<any> {
+        nr: string,
+        year: string,
+    ): CancelablePromise<Document> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/document/{path}',
+            url: '/api/document/{nr}/{year}',
             path: {
-                'path': path,
+                'nr': nr,
+                'year': year,
             },
         });
     }

@@ -24,17 +24,14 @@ class DocumentController {
      * @returns The document.
      */
     @OpenAPI({ summary: 'Get a document from the database if it exists, otherwise it downloads it from github and saves it to the database.' })
-    @Get('/document/:path')
-    async get(@Param('path') path: string) {
-        let document = await Document.findOneBy({ path });
+    @Get('/document/:nr/:year')
+    @ResponseSchema(Document)
+    async get(@Param('nr') nr: string, @Param('year') year: string) {
+        let document = await Document.findOneBy({ nr, year });
 
         if (!document) {
+            const path = `data/xml/${year}.${nr}.xml`;
             const file = await downloadFile(path);
-            
-            const pathParts = path.split('/');
-            const identifier = pathParts[pathParts.length - 1].split('.');
-            const year = identifier[0];
-            const nr = identifier[1];
 
             document = await Document.create({
                 path,

@@ -31,11 +31,14 @@ const Editor: FC<Props> = ({ file }) => {
     const highlight = useHighlightContext();
 
     useEffect(() => {
-        DocumentService.documentControllerGet(file.path).then(setXml);
+        const [nr, year] = file.identifier.split('/');
+        DocumentService.documentControllerGet(nr, year)
+            .then((document) => setXml(document.content));
     }, [file]);
 
     useEffect(() => {
         if (xml) {
+            console.log('xml', xml);
             try {
                 const result = importXml(xml);
                 setOriginalDocument(result);
