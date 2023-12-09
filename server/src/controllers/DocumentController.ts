@@ -1,9 +1,8 @@
 import { Get, JsonController, Param } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Document from '../entities/Document';
-import User from '../entities/User';
 import downloadFile from '../integration/github/downloadFile';
-import getLawEntries from '../integration/github/getLawEntries';
+import getLawEntries, { GithubFile } from '../integration/github/getLawEntries';
 
 
 @JsonController()
@@ -14,7 +13,7 @@ class DocumentController {
      */
     @OpenAPI({ summary: 'Get a list of all documents stored in a xml file on github.' })
     @Get('/document')
-    @ResponseSchema(User, { isArray: true })
+    @ResponseSchema(GithubFile, { isArray: true })
     async getAll() {
         return getLawEntries();
     }

@@ -1,6 +1,5 @@
 import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
-import GithubFile from '../../models/GithubFile';
-import getLawEntries from './getLawEntries';
+import { DocumentService, GithubFile } from 'client-sdk';
 
 type LawListContextType = {
     lawList: GithubFile[];
@@ -14,7 +13,7 @@ export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [lawList, setLawList] = useState<GithubFile[]>([]);
 
     useEffect(() => {
-        getLawEntries().then(setLawList);
+        DocumentService.documentControllerGetAll().then(setLawList);
     }, []);
 
     return (

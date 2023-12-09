@@ -1,11 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
 import { XMLParser } from 'fast-xml-parser';
 import downloadFile from './downloadFile';
+import { IsString } from 'class-validator';
 
-interface GithubFile {
+export interface GithubFile {
     name: string;
     path: string;
     date: string;
     identifier: string;
+}
+
+export class GithubFile implements GithubFile {
+    @IsString()
+    name!: string;
+
+    @IsString()
+    path!: string;
+
+    @IsString()
+    date!: string;
+
+    @IsString()
+    identifier!: string;
 }
 
 interface LawEntry {

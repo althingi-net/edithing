@@ -2,10 +2,10 @@ import { Button, Flex, List, Space } from 'antd';
 import Search from 'antd/es/input/Search';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GithubFile from '../../models/GithubFile';
 import useLawListContext from './useLawListContext';
 import useLanguageContext from '../App/useLanguageContext';
 import LanguageSelect from '../App/LanguageSelect';
+import { GithubFile } from 'client-sdk';
 
 const DocumentSelector: FC = () => {
     const { t } = useLanguageContext();

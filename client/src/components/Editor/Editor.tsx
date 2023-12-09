@@ -2,7 +2,6 @@ import { Col, Row, notification } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
-import GithubFile from '../../models/GithubFile';
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
 import Toolbar from './Toolbar/Toolbar';
@@ -11,12 +10,12 @@ import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';
 import renderLeaf from './plugins/renderLeaf';
 import useDebounce from './utils/useDebounce';
-import downloadGitFile from './utils/xml/downloadGitFile';
 import importXml from './utils/xml/importXml';
 import useHighlightContext from './Toolbar/useHighlightContext';
 import HoveringToolbar from './Toolbar/HoverToolbar';
 import SideToolbar from './Toolbar/SideToolbar';
 import useLanguageContext from '../App/useLanguageContext';
+import { DocumentService, GithubFile } from 'client-sdk';
 
 interface Props {
     file: GithubFile;
@@ -32,7 +31,7 @@ const Editor: FC<Props> = ({ file }) => {
     const highlight = useHighlightContext();
 
     useEffect(() => {
-        downloadGitFile(file.path).then(setXml);
+        DocumentService.documentControllerGet(file.path).then(setXml);
     }, [file]);
 
     useEffect(() => {
