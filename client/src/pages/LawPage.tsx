@@ -6,6 +6,7 @@ import LanguageSelect from '../components/App/LanguageSelect';
 import useLanguageContext from '../components/App/useLanguageContext';
 import useLawListContext from '../components/DocumentSelector/useLawListContext';
 import Editor from '../components/Editor/Editor';
+import Header from '../components/App/Header';
 // import { UserService } from 'client-sdk';
 
 const LawPage: FC = () => {
@@ -27,14 +28,17 @@ const LawPage: FC = () => {
     const { identifier, name } = lawListEntry;
 
     return (
-        <Content style={{ padding: '50px' }}>
-            <Flex align='center' gap='20px'>
-                <Button onClick={() => navigate('/')}>{t('Back')}</Button>
-                <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
-                <LanguageSelect />
-            </Flex>
-            <Editor file={lawListEntry} />
-        </Content>
+        <>
+            <Header />
+            <Content style={{ padding: '50px' }}>
+                <Flex align='center' gap='20px'>
+                    <Button onClick={() => navigate('/')}>{t('Back')}</Button>
+                    <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
+                    <LanguageSelect />
+                </Flex>
+                <Editor file={lawListEntry} />
+            </Content>
+        </>
     );
 };
 

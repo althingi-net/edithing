@@ -38,7 +38,6 @@ const Editor: FC<Props> = ({ file }) => {
 
     useEffect(() => {
         if (xml) {
-            console.log('xml', xml);
             try {
                 const result = importXml(xml);
                 setOriginalDocument(result);
