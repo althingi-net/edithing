@@ -7,8 +7,8 @@ const database: DataSourceOptions = {
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database:
-        process.env.NODE_ENV === "test"
-            ? process.env.DATABASE_NAME + "_test"
+        process.env.NODE_ENV === 'test'
+            ? process.env.DATABASE_NAME + '_test'
             : process.env.DATABASE_NAME,
     synchronize: process.env.NODE_ENV !== 'production',
     entities: ['**/entities/!(*.test).ts'],
