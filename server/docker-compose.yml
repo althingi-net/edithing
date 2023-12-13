@@ -7,7 +7,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: app
+      MYSQL_DATABASE: edithing
+      MYSQL_USER: edithing
+      MYSQL_PASSWORD: secret-string
     ports:
       - "3306:3306"
 
