@@ -1,6 +1,6 @@
 import { Descendant, Editor } from 'slate';
 import Diff from 'text-diff';
-import Changelog from '../../../../models/Changelog';
+import Changelog from '../../models/Changelog';
 import { Event } from '../../plugins/withEvents';
 import flattenSlateParagraphs, { FlattenedParagraph } from './flattenSlateParagraphs';
 

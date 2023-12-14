@@ -1,6 +1,6 @@
 import { Editor, Element, Node, Path, Text } from 'slate';
 import beautify from 'xml-beautifier';
-import DocumentMeta from '../../../../models/DocumentMeta';
+import DocumentMeta from '../../models/DocumentMeta';
 import { isList, isListItem, isListItemText } from '../../Slate';
 
 const exportXml = (editor: Editor, addHeader = false, documentMeta?: DocumentMeta): string => {

@@ -18,12 +18,12 @@
 }
 
 .list-item.art > .list-item-text > span > .title::before {
-    content: url('../../images/marker-art.png');
+    content: url('./images/marker-art.png');
     margin-right: 6px;
 }
 
 .list-item.subart::before {
-    content: url('../../images/marker-subart.png');
+    content: url('./images/marker-subart.png');
     margin-right: 6px;
 }
 

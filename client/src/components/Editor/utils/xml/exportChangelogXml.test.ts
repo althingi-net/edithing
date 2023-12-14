@@ -1,4 +1,4 @@
-import Changelog from '../../../../models/Changelog';
+import Changelog from '../../models/Changelog';
 import exportChangelogXml from './exportChangelogXml';
 import beautify from 'xml-beautifier';
 

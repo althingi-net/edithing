@@ -2,7 +2,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
 import { TAGS } from '../../../../config/tags';
-import DocumentMeta from '../../../../models/DocumentMeta';
+import DocumentMeta from '../../models/DocumentMeta';
 import { ElementType, LIST_TAGS, ListItemText, ListItemWithMeta, ListWithMeta, MetaType, isListItemText, isMetaType } from '../../Slate';
 import normalizeChildren from '../slate/normalizeChildren';
 
