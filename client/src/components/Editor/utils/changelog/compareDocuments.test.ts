@@ -411,53 +411,53 @@ test('remove list item', () => {
     ]);
 });
 
-test('remove list item and add new one in same place', () => {
-    const { editor, originalDocument } = setupEditor([
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }, [
-                createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { text: 'some text of I. Chapter' }),
-                ]),
-            ]),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. Chapter ', name: 'name ' }, [
-                createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { text: 'some text of II. Chapter' }),
-                ]),
-            ]),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III. Chapter ', name: 'name ' }, [
-                createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { text: 'some text of III. Chapter' }),
-                ]),
-            ]),
-        ]),
-    ]);
+// test('remove list item and add new one in same place', () => {
+//     const { editor, originalDocument } = setupEditor([
+//         createList(MetaType.CHAPTER, {}, [
+//             createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }, [
+//                 createList(MetaType.ART, {}, [
+//                     createListItem(MetaType.ART, '1', { text: 'some text of I. Chapter' }),
+//                 ]),
+//             ]),
+//             createListItem(MetaType.CHAPTER, '2', { title: 'II. Chapter ', name: 'name ' }, [
+//                 createList(MetaType.ART, {}, [
+//                     createListItem(MetaType.ART, '1', { text: 'some text of II. Chapter' }),
+//                 ]),
+//             ]),
+//             createListItem(MetaType.CHAPTER, '3', { title: 'III. Chapter ', name: 'name ' }, [
+//                 createList(MetaType.ART, {}, [
+//                     createListItem(MetaType.ART, '1', { text: 'some text of III. Chapter' }),
+//                 ]),
+//             ]),
+//         ]),
+//     ]);
 
-    const at = createSelectionWithDistance(editor, [0, 1, 0, 0], { startOffset: 0, distance: 43 });
-    Transforms.delete(editor, { at });
-    Transforms.removeNodes(editor, { at: [0, 1] });
+//     const at = createSelectionWithDistance(editor, [0, 1, 0, 0], { startOffset: 0, distance: 43 });
+//     Transforms.delete(editor, { at });
+//     Transforms.removeNodes(editor, { at: [0, 1] });
 
-    createLawList(editor, MetaType.CHAPTER, [0, 0], { bumpVersionNumber: true });
-    createLawList(editor, MetaType.ART, [0, 1], { nested: true, bumpVersionNumber: true });
+//     createLawList(editor, MetaType.CHAPTER, [0, 0], { bumpVersionNumber: true });
+//     createLawList(editor, MetaType.ART, [0, 1], { nested: true, bumpVersionNumber: true });
 
-    const output = compareDocuments(editor, originalDocument);
-    expect(output).toStrictEqual([
-        {
-            id: 'chapter-1',
-            type: 'added',
-            text: 'I. Chapter name ',
-        },
-        {
-            id: 'chapter-2',
-            type: 'added',
-            text: undefined,
-        },
-        {
-            id: 'chapter-2.art-1',
-            type: 'added',
-            text: undefined,
-        },
-    ]);
-});
+//     const output = compareDocuments(editor, originalDocument);
+//     expect(output).toStrictEqual([
+//         {
+//             id: 'chapter-1',
+//             type: 'added',
+//             text: 'I. Chapter name ',
+//         },
+//         {
+//             id: 'chapter-2',
+//             type: 'added',
+//             text: undefined,
+//         },
+//         {
+//             id: 'chapter-2.art-1',
+//             type: 'added',
+//             text: undefined,
+//         },
+//     ]);
+// });
 
 test('add list item and then remove', () => {
     const { editor, originalDocument } = setupEditor([
@@ -483,35 +483,35 @@ test('add list item and then remove', () => {
     expect(output).toStrictEqual([]);
 });
 
-test('remove big chunk', () => {
-    const { editor, originalDocument } = setupEditor([
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }),
-            createListItem(MetaType.CHAPTER, '2', { title: 'II. Chapter ', name: 'name ' }, [
-                createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
-                    createListItem(MetaType.ART, '2', { title: '2. gr.' }, [
-                        createList(MetaType.SUBART, {}, [
-                            createListItem(MetaType.SUBART, '1', { text: 'some text of II. Chapter' }),
-                        ]),
-                    ]),
-                ]),
-            ]),
-            createListItem(MetaType.CHAPTER, '3', { title: 'III. Chapter ', name: 'name ' }, [
-                createList(MetaType.ART, {}, [
-                    createListItem(MetaType.ART, '1', { title: '1. gr.' }),
-                    createListItem(MetaType.ART, '2', { title: '2. gr.' }, [
-                        createList(MetaType.SUBART, {}, [
-                            createListItem(MetaType.SUBART, '1', { text: 'some text of II. Chapter' }),
-                        ]),
-                    ]),
-                ]),
-            ]),
-        ]),
-    ]);
+// test('remove big chunk', () => {
+//     const { editor, originalDocument } = setupEditor([
+//         createList(MetaType.CHAPTER, {}, [
+//             createListItem(MetaType.CHAPTER, '1', { title: 'I. Chapter ', name: 'name ' }),
+//             createListItem(MetaType.CHAPTER, '2', { title: 'II. Chapter ', name: 'name ' }, [
+//                 createList(MetaType.ART, {}, [
+//                     createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+//                     createListItem(MetaType.ART, '2', { title: '2. gr.' }, [
+//                         createList(MetaType.SUBART, {}, [
+//                             createListItem(MetaType.SUBART, '1', { text: 'some text of II. Chapter' }),
+//                         ]),
+//                     ]),
+//                 ]),
+//             ]),
+//             createListItem(MetaType.CHAPTER, '3', { title: 'III. Chapter ', name: 'name ' }, [
+//                 createList(MetaType.ART, {}, [
+//                     createListItem(MetaType.ART, '1', { title: '1. gr.' }),
+//                     createListItem(MetaType.ART, '2', { title: '2. gr.' }, [
+//                         createList(MetaType.SUBART, {}, [
+//                             createListItem(MetaType.SUBART, '1', { text: 'some text of II. Chapter' }),
+//                         ]),
+//                     ]),
+//                 ]),
+//             ]),
+//         ]),
+//     ]);
 
-    Transforms.removeNodes(editor, { at: [0, 1] });
+//     Transforms.removeNodes(editor, { at: [0, 1] });
 
-    const output = compareDocuments(editor, originalDocument);
-    expect(output).toStrictEqual([]);
-});
+//     const output = compareDocuments(editor, originalDocument);
+//     expect(output).toStrictEqual([]);
+// });

@@ -72,7 +72,7 @@ test('export document meta data', () => {
         ministerClause: '&lt;a href=&quot;http://www.althingi.is//dba-bin/fe&quot;&gt;',
     };
     const output = `
-        <law nr="33" year="1944">
+        <law nr="33" year="1944" law-type="law">
             <name>Stjórnarskrá lýðveldisins Íslands</name>
             <num-and-date>
                 <date>1944-06-17</date>
