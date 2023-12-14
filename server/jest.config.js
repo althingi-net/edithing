@@ -11,6 +11,9 @@ const config = {
     // Stop running tests after `n` failures
     // bail: 0,
 
+    // Run integration tests in serial mode because of the database
+    maxWorkers: 1,
+
     // The directory where Jest should store its cached dependency information
     // cacheDirectory: "/private/var/folders/j7/pzpz2ff532qdtfgzqsl_zyj00000gn/T/jest_dx",
 
