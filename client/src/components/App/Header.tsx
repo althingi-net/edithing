@@ -1,20 +1,29 @@
-import { Button, Menu, Space } from 'antd';
+import { Menu, Space } from 'antd';
 import { Header as AntHeader } from 'antd/es/layout/layout';
-import { FC } from 'react';
+import { MenuItemType } from 'antd/es/menu/hooks/useItems';
+import { FC, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import LoginButton from './LoginButton';
 import ProfileMenu from './ProfileMenu';
 import useThemeContext from './useThemeContext';
-import { MenuItemType } from 'antd/es/menu/hooks/useItems';
-import { useLocation, useNavigate } from 'react-router-dom';
+import useLanguageContext from './useLanguageContext';
 
-const headerMenuItems: MenuItemType[] = [{
-    key: '/',
-    label: 'Laws',
-}];
+const useHeaderMenuItems = () => {
+    const { t } = useLanguageContext();
+
+    const headerMenuItems: MenuItemType[] = useMemo(() => [{
+        key: '/',
+        label: t('Legal Codex'),
+    }], [t]);
+
+    return headerMenuItems;
+};
 
 const Header: FC = () => {
     const { theme } = useThemeContext();
     const navigate = useNavigate();
     const location = useLocation();
+    const headerMenuItems = useHeaderMenuItems();
     
     return (
         <AntHeader
@@ -35,9 +44,10 @@ const Header: FC = () => {
                 items={headerMenuItems}
                 selectedKeys={[location.pathname]}
                 onClick={({ key }) => navigate(key)}
+                disabledOverflow
             />
             <Space style={{ marginLeft: 'auto' }}>
-                <Button type="primary">Login</Button>
+                <LoginButton />
                 <ProfileMenu />
             </Space>
         </AntHeader>

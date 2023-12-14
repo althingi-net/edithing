@@ -1,14 +1,10 @@
-import { Button, Tooltip } from 'antd';
-import { FC, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Range } from 'slate';
 import { ReactEditor, useFocused, useSlate } from 'slate-react';
 import Portal from '../../Portal';
 import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
+import AddEntryButton from './AddEntryButton';
 import styles from './SideToolbar.module.css';
-import { PlusOutlined } from '@ant-design/icons';
-import AddEntryModal from './AddEntryModal';
-import getMetaKey from '../utils/getMetaKey';
-import isHotkey from 'is-hotkey';
 
 const SideToolbar = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -70,40 +66,5 @@ const SideToolbar = () => {
         </Portal>
     );
 };
-
-const AddEntryButton: FC = () => {
-    const [isOpen, setOpen] = useState(false);
-    const metaKey = getMetaKey();
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (isHotkey(`${metaKey}+enter`)(event)) {
-                setOpen(true);
-            }
-        };
-    
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [metaKey]);
-
-    return (
-        <>
-            <AddEntryModal isOpen={isOpen} onClose={() => setOpen(false)} />
-            <Tooltip title={<small><i>{metaKey.toUpperCase()} + ENTER</i></small>}>
-                <Button
-                    style={{ width: '100%', height: '100%' }}
-                    size="small"
-                    onClick={() => setOpen(true)}
-                >
-                    <PlusOutlined />
-                </Button>
-            </Tooltip>
-        </>
-    );
-};
-
-
 
 export default SideToolbar;

@@ -1,26 +1,43 @@
-import { Get, JsonController, Post, UseBefore } from 'routing-controllers';
-import { ResponseSchema } from 'routing-controllers-openapi';
-import { EntityFromBody, EntityFromParam } from 'typeorm-routing-controllers-extensions';
-import User from '../entities/User';
 import passport from 'koa-passport';
+import { Authorized, Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
+import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import User, { UserRole } from '../entities/User';
 
 @JsonController()
+@OpenAPI({
+    security: [{ bearerAuth: [] }],
+})
 @UseBefore(passport.authenticate('jwt', { session: false }) )
 class UserController {
     @Get('/users')
+    @Authorized()
     @ResponseSchema(User, { isArray: true })
     getAll() {
         return User.find();
     }
 
     @Get('/users/:id')
-    get(@EntityFromParam('id') user: User) {
-        return user;
+    @Authorized()
+    @ResponseSchema(User)
+    get(@Param('id') id: number) {
+        return User.findOneOrFail({ where: { id } });
     }
 
     @Post('/users')
-    save(@EntityFromBody() user: User) {
+    @Authorized(UserRole.ADMIN)
+    @ResponseSchema(User)
+    create(@Body() user: User) {
         return User.save(user);
+    }
+
+    @Put('/users/:id')
+    @Authorized(UserRole.ADMIN)
+    @ResponseSchema(User)
+    update(
+        @Param('id') id: number,
+        @Body({ validate: { skipMissingProperties: true } }) user: Partial<User>
+    ) {
+        return User.update({ id }, user);
     }
 }
 

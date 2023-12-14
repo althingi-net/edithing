@@ -1,14 +1,35 @@
+import { IsString, ValidateNested } from 'class-validator';
 import { StatusCodes } from 'http-status-codes';
 import passport from 'koa-passport';
 import { Body, BodyParam, Get, HttpError, JsonController, Post, State, UseBefore } from 'routing-controllers';
+import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import generateJwtToken from '../authentication/generateJwtToken';
 import User from '../entities/User';
+
+class LoginRequestBody {
+    @IsString()
+    email!: string;
+
+    @IsString()
+    password!: string;
+}
+
+class LoginResponse {
+    @IsString()
+    token!: string;
+
+    @ValidateNested()
+    user!: User;
+
+}
 
 @JsonController('/auth')
 export class AuthController {
     @Post('/login')
+    @OpenAPI({ summary: 'Authenticate with email and password' })
     @UseBefore(passport.authenticate('local', { session: false }))
-    async postLogin(@State('user') user: User) {
+    @ResponseSchema(LoginResponse)
+    async login(@Body() body: LoginRequestBody, @State('user') user: User) {
         return {
             token: generateJwtToken(user),
             user,
@@ -16,7 +37,7 @@ export class AuthController {
     }
 
     @Post('/register')
-    async postRegister(@Body() user: User) {
+    async register(@Body() user: User) {
         const existingUser = await  User.findOne({ where: { email: user.email } });
         if (existingUser) {
             throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, 'That email address is already in use.');
@@ -32,7 +53,7 @@ export class AuthController {
     }
 
     @Post('/activate')
-    async postActivation(@BodyParam('authenticationToken') authenticationToken: string) {
+    async activate(@BodyParam('authenticationToken') authenticationToken: string) {
         const user = await User.findOne({ where: { authenticationToken } });
         if (!user) {
             throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, 'could not activate user');

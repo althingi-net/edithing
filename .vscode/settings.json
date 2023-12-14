@@ -1,6 +1,10 @@
 {
     "jest.disabledWorkspaceFolders": [
-        "edithing",
-        "ROOT"
+        "edithing"
+    ],
+    "eslint.workingDirectories": [
+        "client",
+        "client-sdk",
+        "server"
     ]
 }

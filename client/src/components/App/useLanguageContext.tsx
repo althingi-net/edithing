@@ -4,6 +4,12 @@ import translations, { DEFAULT_LANGUAGE, LANGUAGES } from '../../config/translat
 export type Translator = (key: string) => string;
 
 const getBrowserLanguage = () => {
+    const storedLanguage = localStorage.getItem('language');
+
+    if (storedLanguage) {
+        return storedLanguage;
+    }
+
     let language = window.navigator.language;
 
     if (language.includes('-')) {
@@ -25,6 +31,12 @@ export const LanguageContext = createContext({
 
 export const LanguageContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [language, setLanguage] = useState(getBrowserLanguage());
+
+    const handleSetLanguage = useCallback((language: string) => {
+        setLanguage(language);
+        localStorage.setItem('language', language);
+    }, []);
+
     const t = useCallback((key: string) => {
         if (language.includes('-')) {
             const [languagePart] = language.split('-');
@@ -45,7 +57,7 @@ export const LanguageContextProvider: FC<PropsWithChildren> = ({ children }) => 
     }, [language]);
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t }}>
+        <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
             {children}
         </LanguageContext.Provider>
     );

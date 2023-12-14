@@ -13,7 +13,6 @@ export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const proxySetTheme = (theme: 'light' | 'dark') => {
         setTheme(theme);
         localStorage.setItem('theme', theme);
-        console.log('set theme', theme);
     };
     
     useEffect(() => {
@@ -34,7 +33,6 @@ export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
             };
         }
     }, []);
-    console.log('render ThemeContextProvider', { theme, setTheme: proxySetTheme });
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme: proxySetTheme }}>
@@ -44,6 +42,12 @@ export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const getBrowserTheme = () => {
+    const storedTheme = localStorage.getItem('theme');
+
+    if (storedTheme) {
+        return storedTheme as 'light' | 'dark';
+    }
+
     if ('matchMedia' in window) {
         if(window.matchMedia('(prefers-color-scheme: dark)').matches){
             return 'dark' as const;
@@ -57,7 +61,6 @@ const getBrowserTheme = () => {
 
 const useThemeContext = () => {
     const context = useContext(ThemeContext);
-    console.log('useThemeContext', context);
 
     if (!context) {
         throw new Error('useThemeContext must be used within a ThemeContextProvider');

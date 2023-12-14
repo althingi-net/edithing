@@ -1,32 +1,9 @@
-import { Server } from 'http';
 import supertest from 'supertest';
-import { DataSource } from 'typeorm';
-import app from '../app';
 import generateJwtToken from '../authentication/generateJwtToken';
-import { initConnection } from '../integration/database/connection';
-import seedTestDb from '../integration/database/seedTestDb';
 import User from '../entities/User';
+import setupIntegrationTestSuite from '../test/setupIntegrationTestSuite';
 
-let server: Server | null = null;
-let db: DataSource | null = null;
-
-beforeAll(async () => {
-    db = await initConnection();
-    await seedTestDb();
-    server = app.listen();
-});
-
-afterAll(async () => {
-    if (server) {
-        await new Promise<void>((resolve, reject) => {
-            server?.close((error) => error ? reject(error) : resolve());
-        });
-    }
-
-    if (db) {
-        await db.destroy();
-    }
-});
+const server = setupIntegrationTestSuite();
 
 test('login', async () => {
     return supertest(server)

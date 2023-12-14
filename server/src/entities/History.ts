@@ -10,10 +10,10 @@ class History extends BaseEntity {
     @IsOptional()
     id?: number;
 
-    @ManyToOne(() => Document)
+    @ManyToOne(() => Document, { cascade: true })
     document!: Document;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { cascade: true })
     user!: User;
 
     @Column()

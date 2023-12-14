@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { LoginRequestBody } from '../models/LoginRequestBody';
+import type { LoginResponse } from '../models/LoginResponse';
 import type { User } from '../models/User';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -11,24 +13,29 @@ import { request as __request } from '../core/request';
 export class AuthService {
 
     /**
-     * Post login
-     * @returns any Successful response
+     * Authenticate with email and password
+     * @param requestBody LoginRequestBody
+     * @returns LoginResponse
      * @throws ApiError
      */
-    public static authControllerPostLogin(): CancelablePromise<any> {
+    public static authControllerLogin(
+        requestBody?: LoginRequestBody,
+    ): CancelablePromise<LoginResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/auth/login',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * Post register
+     * Register
      * @param requestBody User
      * @returns any Successful response
      * @throws ApiError
      */
-    public static authControllerPostRegister(
+    public static authControllerRegister(
         requestBody?: User,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -40,12 +47,12 @@ export class AuthService {
     }
 
     /**
-     * Post activation
+     * Activate
      * @param requestBody
      * @returns any Successful response
      * @throws ApiError
      */
-    public static authControllerPostActivation(
+    public static authControllerActivate(
         requestBody?: {
             authenticationToken?: string;
         },

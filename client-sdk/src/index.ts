@@ -10,6 +10,8 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { Document } from './models/Document';
 export type { GithubFile } from './models/GithubFile';
 export type { History } from './models/History';
+export type { LoginRequestBody } from './models/LoginRequestBody';
+export type { LoginResponse } from './models/LoginResponse';
 export { User } from './models/User';
 
 export { AuthService } from './services/AuthService';

@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "client",
+			"path": "client"
+		},
+		{
+			"name": "client-sdk",
+			"path": "client-sdk"
+		},
+		{
+			"name": "server",
+			"path": "server"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"edithing",
+			"client-sdk"
+		]
+	}
+}

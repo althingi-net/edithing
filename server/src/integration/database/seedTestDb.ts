@@ -1,9 +1,10 @@
-import Document from '../../entities/Document';
 import User, { UserRole } from '../../entities/User';
+import { getConnection } from './connection';
 
 const seedTestDb = async () => {
-    // Clear all data from the database.
-    User.clear();
+    const db = getConnection();
+
+    await db.synchronize(true);
 
     // Insert Users.
     const password = await User.hashPassword('123456');
@@ -27,7 +28,6 @@ const seedTestDb = async () => {
             role: UserRole.EDITOR,
             isActive: true,
         }),
-        Document.clear(),
     ]);
 };
 

@@ -23,14 +23,14 @@ export class UserService {
     }
 
     /**
-     * Save
+     * Create
      * @param requestBody User
-     * @returns any Successful response
+     * @returns User
      * @throws ApiError
      */
-    public static userControllerSave(
+    public static userControllerCreate(
         requestBody?: User,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<User> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/users',
@@ -42,18 +42,40 @@ export class UserService {
     /**
      * Get
      * @param id
-     * @returns any Successful response
+     * @returns User
      * @throws ApiError
      */
     public static userControllerGet(
-        id: User,
-    ): CancelablePromise<any> {
+        id: number,
+    ): CancelablePromise<User> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/users/{id}',
             path: {
                 'id': id,
             },
+        });
+    }
+
+    /**
+     * Update
+     * @param id
+     * @param requestBody
+     * @returns User
+     * @throws ApiError
+     */
+    public static userControllerUpdate(
+        id: number,
+        requestBody?: any,
+    ): CancelablePromise<User> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/users/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
