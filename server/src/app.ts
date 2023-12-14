@@ -14,12 +14,8 @@ const app = createKoaServer({
     routePrefix: '/api',
     controllers: [__dirname + '/controllers/!(*.test).ts'],
     authorizationChecker: async (action, roles) => {
-        const user = <User>action.request.user;
-        // const token = action.request.headers['authorization'].split(' ')[1];
-        // const decoded = jwt.verify(token, auth.jwt.secret);
-        // const id = Number(decoded);
-        
-        // const user = await User.findOneBy({ id });
+        const user = <User>action.context.state.user;
+
         if (!roles.length) {
             return true;
         }
