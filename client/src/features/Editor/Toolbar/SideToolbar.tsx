@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Range } from 'slate';
 import { ReactEditor, useFocused, useSlate } from 'slate-react';
-import Portal from '../../Portal';
+import Portal from '../../App/Portal';
 import findListItemAtSelection from '../utils/slate/findListItemAtSelection';
 import AddEntryButton from './AddEntryButton';
 import styles from './SideToolbar.module.css';

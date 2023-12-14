@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Modal from '../../Modal';
+import Modal from '../../App/Modal';
 import AddEntryForm from './AddEntryForm';
 import useLanguageContext from '../../App/useLanguageContext';
 

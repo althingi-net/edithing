@@ -2,7 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, Space, notification } from 'antd';
 import { AuthService } from 'client-sdk';
 import { FC, useCallback, useState } from 'react';
-import Modal from '../Modal';
+import Modal from './Modal';
 import useLanguageContext from './useLanguageContext';
 import useSessionContext from './useSessionContext';
 

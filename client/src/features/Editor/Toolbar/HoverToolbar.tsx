@@ -2,7 +2,7 @@ import { BoldOutlined } from '@ant-design/icons';
 import { useEffect, useRef } from 'react';
 import { Editor, Range } from 'slate';
 import { useFocused, useSlate } from 'slate-react';
-import Portal from '../../Portal';
+import Portal from '../../App/Portal';
 import './HoverToolbar.css';
 import FormatButton from './FormatButton';
 
