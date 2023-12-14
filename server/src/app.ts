@@ -9,6 +9,8 @@ import setupPassport from './authentication/setupPassport';
 import server from './config/server';
 import User from './entities/User';
 import errorHandler from './middleware/errorHandler';
+import helmet from 'koa-helmet';
+import cors from '@koa/cors';
 
 const app = createKoaServer({
     routePrefix: '/api',
@@ -36,6 +38,8 @@ app.use(errorHandler);
 app.use(json());
 app.use(logger());
 app.use(bodyParser());
+app.use(helmet());
+app.use(cors());
 setupPassport(app);
 
 // Swagger UI
