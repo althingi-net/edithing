@@ -1,4 +1,4 @@
-import { MetaType } from '../components/Editor/Slate';
+import { MetaType } from '../features/Editor/Slate';
 
 interface TagConfig {
     type: string;

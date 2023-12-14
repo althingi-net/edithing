@@ -2,10 +2,10 @@ import { Button, Flex } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Header from '../components/App/Header';
-import useLanguageContext from '../components/App/useLanguageContext';
-import useLawListContext from '../components/DocumentSelector/useLawListContext';
-import Editor from '../components/Editor/Editor';
+import Header from '../features/App/Header';
+import useLanguageContext from '../features/App/useLanguageContext';
+import useLawListContext from '../features/DocumentSelector/useLawListContext';
+import Editor from '../features/Editor/Editor';
 
 const LawPage: FC = () => {
     const { t } = useLanguageContext();
