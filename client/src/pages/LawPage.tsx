@@ -2,12 +2,10 @@ import { Button, Flex } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import LanguageSelect from '../components/App/LanguageSelect';
+import Header from '../components/App/Header';
 import useLanguageContext from '../components/App/useLanguageContext';
 import useLawListContext from '../components/DocumentSelector/useLawListContext';
 import Editor from '../components/Editor/Editor';
-import Header from '../components/App/Header';
-// import { UserService } from 'client-sdk';
 
 const LawPage: FC = () => {
     const { t } = useLanguageContext();
@@ -15,7 +13,6 @@ const LawPage: FC = () => {
     const { nr, year } = useParams();
     const { lawList } = useLawListContext();
     const lawListEntry = lawList.find(law => law.identifier === `${nr}/${year}`);
-    // const users = await UserService.userControllerGetAll();
     
     if (!lawListEntry) {
         if (lawList.length === 0) {
@@ -34,7 +31,6 @@ const LawPage: FC = () => {
                 <Flex align='center' gap='20px'>
                     <Button onClick={() => navigate('/')}>{t('Back')}</Button>
                     <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
-                    <LanguageSelect />
                 </Flex>
                 <Editor file={lawListEntry} />
             </Content>
