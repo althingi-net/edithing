@@ -38,18 +38,24 @@ app.use(errorHandler);
 app.use(json());
 app.use(logger());
 app.use(bodyParser());
-app.use(helmet());
-app.use(cors());
 setupPassport(app);
 
+// Security
+if (process.env.NODE_ENV === 'production') {
+    app.use(helmet());
+    app.use(cors());
+}
+
 // Swagger UI
-app.use(
-    koaSwagger({
-        routePrefix: '/docs',
-        swaggerOptions: {
-            url: `${server.host}/api/spec.json`,
-        },
-    }),
-);
+if (process.env.NODE_ENV !== 'production') {
+    app.use(
+        koaSwagger({
+            routePrefix: '/docs',
+            swaggerOptions: {
+                url: `${server.host}/api/spec.json`,
+            },
+        }),
+    );
+}
 
 export default app;
