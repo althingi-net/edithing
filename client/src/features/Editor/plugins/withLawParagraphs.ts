@@ -1,6 +1,6 @@
 import { Editor, Element, Node, NodeEntry, Text, Transforms } from 'slate';
 import { log } from '../../../logger';
-import { isList, isListItem, isListItemText } from '../Slate';
+import { ElementType, isList, isListItem, isListItemText } from '../Slate';
 import createListItemMeta from '../utils/slate/createListItemMeta';
 import createListMeta from '../utils/slate/createListMeta';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';
@@ -12,7 +12,8 @@ const withLawParagraphs = (editor: Editor) => {
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
     editor.normalizeNode = (entry) => {
         if (
-            normalizeNode(editor, entry)
+            normalizeEmptyEditor(editor, entry)
+            || normalizeNode(editor, entry)
             || normalizeMissingMeta(editor, entry)
             || normalizeSentences(editor, entry)
         ) {
@@ -21,6 +22,31 @@ const withLawParagraphs = (editor: Editor) => {
     };
 
     return editor;
+};
+
+/**
+ * Required to prevent an empty editor for yjs realtime collaboration
+ * @param editor 
+ * @param entry 
+ * @returns 
+ */
+const normalizeEmptyEditor = (editor: Editor, entry: NodeEntry) => {
+    const [node] = entry;
+
+    if (!Editor.isEditor(node) || node.children.length > 0) {
+        return false;
+    }
+    
+    Transforms.insertNodes(
+        editor,
+        {
+            type: ElementType.PARAGRAPH,
+            children: [{ text: '' }],
+        },
+        { at: [0] }
+    );
+
+    return true;
 };
 
 const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {

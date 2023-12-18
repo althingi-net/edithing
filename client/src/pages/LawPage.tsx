@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../features/App/Header';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useLawListContext from '../features/DocumentSelector/useLawListContext';
-import Editor from '../features/Editor/Editor';
+import EditorLoader from '../features/Editor/EditorLoader';
 
 const LawPage: FC = () => {
     const { t } = useLanguageContext();
@@ -32,7 +32,7 @@ const LawPage: FC = () => {
                     <Button onClick={() => navigate('/')}>{t('Back')}</Button>
                     <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
                 </Flex>
-                <Editor file={lawListEntry} />
+                <EditorLoader file={lawListEntry} />
             </Content>
         </>
     );

@@ -1,59 +1,47 @@
-import { Col, Row, notification } from 'antd';
-import { FC, useEffect, useState } from 'react';
+import { YjsEditor, slateNodesToInsertDelta, withYjs } from '@slate-yjs/core';
+import { Col, Row } from 'antd';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
+import * as Y from 'yjs';
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
+import HoveringToolbar from './Toolbar/HoverToolbar';
+import SideToolbar from './Toolbar/SideToolbar';
 import Toolbar from './Toolbar/Toolbar';
+import useHighlightContext from './Toolbar/useHighlightContext';
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';
 import renderLeaf from './plugins/renderLeaf';
-import useDebounce from './utils/useDebounce';
 import importXml from './utils/xml/importXml';
-import useHighlightContext from './Toolbar/useHighlightContext';
-import HoveringToolbar from './Toolbar/HoverToolbar';
-import SideToolbar from './Toolbar/SideToolbar';
-import useLanguageContext from '../App/useLanguageContext';
-import { DocumentService, GithubFile } from 'client-sdk';
 
 interface Props {
-    file: GithubFile;
+    slate: Descendant[];
+    originalDocument: ReturnType<typeof importXml>;
+    xml: string;
 }
 
-const Editor: FC<Props> = ({ file }) => {
-    const { t } = useLanguageContext();
-    const [editor] = useState(createEditorWithPlugins);
-    const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
-    const [slate, setSlate] = useState<Descendant[] | null>(null);
-    const debouncedSlate = useDebounce(slate, 500);
-    const [xml, setXml] = useState<string>();
+const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
     const highlight = useHighlightContext();
 
-    useEffect(() => {
-        const [nr, year] = file.identifier.split('/');
-        DocumentService.documentControllerGet(nr, year)
-            .then((document) => setXml(document.content));
-    }, [file]);
+    const sharedType = useMemo(() => {
+        const yDoc = new Y.Doc();
+        const sharedType = yDoc.get('content', Y.XmlText) as Y.XmlText;
+    
+        // Load the initial value into the yjs document
+        sharedType.applyDelta(slateNodesToInsertDelta(slate));
+    
+        return sharedType;
+    }, [slate]);
+
+    const editor = useMemo(() => withYjs(createEditorWithPlugins(), sharedType), [sharedType]);
+    const [value, setValue] = useState<Descendant[]>([]);
 
     useEffect(() => {
-        if (xml) {
-            try {
-                const result = importXml(xml);
-                setOriginalDocument(result);
-                setSlate(result.slate);
-            } catch (error) {
-                notification.error({
-                    message: t('Invalid Law Document'),
-                    description: t('At this time, only the Law Document XML format is supported.'),
-                });
-            }
-        }
-    }, [t, xml]);
-
-    if (!slate || !originalDocument || !debouncedSlate || !xml) {
-        return null;
-    }
+        YjsEditor.connect(editor);
+        return () => YjsEditor.disconnect(editor);
+    }, [editor]);
 
     const classNames = [
         'editor',
@@ -61,7 +49,7 @@ const Editor: FC<Props> = ({ file }) => {
     ].join(' ');
 
     return (
-        <Slate editor={editor} initialValue={slate} onChange={setSlate}>
+        <Slate editor={editor} initialValue={value} onChange={setValue}>
             <div style={{ minHeight: 'calc(100vh - 160px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12}>
