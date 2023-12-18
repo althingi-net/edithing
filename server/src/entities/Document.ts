@@ -38,7 +38,7 @@ class Document extends BaseEntity {
     @UpdateDateColumn()
     @IsDate()
     @IsOptional()
-    editedAt?: Date;
+    updatedAt?: Date;
 
     /** Encode content to reduce size in database */
     // @BeforeInsert()

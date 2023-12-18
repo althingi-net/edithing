@@ -1,6 +1,7 @@
 import { IsDate, IsEnum, IsLowercase, IsNumber, IsOptional, Length } from 'class-validator';
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, OneToMany } from 'typeorm';
 import bcrypt from 'bcrypt';
+import Bill from './Bill';
 
 export enum UserRole {
     ADMIN = 'admin',
@@ -13,6 +14,9 @@ class User extends BaseEntity {
     @IsNumber()
     @IsOptional()
     id?: number;
+
+    @OneToMany(() => Bill, bill => bill.authorId)
+    bills?: Bill[];
 
     @Column()
     @Length(2, 30)
