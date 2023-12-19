@@ -1,4 +1,5 @@
-import { ListItemMeta, MetaType } from '../../Slate';
+import { MetaType } from '../../Slate';
+import { ListItemMeta } from '../../models/ListItem';
 import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
 import createList from './createList';
 import createListItem from './createListItem';

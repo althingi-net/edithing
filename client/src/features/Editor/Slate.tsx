@@ -2,6 +2,9 @@ import { BaseEditor, Descendant, Element, Node, Text } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
 import { EventsEditor } from './plugins/withEvents';
+import ListItem, { ListItemMeta } from './models/ListItem';
+import List from './models/List';
+import ListItemText from './models/ListItemText';
 
 // List items have either 1 or 2 children, always in the following order:
 // 0 - list item text
@@ -23,61 +26,6 @@ export enum ElementType {
     LIST = 'list',
     LIST_ITEM = 'list-item',
     LIST_ITEM_TEXT = 'list-item-text',
-}
-
-export interface ListMeta {
-    type: MetaType;
-    nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed
-}
-
-export interface ListItemWithMeta extends ListItem {
-    meta: ListItemMeta;
-}
-
-export interface List  {
-    type: ElementType.LIST;
-    children: Descendant[],
-    meta?: ListMeta
-}
-
-export interface ListWithMeta extends List {
-    meta: ListMeta;
-}
-
-export interface ListItemMeta extends ListMeta {
-    /** LawParagraph tag */
-    type: MetaType;
-
-    /** List Item Number. See nrType */
-    nr: string;
-
-    /** Nr at import or when first created, used by compareDocuments() to find the original paragraphId */
-    originNr: string;
-
-    nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed. By default empty (which means numeric)
-
-    /** Only set when nrType=roman, should always have the numeric value of nr */
-    romanNr?: string;
-    
-    /** Determines if the listItemText node should contain a title node */
-    title?: boolean;
-    
-    /** Determines if the listItemText node should contain a name node */
-    name?: boolean;
-
-    /** Defines display style of this node */
-    styleNote?: string; // inline-with-parent
-}
-
-export interface ListItem {
-    type: ElementType.LIST_ITEM;
-    children: Descendant[];
-    meta?: ListItemMeta;
-}
-
-export interface ListItemText {
-    type: ElementType.LIST_ITEM_TEXT;
-    children: Text[];
 }
 
 export enum MetaType {

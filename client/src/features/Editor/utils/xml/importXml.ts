@@ -3,7 +3,10 @@ import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
 import { TAGS } from '../../../../config/tags';
 import DocumentMeta from '../../models/DocumentMeta';
-import { ElementType, LIST_TAGS, ListItemText, ListItemWithMeta, ListWithMeta, MetaType, isListItemText, isMetaType } from '../../Slate';
+import { ElementType, LIST_TAGS, MetaType, isListItemText, isMetaType } from '../../Slate';
+import ListItemText from '../../models/ListItemText';
+import { ListWithMeta } from '../../models/List';
+import { ListItemWithMeta } from '../../models/ListItem';
 import normalizeChildren from '../slate/normalizeChildren';
 
 const importXml = (xml: string) => {

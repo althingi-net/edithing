@@ -1,5 +1,6 @@
 import { Editor, Node, NodeEntry, Text } from 'slate';
-import { ListItem, MetaType, isListItem } from '../../Slate';
+import { MetaType, isListItem } from '../../Slate';
+import ListItem from '../../models/ListItem';
 
 /**
  * Return a list node of the given meta type in the current selection. 

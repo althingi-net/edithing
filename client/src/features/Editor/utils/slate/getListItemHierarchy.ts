@@ -1,5 +1,6 @@
 import { Node, NodeEntry, Path } from 'slate';
-import { ListItem, isListItem } from '../../Slate';
+import { isListItem } from '../../Slate';
+import ListItem from '../../models/ListItem';
 import findNode from '../findNode';
 
 const getListItemHierarchy = (root: Node, path: Path): NodeEntry<ListItem>[] => {

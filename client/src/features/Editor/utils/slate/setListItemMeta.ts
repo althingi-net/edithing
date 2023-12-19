@@ -1,5 +1,6 @@
 import { Editor, Path } from 'slate';
-import { ListItem, ListItemMeta, MetaType } from '../../Slate';
+import { MetaType } from '../../Slate';
+import ListItem, { ListItemMeta } from '../../models/ListItem';
 import convertRomanNumber from '../number/convertRomanNumber';
 import setListItemTitleFromMeta from './setListItemTitleFromMeta';
 import setMeta from './setMeta';
