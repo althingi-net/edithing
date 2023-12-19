@@ -5,6 +5,7 @@ import { MetaType } from '../../Slate';
 import createList from '../slate/createList';
 import createListItem from '../slate/createListItem';
 import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
+import createDocumentMeta from '../slate/createDocumentMeta';
 
 const createEditor = (input: Descendant[]) => {
     const editor = createEditorWithPlugins();
@@ -59,18 +60,18 @@ test('export xml header', () => {
 
 test('export document meta data', () => {
     const input = createEditor([
+        createDocumentMeta({
+            nr: '33',
+            year: '1944',
+            name: 'Stjórnarskrá lýðveldisins Íslands',
+            date: '1944-06-17',
+            original: '1944 nr. 33 17. júní',
+            ministerClause: '&lt;a href=&quot;http://www.althingi.is//dba-bin/fe&quot;&gt;',
+        }),
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
         ]),
     ]);
-    const documentMeta = {
-        nr: '33',
-        year: '1944',
-        name: 'Stjórnarskrá lýðveldisins Íslands',
-        date: '1944-06-17',
-        original: '1944 nr. 33 17. júní',
-        ministerClause: '&lt;a href=&quot;http://www.althingi.is//dba-bin/fe&quot;&gt;',
-    };
     const output = `
         <law nr="33" year="1944" law-type="law">
             <name>Stjórnarskrá lýðveldisins Íslands</name>
@@ -86,7 +87,7 @@ test('export document meta data', () => {
         </law>
     `;
 
-    expect(exportXml(input, false, documentMeta)).toBe(beautify(output));
+    expect(exportXml(input)).toBe(beautify(output));
 });
 
 test('export no title if meta.title is undefined', () => {

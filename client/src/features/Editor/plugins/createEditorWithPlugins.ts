@@ -4,12 +4,15 @@ import { withReact } from 'slate-react';
 import withEvents from './withEvents';
 import withLawParagraphs from './withLawParagraphs';
 
-const createEditorWithPlugins = () => withLawParagraphs(
-    withEvents(
-        withHistory(
-            withReact(createEditor())
-        )
-    )
-);
+const plugins = [
+    withLawParagraphs,
+    withEvents,
+    withHistory,
+    withReact,
+];
+
+const createEditorWithPlugins = () => {
+    return plugins.reduce((editor, plugin) => plugin(editor), createEditor());
+};
 
 export default createEditorWithPlugins;

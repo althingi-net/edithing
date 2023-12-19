@@ -10,6 +10,7 @@ import incrementFollowingSiblings from '../utils/slate/incrementFollowingSibling
 import setListItemMeta from '../utils/slate/setListItemMeta';
 import setMeta from '../utils/slate/setMeta';
 import normalizeNode from './normalizeNode';
+import { isDocumentMeta } from '../models/DocumentMeta';
 
 const withLawParagraphs = (editor: Editor) => {
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
@@ -22,6 +23,14 @@ const withLawParagraphs = (editor: Editor) => {
         ) {
             return;
         }
+    };
+
+    editor.isVoid = (element) => {
+        if (isDocumentMeta(element)) {
+            return true;
+        }
+
+        return false;
     };
 
     return editor;

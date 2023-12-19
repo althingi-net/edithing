@@ -2,12 +2,12 @@
 import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
 import { TAGS } from '../../../../config/tags';
-import DocumentMeta from '../../models/DocumentMeta';
 import { ElementType, LIST_TAGS, MetaType, isMetaType } from '../../Slate';
-import { isListItemText } from '../../models/ListItemText';
-import ListItemText from '../../models/ListItemText';
+import DocumentMetaElement from '../../models/DocumentMeta';
 import { ListWithMeta } from '../../models/List';
 import { ListItemWithMeta } from '../../models/ListItem';
+import ListItemText, { isListItemText } from '../../models/ListItemText';
+import createDocumentMeta from '../slate/createDocumentMeta';
 import normalizeChildren from '../slate/normalizeChildren';
 
 const importXml = (xml: string) => {
@@ -17,10 +17,11 @@ const importXml = (xml: string) => {
         throw new Error('Invalid law');
     }
 
-    const meta = extractMeta(object);
     const slate = convertSlate(object['law'] || object);
 
-    return { meta, slate };
+    slate.unshift(extractMeta(object));
+
+    return slate;
 };
 
 const parseXml = (xml: string) => {
@@ -28,17 +29,17 @@ const parseXml = (xml: string) => {
     return parser.parse(xml);
 };
 
-const extractMeta = (object: any): DocumentMeta => {
+const extractMeta = (object: any): DocumentMetaElement => {
     const law = object['law'] || object;
 
-    return {
+    return createDocumentMeta({
         nr: law['@_nr'],
         year: law['@_year'],
         name: law['name'],
         date: law['num-and-date']?.['date'],
         original: law['num-and-date']?.['original'],
         ministerClause: law['minister-clause'],
-    };
+    });
 };
 
 const convertSlate = (object: any): Descendant[] => {

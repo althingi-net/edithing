@@ -5,6 +5,7 @@ import { MetaType } from '../../Slate';
 import createList from '../slate/createList';
 import createListItem from '../slate/createListItem';
 import { TAGS } from '../../../../config/tags';
+import createDocumentMeta, { createEmptyDocumentMeta } from '../slate/createDocumentMeta';
 
 test('import meta and law chapters', () => {
     const input = `
@@ -24,21 +25,19 @@ test('import meta and law chapters', () => {
         </law>
     `;
 
-    const expected = {
-        meta: {
+    const expected = [
+        createDocumentMeta({
             nr: '33',
             year: '1944',
             name: 'Stjórnarskrá lýðveldisins Íslands',
             date: '1944-06-17',
             original: '1944 nr. 33 17. júní',
             ministerClause: 'links',
-        },
-        slate: [
-            createList(MetaType.CHAPTER, {}, [
-                createListItem(MetaType.CHAPTER, '1', { title: 'I. ', text: 'Sendiráð skulu.' }),
-            ]),
-        ],
-    };
+        }),
+        createList(MetaType.CHAPTER, {}, [
+            createListItem(MetaType.CHAPTER, '1', { title: 'I. ', text: 'Sendiráð skulu.' }),
+        ]),
+    ];
 
     expect(importXml(input)).toStrictEqual(expected);
 });
@@ -53,12 +52,13 @@ test('roman list item', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('list item with title', () => {
@@ -70,12 +70,13 @@ test('list item with title', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ' }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('empty list item', () => {
@@ -85,12 +86,13 @@ test('empty list item', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1'),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('list item with title+name+sen', () => {
@@ -104,12 +106,13 @@ test('list item with title+name+sen', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ', name: 'Markmið. ', text: 'text' }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('list item with 2 sentences', () => {
@@ -122,12 +125,13 @@ test('list item with 2 sentences', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: ['one.', 'two.'] }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('multiple list items with text', () => {
@@ -138,13 +142,14 @@ test('multiple list items with text', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: 'first' }),
             createListItem(MetaType.ART, '2', { text: 'second' }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('multiple nested numart', () => {
@@ -161,6 +166,7 @@ test('multiple nested numart', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.NUMART, {}, [
             createListItem(MetaType.NUMART, '1', { nrType: 'numeric' }, [
                 createList(MetaType.NUMART, {}, [
@@ -174,7 +180,7 @@ test('multiple nested numart', () => {
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('list item with title and 2 sentences', () => {
@@ -188,12 +194,13 @@ test('list item with title and 2 sentences', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: 'a. ', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('title+sen+numart needs to become one ListItem', () => {
@@ -212,6 +219,7 @@ test('title+sen+numart needs to become one ListItem', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '2. ', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
                 createList(MetaType.NUMART, {}, [
@@ -225,7 +233,7 @@ test('title+sen+numart needs to become one ListItem', () => {
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 // TODO: implement link handling
@@ -241,12 +249,13 @@ test('sen link', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: 'Úrskurður þessi öðlast þegar gildi.' }),
         ]),
     ];
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
 });
 
 test('ensure after editor normalization, content stays the same (if not it means import is not clean, but previously was implemented to match the desired structure)', () => {
@@ -259,7 +268,7 @@ test('ensure after editor normalization, content stays the same (if not it means
             </art>
         </law>
     `;
-    const inputSlate = importXml(input).slate;
+    const inputSlate = importXml(input);
 
     const editor = createEditorWithPlugins();
     editor.children = inputSlate;
@@ -283,6 +292,7 @@ test('ignore virtual tags but still import their children', () => {
         </law>
     `;
     const output: Descendant[] = [
+        createEmptyDocumentMeta(),
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [
                 createList(MetaType.NUMART, {}, [
@@ -296,7 +306,7 @@ test('ignore virtual tags but still import their children', () => {
     const oldDisplay = TAGS.art.display;
     TAGS.art.display = 'virtual';
 
-    expect(importXml(input).slate).toStrictEqual(output);
+    expect(importXml(input)).toStrictEqual(output);
     
     // restore art
     TAGS.art.display = oldDisplay;
@@ -353,7 +363,7 @@ test('ignore law without law-type="law"', () => {
 //             </art>
 //         </law>    
 //     `;
-//     const inputSlate = importXml(input).slate;
+//     const inputSlate = importXml(input);
 
 //     const editor = createEditorWithPlugins();
 //     editor.children = inputSlate;

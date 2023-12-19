@@ -1,7 +1,9 @@
 import { RenderElementProps } from 'slate-react';
 import { TAGS } from '../../../config/tags';
 import { ElementType } from '../Slate';
+import { isDocumentMeta } from '../models/DocumentMeta';
 import { isListItem } from '../models/ListItem';
+import DocumentMetaBlock from './DocumentMetaBlock';
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
     const className = [
@@ -21,6 +23,10 @@ export function renderElement({ element, attributes, children }: RenderElementPr
                 return <div className={className} {...attributes}>{children}</div>;
             }
         }
+    }
+
+    if (isDocumentMeta(element)) {
+        return <DocumentMetaBlock element={element} attributes={attributes}>{children}</DocumentMetaBlock>;
     }
 
     switch (element.type) {

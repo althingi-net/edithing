@@ -1,20 +1,23 @@
 import { Editor, Element, Node, Path, Text } from 'slate';
 import beautify from 'xml-beautifier';
-import DocumentMeta from '../../models/DocumentMeta';
+import DocumentMetaElement, { isDocumentMeta } from '../../models/DocumentMeta';
 import { isList } from '../../models/List';
 import { isListItem } from '../../models/ListItem';
 import { isListItemText } from '../../models/ListItemText';
 
-const exportXml = (editor: Editor, addHeader = false, documentMeta?: DocumentMeta): string => {
+const exportXml = (editor: Editor, addHeader = false): string => {
     const xml = [];
-    const slateXml = convertSlate(editor, editor, []);
 
     if (addHeader) {
         xml.push('<?xml version="1.0" encoding="utf-8"?>');
     }
 
-    if (documentMeta) {
-        xml.push(convertDocumentMetaToXml(documentMeta, slateXml));
+    const slateXml = convertSlate(editor, editor, []);
+
+    if (editor.children.length > 0 && isDocumentMeta(editor.children[0])) {
+        const documentMetaElement = editor.children[0];
+
+        xml.push(convertDocumentMetaToXml(documentMetaElement, slateXml));
     } else {
         xml.push(slateXml);
     }
@@ -22,8 +25,8 @@ const exportXml = (editor: Editor, addHeader = false, documentMeta?: DocumentMet
     return beautify(xml.join(''));
 };
 
-const convertDocumentMetaToXml = (documentMeta: DocumentMeta, children: string): string => {
-    const { nr, year, name, date, original, ministerClause } = documentMeta;
+const convertDocumentMetaToXml = (element: DocumentMetaElement, children: string): string => {
+    const { nr, year, name, date, original, ministerClause } = element.meta;
 
     return `
         <law nr="${nr}" year="${year}" law-type="law">

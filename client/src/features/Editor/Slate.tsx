@@ -6,6 +6,7 @@ import ListItem from './models/ListItem';
 import List from './models/List';
 import TextNode from './models/TextNode';
 import { YjsEditor } from '@slate-yjs/core';
+import DocumentMetaElement from './models/DocumentMeta';
 
 // List items have either 1 or 2 children, always in the following order:
 // 0 - list item text
@@ -17,12 +18,13 @@ declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor & YjsEditor
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | List
+        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | List | DocumentMetaElement
         Text: TextNode
     }
 }
 
 export enum ElementType {
+    DOCUMENT_META = 'document-meta',
     PARAGRAPH = 'paragraph',
     LIST = 'list',
     LIST_ITEM = 'list-item',

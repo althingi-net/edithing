@@ -14,7 +14,7 @@ const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
     const [xml, setXml] = useState<string>();
     const { t } = useLanguageContext();
     const [slate, setSlate] = useState<Descendant[] | null>(null);
-    const [originalDocument, setOriginalDocument] = useState<ReturnType<typeof importXml>>();
+    const [originalDocument, setOriginalDocument] = useState<Descendant[]>();
 
     useEffect(() => {
         const [nr, year] = file.identifier.split('/');
@@ -25,9 +25,8 @@ const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
     useEffect(() => {
         if (xml) {
             try {
-                const result = importXml(xml);
-                setOriginalDocument(result);
-                setSlate(result.slate);
+                setOriginalDocument(importXml(xml));
+                setSlate(importXml(xml));
             } catch (error) {
                 notification.error({
                     message: t('Invalid Law Document'),

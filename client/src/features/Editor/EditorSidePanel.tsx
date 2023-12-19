@@ -2,18 +2,18 @@ import { Collapse } from 'antd';
 import { FC, useMemo } from 'react';
 import { CodeBlock } from 'react-code-blocks';
 import { useSlate } from 'slate-react';
+import useLanguageContext from '../App/useLanguageContext';
 import CopyClipboardButton from './CopyClipboardButton';
 import LawChanges from './LawChanges';
 import NodeMetaForm from './NodeMetaForm';
 import compareDocuments from './utils/changelog/compareDocuments';
 import useDebounce from './utils/useDebounce';
-import exportXml from './utils/xml/exportXml';
-import importXml from './utils/xml/importXml';
-import useLanguageContext from '../App/useLanguageContext';
 import exportChangelogXml from './utils/xml/exportChangelogXml';
+import exportXml from './utils/xml/exportXml';
+import { Descendant } from 'slate';
 
 interface Props {
-    originalDocument: ReturnType<typeof importXml>;
+    originalDocument: Descendant[];
     xml: string;
 }
 
@@ -24,8 +24,8 @@ const EditorSidePanel: FC<Props> = (props) => {
 
     return useMemo(() => {
         const slateState = JSON.stringify(debouncedSlate.children, null, 2);
-        const xmlExport = exportXml(debouncedSlate, true, originalDocument.meta);
-        const changelog = compareDocuments(debouncedSlate, originalDocument.slate);
+        const xmlExport = exportXml(debouncedSlate, true);
+        const changelog = compareDocuments(debouncedSlate, originalDocument);
 
         return (
             <div style={{ height: '100%' }}>
