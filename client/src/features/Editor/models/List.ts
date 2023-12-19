@@ -1,5 +1,5 @@
-import { Descendant } from 'slate';
-import { MetaType, ElementType } from '../Slate';
+import { Descendant, Element, Node } from 'slate';
+import { ElementType, MetaType } from '../Slate';
 
 interface List {
     type: ElementType.LIST;
@@ -15,5 +15,9 @@ export interface ListMeta {
 export interface ListWithMeta extends List {
     meta: ListMeta;
 }
+
+export const isList = (node?: Node | null): node is List => {
+    return Element.isElementType(node, ElementType.LIST);
+};
 
 export default List;

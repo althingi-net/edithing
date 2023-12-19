@@ -1,5 +1,5 @@
 import { Editor, Path, Transforms } from 'slate';
-import { isListItem } from '../../Slate';
+import { isListItem } from '../../models/ListItem';
 import incrementMixedNumber from '../number/incrementMixedNumber';
 import incrementRomanNumber from '../number/incrementRomanNumber';
 import setListItemMeta from './setListItemMeta';

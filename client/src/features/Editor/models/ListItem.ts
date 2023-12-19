@@ -1,5 +1,5 @@
-import { Descendant } from 'slate';
-import { MetaType, ElementType } from '../Slate';
+import { Descendant, Element, Node } from 'slate';
+import { ElementType, MetaType } from '../Slate';
 import { ListMeta } from './List';
 
 interface ListItem {
@@ -38,4 +38,13 @@ export interface ListItemMeta extends ListMeta {
     styleNote?: string; // inline-with-parent
 }
 
+export const isListItem = (node?: Partial<Node> | null): node is ListItem => {
+    return Element.isElementType(node, ElementType.LIST_ITEM);
+};
+
+export const isListItemMeta = (meta: object): meta is ListItemMeta => {
+    return 'nr' in meta && 'type' in meta;
+};
+
 export default ListItem;
+

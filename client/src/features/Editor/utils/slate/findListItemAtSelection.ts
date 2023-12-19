@@ -1,5 +1,6 @@
 import { Editor, Node, NodeEntry, Text } from 'slate';
-import { MetaType, isListItem } from '../../Slate';
+import { MetaType } from '../../Slate';
+import { isListItem } from '../../models/ListItem';
 import ListItem from '../../models/ListItem';
 
 /**

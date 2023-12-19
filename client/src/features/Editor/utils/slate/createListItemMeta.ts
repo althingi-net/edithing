@@ -1,5 +1,6 @@
 import { Editor, Path } from 'slate';
-import { MetaType, isListItem } from '../../Slate';
+import { MetaType } from '../../Slate';
+import { isListItem } from '../../models/ListItem';
 import { ListItemMeta } from '../../models/ListItem';
 import createListItemMetaFromSibling from './createListItemMetaFromSibling';
 import createListMeta from './createListMeta';

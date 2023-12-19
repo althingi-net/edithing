@@ -1,5 +1,7 @@
 import { Editor, Node, Path } from 'slate';
-import { isList, isListItem, MetaType } from '../../Slate';
+import { MetaType } from '../../Slate';
+import { isList } from '../../models/List';
+import { isListItem } from '../../models/ListItem';
 import { ListMeta } from '../../models/List';
 
 const createListMeta = (editor: Editor, path: Path) => {

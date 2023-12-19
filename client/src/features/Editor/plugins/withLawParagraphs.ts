@@ -1,6 +1,9 @@
 import { Editor, Element, Node, NodeEntry, Text, Transforms } from 'slate';
 import { log } from '../../../logger';
-import { ElementType, isList, isListItem, isListItemText } from '../Slate';
+import { ElementType } from '../Slate';
+import { isList } from '../models/List';
+import { isListItem } from '../models/ListItem';
+import { isListItemText } from '../models/ListItemText';
 import createListItemMeta from '../utils/slate/createListItemMeta';
 import createListMeta from '../utils/slate/createListMeta';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';

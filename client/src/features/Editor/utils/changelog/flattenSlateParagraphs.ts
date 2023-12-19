@@ -1,5 +1,5 @@
 import { Descendant, Node, Path } from 'slate';
-import { isListItemText } from '../../Slate';
+import { isListItemText } from '../../models/ListItemText';
 import getParagraphId from './getParagraphId';
 
 export interface FlattenedParagraph {

@@ -1,5 +1,5 @@
 import { Node, NodeEntry, Path } from 'slate';
-import { isListItem } from '../../Slate';
+import { isListItem } from '../../models/ListItem';
 import ListItem from '../../models/ListItem';
 import findNode from '../findNode';
 

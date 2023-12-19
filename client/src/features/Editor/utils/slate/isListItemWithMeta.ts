@@ -1,5 +1,5 @@
 import { Node } from 'slate';
-import { isListItem } from '../../Slate';
+import { isListItem } from '../../models/ListItem';
 import { ListItemWithMeta } from '../../models/ListItem';
 
 const isListItemWithMeta = (node: Node): node is ListItemWithMeta => {

@@ -1,5 +1,5 @@
 import { Editor, Node, Path, Range } from 'slate';
-import { isListItemText } from '../../Slate';
+import { isListItemText } from '../../models/ListItemText';
 
 const isSelectionAtEdgeOfListItemText = (editor: Editor, path: Path) => {
     const { selection } = editor;

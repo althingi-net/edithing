@@ -1,6 +1,7 @@
 import { RenderElementProps } from 'slate-react';
 import { TAGS } from '../../../config/tags';
-import { ElementType, isListItem } from '../Slate';
+import { ElementType } from '../Slate';
+import { isListItem } from '../models/ListItem';
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
     const className = [

@@ -1,5 +1,5 @@
 import { Editor, Location } from 'slate';
-import { isList } from '../../Slate';
+import { isList } from '../../models/List';
 
 /**
  * Retrieves the next list in the hierarchy above the given location.
