@@ -63,6 +63,9 @@ const translations: { [key: string]: { [key: string]: string } } = {
         'Please input your Password!': 'Vinsamlegast sláðu inn lykilorð!',
         'Email': 'Netfang',
         'Password': 'Lykilorð',
+        'View': 'Skoða',
+        'New': 'Nýtt',
+        'Bills': 'Frumvarp',
     },
 };
 

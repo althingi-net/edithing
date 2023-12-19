@@ -8,8 +8,8 @@ import { SessionContextProvider } from './useSessionContext';
 
 function App() {
     return (
-        <ThemeContextProvider>
-            <SessionContextProvider>
+        <SessionContextProvider>
+            <ThemeContextProvider>
                 <LanguageContextProvider>
                     <HightlightContextProvider>
                         <LawListContextProvider>
@@ -19,8 +19,8 @@ function App() {
                         </LawListContextProvider>
                     </HightlightContextProvider>
                 </LanguageContextProvider>
-            </SessionContextProvider>
-        </ThemeContextProvider>
+            </ThemeContextProvider>
+        </SessionContextProvider>
     );
 }
 

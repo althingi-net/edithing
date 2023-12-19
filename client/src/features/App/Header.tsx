@@ -14,6 +14,9 @@ const useHeaderMenuItems = () => {
     const headerMenuItems: MenuItemType[] = useMemo(() => [{
         key: '/',
         label: t('Legal Codex'),
+    }, {
+        key: '/bills',
+        label: t('Bills'),
     }], [t]);
 
     return headerMenuItems;

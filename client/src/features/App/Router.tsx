@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
 import useLanguageContext from './useLanguageContext';
+import BillsPage from '../../pages/BillsPage';
 
 const router = createBrowserRouter([{
     path: '/',
@@ -11,6 +12,9 @@ const router = createBrowserRouter([{
 }, {
     path: '/law/:nr/:year',
     element: <LawPage/>,
+}, {
+    path: '/bills',
+    element: <BillsPage/>,
 }]);
 
 const Router: FC = () => {
