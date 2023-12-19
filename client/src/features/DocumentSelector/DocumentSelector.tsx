@@ -30,7 +30,9 @@ const DocumentSelector: FC = () => {
                 renderItem={(item) =>
                     <List.Item
                         style={{ width: '100%' }}
-                        actions={[<Button key={0} onClick={() => navigate(`/law/${item.identifier}`)}>{t('Edit')}</Button>]}
+                        actions={[
+                            <Button key={0} onClick={() => navigate(`/law/${item.identifier}`)}>{t('View')}</Button>
+                        ]}
                     >
                         <List.Item.Meta
                             title={`${item.identifier} - ${item.date}`}
