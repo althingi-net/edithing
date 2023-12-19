@@ -1,16 +1,16 @@
-import { Editor, Element, Node, NodeEntry, Text, Transforms } from 'slate';
+import { Editor, Node, NodeEntry, Text, Transforms } from 'slate';
 import { log } from '../../../logger';
 import { ElementType } from '../Slate';
-import { isList } from '../models/List';
-import { isListItem } from '../models/ListItem';
-import { isListItemText } from '../models/ListItemText';
+import { isDocumentMeta } from '../elements/DocumentMeta';
+import { isList } from '../elements/List';
+import { isListItem } from '../elements/ListItem';
+import { isListItemText } from '../elements/ListItemText';
 import createListItemMeta from '../utils/slate/createListItemMeta';
 import createListMeta from '../utils/slate/createListMeta';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';
 import setListItemMeta from '../utils/slate/setListItemMeta';
 import setMeta from '../utils/slate/setMeta';
 import normalizeNode from './normalizeNode';
-import { isDocumentMeta } from '../models/DocumentMeta';
 
 const withLawParagraphs = (editor: Editor) => {
     // normalizeNode will be called multiple times until there are no more changes caused by the normalization.
@@ -64,23 +64,21 @@ const normalizeEmptyEditor = (editor: Editor, entry: NodeEntry) => {
 const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {
     const [node, path] = entry;
 
-    if (Element.isElement(node) && !node['meta']) {
-        if (isList(node)) {
-            const meta = createListMeta(editor, path);
-            log('add missing meta to list', { node, path, meta });
-            setMeta(editor, path, meta);
-            return true;
-        }
+    if (isList(node) && !node['meta']) {
+        const meta = createListMeta(editor, path);
+        log('add missing meta to list', { node, path, meta });
+        setMeta(editor, path, meta);
+        return true;
+    }
 
-        if (isListItem(node)) {
-            const meta = createListItemMeta(editor, path);
-            log('add missing meta to list item', { node, path, meta });
+    if (isListItem(node) && !node['meta']) {
+        const meta = createListItemMeta(editor, path);
+        log('add missing meta to list item', { node, path, meta });
 
-            setListItemMeta(editor, node, path, meta);
-            incrementFollowingSiblings(editor, path);
+        setListItemMeta(editor, node, path, meta);
+        incrementFollowingSiblings(editor, path);
 
-            return true;
-        }
+        return true;
     }
 
     return false;

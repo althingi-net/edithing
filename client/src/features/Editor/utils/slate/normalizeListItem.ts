@@ -1,7 +1,7 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
-import { isListItemText } from '../../models/ListItemText';
-import { isTitle } from '../../models/TextNode';
-import { ListItemWithMeta } from '../../models/ListItem';
+import { isListItemText } from '../../elements/ListItemText';
+import { isTitle } from '../../elements/TextNode';
+import { ListItemWithMeta } from '../../elements/ListItem';
 import createListItemText from './createListItemText';
 import isListItemWithMeta from './isListItemWithMeta';
 import setListItemTitleFromMeta from './setListItemTitleFromMeta';

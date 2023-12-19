@@ -1,6 +1,6 @@
 import { Editor } from 'slate';
 import { ElementType, MetaType } from '../Slate';
-import ListItemText from '../models/ListItemText';
+import ListItemText from '../elements/ListItemText';
 import createList from '../utils/slate/createList';
 import createListItem from '../utils/slate/createListItem';
 import createEditorWithPlugins from './createEditorWithPlugins';

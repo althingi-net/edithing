@@ -3,10 +3,10 @@ import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
 import { TAGS } from '../../../../config/tags';
 import { ElementType, LIST_TAGS, MetaType, isMetaType } from '../../Slate';
-import DocumentMetaElement from '../../models/DocumentMeta';
-import { ListWithMeta } from '../../models/List';
-import { ListItemWithMeta } from '../../models/ListItem';
-import ListItemText, { isListItemText } from '../../models/ListItemText';
+import DocumentMetaElement from '../../elements/DocumentMeta';
+import { ListWithMeta } from '../../elements/List';
+import { ListItemWithMeta } from '../../elements/ListItem';
+import ListItemText, { isListItemText } from '../../elements/ListItemText';
 import createDocumentMeta from '../slate/createDocumentMeta';
 import normalizeChildren from '../slate/normalizeChildren';
 
@@ -161,7 +161,7 @@ const convertList = (key: string, values: any[]): Descendant => {
 };
 
 const convertSen = (sentences: any[]): Descendant => {
-    const texts: Descendant[] = sentences
+    const texts: Text[] = sentences
         .filter((child) => !child['a'])
         .map((child, index) => {
             const nr = child['@_nr'] ?? '1';

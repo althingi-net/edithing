@@ -1,7 +1,7 @@
 import { Descendant } from 'slate';
 import { ElementType, MetaType } from '../../Slate';
-import ListItemText from '../../models/ListItemText';
-import { ListItemMeta, ListItemWithMeta } from '../../models/ListItem';
+import ListItemText from '../../elements/ListItemText';
+import { ListItemMeta, ListItemWithMeta } from '../../elements/ListItem';
 import convertRomanNumber from '../number/convertRomanNumber';
 import createListItemText from './createListItemText';
 

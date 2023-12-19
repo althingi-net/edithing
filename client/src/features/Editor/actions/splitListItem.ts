@@ -1,6 +1,6 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
 import { log } from '../../../logger';
-import { isListItemText } from '../models/ListItemText';
+import { isListItemText } from '../elements/ListItemText';
 import createListItemMetaFromSibling from '../utils/slate/createListItemMetaFromSibling';
 import getParentListItem from '../utils/slate/getParentListItem';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';

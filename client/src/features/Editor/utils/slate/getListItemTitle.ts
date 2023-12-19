@@ -1,7 +1,7 @@
 import { Editor, Node, Path } from 'slate';
-import { isListItem } from '../../models/ListItem';
-import { isListItemText } from '../../models/ListItemText';
-import { isTitle } from '../../models/TextNode';
+import { isListItem } from '../../elements/ListItem';
+import { isListItemText } from '../../elements/ListItemText';
+import { isTitle } from '../../elements/TextNode';
 
 const getListItemTitle = (editor: Editor, path: Path) => {
     const listItem = Node.get(editor, path);

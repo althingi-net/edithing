@@ -1,6 +1,6 @@
 import { Text } from 'slate';
 import { ElementType } from '../../Slate';
-import ListItemText from '../../models/ListItemText';
+import ListItemText from '../../elements/ListItemText';
 
 const createListItemText = (children: Text[] = [{ text: '' }]) => {
     const textElement: ListItemText = {

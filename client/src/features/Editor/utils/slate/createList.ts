@@ -1,6 +1,6 @@
 import { Descendant } from 'slate';
 import { ElementType, MetaType } from '../../Slate';
-import List, { ListWithMeta } from '../../models/List';
+import List, { ListWithMeta } from '../../elements/List';
 
 interface Options {
     nrType?: 'roman' | 'numeric' | 'alphabet';

@@ -1,8 +1,8 @@
 import { BaseEditor, Editor, Node, Operation, Text } from 'slate';
 import { log } from '../../../logger';
 import { ElementType } from '../Slate';
-import { isListItemMeta } from '../models/ListItem';
-import { isListItem } from '../models/ListItem';
+import { isListItemMeta } from '../elements/ListItem';
+import { isListItem } from '../elements/ListItem';
 import getParagraphId from '../utils/changelog/getParagraphId';
 import decrementFollowingSiblings from '../utils/slate/decrementFollowingSiblings';
 

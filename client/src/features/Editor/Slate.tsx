@@ -1,12 +1,14 @@
-import { BaseEditor, Descendant, Node } from 'slate';
+import { YjsEditor } from '@slate-yjs/core';
+import { BaseEditor, Node } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
+import DocumentMetaElement from './elements/DocumentMeta';
+import List from './elements/List';
+import ListItem from './elements/ListItem';
+import ListItemText from './elements/ListItemText';
+import Paragraph from './elements/Paragraph';
+import TextNode from './elements/TextNode';
 import { EventsEditor } from './plugins/withEvents';
-import ListItem from './models/ListItem';
-import List from './models/List';
-import TextNode from './models/TextNode';
-import { YjsEditor } from '@slate-yjs/core';
-import DocumentMetaElement from './models/DocumentMeta';
 
 // List items have either 1 or 2 children, always in the following order:
 // 0 - list item text
@@ -17,8 +19,7 @@ export const NESTED_LIST_PATH_INDEX = 1;
 declare module 'slate' {
     interface CustomTypes {
         Editor: BaseEditor & ReactEditor & HistoryEditor & EventsEditor & YjsEditor
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Element: { type: ElementType; children: Descendant[], meta?: any } | ListItem | List | DocumentMetaElement
+        Element: DocumentMetaElement | List | ListItem | ListItemText | Paragraph
         Text: TextNode
     }
 }

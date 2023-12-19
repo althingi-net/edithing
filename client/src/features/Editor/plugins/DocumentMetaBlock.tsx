@@ -1,7 +1,7 @@
 import { Collapse } from 'antd';
 import { FC } from 'react';
 import { RenderElementProps } from 'slate-react';
-import DocumentMetaElement from '../models/DocumentMeta';
+import DocumentMetaElement from '../elements/DocumentMeta';
 import { ElementType } from '../Slate';
 
 interface Props extends RenderElementProps {

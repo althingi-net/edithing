@@ -1,4 +1,4 @@
-import Changelog from '../../models/Changelog';
+import Changelog from '../changelog/Changelog';
 import beautify from 'xml-beautifier';
 
 const exportChangelogXml = (changelog: Changelog[]): string => {

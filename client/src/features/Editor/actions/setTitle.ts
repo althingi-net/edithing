@@ -1,7 +1,7 @@
 import { Editor, Node, Text, Transforms } from 'slate';
 import getParentListItem from '../utils/slate/getParentListItem';
 import setListItemMeta from '../utils/slate/setListItemMeta';
-import { isName } from '../models/TextNode';
+import { isName } from '../elements/TextNode';
 
 /**
  * 

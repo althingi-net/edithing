@@ -1,4 +1,4 @@
-import ListItem, { ListItemMeta } from '../../models/ListItem';
+import ListItem, { ListItemMeta } from '../../elements/ListItem';
 import incrementLetter from '../number/incrementLetter';
 import incrementMixedNumber from '../number/incrementMixedNumber';
 import incrementRomanNumber from '../number/incrementRomanNumber';

@@ -1,9 +1,9 @@
 // import { YjsEditor, slateNodesToInsertDelta, withYjs } from '@slate-yjs/core';
+// import * as Y from 'yjs';
 import { Col, Row } from 'antd';
 import { FC, useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
-import * as Y from 'yjs';
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
 import HoveringToolbar from './Toolbar/HoverToolbar';

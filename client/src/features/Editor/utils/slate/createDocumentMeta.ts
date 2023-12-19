@@ -1,5 +1,5 @@
 import { ElementType } from '../../Slate';
-import DocumentMetaElement from '../../models/DocumentMeta';
+import DocumentMetaElement from '../../elements/DocumentMeta';
 
 const createDocumentMeta = (meta: DocumentMetaElement['meta']): DocumentMetaElement => {
     const element: DocumentMetaElement = {

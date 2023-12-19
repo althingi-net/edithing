@@ -1,14 +1,14 @@
 import { RenderElementProps } from 'slate-react';
 import { TAGS } from '../../../config/tags';
 import { ElementType } from '../Slate';
-import { isDocumentMeta } from '../models/DocumentMeta';
-import { isListItem } from '../models/ListItem';
+import { isDocumentMeta } from '../elements/DocumentMeta';
+import { isListItem } from '../elements/ListItem';
 import DocumentMetaBlock from './DocumentMetaBlock';
 
 export function renderElement({ element, attributes, children }: RenderElementProps) {
     const className = [
         element.type,
-        element.meta?.type,
+        hasMetaType(element) ? element.meta.type : '',
     ].join(' ');
 
     if (isListItem(element)) {
@@ -41,5 +41,10 @@ export function renderElement({ element, attributes, children }: RenderElementPr
         return <span className={className} {...attributes}>{children}</span>;
     }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const hasMetaType = (element: any): element is { meta: { type: string } } => {
+    return 'meta' in element && element.meta && 'type' in element.meta;
+};
 
 export default renderElement;

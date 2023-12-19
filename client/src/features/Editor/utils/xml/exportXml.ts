@@ -1,9 +1,9 @@
 import { Editor, Element, Node, Path, Text } from 'slate';
 import beautify from 'xml-beautifier';
-import DocumentMetaElement, { isDocumentMeta } from '../../models/DocumentMeta';
-import { isList } from '../../models/List';
-import { isListItem } from '../../models/ListItem';
-import { isListItemText } from '../../models/ListItemText';
+import DocumentMetaElement, { isDocumentMeta } from '../../elements/DocumentMeta';
+import { isList } from '../../elements/List';
+import { isListItem } from '../../elements/ListItem';
+import { isListItemText } from '../../elements/ListItemText';
 
 const exportXml = (editor: Editor, addHeader = false): string => {
     const xml = [];
