@@ -1,5 +1,5 @@
-import { LoginResponse, User } from 'client-sdk';
-import { FC, PropsWithChildren, createContext, useContext, useState } from 'react';
+import { LoginResponse, OpenAPI, User } from 'client-sdk';
+import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 
 interface Session extends LoginResponse {
     token: string;
@@ -39,6 +39,17 @@ export const SessionContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const logout = () => {
         handleSetSession(null);
     };
+
+    // Update OpenAPI headers when session changes
+    useEffect(() => {
+        if (session?.token) {
+            OpenAPI.HEADERS = {
+                Authorization: `Bearer ${session.token}`,
+            };
+        } else {
+            OpenAPI.HEADERS = {};
+        }
+    }, [session]);
     
     return (
         <SessionContext.Provider value={{ session, setSession: handleSetSession, isAuthenticated, logout }}>
