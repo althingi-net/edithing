@@ -10,6 +10,6 @@ export type Document = {
     nr: string;
     content: string;
     downloadedAt?: string;
-    editedAt?: string;
+    updatedAt?: string;
 };
 

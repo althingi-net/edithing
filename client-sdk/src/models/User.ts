@@ -16,8 +16,8 @@ export type User = {
 export namespace User {
 
     export enum role {
-        EDITOR = 'editor',
         ADMIN = 'admin',
+        EDITOR = 'editor',
     }
 
 

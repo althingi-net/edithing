@@ -15,7 +15,7 @@ class User extends BaseEntity {
     @IsOptional()
     id?: number;
 
-    @OneToMany(() => Bill, bill => bill.authorId)
+    @OneToMany(() => Bill, bill => bill.author, { cascade: true })
     bills?: Bill[];
 
     @Column()
@@ -38,7 +38,7 @@ class User extends BaseEntity {
         enum: UserRole,
         default: UserRole.EDITOR,
     })
-    @IsEnum(['editor', 'admin'])
+    @IsEnum(UserRole)
     @IsOptional()
     role?: UserRole;
 
