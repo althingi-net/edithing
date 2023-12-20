@@ -52,7 +52,7 @@
     "routing-controllers-openapi": "^4.0.0",
     "typeorm": "^0.3.17",
     "typeorm-extension": "^3.2.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
