@@ -4,7 +4,6 @@ import { Middleware } from 'koa';
 const errorHandler: Middleware = async (ctx, next) => {
     try {
         await next();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         if (process.env.NODE_ENV === 'production') {
             console.error(error);
