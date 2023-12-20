@@ -175,12 +175,7 @@ module.exports = {
 
     // A map from regular expressions to paths to transformers
     transform: {
-        '^.+\\.tsx?$': 'ts-jest'
-    },
-    globals: {
-        'ts-jest': {
-            isolatedModules: true
-        }
+        '^.+\\.tsx?$': ['ts-jest', { isolatedModules: true }]
     },
     
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
