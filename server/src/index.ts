@@ -6,9 +6,9 @@ import server from './config/server';
 import { initConnection } from './integration/database/connection';
 
 // Start the server
-(async () => {
+void (async () => {
     await initConnection();
-    await app.listen(server.port);
+    app.listen(server.port);
     console.log(`🚀 Server is running at ${server.host}`);
 
     if (process.env.NODE_ENV !== 'production') {

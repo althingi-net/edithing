@@ -17,6 +17,7 @@ const downloadFile = async (file: string) => {
     // @ts-expect-error type conflict
     if (data.encoding === 'base64') {
         // @ts-expect-error type conflict
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         return decodeBase64(data.content);
     }
 

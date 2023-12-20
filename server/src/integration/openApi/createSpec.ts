@@ -2,7 +2,7 @@ import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { getMetadataArgsStorage } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 
-const createSpec = async () => {
+const createSpec = () => {
     const storage = getMetadataArgsStorage();
     const schemas = validationMetadatasToSchemas({
         refPointerPrefix: '#/components/schemas/',

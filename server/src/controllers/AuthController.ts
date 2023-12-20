@@ -29,7 +29,7 @@ export class AuthController {
     @OpenAPI({ summary: 'Authenticate with email and password' })
     @UseBefore(passport.authenticate('local', { session: false }))
     @ResponseSchema(LoginResponse)
-    async login(@Body() body: LoginRequestBody, @State('user') user: User) {
+    login(@Body() body: LoginRequestBody, @State('user') user: User) {
         return {
             token: generateJwtToken(user),
             user,
@@ -72,7 +72,7 @@ export class AuthController {
 
     @Get('/me')
     @UseBefore(passport.authenticate('jwt', { session: false }))
-    async getMe(@State('user') user: User) {
+    getMe(@State('user') user: User) {
         return user;
     }
 }

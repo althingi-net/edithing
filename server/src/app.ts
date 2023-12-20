@@ -15,7 +15,7 @@ import cors from '@koa/cors';
 const app = createKoaServer({
     routePrefix: '/api',
     controllers: [__dirname + '/controllers/!(*.test).ts'],
-    authorizationChecker: async (action, roles) => {
+    authorizationChecker: (action, roles) => {
         const user = <User>action.context.state.user;
 
         if (!roles.length) {

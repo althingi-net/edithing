@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { closeConnection, initConnection } from '../integration/database/connection';
 import seedTestDb from '../integration/database/seedTestDb';
 
-(async () => {
+void (async () => {
     await initConnection();
     await seedTestDb();
     await closeConnection();
