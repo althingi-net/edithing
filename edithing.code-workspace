@@ -20,6 +20,9 @@
 		"jest.disabledWorkspaceFolders": [
 			"edithing",
 			"client-sdk"
+		],
+		"cSpell.words": [
+			"typecheck"
 		]
 	}
 }
