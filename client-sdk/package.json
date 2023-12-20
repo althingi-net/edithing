@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "module": "dist/index.m.js",
-  "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "microbundle --tsconfig tsconfig.json",
-    "dev": "microbundle watch --tsconfig tsconfig.json"
+    "build": " tsc --build",
+    "dev": "npm run build -- --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "microbundle": "^0.15.1",
     "typescript": "^5.3.3"
   },
   "browserslist": {
