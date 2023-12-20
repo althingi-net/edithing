@@ -11,6 +11,7 @@ const LawPage: FC = () => {
     const { t } = useLanguageContext();
     const { nr, year } = useParams();
     const { lawList } = useLawListContext();
+
     const lawListEntry = lawList.find(law => law.identifier === `${nr}/${year}`);
     
     if (!lawListEntry) {

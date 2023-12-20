@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckOutlined, CopyOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { FC, useEffect, useState } from 'react';
@@ -37,7 +36,7 @@ const CopyClipboardButton: FC<Props> = ({ content, transform }) => {
         <Tooltip title={t('Copy content to clipboard')}>
             <Button
                 onClick={(event) => {
-                    navigator.clipboard.writeText(text);
+                    void navigator.clipboard.writeText(text);
                     setCopied(true);
                     event.stopPropagation();
                 }}

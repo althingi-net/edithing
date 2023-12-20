@@ -1,5 +1,5 @@
-import { LoginResponse, OpenAPI, User } from 'client-sdk';
 import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
+import { LoginResponse, OpenAPI, User } from 'client-sdk';
 
 interface Session extends LoginResponse {
     token: string;

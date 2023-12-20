@@ -18,7 +18,7 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' |
  * @param type The meta type of the list item.
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
-export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
+const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr, originNr } = options;
 
     const textElement: ListItemText = createListItemText();

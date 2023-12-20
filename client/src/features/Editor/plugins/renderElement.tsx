@@ -5,7 +5,7 @@ import { isDocumentMeta } from '../elements/DocumentMeta';
 import { isListItem } from '../elements/ListItem';
 import DocumentMetaBlock from './DocumentMetaBlock';
 
-export function renderElement({ element, attributes, children }: RenderElementProps) {
+function renderElement({ element, attributes, children }: RenderElementProps) {
     const className = [
         element.type,
         hasMetaType(element) ? element.meta.type : '',
@@ -42,7 +42,6 @@ export function renderElement({ element, attributes, children }: RenderElementPr
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const hasMetaType = (element: any): element is { meta: { type: string } } => {
     return 'meta' in element && element.meta && 'type' in element.meta;
 };

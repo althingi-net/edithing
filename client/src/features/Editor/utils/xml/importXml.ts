@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
 import { TAGS } from '../../../../config/tags';
@@ -163,7 +162,7 @@ const convertList = (key: string, values: any[]): Descendant => {
 const convertSen = (sentences: any[]): Descendant => {
     const texts: Text[] = sentences
         .filter((child) => !child['a'])
-        .map((child, index) => {
+        .map((child) => {
             const nr = child['@_nr'] ?? '1';
             const text = child['#text'] ?? child ?? '';
 

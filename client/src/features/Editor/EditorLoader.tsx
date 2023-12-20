@@ -19,7 +19,8 @@ const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
     useEffect(() => {
         const [nr, year] = file.identifier.split('/');
         DocumentService.documentControllerGet(nr, year)
-            .then((document) => setXml(document.content));
+            .then((document) => setXml(document.content))
+            .catch(notification.error);
     }, [file]);
 
     useEffect(() => {

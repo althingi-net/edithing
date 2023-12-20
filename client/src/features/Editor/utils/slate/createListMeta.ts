@@ -1,8 +1,7 @@
 import { Editor, Node, Path } from 'slate';
 import { MetaType } from '../../Slate';
-import { isList } from '../../elements/List';
+import { ListMeta, isList } from '../../elements/List';
 import { isListItem } from '../../elements/ListItem';
-import { ListMeta } from '../../elements/List';
 
 const createListMeta = (editor: Editor, path: Path) => {
     if (path.length <= 2) {

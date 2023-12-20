@@ -42,7 +42,6 @@ export const isListItem = (node?: Partial<Node> | null): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isListItemMeta = (meta: any): meta is ListItemMeta => {
     return 'nr' in meta && 'type' in meta;
 };

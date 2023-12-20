@@ -23,7 +23,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
     const [bumpVersionNumber, setBumpVersionNumber] = useState(true);
     const [type, setType] = useState<MetaType | null>(null);
     const [listItem, listItemPath] = useMemo(() => findListItemAtSelection(editor) ?? [], [editor]);
-    const [locationToAdd, setLocationToAdd] = useState<'nested-list' | string>(JSON.stringify(listItemPath ?? []));
+    const [locationToAdd, setLocationToAdd] = useState</* 'nested-list' |  */string>(JSON.stringify(listItemPath ?? []));
 
     if (!listItem || !listItemPath || !isListItemWithMeta(listItem)) {
         throw new Error('Can not find list item in selection');
@@ -123,13 +123,13 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
     return (
         <>
             <p>{t('A new entry will be inserted as sibling of')}:</p>
-            <Radio.Group name='add' value={locationToAdd} onChange={(event) => setLocationToAdd(event.target.value)}>
+            <Radio.Group name='add' value={locationToAdd} onChange={(event) => setLocationToAdd(event.target.value as string)}>
                 {hierarchyOptions}
                 {nestedOption}
             </Radio.Group>
             <br />
             <br />
-            <Radio.Group optionType="button" name='type' value={type} onChange={(event) => setType(event.target.value)}>
+            <Radio.Group optionType="button" name='type' value={type} onChange={(event) => setType(event.target.value as MetaType)}>
                 {typeButtons}
             </Radio.Group>
             <Divider />

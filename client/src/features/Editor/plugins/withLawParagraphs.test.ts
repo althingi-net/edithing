@@ -5,7 +5,7 @@ import createList from '../utils/slate/createList';
 import createListItem from '../utils/slate/createListItem';
 import createEditorWithPlugins from './createEditorWithPlugins';
 
-test('add missing meta data to List Element', async () => {
+test('add missing meta data to List Element', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -45,7 +45,7 @@ test('add missing meta data to List Element', async () => {
     expect(editor.children).toEqual(output);
 });
 
-test('add missing meta data to ListItem Element', async () => {
+test('add missing meta data to ListItem Element', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -78,7 +78,7 @@ test('add missing meta data to ListItem Element', async () => {
     expect(editor.children).toEqual(output);
 });
 
-test('increment following siblings nr and title', async () => {
+test('increment following siblings nr and title', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -111,7 +111,7 @@ test('increment following siblings nr and title', async () => {
     expect(editor.children).toEqual(output);
 });
 
-test('when incrementing following siblings nr and title, retain selection on initiating node', async () => {
+test('when incrementing following siblings nr and title, retain selection on initiating node', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -141,7 +141,7 @@ test('when incrementing following siblings nr and title, retain selection on ini
     expect(editor.selection).toEqual(expectedRange);
 });
 
-test('increment following siblings nr and title but retain letters after digits', async () => {
+test('increment following siblings nr and title but retain letters after digits', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.ART, {}, [
@@ -176,7 +176,7 @@ test('increment following siblings nr and title but retain letters after digits'
     expect(editor.children).toEqual(output);
 });
 
-test('increment following siblings nr and title with roman nr and retain previous text', async () => {
+test('increment following siblings nr and title with roman nr and retain previous text', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -209,7 +209,7 @@ test('increment following siblings nr and title with roman nr and retain previou
     expect(editor.children).toEqual(output);
 });
 
-// test('tab of list item will nest it and change the MetaType from Chapter to Art', async () => {
+// test('tab of list item will nest it and change the MetaType from Chapter to Art', () => {
 //     const editor = createEditorWithPlugins();
 //     editor.children = [
 //         createList(MetaType.CHAPTER, {}, [
@@ -235,7 +235,7 @@ test('increment following siblings nr and title with roman nr and retain previou
 //     expect(editor.children).toEqual(output);
 // });
 
-// test('tab+shift at the root will do nothing', async () => {
+// test('tab+shift at the root will do nothing', () => {
 //     const editor = createEditorWithPlugins();
 //     editor.children = [
 //         createList(MetaType.CHAPTER, {}, [
@@ -322,7 +322,7 @@ test('increment following siblings nr and title with roman nr and retain previou
 //     expect(editor.children).toEqual(output);
 // });
 
-test('normalize sentences to have correct nr', async () => {
+test('normalize sentences to have correct nr', () => {
     const editor = createEditorWithPlugins();
     const node = createListItem(MetaType.ART, '1', { text: ['1', '2', '3'] });
     const listItemText = node.children[0] as ListItemText;

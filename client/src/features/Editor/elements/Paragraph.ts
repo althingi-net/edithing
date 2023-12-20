@@ -1,7 +1,7 @@
 import { Text } from 'slate';
 import { ElementType } from '../Slate';
 
-export interface Paragraph {
+interface Paragraph {
     type: ElementType.PARAGRAPH;
     children: Text[];
 }

@@ -2,7 +2,7 @@
 import { RenderLeafProps } from 'slate-react';
 import useHighlightContext from '../Toolbar/useHighlightContext';
 
-export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
+const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     const highlight = useHighlightContext();
 
     if (leaf.title) {

@@ -128,7 +128,7 @@ const getTextDiff = (originalText: FlattenedParagraph, newText: FlattenedParagra
  */
 const sortChangelog = (changelog: Changelog[]) => {
     return [...changelog]
-        .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1) as Changelog[];
+        .sort((a, b) => a.id < b.id ? -1 : a.id === b.id ? 0 : 1);
 };
 
 const filterUnique = (changelog: Changelog[]) => {

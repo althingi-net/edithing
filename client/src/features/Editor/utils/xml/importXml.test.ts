@@ -321,7 +321,7 @@ test('ignore law without law-type="law"', () => {
         </law>
     `;
 
-    expect(() => importXml(input)).toThrowError('Invalid law');
+    expect(() => importXml(input)).toThrow('Invalid law');
 });
 
 // TODO: fix this test, properly its the list plugin normalization which merges the two root lists.. maybe need to have meta object flattened into the node object

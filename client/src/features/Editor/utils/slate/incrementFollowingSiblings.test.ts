@@ -69,7 +69,7 @@ test('inbetween', () => {
     ]);
 });
 
-test('retain selection on initiating node', async () => {
+test('retain selection on initiating node', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [

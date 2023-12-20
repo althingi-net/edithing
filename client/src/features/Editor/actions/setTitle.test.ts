@@ -1,10 +1,9 @@
-import { Editor } from 'slate';
 import { MetaType } from '../Slate';
 import createEditorWithPlugins from '../plugins/createEditorWithPlugins';
 import createList from '../utils/slate/createList';
 import createListItem, { Options } from '../utils/slate/createListItem';
-import setTitle from './setTitle';
 import createSelectionWithDistance from '../utils/slate/createSelectionWithDistance';
+import setTitle from './setTitle';
 
 const testSetTitle = (metaInput: Options, expectedMeta: Options, selectionOffset: number, selectionStart = 0) => {
     const editor = createEditorWithPlugins();

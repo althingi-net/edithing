@@ -23,9 +23,15 @@ const getBrowserLanguage = () => {
     return language;
 };
 
-export const LanguageContext = createContext({
+interface LanguageContextType {
+    language: string;
+    setLanguage: (language: string) => void;
+    t: (key: string) => string;
+}
+
+export const LanguageContext = createContext<LanguageContextType>({
     language: getBrowserLanguage(),
-    setLanguage: (language: string) => { return; },
+    setLanguage: () => {},
     t: (key: string) => { return key; },
 });
 

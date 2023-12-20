@@ -1,6 +1,5 @@
 import { Node } from 'slate';
-import { isListItem } from '../../elements/ListItem';
-import { ListItemWithMeta } from '../../elements/ListItem';
+import { isListItem, ListItemWithMeta } from '../../elements/ListItem';
 
 const isListItemWithMeta = (node: Node): node is ListItemWithMeta => {
     return isListItem(node) && Boolean(node.meta);

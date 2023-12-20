@@ -1,4 +1,4 @@
-import { Button, Flex, List, Space } from 'antd';
+import { Button, Flex, List, Space, notification } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { Bill, BillService } from 'client-sdk';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,9 @@ const useBills = () => {
     const [bills, setBills] = useState<Bill[]>([]);
 
     useEffect(() => {
-        BillService.billControllerGetAll().then(setBills);
+        BillService.billControllerGetAll()
+            .then(setBills)
+            .catch(notification.error);
     }, []);
 
     return bills;

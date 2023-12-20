@@ -1,7 +1,6 @@
 import { Editor, Node, Path } from 'slate';
 import { MetaType } from '../Slate';
-import { isListItem } from '../elements/ListItem';
-import ListItem from '../elements/ListItem';
+import ListItem, { isListItem } from '../elements/ListItem';
 import createListItem from '../utils/slate/createListItem';
 import createListItemMetaFromSibling from '../utils/slate/createListItemMetaFromSibling';
 import incrementFollowingSiblings from '../utils/slate/incrementFollowingSiblings';

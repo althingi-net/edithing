@@ -2,8 +2,7 @@ import { Editor, Text, Transforms } from 'slate';
 import findNode from '../utils/findNode';
 import getParentListItem from '../utils/slate/getParentListItem';
 import setListItemMeta from '../utils/slate/setListItemMeta';
-import { isTitle } from '../elements/TextNode';
-import { isName } from '../elements/TextNode';
+import { isTitle, isName } from '../elements/TextNode';
 
 const setSentence = (
     editor: Editor,

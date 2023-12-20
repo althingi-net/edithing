@@ -1,6 +1,5 @@
 import { Editor, Location, NodeEntry } from 'slate';
-import { isListItem } from '../../elements/ListItem';
-import ListItem, { ListItemWithMeta } from '../../elements/ListItem';
+import ListItem, { isListItem, ListItemWithMeta } from '../../elements/ListItem';
 import isListItemWithMeta from './isListItemWithMeta';
 
 /**
