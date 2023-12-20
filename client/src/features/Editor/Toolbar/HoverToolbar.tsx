@@ -50,6 +50,7 @@ const HoveringToolbar = () => {
                     // prevent toolbar from taking focus away from editor
                     e.preventDefault();
                 }}
+                role='toolbar'
             >
                 <FormatButton format="bold" icon={<BoldOutlined />} />
                 <FormatButton format="title" icon="T" />

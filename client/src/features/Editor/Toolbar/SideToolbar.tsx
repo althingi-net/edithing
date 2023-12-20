@@ -60,6 +60,7 @@ const SideToolbar = () => {
                     // prevent toolbar from taking focus away from editor
                     e.preventDefault();
                 }}
+                role='toolbar'
             >
                 <AddEntryButton />
             </div>

@@ -32,7 +32,7 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
                 nodeRef={nodeRef}
                 classNames='modal'
             >
-                <div className="modal-overlay" onClick={onClose}>
+                <div className="modal-overlay" onClick={onClose} role="none">
                     <Card
                         className='modal'
                         ref={nodeRef}
@@ -41,6 +41,7 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
                         extra={<Button onClick={onClose} size="small"><CloseOutlined /></Button>}
                         headStyle={{ width: '100%' }}
                         bodyStyle={{ width: '100%', display: 'flex', flexGrow: 1 }}
+                        role='dialog'
                     >
                         {children}
                     </Card>

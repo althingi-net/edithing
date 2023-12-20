@@ -15,7 +15,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
-        // 'plugin:jsx-a11y/recommended',
+        'plugin:jsx-a11y/recommended',
         'plugin:import/recommended',
     ],
     'plugins': [
@@ -58,6 +58,7 @@ module.exports = {
                 'allowConstantLoopConditions': true
             }],
             '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true }],
+            'jsx-a11y/no-autofocus': 'off',
             
             // Code quality
             'import/no-duplicates': 'error',
