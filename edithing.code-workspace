@@ -14,6 +14,10 @@
 		{
 			"name": "server",
 			"path": "server"
+		},
+		{
+			"name": "law-document",
+			"path": "law-document"
 		}
 	],
 	"settings": {

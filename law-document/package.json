@@ -1,5 +1,5 @@
 {
-  "name": "client-sdk",
+  "name": "law-document",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -12,16 +12,7 @@
   "devDependencies": {
     "typescript": "^5.3.3"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "peerDependencies": {
+    "slate": "^0.101.4"
   }
 }
