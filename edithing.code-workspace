@@ -23,9 +23,11 @@
 	"settings": {
 		"jest.disabledWorkspaceFolders": [
 			"edithing",
-			"client-sdk"
+			"client-sdk",
 		],
 		"cSpell.words": [
+			"openapi",
+			"tsbuildinfo",
 			"typecheck"
 		]
 	}

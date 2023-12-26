@@ -5,6 +5,7 @@
     "eslint.workingDirectories": [
         "client",
         "client-sdk",
-        "server"
+        "server",
+        "law-document"
     ]
 }
