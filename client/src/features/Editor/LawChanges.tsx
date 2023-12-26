@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
-import Changelog from './utils/changelog/Changelog';
-import parseIdToDisplay from './utils/changelog/parseidToDisplay';
+import { Changelog , parseIdToDisplay } from 'law-document';
 import { Switch, Typography } from 'antd';
 import useLanguageContext, { Translator } from '../App/useLanguageContext';
 

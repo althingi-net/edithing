@@ -1,10 +1,7 @@
 import { Path } from 'slate';
-import { MetaType } from '../../Slate';
 import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
-import createList from '../../utils/slate/createList';
-import createListItem, { Options } from '../../utils/slate/createListItem';
-import createSelectionWithDistance from '../../utils/slate/createSelectionWithDistance';
 import showTitleFormatButton from './showTitleFormatButton';
+import { Options, createList, MetaType, createListItem, createSelectionWithDistance } from 'law-document';
 
 const testShowTitleFormatButton = (path: Path, startOffset: number, distance: number, options: Options, expectTruthy: boolean) => {
     const editor = createEditorWithPlugins();

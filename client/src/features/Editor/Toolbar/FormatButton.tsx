@@ -1,17 +1,14 @@
 import { Button, Tooltip } from 'antd';
 import { FC, ReactNode } from 'react';
-import { Editor, Text } from 'slate';
+import { Editor } from 'slate';
 import { useSlate } from 'slate-react';
-import setName from '../actions/setName';
-import setSentence from '../actions/setSentence';
-import setTitle from '../actions/setTitle';
-import findTitleAndName from './utils/findTitleAndName';
+import { TextNode, findTitleAndName, setName, setSentence, setTitle } from 'law-document';
 import showNameFormatButton from './utils/showNameFormatButton';
 import showSentenceFormatButton from './utils/showSentenceFormatButton';
 import showTitleFormatButton from './utils/showTitleFormatButton';
 import useLanguageContext, { Translator } from '../../App/useLanguageContext';
 
-type Marks = keyof Omit<Text, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
+type Marks = keyof Omit<TextNode, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
 interface Props {
     format: Marks;

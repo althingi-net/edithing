@@ -11,7 +11,7 @@
     "start": "nodemon --exec ts-node src/index.ts --watch src",
     "build": "NODE_ENV=production tsc --build",
     "prebuild": "run-s clean lint typecheck test",
-    "clean": "rimraf ./dist coverage",
+    "clean": "rimraf ./dist coverage *.tsbuildinfo",
     "test": "jest",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

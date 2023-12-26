@@ -3,7 +3,7 @@ import { GithubFile, DocumentService } from 'client-sdk';
 import { FC, useState, useEffect } from 'react';
 import { Descendant } from 'slate';
 import useLanguageContext from '../App/useLanguageContext';
-import importXml from './utils/xml/importXml';
+import { importXml } from 'law-document';
 import Editor from './Editor';
 
 interface EditorLoaderProps {

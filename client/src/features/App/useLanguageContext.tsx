@@ -1,5 +1,5 @@
+import { LANGUAGES, DEFAULT_LANGUAGE, translations } from 'law-document';
 import { FC, PropsWithChildren, createContext, useCallback, useContext, useState } from 'react';
-import translations, { DEFAULT_LANGUAGE, LANGUAGES } from '../../config/translations';
 
 export type Translator = (key: string) => string;
 

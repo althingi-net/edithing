@@ -1,7 +1,7 @@
 import isHotkey from 'is-hotkey';
+import { pressEnterKey } from 'law-document';
 import { KeyboardEvent } from 'react';
 import { Editor } from 'slate';
-import pressEnterKey from '../actions/pressEnterKey';
 
 const isEnterKey = isHotkey('enter');
 

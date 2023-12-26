@@ -1,9 +1,5 @@
+import { isWithoutMarks , findTitleAndName , findListItemMarkedText, findListItemAtSelection , isAtEdgeOf } from 'law-document';
 import { Editor } from 'slate';
-import findListItemAtSelection from '../../utils/slate/findListItemAtSelection';
-import isAtEdgeOf from './isAtEdgeOf';
-import isWithoutMarks from './isWithoutMarks';
-import findTitleAndName from './findTitleAndName';
-import findListItemMarkedText from './findListItemMarkedText';
 
 const showSentenceFormatButton = (editor: Editor) => {
     const [, listItemPath] = findListItemAtSelection(editor) ?? [];

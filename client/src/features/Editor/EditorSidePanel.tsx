@@ -6,10 +6,8 @@ import useLanguageContext from '../App/useLanguageContext';
 import CopyClipboardButton from './CopyClipboardButton';
 import LawChanges from './LawChanges';
 import NodeMetaForm from './NodeMetaForm';
-import compareDocuments from './utils/changelog/compareDocuments';
+import { compareDocuments , exportChangelogXml , exportXml } from 'law-document';
 import useDebounce from './utils/useDebounce';
-import exportChangelogXml from './utils/xml/exportChangelogXml';
-import exportXml from './utils/xml/exportXml';
 import { Descendant } from 'slate';
 
 interface Props {

@@ -1,8 +1,5 @@
-import { MetaType } from '../../Slate';
+import { MetaType, createList , createListItem , createSelectionWithDistance } from 'law-document';
 import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
-import createList from '../../utils/slate/createList';
-import createListItem from '../../utils/slate/createListItem';
-import createSelectionWithDistance from '../../utils/slate/createSelectionWithDistance';
 import showNameFormatButton from './showNameFormatButton';
 
 test('at beginning of title should hide', () => {

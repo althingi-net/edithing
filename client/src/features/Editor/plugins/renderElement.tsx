@@ -1,9 +1,6 @@
 import { RenderElementProps } from 'slate-react';
-import { TAGS } from '../../../config/tags';
-import { ElementType } from '../Slate';
-import { isDocumentMeta } from '../elements/DocumentMeta';
-import { isListItem } from '../elements/ListItem';
 import DocumentMetaBlock from './DocumentMetaBlock';
+import { isListItem, TAGS, isDocumentMeta, ElementType } from 'law-document';
 
 function renderElement({ element, attributes, children }: RenderElementProps) {
     const className = [

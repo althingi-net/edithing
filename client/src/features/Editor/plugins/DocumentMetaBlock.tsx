@@ -1,8 +1,7 @@
 import { Collapse } from 'antd';
+import { DocumentMetaElement, ElementType } from 'law-document';
 import { FC } from 'react';
 import { RenderElementProps } from 'slate-react';
-import DocumentMetaElement from '../elements/DocumentMeta';
-import { ElementType } from '../Slate';
 
 interface Props extends RenderElementProps {
     element: DocumentMetaElement
