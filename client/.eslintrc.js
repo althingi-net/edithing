@@ -50,6 +50,8 @@ module.exports = {
             'sourceType': 'module',
             'project': './tsconfig.json',
             'tsconfigRootDir': __dirname,
+            'warnOnUnsupportedTypeScriptVersion': true,
+            'EXPERIMENTAL_useProjectService': true,
         },
         'files': ['src/**/*.ts?(x)'],
         'rules': {
