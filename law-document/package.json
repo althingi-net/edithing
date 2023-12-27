@@ -30,11 +30,11 @@
     "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.3.3",
-    "slate-history": "^0.100.0"
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
-    "slate": "^0.101.4"
+    "slate": "^0.101.5",
+    "slate-history": "^0.100.0"
   },
   "dependencies": {
     "fast-xml-parser": "^4.3.2",

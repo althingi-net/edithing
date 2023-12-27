@@ -1,5 +1,4 @@
 import { BaseEditor } from 'slate';
-import { HistoryEditor } from 'slate-history';
 import { EventsEditor } from './plugins/withEvents';
 import { List } from '../slate/element/List';
 import { ListItem } from '../slate/element/ListItem';
@@ -7,16 +6,17 @@ import { ListItemText } from '../slate/element/ListItemText';
 import { DocumentMetaElement } from '../slate/element/DocumentMetaElement';
 import { Paragraph } from '../slate/element/Paragraph';
 import { TextNode } from '../slate/element/TextNode';
+import { HistoryEditor } from 'slate-history';
 
 declare module 'slate' {
     interface CustomTypes {
-        Editor: BaseEditor & EventsEditor & /* YjsEditor & */ /* ReactEditor & */ HistoryEditor;
-        Element: Element;
+        Editor: BaseEditor & EventsEditor & HistoryEditor;
+        Element: LawElement;
         Text: TextNode;
     }
 }
 
-export type Element = List | ListItem | ListItemText | DocumentMetaElement | Paragraph;
+export type LawElement = List | ListItem | ListItemText | DocumentMetaElement | Paragraph;
 
 export enum ElementType {
     DOCUMENT_META = 'document-meta',

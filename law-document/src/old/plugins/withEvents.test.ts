@@ -6,7 +6,6 @@ import { createEditorWithPlugins } from './createEditorWithPlugins';
 import { MetaType } from '../Slate';
 import { createLawList } from '../actions/createLawList';
 import { splitListItem } from '../actions/splitListItem';
-import { withHistory } from 'slate-history';
 
 test('split at end of title', () => {
     const editor = createEditorWithPlugins(); 
@@ -177,7 +176,7 @@ test('maintain originId across splits with multiple original list items', () => 
 });
 
 test('add new entry and then undo', () => {
-    const editor = withHistory(createEditorWithPlugins()); 
+    const editor = createEditorWithPlugins(); 
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: '1. Chapter' }),

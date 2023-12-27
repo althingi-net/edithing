@@ -1,17 +1,8 @@
-import { withEvents , withLawParagraphs } from 'law-document';
-import { createEditor } from 'slate';
-import { withHistory } from 'slate-history';
+import { createEditorWithPlugins as createLawEditor } from 'law-document';
 import { withReact } from 'slate-react';
 
-const plugins = [
-    withLawParagraphs,
-    withEvents,
-    withHistory,
-    withReact,
-];
-
 const createEditorWithPlugins = () => {
-    return plugins.reduce((editor, plugin) => plugin(editor), createEditor());
+    return withReact(createLawEditor());
 };
 
 export default createEditorWithPlugins;

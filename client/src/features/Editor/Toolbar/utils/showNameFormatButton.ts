@@ -1,5 +1,5 @@
+import { findListItemAtSelection, isAtEdgeOf, isWithoutMarks } from 'law-document';
 import { Editor } from 'slate';
-import { isAtEdgeOf, isWithoutMarks, findListItemAtSelection } from 'law-document';
 
 const showNameFormatButton = (editor: Editor) => {
     const [, listItemPath] = findListItemAtSelection(editor) ?? [];
