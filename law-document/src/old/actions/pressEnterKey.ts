@@ -3,7 +3,7 @@ import { TAGS } from '../config/tags';
 import { findListItemAtSelection } from '../slate/findListItemAtSelection';
 import { findListItemMarkedText } from '../slate/findListItemMarkedText';
 import { isSelectionAtTitle } from '../slate/isSelectionAtTitle';
-import {createLawList} from './createLawList';
+import { createLawList } from './createLawList';
 
 export const pressEnterKey = (editor: Editor) => {
     const [listItem, path] = findListItemAtSelection(editor) ?? [];

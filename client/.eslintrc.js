@@ -118,6 +118,10 @@ module.exports = {
             'error',
             'always'
         ],
+        'object-curly-spacing': [
+            'error',
+            'always'
+        ],
 
         // Must have config
         'react/react-in-jsx-scope': 'off',

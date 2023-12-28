@@ -3,7 +3,7 @@ import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from '../slate/createList';
 import { createListItem } from '../slate/createListItem';
 import { createSelectionWithDistance } from '../slate/createSelectionWithDistance';
-import {pressEnterKey} from './pressEnterKey';
+import { pressEnterKey } from './pressEnterKey';
 
 test('create new list item at middle of text', () => {
     const editor = createEditorWithPlugins();

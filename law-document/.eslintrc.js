@@ -87,7 +87,7 @@ module.exports = {
         'indent': [
             'error',
             4,
-            { 'SwitchCase': 1, 'ignoredNodes': ['PropertyDefinition']}
+            { 'SwitchCase': 1, 'ignoredNodes': ['PropertyDefinition'] }
         ],
         'linebreak-style': [
             'error',
@@ -101,10 +101,9 @@ module.exports = {
             'error',
             'always'
         ],
-        // 'object-curly-spacing': [
-        //     'error',
-        //     'always',
-        //     { 'arraysInObjects': false, 'objectsInObjects': false }
-        // ],
+        'object-curly-spacing': [
+            'error',
+            'always'
+        ],
     },
 };

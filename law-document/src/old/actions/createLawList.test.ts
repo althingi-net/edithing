@@ -2,7 +2,7 @@ import { MetaType } from '../Slate';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from '../slate/createList';
 import { createListItem } from '../slate/createListItem';
-import {createLawList} from './createLawList';
+import { createLawList } from './createLawList';
 
 test('create new list item and increment following siblings', () => {
     const editor = createEditorWithPlugins();

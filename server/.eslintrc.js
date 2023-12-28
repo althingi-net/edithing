@@ -102,5 +102,9 @@ module.exports = {
             'error',
             'always'
         ],
+        'object-curly-spacing': [
+            'error',
+            'always'
+        ],
     },
 };

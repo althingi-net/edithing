@@ -3,7 +3,7 @@ import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from '../slate/createList';
 import { Options, createListItem } from '../slate/createListItem';
 import { createSelectionWithDistance } from '../slate/createSelectionWithDistance';
-import {setName} from './setName';
+import { setName } from './setName';
 
 
 const testSetName = (metaInput: Options, expectedMeta: Options, selectionOffset: number, selectionStart = 0) => {
