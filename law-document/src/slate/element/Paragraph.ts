@@ -1,5 +1,5 @@
 import { Text } from 'slate';
-import { ElementType } from '../../old/Slate';
+import { ElementType } from '../Slate';
 
 export interface Paragraph {
     type: ElementType.PARAGRAPH;

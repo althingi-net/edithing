@@ -1,5 +1,5 @@
 import { Element, Node, Text } from 'slate';
-import { ElementType } from '../../old/Slate';
+import { ElementType } from '../Slate';
 
 export interface ListItemText {
     type: ElementType.LIST_ITEM_TEXT;

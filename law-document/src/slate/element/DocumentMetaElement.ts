@@ -1,5 +1,5 @@
 import { Descendant, Element, Node } from 'slate';
-import { ElementType } from '../../old/Slate';
+import { ElementType } from '../Slate';
 
 export interface DocumentMetaElement {
     type: ElementType.DOCUMENT_META;

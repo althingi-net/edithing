@@ -1,5 +1,5 @@
 import { Descendant, Element, Node } from 'slate';
-import { ElementType, MetaType } from '../../old/Slate';
+import { ElementType, MetaType } from '../Slate';
 import { ListMeta } from './List';
 
 export interface ListItem {
