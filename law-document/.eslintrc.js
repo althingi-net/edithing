@@ -42,6 +42,9 @@ module.exports = {
         },
         'files': ['src/**/*.ts?(x)'],
         'rules': {
+            // Package requirements
+            'import/no-default-export': 'error',
+
             // Developer experience
             '@typescript-eslint/no-unnecessary-condition': ['error', {
                 'allowConstantLoopConditions': true
@@ -51,6 +54,7 @@ module.exports = {
             // Code quality
             'import/no-duplicates': 'error',
             'import/no-named-as-default': 'error',
+
             // TODO: Remove these rules
             '@typescript-eslint/no-unsafe-member-access': 'off',
             '@typescript-eslint/no-unsafe-assignment': 'off',
