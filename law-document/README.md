@@ -22,6 +22,8 @@ THe index.ts is generated via `npm run build:index`. All consuming packages shou
         EXPERIMENTAL_useProjectService: true,
     }
 ```
+Note: see for latest support: https://github.com/typescript-eslint/typescript-eslint/issues/2094
+
 3. run `npm i ../law-document`
 
 Typescript references will include referenced packages during the build process of the main app compilation (also supported in various bundlers) so there is no need to build this package before consumption.

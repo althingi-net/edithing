@@ -1,5 +1,5 @@
 {
-  "name": "edithing",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "source": "./public/index.html",
@@ -11,7 +11,7 @@
     "start": "parcel -p 3000",
     "build": "parcel build",
     "prebuild": "run-s clean lint typecheck test",
-    "clean": "rimraf ./dist *.tsbuildinfo",
+    "clean": "rimraf ./dist *.tsbuildinfo .parcel-cache",
     "test": "jest",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"

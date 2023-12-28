@@ -10,11 +10,13 @@ import { HistoryEditor } from 'slate-history';
 
 declare module 'slate' {
     interface CustomTypes {
-        Editor: BaseEditor & EventsEditor & HistoryEditor;
+        Editor: LawEditor;
         Element: LawElement;
         Text: TextNode;
     }
 }
+
+export interface LawEditor extends BaseEditor, EventsEditor, HistoryEditor {}
 
 export type LawElement = List | ListItem | ListItemText | DocumentMetaElement | Paragraph;
 
