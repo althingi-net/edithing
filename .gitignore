@@ -39,3 +39,5 @@ lerna-debug.log*
 tsconfig.tsbuildinfo
 .parcel-cache
 
+# [asdf](https://asdf-vm.com/) config
+.tool-versions
