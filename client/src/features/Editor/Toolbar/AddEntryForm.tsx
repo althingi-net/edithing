@@ -2,8 +2,8 @@ import { Button, Checkbox, Divider, Radio, Space } from 'antd';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Node, Path } from 'slate';
 import { ReactEditor, useSlateStatic } from 'slate-react';
-import useLanguageContext from '../../App/useLanguageContext';
 import { MetaType, findListItemAtSelection, isListItemWithMeta, getListItemHierarchy, getListItemTitle, getParentListItem, getAllowedTagChildren, createLawList } from 'law-document';
+import useLanguageContext from '../../App/useLanguageContext';
 
 interface Props {
     onSubmit: () => void;

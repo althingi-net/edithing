@@ -1,12 +1,12 @@
 import { BaseEditor } from 'slate';
-import { EventsEditor } from './plugins/withEvents';
+import { HistoryEditor } from 'slate-history';
 import { List } from '../slate/element/List';
 import { ListItem } from '../slate/element/ListItem';
 import { ListItemText } from '../slate/element/ListItemText';
 import { DocumentMetaElement } from '../slate/element/DocumentMetaElement';
 import { Paragraph } from '../slate/element/Paragraph';
 import { TextNode } from '../slate/element/TextNode';
-import { HistoryEditor } from 'slate-history';
+import { EventsEditor } from './plugins/withEvents';
 
 declare module 'slate' {
     interface CustomTypes {

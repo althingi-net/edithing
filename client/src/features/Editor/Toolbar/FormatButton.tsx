@@ -3,10 +3,10 @@ import { FC, ReactNode } from 'react';
 import { Editor } from 'slate';
 import { useSlate } from 'slate-react';
 import { TextNode, findTitleAndName, setName, setSentence, setTitle } from 'law-document';
+import useLanguageContext, { Translator } from '../../App/useLanguageContext';
 import showNameFormatButton from './utils/showNameFormatButton';
 import showSentenceFormatButton from './utils/showSentenceFormatButton';
 import showTitleFormatButton from './utils/showTitleFormatButton';
-import useLanguageContext, { Translator } from '../../App/useLanguageContext';
 
 type Marks = keyof Omit<TextNode, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 

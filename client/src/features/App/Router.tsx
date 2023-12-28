@@ -3,8 +3,8 @@ import { FC } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
-import useLanguageContext from './useLanguageContext';
 import BillsPage from '../../pages/BillsPage';
+import useLanguageContext from './useLanguageContext';
 
 const router = createBrowserRouter([{
     path: '/',

@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Range } from 'slate';
 import { ReactEditor, useFocused, useSlate } from 'slate-react';
+import { findListItemAtSelection } from 'law-document';
 import Portal from '../../App/Portal';
 import AddEntryButton from './AddEntryButton';
 import styles from './SideToolbar.module.css';
-import { findListItemAtSelection } from 'law-document';
 
 const SideToolbar = () => {
     const ref = useRef<HTMLDivElement>(null);

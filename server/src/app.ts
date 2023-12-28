@@ -5,12 +5,12 @@ import logger from 'koa-logger';
 import { koaSwagger } from 'koa2-swagger-ui';
 import 'reflect-metadata';
 import { createKoaServer } from 'routing-controllers';
+import helmet from 'koa-helmet';
+import cors from '@koa/cors';
 import setupPassport from './authentication/setupPassport';
 import server from './config/server';
 import User from './entities/User';
 import errorHandler from './middleware/errorHandler';
-import helmet from 'koa-helmet';
-import cors from '@koa/cors';
 
 const app = createKoaServer({
     routePrefix: '/api',

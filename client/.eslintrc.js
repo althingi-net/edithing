@@ -65,6 +65,7 @@ module.exports = {
             // Code quality
             'import/no-duplicates': 'error',
             'import/no-named-as-default': 'error',
+            'import/order': ['error', { 'newlines-between': 'never' }],
 
             // TODO: Remove these rules
             '@typescript-eslint/no-unsafe-member-access': 'off',

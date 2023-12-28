@@ -1,8 +1,8 @@
+import { Server, createServer } from 'http';
 import { DataSource } from 'typeorm';
 import app from '../app';
 import { initConnection } from '../integration/database/connection';
 import seedTestDb from '../integration/database/seedTestDb';
-import { Server, createServer } from 'http';
 
 const setupIntegrationTestSuite = () => {
     const server: Server = createServer(app.callback());

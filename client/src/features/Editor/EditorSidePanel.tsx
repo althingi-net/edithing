@@ -2,13 +2,13 @@ import { Collapse } from 'antd';
 import { FC, useMemo } from 'react';
 import { CodeBlock } from 'react-code-blocks';
 import { useSlate } from 'slate-react';
+import { compareDocuments , exportChangelogXml , exportXml } from 'law-document';
+import { Descendant } from 'slate';
 import useLanguageContext from '../App/useLanguageContext';
 import CopyClipboardButton from './CopyClipboardButton';
 import LawChanges from './LawChanges';
 import NodeMetaForm from './NodeMetaForm';
-import { compareDocuments , exportChangelogXml , exportXml } from 'law-document';
 import useDebounce from './utils/useDebounce';
-import { Descendant } from 'slate';
 
 interface Props {
     originalDocument: Descendant[];

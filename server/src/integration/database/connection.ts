@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import database from '../../config/database';
 import { createDatabase } from 'typeorm-extension';
+import database from '../../config/database';
 
 let connection: DataSource | null = null;
 

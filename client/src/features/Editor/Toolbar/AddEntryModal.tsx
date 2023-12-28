@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Modal from '../../App/Modal';
-import AddEntryForm from './AddEntryForm';
 import useLanguageContext from '../../App/useLanguageContext';
+import AddEntryForm from './AddEntryForm';
 
 interface Props {
     isOpen: boolean;

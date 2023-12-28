@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
 import { XMLParser } from 'fast-xml-parser';
-import downloadFile from './downloadFile';
 import { IsString } from 'class-validator';
+import downloadFile from './downloadFile';
 
 export interface GithubFile {
     name: string;

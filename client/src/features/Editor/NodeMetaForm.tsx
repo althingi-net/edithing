@@ -2,8 +2,8 @@ import { NumberOutlined, TagOutlined, ToolOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Space } from 'antd';
 import { FC } from 'react';
 import { useSlateSelector, useSlateStatic } from 'slate-react';
-import useLanguageContext from '../App/useLanguageContext';
 import { findListItemAtSelection, getListItemTitle, getListItemName } from 'law-document';
+import useLanguageContext from '../App/useLanguageContext';
 
 const NodeMetaForm: FC = () => {
     const { t } = useLanguageContext();

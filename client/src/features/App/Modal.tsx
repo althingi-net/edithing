@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import './Modal.css';
-import Portal from './Portal';
 import { CSSTransition } from 'react-transition-group';
 import { CloseOutlined } from '@ant-design/icons';
 import { Card, Button } from 'antd';
+import Portal from './Portal';
 
 interface Props extends PropsWithChildren {
     isOpen: boolean;

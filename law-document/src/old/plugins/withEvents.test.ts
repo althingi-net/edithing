@@ -2,10 +2,10 @@ import { Transforms } from 'slate';
 import { createList } from '../slate/createList';
 import { createListItem } from '../slate/createListItem';
 import { createSelectionWithDistance } from '../slate/createSelectionWithDistance';
-import { createEditorWithPlugins } from './createEditorWithPlugins';
 import { MetaType } from '../Slate';
 import { createLawList } from '../actions/createLawList';
 import { splitListItem } from '../actions/splitListItem';
+import { createEditorWithPlugins } from './createEditorWithPlugins';
 
 test('split at end of title', () => {
     const editor = createEditorWithPlugins(); 

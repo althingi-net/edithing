@@ -2,8 +2,8 @@ import { notification } from 'antd';
 import { GithubFile, DocumentService } from 'client-sdk';
 import { FC, useState, useEffect } from 'react';
 import { Descendant } from 'slate';
-import useLanguageContext from '../App/useLanguageContext';
 import { importXml } from 'law-document';
+import useLanguageContext from '../App/useLanguageContext';
 import Editor from './Editor';
 
 interface EditorLoaderProps {

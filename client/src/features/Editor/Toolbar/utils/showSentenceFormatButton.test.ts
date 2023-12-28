@@ -1,6 +1,6 @@
 import { Path } from 'slate';
-import showSentenceFormatButton from './showSentenceFormatButton';
 import { Options, createEditorWithPlugins, createList, MetaType, createListItem, createSelectionWithDistance } from 'law-document';
+import showSentenceFormatButton from './showSentenceFormatButton';
 
 const testShowSentenceFormatButton = (path: Path, startOffset: number, distance: number, options: Options, expectTruthy: boolean) => {
     const editor = createEditorWithPlugins();

@@ -3,10 +3,10 @@ import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from '../slate/createList';
 import { createListItem } from '../slate/createListItem';
 import { createSelectionWithDistance } from '../slate/createSelectionWithDistance';
-import { compareDocuments } from './compareDocuments';
 import { MetaType } from '../Slate';
 import { createLawList } from '../actions/createLawList';
 import { splitListItem } from '../actions/splitListItem';
+import { compareDocuments } from './compareDocuments';
 
 const setupEditor = (document: Descendant[]) => {
     const editor = createEditorWithPlugins(); 

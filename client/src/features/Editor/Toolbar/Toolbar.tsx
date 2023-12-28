@@ -1,6 +1,6 @@
 import { Checkbox, Space } from 'antd';
-import useHighlightContext from './useHighlightContext';
 import useLanguageContext from '../../App/useLanguageContext';
+import useHighlightContext from './useHighlightContext';
 
 const Toolbar = () => {
     const { t } = useLanguageContext();
