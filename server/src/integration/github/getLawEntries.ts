@@ -33,11 +33,9 @@ interface LawEntry {
 }
 
 const getLawEntries = async (): Promise<GithubFile[]> => {
-    const result = await downloadFile('data/xml/index.xml');
-
+    const xml = await downloadFile('data/xml/index.xml');
     const parser = new XMLParser({ ignoreAttributes: false });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const object = parser.parse(result);
+    const object = parser.parse(xml);
 
     return object['index']['law-entries']['law-entry'].map((entry: LawEntry) => {
         return {
