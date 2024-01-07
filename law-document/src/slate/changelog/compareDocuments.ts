@@ -1,4 +1,6 @@
 import { Descendant, Editor } from 'slate';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import Diff from 'text-diff';
 import { Event } from '../plugins/withEvents';
 import { Changelog } from './Changelog';

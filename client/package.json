@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@hocuspocus/provider": "^2.8.1",
     "@slate-yjs/core": "^1.0.2",
     "antd": "^5.11.1",
     "client-sdk": "file:../client-sdk",
@@ -45,7 +46,8 @@
     "slate-history": "^0.100.0",
     "slate-react": "^0.101.5",
     "typescript": "^5.3.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yjs": "^13.6.10"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.10.3",
