@@ -1,4 +1,4 @@
-import { Get, JsonController, Param } from 'routing-controllers';
+import { Body, Get, JsonController, Param, Put } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Document from '../entities/Document';
 import downloadFile from '../integration/github/downloadFile';
@@ -44,6 +44,16 @@ class DocumentController {
         return document;
     }
 
+    /** Temporary update endpoint for presentation */
+    @Put('/documents/:identifier')
+    @ResponseSchema(Document)
+    update(
+        @Param('identifier') identifier: string,
+        @Body({ validate: { skipMissingProperties: true } }) document: Partial<Document>
+    ) {
+        const [nr, year] = identifier.split('.');
+        return Document.update({ nr, year }, document);
+    }
 }
 
 

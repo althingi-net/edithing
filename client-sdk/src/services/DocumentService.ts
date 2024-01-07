@@ -44,4 +44,26 @@ export class DocumentService {
         });
     }
 
+    /**
+     * Update
+     * @param identifier
+     * @param requestBody
+     * @returns Document
+     * @throws ApiError
+     */
+    public static documentControllerUpdate(
+        identifier: string,
+        requestBody?: any,
+    ): CancelablePromise<Document> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/documents/{identifier}',
+            path: {
+                'identifier': identifier,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
 }

@@ -66,5 +66,6 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'View': 'Skoða',
         'New': 'Nýtt',
         'Bills': 'Frumvarp',
+        'Save': 'Vista',
     },
 };
