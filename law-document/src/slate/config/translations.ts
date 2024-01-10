@@ -67,5 +67,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'New': 'Nýtt',
         'Bills': 'Frumvarp',
         'Save': 'Vista',
+        'Error: Not Authorized': 'Villa: Ekki heimilt',
+        'Please login to continue.': 'Vinsamlegast skráðu þig inn til að halda áfram.',
+        'Create new Bill': 'Búa til nýtt frumvarp',
+        'Document saved': 'Skrá vistað',
+        'Error: Document not saved': 'Villa: Skrá ekki vistað',
     },
 };
