@@ -1,4 +1,4 @@
-import { Button, Checkbox, Space } from 'antd';
+import { Button, Checkbox, Space, notification } from 'antd';
 import { DocumentService } from 'client-sdk';
 import { useParams } from 'react-router-dom';
 import { useSlateStatic } from 'slate-react';
@@ -15,7 +15,9 @@ const Toolbar = () => {
     const handleSave = () => {
         const identifier = `${nr}.${year}`;
         const data = { content: exportXml(slate, true) };
-        DocumentService.documentControllerUpdate(identifier, data);
+        DocumentService.documentControllerUpdate(identifier, data)
+            .then(() => notification.success({ message: t('Document saved') }))
+            .catch(() => notification.error({ message: t('Error: Document not saved') }));
     };
 
     return (
