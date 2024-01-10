@@ -1,28 +1,43 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # production
-/build
-/dist
+build
+dist
 
-# misc
+# Mac
 .DS_Store
-.env.local
+
+# dotenv environment variable files
+.env
 .env.development.local
 .env.test.local
 .env.production.local
-Session.vim
+.env.local
 
+# debug
+logs
+*.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+lerna-debug.log*
 
 #config
 .env
+
+# Vim
+*.swp
+/Session.vim
+
+# Development
+tsconfig.tsbuildinfo
+.parcel-cache
+
+# [asdf](https://asdf-vm.com/) config
+.tool-versions

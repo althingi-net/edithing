@@ -1,5 +1,11 @@
 {
-    "cSpell.words": [
-        "Chtml"
+    "jest.disabledWorkspaceFolders": [
+        "edithing"
+    ],
+    "eslint.workingDirectories": [
+        "client",
+        "client-sdk",
+        "server",
+        "law-document"
     ]
 }
