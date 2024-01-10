@@ -1,0 +1,13 @@
+apps:
+  - script: '../server/dist/index.js'
+    exec_mode: 'fork'
+    name: 'worker-0'
+    env:
+      PORT: 3500
+      NODE_ENV: production
+  - script: '../server/dist/index.js'
+    exec_mode: 'fork'
+    name: 'worker-1'
+    env:
+      PORT: 3501
+      NODE_ENV: production
