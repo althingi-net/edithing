@@ -1,7 +1,7 @@
 import { Server, createServer } from 'http';
 import { DataSource } from 'typeorm';
-import app from '../app';
 import { initConnection } from '../integration/database/connection';
+import app from '../app';
 import seedTestDb from '../integration/database/seedTestDb';
 
 const setupIntegrationTestSuite = () => {

@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 const database: DataSourceOptions = {
@@ -11,7 +12,11 @@ const database: DataSourceOptions = {
             ? process.env.DATABASE_NAME + '_test'
             : process.env.DATABASE_NAME,
     synchronize: process.env.NODE_ENV !== 'production',
-    entities: ['**/entities/!(*.test).ts'],
+    entities: [
+        process.env.NODE_ENV === 'test'
+            ? '**/entities/!(*.test).ts'
+            : join(__dirname, '..', '**', 'entities', '!(*.test).{ts,js}')
+    ],
     logging: true,
 };
 

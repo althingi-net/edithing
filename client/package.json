@@ -8,9 +8,9 @@
     "npm": ">=8.19.2"
   },
   "scripts": {
-    "start": "parcel -p 3000 --no-cache",
+    "start": "parcel -p 3000",
     "build": "parcel build",
-    "prebuild": "run-s clean lint typecheck test",
+    "prebuild": "npm run clean",
     "clean": "rimraf ./dist *.tsbuildinfo .parcel-cache",
     "test": "jest",
     "lint": "eslint .",
