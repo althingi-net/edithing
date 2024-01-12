@@ -16,7 +16,7 @@ class DocumentController {
     @ResponseSchema(GithubFile, { isArray: true })
     async getAll() {
         try {
-            return getLawEntries();
+            return await getLawEntries();
         } catch (error) {
             console.log(error);
             throw new Error('Could not get list of documents.');
@@ -32,12 +32,11 @@ class DocumentController {
     @Get('/document/:nr/:year')
     @ResponseSchema(Document)
     async get(@Param('nr') nr: string, @Param('year') year: string) {
-        let document = await Document.findOneBy({ nr, year });
-
-        if (!document) {
-            const path = `data/xml/${year}.${nr}.xml`;
-
-            try {
+        try {
+            let document = await Document.findOneBy({ nr, year });
+        
+            if (!document) {
+                const path = `data/xml/${year}.${nr}.xml`;
                 const file = await downloadFile(path);
                 
                 document = await Document.create({
@@ -46,12 +45,12 @@ class DocumentController {
                     year,
                     nr,
                 }).save();
-
-                return document;
-            } catch (error) {
-                console.log(error);
-                throw new Error(`Document with nr ${nr} and year ${year} does not exist.`);
             }
+
+            return document;
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Document with nr ${nr} and year ${year} does not exist.`);
         }
     }
 
