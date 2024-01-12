@@ -15,7 +15,12 @@ class DocumentController {
     @Get('/document')
     @ResponseSchema(GithubFile, { isArray: true })
     async getAll() {
-        return getLawEntries();
+        try {
+            return getLawEntries();
+        } catch (error) {
+            console.log(error);
+            throw new Error('Could not get list of documents.');
+        }
     }
 
     /**
@@ -31,17 +36,23 @@ class DocumentController {
 
         if (!document) {
             const path = `data/xml/${year}.${nr}.xml`;
-            const file = await downloadFile(path);
 
-            document = await Document.create({
-                path,
-                content: file,
-                year,
-                nr,
-            }).save();
+            try {
+                const file = await downloadFile(path);
+                
+                document = await Document.create({
+                    path,
+                    content: file,
+                    year,
+                    nr,
+                }).save();
+
+                return document;
+            } catch (error) {
+                console.log(error);
+                throw new Error(`Document with nr ${nr} and year ${year} does not exist.`);
+            }
         }
-
-        return document;
     }
 
     /** Temporary update endpoint for presentation */
