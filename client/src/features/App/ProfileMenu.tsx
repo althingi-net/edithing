@@ -1,12 +1,13 @@
-import { UserOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Dropdown, Button, Avatar } from 'antd';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Dropdown } from 'antd';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
-import ThemeSwitch from './ThemeSwitch';
+import { FC, useCallback, useMemo, useState } from 'react';
 import LanguageSelect from './LanguageSelect';
-import useThemeContext from './useThemeContext';
-import useSessionContext from './useSessionContext';
+import ThemeSwitch from './ThemeSwitch';
+import UserAvatar from './UserAvatar';
 import useLanguageContext from './useLanguageContext';
+import useSessionContext from './useSessionContext';
+import useThemeContext from './useThemeContext';
 
 const useProfileMenuItems = () => {
     const { t } = useLanguageContext();
@@ -76,9 +77,6 @@ const ProfileMenu: FC = () => {
         return null;
     }
 
-    const { firstName, lastName } = session.user;
-    const initials = firstName[0].toUpperCase() + lastName[0].toUpperCase();
-
     return (
         <Dropdown open={isOpen} menu={{ items: profileMenuItems, theme, onClick: handleMenuItemClick }} placement="bottomRight" arrow>
             <Button
@@ -86,7 +84,7 @@ const ProfileMenu: FC = () => {
                 type='text'
                 style={{ padding: 0 }}
             >
-                <Avatar style={{ backgroundColor: '#f56a00' }}>{initials}</Avatar>
+                <UserAvatar user={session.user} />
             </Button>
         </Dropdown>
     );

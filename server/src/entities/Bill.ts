@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsDate, IsEnum, IsInstance, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import BillDocument from './BillDocument';
 import User from './User';
@@ -9,7 +9,7 @@ enum BillStatus {
     ARCHIVED = 'archived',
 }
 
-@Entity()
+@Entity({ name: 'bill' })
 class Bill extends BaseEntity {
     @PrimaryGeneratedColumn()
     @IsNumber()
@@ -17,8 +17,9 @@ class Bill extends BaseEntity {
     id?: number;
 
     /** Author of this bill */
-    @ManyToOne(() => User, user => user.bills)
+    @ManyToOne(() => User, user => user.bills, { eager: true })
     @ValidateNested()
+    @IsInstance(User)
     author!: User;
 
     /** Title of this bill */

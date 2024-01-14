@@ -1,30 +1,13 @@
-import { Button, Flex, List, Space, notification } from 'antd';
+import { Button, Flex, List, Space } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import { Bill, BillService } from 'client-sdk';
-import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../features/App/Header';
+import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useSessionContext from '../features/App/useSessionContext';
 import AddEntryButton from '../features/Bills/AddEntryButton';
-
-const useBills = () => {
-    const { isAuthenticated } = useSessionContext();
-    const [bills, setBills] = useState<Bill[]>([]);
-
-    const reload = useCallback(() => {
-        if (!isAuthenticated()) {
-            return;
-        }
-        BillService.billControllerGetAll()
-            .then(setBills)
-            .catch((error: Error) => notification.error({ message: error.message }));
-    }, [isAuthenticated]);
-
-    useEffect(reload, [reload]);
-
-    return [bills, reload] as const;
-};
+import useBills from '../features/Bills/useBills';
+import UserAvatar from '../features/App/UserAvatar';
 
 const BillsPage = () => {
     const { t } = useLanguageContext();
@@ -33,17 +16,7 @@ const BillsPage = () => {
     const { isAuthenticated } = useSessionContext();
 
     if (!isAuthenticated()) {
-        return (
-            <>
-                <Header />
-                <Content style={{ padding: '50px', textAlign: 'center' }}>
-                    <Space size='large' direction='vertical'>
-                        <h1>{t('Error: Not Authorized')}</h1>
-                        <h3>{t('Please login to continue.')}</h3>
-                    </Space >
-                </Content>
-            </>
-        );
+        return <NotAuthorizedError />;
     }
 
     return (
@@ -72,7 +45,9 @@ const BillsPage = () => {
                                 ]}
                             >
                                 <List.Item.Meta
-                                    title={`${item.title}`}
+                                    avatar={<UserAvatar user={item.author} />}
+                                    title={item.title}
+                                    description={item.status}
                                 />
                             </List.Item>
                         }

@@ -8,6 +8,11 @@ class Document extends BaseEntity {
     @IsOptional()
     id?: number;
 
+    /** Title of this document */
+    @Column()
+    @IsString()
+    title!: string;
+    
     /** Path to the law document in Github */
     @Column({ unique: true })
     @IsString()

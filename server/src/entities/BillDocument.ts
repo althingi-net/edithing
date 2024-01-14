@@ -11,7 +11,12 @@ class BillDocument extends BaseEntity {
 
     /** Bill that this document belongs to */
     @ManyToOne(() => Bill, bill => bill.documents)
-    billId!: number;
+    bill!: Bill;
+
+    /** Title of this document */
+    @Column()
+    @IsString()
+    title!: string;
 
     /** Path to the law document in Github */
     @Column({ unique: true })

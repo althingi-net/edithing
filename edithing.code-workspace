@@ -26,6 +26,7 @@
 			"client-sdk",
 		],
 		"cSpell.words": [
+			"antd",
 			"openapi",
 			"tsbuildinfo",
 			"typecheck"

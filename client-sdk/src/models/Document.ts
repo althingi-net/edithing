@@ -5,6 +5,7 @@
 
 export type Document = {
     id?: number;
+    title: string;
     path: string;
     year: string;
     nr: string;

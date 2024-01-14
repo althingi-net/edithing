@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
 import BillsPage from '../../pages/BillsPage';
+import BillPage from '../../pages/BillPage';
 import useLanguageContext from './useLanguageContext';
 
 const router = createBrowserRouter([{
@@ -15,6 +16,9 @@ const router = createBrowserRouter([{
 }, {
     path: '/bills',
     element: <BillsPage/>,
+}, {
+    path: '/bill/:id',
+    element: <BillPage/>,
 }]);
 
 const Router: FC = () => {
