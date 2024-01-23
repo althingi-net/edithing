@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsInstance, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import BillDocument from './BillDocument';
 import User from './User';
@@ -19,7 +19,6 @@ class Bill extends BaseEntity {
     /** Author of this bill */
     @ManyToOne(() => User, user => user.bills, { eager: true })
     @ValidateNested()
-    @IsInstance(User)
     author!: User;
 
     /** Title of this bill */
