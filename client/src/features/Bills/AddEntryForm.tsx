@@ -3,6 +3,7 @@ import { BillService } from 'client-sdk';
 import { FC, useState } from 'react';
 import useLanguageContext from '../App/useLanguageContext';
 import useSessionContext from '../App/useSessionContext';
+import handleError from '../App/handleError';
 
 interface Props {
     onSubmit: () => void;
@@ -29,7 +30,7 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
                 onSubmit();
                 notification.success({ message: t('Bill created') });
             })
-            .catch((error) => notification.error({ message: error.message }));
+            .catch(handleError);
     };
 
     return (

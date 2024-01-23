@@ -1,6 +1,6 @@
-import { notification } from 'antd';
 import { Bill, BillService } from 'client-sdk';
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import handleError from '../App/handleError';
 import useSessionContext from '../App/useSessionContext';
 
 const useBill = (id?: string | number) => {
@@ -14,7 +14,7 @@ const useBill = (id?: string | number) => {
         
         BillService.billControllerGet(Number(id))
             .then(setBill)
-            .catch((error: Error) => notification.error({ message: error.message }));
+            .catch(handleError);
     }, [id, isAuthenticated]);
 
     useEffect(reload, [reload]);

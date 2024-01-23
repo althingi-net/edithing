@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { DocumentService, GithubFile } from 'client-sdk';
-import { notification } from 'antd';
+import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
+import handleError from '../App/handleError';
 
 type LawListContextType = {
     lawList: GithubFile[];
@@ -16,7 +16,7 @@ export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     useEffect(() => {
         DocumentService.documentControllerGetAll()
             .then(setLawList)
-            .catch(notification.error);
+            .catch(handleError);
     }, []);
 
     return (

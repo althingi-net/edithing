@@ -4,6 +4,7 @@ import { FC, useState, useEffect } from 'react';
 import { Descendant } from 'slate';
 import { importXml } from 'law-document';
 import useLanguageContext from '../App/useLanguageContext';
+import handleError from '../App/handleError';
 import Editor from './Editor';
 
 interface EditorLoaderProps {
@@ -20,7 +21,7 @@ const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
         const [nr, year] = file.identifier.split('/');
         DocumentService.documentControllerGet(nr, year)
             .then((document) => setXml(document.content))
-            .catch(notification.error);
+            .catch(handleError);
     }, [file]);
 
     useEffect(() => {
