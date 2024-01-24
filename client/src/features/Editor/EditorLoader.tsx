@@ -1,10 +1,8 @@
-import { notification } from 'antd';
-import { GithubFile, DocumentService } from 'client-sdk';
-import { FC, useState, useEffect } from 'react';
+import { DocumentService, GithubFile } from 'client-sdk';
+import { FC, useEffect, useState } from 'react';
 import { Descendant } from 'slate';
-import { importXml } from 'law-document';
+import { handleErrorWithTranslations } from '../App/handleError';
 import useLanguageContext from '../App/useLanguageContext';
-import handleError from '../App/handleError';
 import Editor from './Editor';
 
 interface EditorLoaderProps {
@@ -20,23 +18,13 @@ const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
     useEffect(() => {
         const [nr, year] = file.identifier.split('/');
         DocumentService.documentControllerGet(nr, year)
-            .then((document) => setXml(document.content))
-            .catch(handleError);
-    }, [file]);
-
-    useEffect(() => {
-        if (xml) {
-            try {
-                setOriginalDocument(importXml(xml));
-                setSlate(importXml(xml));
-            } catch (error) {
-                notification.error({
-                    message: t('Invalid Law Document'),
-                    description: t('At this time, only the Law Document XML format is supported.'),
-                });
-            }
-        }
-    }, [t, xml]);
+            .then((document) => {
+                setXml(document.xml);
+                setOriginalDocument(JSON.parse(document.content) as Descendant[]);
+                setSlate(JSON.parse(document.content) as Descendant[]);
+            })
+            .catch(handleErrorWithTranslations(t));
+    }, [file, t]);
 
     if (!slate || !originalDocument || !xml) {
         return null;
