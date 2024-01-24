@@ -10,6 +10,7 @@ import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import useBill from '../features/Bills/useBill';
 import useLawListContext from '../features/DocumentSelector/useLawListContext';
 import EditorLoader from '../features/Editor/EditorLoader';
+import Loader from '../features/App/Loader';
 
 const BillPage = () => {
     const { t } = useLanguageContext();
@@ -51,7 +52,7 @@ const BillPage = () => {
 
 
     return (
-        <>
+        <Loader loading={lawList.length === 0}>
             <Header />
             <Content style={{ textAlign: 'left', padding: 20, height: 'calc(100% - 64px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
@@ -63,7 +64,7 @@ const BillPage = () => {
                     </Col>
                 </Row>
             </Content>
-        </>
+        </Loader>
     );
 };
 

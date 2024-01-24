@@ -1,6 +1,7 @@
 import { DocumentService, GithubFile } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
 import { Descendant } from 'slate';
+import Loader from '../App/Loader';
 import { handleErrorWithTranslations } from '../App/handleError';
 import useLanguageContext from '../App/useLanguageContext';
 import Editor from './Editor';
@@ -27,7 +28,7 @@ const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
     }, [file, t]);
 
     if (!slate || !originalDocument || !xml) {
-        return null;
+        return <Loader />;
     }
 
     return (
