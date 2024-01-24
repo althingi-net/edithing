@@ -36,10 +36,7 @@ const BillPage = () => {
 
         editorContent = (
             <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'auto'  }}>
-                <Flex align='center' gap='20px'>
-                    <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
-                </Flex>
-                <EditorLoader key={identifier} file={lawListEntry} />
+                <EditorLoader key={identifier + name} file={lawListEntry} />
             </Content>
         );
     } else {
