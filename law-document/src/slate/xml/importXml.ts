@@ -9,8 +9,6 @@ import { createDocumentMeta } from '../transformations/createDocumentMeta';
 import { normalizeChildren } from '../transformations/normalizeChildren';
 import { LIST_TAGS, MetaType, ElementType } from '../Slate';
 
-
-
 export const importXml = (xml: string) => {
     const object = parseXml(xml);
 
@@ -25,12 +23,12 @@ export const importXml = (xml: string) => {
     return slate;
 };
 
-const parseXml = (xml: string) => {
+export const parseXml = (xml: string) => {
     const parser = new XMLParser({ ignoreAttributes: false });
     return parser.parse(xml);
 };
 
-const extractMeta = (object: any): DocumentMetaElement => {
+export const extractMeta = (object: any): DocumentMetaElement => {
     const law = object['law'] || object;
 
     return createDocumentMeta({

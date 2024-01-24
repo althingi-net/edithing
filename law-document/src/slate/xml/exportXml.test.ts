@@ -63,7 +63,7 @@ test('export xml header', () => {
 });
 
 test('export document meta data', () => {
-    const input = createEditor(<Descendant[]>[
+    const input = createEditor([
         createDocumentMeta({
             nr: '33',
             year: '1944',

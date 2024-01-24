@@ -1,5 +1,3 @@
-// import { YjsEditor, slateNodesToInsertDelta, withYjs } from '@slate-yjs/core';
-// import * as Y from 'yjs';
 import { Col, Row } from 'antd';
 import { FC, useMemo, useState } from 'react';
 import { Descendant } from 'slate';
@@ -23,26 +21,8 @@ interface Props {
 
 const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
     const highlight = useHighlightContext();
-
-    // NOTE: turning realtime collaboration off for now
-    // const sharedType = useMemo(() => {
-    //     const yDoc = new Y.Doc();
-    //     const sharedType = yDoc.get('content', Y.XmlText) as Y.XmlText;
-    
-    //     // Load the initial value into the yjs document
-    //     sharedType.applyDelta(slateNodesToInsertDelta(slate));
-    
-    //     return sharedType;
-    // }, [slate]);
-
-    // const editor = useMemo(() => withYjs(createEditorWithPlugins(), sharedType), [sharedType]);
     const editor = useMemo(() => createEditorWithPlugins(), []);
     const [value, setValue] = useState<Descendant[]>(slate);
-    console.log('slate', slate);
-    // useEffect(() => {
-    //     YjsEditor.connect(editor);
-    //     return () => YjsEditor.disconnect(editor);
-    // }, [editor]);
 
     const classNames = [
         'editor',

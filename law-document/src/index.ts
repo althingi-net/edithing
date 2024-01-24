@@ -60,6 +60,7 @@ export * from './slate/transformations/setMeta';
 export * from './slate/xml/exportChangelogXml';
 export * from './slate/xml/exportXml';
 export * from './slate/xml/importXml';
+export * from './slate/xml/getTitle';
 export * from './slate/element/DocumentMetaElement';
 export * from './slate/element/List';
 export * from './slate/element/ListItem';

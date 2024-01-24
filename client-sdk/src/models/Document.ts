@@ -10,6 +10,7 @@ export type Document = {
     year: string;
     nr: string;
     content: string;
+    xml: string;
     downloadedAt?: string;
     updatedAt?: string;
 };

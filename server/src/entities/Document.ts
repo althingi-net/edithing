@@ -28,10 +28,15 @@ class Document extends BaseEntity {
     @IsString()
     nr!: string;
 
-    /** Cached XML file content of the law document */
-    @Column({ type: 'text' })
+    /** Cached Slate content of the law document */
+    @Column({ type: 'mediumtext' })
     @IsString()
     content!: string;
+
+    /** Cached XML file content of the law document */
+    @Column({ type: 'mediumtext' })
+    @IsString()
+    xml!: string;
 
     /** Date when this document was last downloaded from Github */
     @CreateDateColumn()

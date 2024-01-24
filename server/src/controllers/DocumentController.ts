@@ -1,9 +1,9 @@
+import { getTitle, importXml } from 'law-document';
 import { Body, Get, JsonController, Param, Put } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Document from '../entities/Document';
 import downloadFile from '../integration/github/downloadFile';
 import getLawEntries, { GithubFile } from '../integration/github/getLawEntries';
-
 
 @JsonController()
 class DocumentController {
@@ -32,10 +32,15 @@ class DocumentController {
         if (!document) {
             const path = `data/xml/${year}.${nr}.xml`;
             const file = await downloadFile(path);
+            const slate = importXml(file);
+            const title = getTitle(slate);
+            const content = JSON.stringify(slate);
 
             document = await Document.create({
                 path,
-                content: file,
+                title,
+                content,
+                xml: file,
                 year,
                 nr,
             }).save();
