@@ -3,7 +3,6 @@ import { getConnection } from './connection';
 
 const seedTestDb = async () => {
     const db = getConnection();
-
     await db.synchronize(true);
 
     // Insert Users.
