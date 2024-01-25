@@ -6,7 +6,7 @@ import { FC } from 'react';
 import './BillDocumentExplorer.css';
 
 interface Props {
-    selected: string | null;
+    selected?: string;
     setSelected: (identifier: string) => void;
     lawList: GithubFile[];
     billDocuments: Document[] | undefined;

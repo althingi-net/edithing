@@ -1,27 +1,30 @@
 import { Col, Row } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { BillDocumentService } from 'client-sdk';
+import { FC, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../features/App/Header';
 import Loader from '../features/App/Loader';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
+import handleError from '../features/App/handleError';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useSessionContext from '../features/App/useSessionContext';
 import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import useBill from '../features/Bills/useBill';
 import useLawListContext from '../features/DocumentSelector/useLawListContext';
 import EditorLoader from '../features/Editor/EditorLoader';
-import handleError from '../features/App/handleError';
 
-const BillPage = () => {
+const BillPage: FC = () => {
     const { t } = useLanguageContext();
     const { isAuthenticated } = useSessionContext();
-    let editorContent = null;
-    const { id } = useParams();
+    const { id, identifier: selected } = useParams();
     const [bill, reloadBill] = useBill(id);
     const { lawList } = useLawListContext();
-    const [selected, setSelected] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    const select = useCallback((identifier: string) => {
+        navigate(`/bill/${id}/document/${identifier}`);
+    }, [id, navigate]);
 
     const handleAddDocument = useCallback((identifier: string) => {
         if (!bill) {
@@ -30,23 +33,19 @@ const BillPage = () => {
 
         BillDocumentService.billDocumentControllerCreate({ bill, identifier })
             .then(reloadBill)
-            .then(() => setSelected(identifier))
+            .then(() => select(identifier))
             .catch(handleError);
-    }, [bill, reloadBill]);
+    }, [bill, select, reloadBill]);
 
     if (!isAuthenticated()) {
         return <NotAuthorizedError />;
     }
 
-    if (selected) {
-        editorContent = (
-            <EditorLoader key={selected} identifier={selected} />
-        );
-    } else {
-        editorContent = (
-            <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
-        );
-    }
+    const editorContent = selected ? (
+        <EditorLoader key={selected} identifier={selected} />
+    ) : (
+        <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
+    );
 
     return (
         <Loader loading={lawList.length === 0}>
@@ -56,11 +55,11 @@ const BillPage = () => {
                     <Col span={4} style={{ height: '100%' }}>
                         <BillDocumentExplorer
                             selected={selected}
-                            setSelected={setSelected}
+                            setSelected={select}
                             lawList={lawList}
                             billDocuments={bill?.documents}
                             onAddDocument={handleAddDocument}
-                            onDeleteDocument={(identifier) => setSelected(identifier)}
+                            onDeleteDocument={(identifier) => select(identifier)}
                         />
                     </Col>
                     <Col span={20} style={{ height: '100%' }}>

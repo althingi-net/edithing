@@ -19,6 +19,9 @@ const router = createBrowserRouter([{
 }, {
     path: '/bill/:id',
     element: <BillPage/>,
+}, {
+    path: '/bill/:id/document/:identifier',
+    element: <BillPage/>,
 }]);
 
 const Router: FC = () => {
