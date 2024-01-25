@@ -11,7 +11,7 @@ const router = createBrowserRouter([{
     path: '/',
     element: <LawListPage/>,
 }, {
-    path: '/law/:nr/:year',
+    path: '/law/:identifier',
     element: <LawPage/>,
 }, {
     path: '/bills',
