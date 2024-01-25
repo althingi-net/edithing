@@ -14,16 +14,17 @@ import useBill from '../features/Bills/useBill';
 import useLawListContext from '../features/DocumentSelector/useLawListContext';
 import EditorLoader from '../features/Editor/EditorLoader';
 
-const BillPage: FC = () => {
-    const { t } = useLanguageContext();
-    const { isAuthenticated } = useSessionContext();
+const useBillPage = () => {
     const { id, identifier: selected } = useParams();
     const [bill, reloadBill] = useBill(id);
-    const { lawList } = useLawListContext();
     const navigate = useNavigate();
 
-    const select = useCallback((identifier: string) => {
-        navigate(`/bill/${id}/document/${identifier}`);
+    const select = useCallback((identifier?: string) => {
+        if (!identifier) {
+            navigate(`/bill/${id}`);
+        } else {
+            navigate(`/bill/${id}/document/${identifier}`);
+        }
     }, [id, navigate]);
 
     const handleAddDocument = useCallback((identifier: string) => {
@@ -36,6 +37,32 @@ const BillPage: FC = () => {
             .then(() => select(identifier))
             .catch(handleError);
     }, [bill, select, reloadBill]);
+
+    const handleDeleteDocument = useCallback((identifier: string) => {
+        if (!bill || !bill.id) {
+            throw new Error('Bill not found');
+        }
+
+        BillDocumentService.billDocumentControllerDelete(bill.id, identifier)
+            .then(reloadBill)
+            .then(() => select())
+            .catch(handleError);
+    }, [bill, select, reloadBill]);
+
+    return {
+        bill,
+        select,
+        selected,
+        handleAddDocument,
+        handleDeleteDocument,
+    };
+};
+
+const BillPage: FC = () => {
+    const { t } = useLanguageContext();
+    const { isAuthenticated } = useSessionContext();
+    const { lawList } = useLawListContext();
+    const { bill, select, selected, handleAddDocument, handleDeleteDocument } = useBillPage();
 
     if (!isAuthenticated()) {
         return <NotAuthorizedError />;
@@ -59,7 +86,7 @@ const BillPage: FC = () => {
                             lawList={lawList}
                             billDocuments={bill?.documents}
                             onAddDocument={handleAddDocument}
-                            onDeleteDocument={(identifier) => select(identifier)}
+                            onDeleteDocument={handleDeleteDocument}
                         />
                     </Col>
                     <Col span={20} style={{ height: '100%' }}>

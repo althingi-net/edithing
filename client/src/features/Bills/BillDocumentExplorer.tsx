@@ -14,7 +14,7 @@ interface Props {
     onDeleteDocument: (identifier: string) => void;
 }
 
-const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments, onAddDocument }) => {
+const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments, onAddDocument, onDeleteDocument }) => {
     const availableDocuments = lawList.filter(law => !billDocuments?.find(doc => doc.identifier === law.identifier));   
 
     return (
@@ -37,7 +37,7 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                             <div className='item-title'>{doc.title}</div>
                         </div>
                         <div className='item-actions'>
-                            <div className='item-action delete'><DeleteOutlined /></div>
+                            <div className='item-action delete' role='button' tabIndex={0} onClick={() => onDeleteDocument(doc.identifier)}><DeleteOutlined /></div>
                         </div>
                     </div>
                 )}

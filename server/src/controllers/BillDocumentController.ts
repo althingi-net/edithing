@@ -1,6 +1,6 @@
 import { IsString, ValidateNested } from 'class-validator';
 import passport from 'koa-passport';
-import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
+import { Body, Delete, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
@@ -20,19 +20,19 @@ class CreateBillDocument {
 })
 @UseBefore(passport.authenticate('jwt', { session: false }) )
 class BillDocumentController {
-    @Get('/billDocuments')
+    @Get('/bill/:id/document')
     @ResponseSchema(BillDocument, { isArray: true })
-    getAll() {
-        return BillDocument.find();
+    getAll(@Param('id') id: number) {
+        return BillDocument.findBy({ bill: { id } });
     }
 
-    @Get('/billDocuments/:id')
+    @Get('/bill/:id/document/:identifier')
     @ResponseSchema(BillDocument)
-    get(@Param('id') id: number) {
-        return BillDocument.findOneOrFail({ where: { id } });
+    get(@Param('id') id: number, @Param('identifier') identifier: string) {
+        return BillDocument.findOneOrFail({ where: { bill: { id }, identifier } });
     }
 
-    @Post('/billDocuments')
+    @Post('/bill/document')
     @ResponseSchema(BillDocument)
     async create(@Body() { bill, identifier }: CreateBillDocument) {
         const { title, content, originalXml } = await findOrImportDocument(identifier);
@@ -46,13 +46,18 @@ class BillDocumentController {
         });
     }
 
-    @Put('/billDocuments/:id')
+    @Put('/bill/document/:id')
     @ResponseSchema(BillDocument)
     update(
         @Param('id') id: number,
         @Body({ validate: { skipMissingProperties: true } }) billDocument: Partial<BillDocument>
     ) {
         return BillDocument.update({ id }, billDocument);
+    }
+
+    @Delete('/bill/:id/document/:identifier')
+    delete(@Param('id') id: number, @Param('identifier') identifier: string) {
+        return BillDocument.delete({ identifier, bill: { id } });
     }
 }
 
