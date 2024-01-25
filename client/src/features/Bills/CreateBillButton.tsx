@@ -2,27 +2,36 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { FC, useState } from 'react';
 import useLanguageContext from '../App/useLanguageContext';
-import AddEntryModal from './AddEntryModal';
+import Modal from '../App/Modal';
+import CreateBillForm from './CreateBillForm';
 
 interface Props {
     onSubmit: () => void;
 }
 
-const AddEntryButton: FC<Props> = ({ onSubmit }) => {
+const CreateBillButton: FC<Props> = ({ onSubmit }) => {
     const { t } = useLanguageContext();
     const [isOpen, setOpen] = useState(false);
+    const onClose = () => {
+        setOpen(false);
+        onSubmit();
+    };
 
     return (
         <>
-            <AddEntryModal isOpen={isOpen} onClose={() => { setOpen(false); onSubmit(); }} />
             <Button
                 size="small"
                 onClick={() => setOpen(true)}
             >
                 <PlusOutlined /> {t('Create New Bill')}
             </Button>
+            <Modal title={t('Add new Entry')} isOpen={isOpen} onClose={onClose}>
+                <div>
+                    <CreateBillForm onSubmit={onClose} onCancel={onClose} />
+                </div>
+            </Modal>
         </>
     );
 };
 
-export default AddEntryButton;
+export default CreateBillButton;

@@ -10,14 +10,13 @@ interface Props {
     onCancel: () => void;
 }
 
-const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
+const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
     const { t } = useLanguageContext();
     const [title, setTitle] = useState<string>('');
     const { session } = useSessionContext();
     const [form] = Form.useForm<{ title: string }>();
 
     const handleSubmit = () => {
-
         if (!session) {
             throw new Error('Session not found!');
         }
@@ -58,4 +57,4 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
     );
 };
 
-export default AddEntryForm;
+export default CreateBillForm;
