@@ -1,4 +1,4 @@
-import { DocumentService, GithubFile } from 'client-sdk';
+import { DocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
 import { Descendant } from 'slate';
 import Loader from '../App/Loader';
@@ -7,25 +7,24 @@ import useLanguageContext from '../App/useLanguageContext';
 import Editor from './Editor';
 
 interface EditorLoaderProps {
-    file: GithubFile;
+    identifier: string;
 }
 
-const EditorLoader: FC<EditorLoaderProps> = ({ file }) => {
+const EditorLoader: FC<EditorLoaderProps> = ({ identifier }) => {
     const [xml, setXml] = useState<string>();
     const { t } = useLanguageContext();
     const [slate, setSlate] = useState<Descendant[] | null>(null);
     const [originalDocument, setOriginalDocument] = useState<Descendant[]>();
 
     useEffect(() => {
-        const [nr, year] = file.identifier.split('/');
-        DocumentService.documentControllerGet(nr, year)
+        DocumentService.documentControllerGet(identifier)
             .then((document) => {
-                setXml(document.xml);
+                setXml(document.originalXml);
                 setOriginalDocument(JSON.parse(document.content) as Descendant[]);
                 setSlate(JSON.parse(document.content) as Descendant[]);
             })
             .catch(handleErrorWithTranslations(t));
-    }, [file, t]);
+    }, [identifier, t]);
 
     if (!slate || !originalDocument || !xml) {
         return <Loader />;

@@ -5,7 +5,7 @@ import Header from '../features/App/Header';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useSessionContext from '../features/App/useSessionContext';
-import AddEntryButton from '../features/Bills/AddEntryButton';
+import CreateBillButton from '../features/Bills/CreateBillButton';
 import useBills from '../features/Bills/useBills';
 import UserAvatar from '../features/App/UserAvatar';
 
@@ -31,7 +31,7 @@ const BillsPage = () => {
                             <>
                                 <Flex align='center'>
                                     <h1 style={{ flexGrow: 1 }}>{t('Bills')}</h1>
-                                    <AddEntryButton onSubmit={reload} />
+                                    <CreateBillButton onSubmit={reload} />
                                 </Flex>
                             </>
                         )}

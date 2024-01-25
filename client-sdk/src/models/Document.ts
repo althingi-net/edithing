@@ -5,12 +5,10 @@
 
 export type Document = {
     id?: number;
+    identifier: string;
     title: string;
-    path: string;
-    year: string;
-    nr: string;
     content: string;
-    xml: string;
+    originalXml: string;
     downloadedAt?: string;
     updatedAt?: string;
 };

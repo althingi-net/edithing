@@ -14,7 +14,7 @@ const Toolbar = () => {
     const slate = useSlateStatic();
 
     const handleSave = () => {
-        const identifier = `${nr}.${year}`;
+        const identifier = `${year}.${nr}`;
         const data = { content: exportXml(slate, true) };
         DocumentService.documentControllerUpdate(identifier, data)
             .then(() => notification.success({ message: t('Document saved') }))

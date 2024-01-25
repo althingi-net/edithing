@@ -22,14 +22,14 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
             <div className='explorer-list bill-documents'>
                 {billDocuments?.map(doc => 
                     <div
-                        className={['list-item', selected === `${doc.nr}/${doc.year}` ? 'selected' : ''].join(' ')}
+                        className={['list-item', selected === doc.identifier ? 'selected' : ''].join(' ')}
                         key={doc.title}
                         role="button"
                         tabIndex={0}
-                        onClick={() => setSelected(`${doc.nr}/${doc.year}`)}
+                        onClick={() => setSelected(doc.identifier)}
                     >
                         <div className='infos'>
-                            <div className='item-identifier'>{doc.nr}</div>
+                            <div className='item-identifier'>{doc.identifier}</div>
                             <div className='item-title'>{doc.title}</div>
                         </div>
                         <div className='item-actions'>

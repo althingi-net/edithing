@@ -31,7 +31,7 @@ const LawPage: FC = () => {
                 <Flex align='center' gap='20px'>
                     <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
                 </Flex>
-                <EditorLoader file={lawListEntry} />
+                <EditorLoader identifier={identifier} />
             </Content>
         </>
     );
