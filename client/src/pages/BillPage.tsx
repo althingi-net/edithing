@@ -69,7 +69,7 @@ const BillPage: FC = () => {
     }
 
     const editorContent = selected ? (
-        <EditorLoader key={selected} identifier={selected} />
+        <EditorLoader key={selected} identifier={selected} billId={bill?.id} />
     ) : (
         <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
     );
