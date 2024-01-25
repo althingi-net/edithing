@@ -1,7 +1,18 @@
+import { IsString, ValidateNested } from 'class-validator';
 import passport from 'koa-passport';
 import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
+import { findOrImportDocument } from '../services/DocumentService';
+
+class CreateBillDocument {
+    @IsString()
+    identifier!: string;
+
+    @ValidateNested()
+    bill!: Bill;
+}
 
 @JsonController()
 @OpenAPI({
@@ -23,8 +34,16 @@ class BillDocumentController {
 
     @Post('/billDocuments')
     @ResponseSchema(BillDocument)
-    create(@Body() billDocument: BillDocument) {
-        return BillDocument.save(billDocument);
+    async create(@Body() { bill, identifier }: CreateBillDocument) {
+        const { title, content, originalXml } = await findOrImportDocument(identifier);
+
+        return BillDocument.save({
+            bill,
+            identifier,
+            title,
+            content,
+            originalXml,
+        });
     }
 
     @Put('/billDocuments/:id')

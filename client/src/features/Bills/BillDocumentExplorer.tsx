@@ -10,9 +10,13 @@ interface Props {
     setSelected: (identifier: string) => void;
     lawList: GithubFile[];
     billDocuments: Document[] | undefined;
+    onAddDocument: (identifier: string) => void;
+    onDeleteDocument: (identifier: string) => void;
 }
 
-const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments }) => {
+const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments, onAddDocument }) => {
+    const availableDocuments = lawList.filter(law => !billDocuments?.find(doc => doc.identifier === law.identifier));   
+
     return (
         <div className='bill-document-explorer'>
             <div className='bill-header'>
@@ -40,7 +44,7 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
             </div>
             <Divider orientation="left">Available to add</Divider>
             <div className='explorer-list'>
-                {lawList.map(doc => 
+                {availableDocuments.map(doc => 
                     <div
                         className={['list-item', selected === doc.identifier ? 'selected' : ''].join(' ')}
                         key={doc.identifier}
@@ -53,7 +57,7 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                             <div className='item-title'>{doc.name}</div>
                         </div>
                         <div className='item-actions'>
-                            <div className='item-action add'><FileAddOutlined /></div>
+                            <div className='item-action add' role='button' tabIndex={0} onClick={() => onAddDocument(doc.identifier)}><FileAddOutlined /></div>
                         </div>
                     </div>
                 )}

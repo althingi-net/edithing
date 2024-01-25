@@ -27,7 +27,7 @@ class Bill extends BaseEntity {
     title!: string;
 
     /** Documents that belong to this bill */
-    @OneToMany(() => BillDocument, billDocument => billDocument, { cascade: true })
+    @OneToMany(() => BillDocument, billDocument => billDocument.bill, { cascade: true, eager: true })
     @IsOptional()
     documents?: BillDocument[];
 

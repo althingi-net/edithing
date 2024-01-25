@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BillDocument } from '../models/BillDocument';
+import type { CreateBillDocument } from '../models/CreateBillDocument';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -24,12 +25,12 @@ export class BillDocumentService {
 
     /**
      * Create
-     * @param requestBody BillDocument
+     * @param requestBody CreateBillDocument
      * @returns BillDocument
      * @throws ApiError
      */
     public static billDocumentControllerCreate(
-        requestBody?: BillDocument,
+        requestBody?: CreateBillDocument,
     ): CancelablePromise<BillDocument> {
         return __request(OpenAPI, {
             method: 'POST',

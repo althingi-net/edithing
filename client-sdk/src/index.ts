@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export { Bill } from './models/Bill';
 export type { BillDocument } from './models/BillDocument';
+export type { CreateBillDocument } from './models/CreateBillDocument';
 export type { Document } from './models/Document';
 export type { GithubFile } from './models/GithubFile';
 export type { History } from './models/History';
