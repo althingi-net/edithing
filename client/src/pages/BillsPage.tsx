@@ -22,7 +22,7 @@ const BillsPage = () => {
     return (
         <>
             <Header />
-            <Content style={{ padding: '50px', textAlign: 'center' }}>
+            <Content style={{ padding: '50px', textAlign: 'center', height: 'calc(100% - 64px)' }}>
                 <Space size='large'>
                     <List
                         size="large"

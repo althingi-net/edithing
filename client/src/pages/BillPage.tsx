@@ -77,7 +77,7 @@ const BillPage: FC = () => {
     return (
         <Loader loading={lawList.length === 0}>
             <Header />
-            <Content style={{ textAlign: 'left', padding: 20, height: 'calc(100% - 64px)' }}>
+            <Content style={{ textAlign: 'left', padding: '20px', height: 'calc(100% - 64px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={4} style={{ height: '100%' }}>
                         <BillDocumentExplorer

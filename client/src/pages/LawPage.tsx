@@ -14,7 +14,7 @@ const LawPage: FC = () => {
     return (
         <>
             <Header />
-            <Content style={{ padding: '50px' }}>
+            <Content style={{ padding: '20px', height: 'calc(100% - 64px)' }}>
                 <EditorLoader identifier={identifier} />
             </Content>
         </>
