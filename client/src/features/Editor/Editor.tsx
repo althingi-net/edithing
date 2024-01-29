@@ -35,7 +35,6 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12} style={{ height: '100%' }}>
                         <div style={{ height: '100%' }}>
-                            <Toolbar />
                             <HoveringToolbar />
                             <SideToolbar />
                             <Editable
@@ -47,6 +46,7 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
                         </div>
                     </Col>
                     <Col span={12}>
+                        <Toolbar />
                         <EditorSidePanel xml={xml} originalDocument={originalDocument} />
                     </Col>
                 </Row>
