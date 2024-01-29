@@ -6,7 +6,7 @@ const LawListPage = () => {
     return (
         <>
             <Header />
-            <Content style={{ padding: '50px', textAlign: 'center' }}>
+            <Content style={{ padding: '50px', textAlign: 'center', height: '100%', overflow: 'auto' }}>
                 <DocumentSelector />
             </Content>
         </>

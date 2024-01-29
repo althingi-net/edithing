@@ -26,7 +26,7 @@ const EditorSidePanel: FC<Props> = (props) => {
         const changelog = compareDocuments(debouncedSlate, originalDocument);
 
         return (
-            <div style={{ height: '100%' }}>
+            <div style={{ height: 'calc(100vh - 104px)', overflowY: 'auto' }}>
                 <Collapse defaultActiveKey={[]} destroyInactivePanel>
                     <Collapse.Panel header={t('Element Configuration')} key="1">
                         <NodeMetaForm />

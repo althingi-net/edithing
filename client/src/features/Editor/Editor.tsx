@@ -31,9 +31,9 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
 
     return (
         <Slate editor={editor} initialValue={value} onChange={setValue}>
-            <div style={{ minHeight: 'calc(100vh - 160px)' }}>
+            <div style={{ height: 'calc(100vh - 104px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
-                    <Col span={12}>
+                    <Col span={12} style={{ height: '100%' }}>
                         <div style={{ height: '100%' }}>
                             <Toolbar />
                             <HoveringToolbar />

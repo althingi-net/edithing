@@ -90,7 +90,7 @@ const BillPage: FC = () => {
                         />
                     </Col>
                     <Col span={20} style={{ height: '100%' }}>
-                        <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'auto'  }}>
+                        <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden'  }}>
                             {editorContent}
                         </Content>
                     </Col>

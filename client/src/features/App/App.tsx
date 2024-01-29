@@ -13,7 +13,7 @@ function App() {
                 <LanguageContextProvider>
                     <HightlightContextProvider>
                         <LawListContextProvider>
-                            <Layout style={{ height: '100vh', overflow: 'auto' }}>
+                            <Layout style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
                                 <Router />
                             </Layout>
                         </LawListContextProvider>
