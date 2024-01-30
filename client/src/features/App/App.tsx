@@ -1,5 +1,5 @@
 import { Layout } from 'antd';
-import { LawListContextProvider } from '../DocumentSelector/useLawListContext';
+import { LawListContextProvider } from '../Documents/useLawListContext';
 import { HightlightContextProvider } from '../Editor/Toolbar/useHighlightContext';
 import Router from './Router';
 import { LanguageContextProvider } from './useLanguageContext';

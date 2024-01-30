@@ -1,5 +1,5 @@
 import { Content } from 'antd/es/layout/layout';
-import DocumentSelector from '../features/DocumentSelector/DocumentSelector';
+import DocumentSelector from '../features/Documents/DocumentSelector';
 import Header from '../features/App/Header';
 
 const LawListPage = () => {
