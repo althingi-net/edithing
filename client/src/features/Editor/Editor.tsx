@@ -1,9 +1,8 @@
 import { Col, Row } from 'antd';
 import { LawEditor } from 'law-document';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
-import useBlockNavigation from '../App/useBlockNavigation';
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
 import HoveringToolbar from './Toolbar/HoverToolbar';
@@ -14,6 +13,7 @@ import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';
 import renderLeaf from './plugins/renderLeaf';
+import useEditorNavigationBlock from './useEditorNaviationBlock';
 
 interface Props {
     slate: Descendant[];
@@ -26,24 +26,7 @@ interface Props {
 const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocument }) => {
     const highlight = useHighlightContext();
     const editor = useMemo(() => createEditorWithPlugins(), []);
-    const [value, setValue] = useState<Descendant[]>(slate);
-    const { isNavigationBlocked, blockNavigation, unblockNavigation } = useBlockNavigation();
-
-    const handleChange = useCallback((value: Descendant[]) => {
-        if (!isNavigationBlocked) {
-            blockNavigation();
-        }
-        
-        setValue(value);
-    }, [blockNavigation, isNavigationBlocked]);
-
-    const handleSave = useCallback((editor: LawEditor) => {
-        if (isNavigationBlocked) {
-            unblockNavigation();
-        }
-
-        saveDocument(editor);
-    }, [isNavigationBlocked, saveDocument, unblockNavigation]);
+    const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
 
     const classNames = [
         'editor',
@@ -51,7 +34,7 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocumen
     ].join(' ');
 
     return (
-        <Slate editor={editor} initialValue={value} onChange={handleChange}>
+        <Slate editor={editor} initialValue={slate} onChange={handleChange}>
             <div style={{ height: 'calc(100vh - 104px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12} style={{ height: '100%' }}>
