@@ -8,7 +8,15 @@ const useDocument = () => {
     const [xml, setXml] = useState<string>();
     const [documentId, setDocumentId] = useState<number>();
     
-    const setDocument = useCallback((document: BillDocument | Document) => {
+    const setDocument = useCallback((document: BillDocument | Document | null) => {
+        if (!document) {
+            setXml(undefined);
+            setOriginalDocument(undefined);
+            setSlate(null);
+            setDocumentId(undefined);
+            return;
+        }
+
         setXml(document.originalXml);
         setOriginalDocument(JSON.parse(document.content) as Descendant[]);
         setSlate(JSON.parse(document.content) as Descendant[]);

@@ -20,6 +20,8 @@ const useBillPage = (disableActions = false) => {
     const { errorUnsavedChanges } = useUserErrors();
     const [hasError, setError] = useState(false);
 
+    log('bill page', { id, selected, bill });
+
     useEffect(() => {
         // reset error
         setError(false);
@@ -31,13 +33,14 @@ const useBillPage = (disableActions = false) => {
         }
 
         log('open bill document', { id, bill, identifier });
+        setDocument(null);
 
         if (!identifier) {
             navigate(`/bill/${id}`);
         } else {
             navigate(`/bill/${id}/document/${identifier}`);
         }
-    }, [bill, disableActions, errorUnsavedChanges, id, navigate]);
+    }, [bill, disableActions, errorUnsavedChanges, id, navigate, setDocument]);
 
     const addDocument = useCallback((identifier: string) => {
         if (disableActions) {
