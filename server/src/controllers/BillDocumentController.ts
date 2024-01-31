@@ -3,7 +3,7 @@ import passport from 'koa-passport';
 import { Body, Delete, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Bill from '../entities/Bill';
-import BillDocument from '../entities/BillDocument';
+import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import { findOrImportDocument } from '../services/DocumentService';
 
 class CreateBillDocument {
@@ -48,11 +48,12 @@ class BillDocumentController {
 
     @Put('/bill/document/:id')
     @ResponseSchema(BillDocument)
-    update(
+    async update(
         @Param('id') id: number,
-        @Body({ validate: { skipMissingProperties: true } }) billDocument: Partial<BillDocument>
+        @Body() billDocument: UpdateBillDocument,
     ) {
-        return BillDocument.update({ id }, billDocument);
+        const result = await BillDocument.update({ id }, billDocument);
+        return (result.affected ?? 0) > 1 ? true : false;
     }
 
     @Delete('/bill/:id/document/:identifier')

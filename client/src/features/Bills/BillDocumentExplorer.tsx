@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { DeleteOutlined, FileAddOutlined } from '@ant-design/icons';
-import { Collapse, Divider } from 'antd';
+import { Collapse } from 'antd';
 import { Document, GithubFile } from 'client-sdk';
 import { FC } from 'react';
-import './BillDocumentExplorer.css';
 import useLanguageContext from '../App/useLanguageContext';
+import './BillDocumentExplorer.css';
 
 interface Props {
     selected?: string;
@@ -51,7 +51,7 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                         )}
                     </div>
                 </Collapse.Panel>
-                <Collapse.Panel header={t('Law Articles')} key="2">
+                <Collapse.Panel header={t('Legal Codex')} key="2">
                     <div className='explorer-list'>
                         {availableDocuments.map(doc => 
                             <div

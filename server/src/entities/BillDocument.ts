@@ -52,4 +52,12 @@ class BillDocument extends BaseEntity {
     updatedAt?: Date;
 }
 
+export class UpdateBillDocument {
+    @IsString()
+    title!: string;
+
+    @IsString()
+    content!: string;
+}
+
 export default BillDocument;

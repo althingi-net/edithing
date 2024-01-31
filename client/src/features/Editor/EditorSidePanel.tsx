@@ -13,11 +13,12 @@ import useDebounce from './utils/useDebounce';
 interface Props {
     originalDocument: Descendant[];
     xml: string;
+    readOnly?: boolean;
 }
 
 const EditorSidePanel: FC<Props> = (props) => {
     const { t } = useLanguageContext();
-    const { originalDocument, xml } = props;
+    const { originalDocument, xml, readOnly } = props;
     const debouncedSlate = useDebounce(useSlate(), 500);
 
     return useMemo(() => {
@@ -28,7 +29,7 @@ const EditorSidePanel: FC<Props> = (props) => {
         return (
             <div style={{ height: 'calc(100vh - 104px)', overflowY: 'auto' }}>
                 <Collapse defaultActiveKey={[]} destroyInactivePanel>
-                    <Collapse.Panel header={t('Element Configuration')} key="1">
+                    <Collapse.Panel disabled={readOnly} header={t('Element Configuration')} key="1">
                         <NodeMetaForm />
                     </Collapse.Panel>
                     <Collapse.Panel header={t('Old XML')} key="2" extra={<CopyClipboardButton content={xml} />}>
@@ -49,7 +50,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header={t('Changes')} key="5" extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}>
+                    <Collapse.Panel disabled={readOnly} header={t('Changes')} key="5" extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}>
                         <LawChanges changelog={changelog} />
                     </Collapse.Panel>
                 </Collapse>

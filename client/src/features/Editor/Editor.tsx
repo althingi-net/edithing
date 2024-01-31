@@ -1,7 +1,9 @@
 import { Col, Row } from 'antd';
-import { FC, useMemo, useState } from 'react';
+import { LawEditor } from 'law-document';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
+import useBlockNavigation from '../App/useBlockNavigation';
 import './Editor.css';
 import EditorSidePanel from './EditorSidePanel';
 import HoveringToolbar from './Toolbar/HoverToolbar';
@@ -17,9 +19,11 @@ interface Props {
     slate: Descendant[];
     originalDocument: Descendant[];
     xml: string;
+    readOnly?: boolean;
+    saveDocument: (editor: LawEditor) => void;
 }
 
-const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
+const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocument }) => {
     const highlight = useHighlightContext();
     const editor = useMemo(() => createEditorWithPlugins(), []);
     const [value, setValue] = useState<Descendant[]>(slate);
@@ -30,24 +34,29 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml }) => {
     ].join(' ');
 
     return (
-        <Slate editor={editor} initialValue={value} onChange={setValue}>
+        <Slate editor={editor} initialValue={value} onChange={handleChange}>
             <div style={{ height: 'calc(100vh - 104px)' }}>
                 <Row gutter={16} style={{ height: '100%' }}>
                     <Col span={12} style={{ height: '100%' }}>
                         <div style={{ height: '100%' }}>
-                            <HoveringToolbar />
-                            <SideToolbar />
+                            {readOnly ? null : (
+                                <>
+                                    <HoveringToolbar />
+                                    <SideToolbar />
+                                </>
+                            )}
                             <Editable
                                 className={classNames}
                                 onKeyDown={(event) => handleKeyDown(editor, event)}
                                 renderElement={renderElement}
                                 renderLeaf={renderLeaf}
+                                readOnly={readOnly}
                             />
                         </div>
                     </Col>
                     <Col span={12}>
-                        <Toolbar />
-                        <EditorSidePanel xml={xml} originalDocument={originalDocument} />
+                        { readOnly ? null : <Toolbar saveDocument={handleSave} /> }
+                        <EditorSidePanel readOnly={readOnly} xml={xml} originalDocument={originalDocument} />
                     </Col>
                 </Row>
             </div>

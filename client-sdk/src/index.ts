@@ -15,6 +15,7 @@ export type { GithubFile } from './models/GithubFile';
 export type { History } from './models/History';
 export type { LoginRequestBody } from './models/LoginRequestBody';
 export type { LoginResponse } from './models/LoginResponse';
+export type { UpdateBillDocument } from './models/UpdateBillDocument';
 export { User } from './models/User';
 
 export { AuthService } from './services/AuthService';

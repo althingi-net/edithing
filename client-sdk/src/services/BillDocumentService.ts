@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { BillDocument } from '../models/BillDocument';
 import type { CreateBillDocument } from '../models/CreateBillDocument';
+import type { UpdateBillDocument } from '../models/UpdateBillDocument';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -91,13 +92,13 @@ export class BillDocumentService {
     /**
      * Update
      * @param id
-     * @param requestBody
+     * @param requestBody UpdateBillDocument
      * @returns BillDocument
      * @throws ApiError
      */
     public static billDocumentControllerUpdate(
         id: number,
-        requestBody?: any,
+        requestBody?: UpdateBillDocument,
     ): CancelablePromise<BillDocument> {
         return __request(OpenAPI, {
             method: 'PUT',
