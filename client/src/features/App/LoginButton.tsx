@@ -1,10 +1,11 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, Input, Space, notification } from 'antd';
+import { Button, Divider, Form, Input, Space } from 'antd';
 import { AuthService } from 'client-sdk';
 import { FC, useCallback, useState } from 'react';
 import Modal from './Modal';
 import useLanguageContext from './useLanguageContext';
 import useSessionContext from './useSessionContext';
+import useUserErrors from './useUserErrors';
 
 interface FormValues {
     email: string;
@@ -17,6 +18,7 @@ const LoginButton: FC = () => {
     const handleClose = useCallback(() => setOpen(false), [setOpen]);
     const [form] = Form.useForm<FormValues>();
     const { setSession, isAuthenticated } = useSessionContext();
+    const { errorLogin } = useUserErrors();
 
     const handleSubmit = async (values: FormValues) => {
         try {
@@ -27,10 +29,7 @@ const LoginButton: FC = () => {
             handleClose();
         } catch (error) {
             form.setFieldsValue({ password: '' });
-            notification.error({
-                message: t('Login failed!'),
-                description: t('Please check your credentials and try again.'),
-            });
+            errorLogin();
         }
     };
 

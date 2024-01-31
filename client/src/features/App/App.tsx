@@ -14,10 +14,10 @@ import { ThemeContextProvider } from './useThemeContext';
 
 const router = createBrowserRouter([{
     element: (
-        <SessionContextProvider>
+        <LanguageContextProvider>
             <BlockNavigationProvider>
-                <ThemeContextProvider>
-                    <LanguageContextProvider>
+                <SessionContextProvider>
+                    <ThemeContextProvider>
                         <HightlightContextProvider>
                             <LawListContextProvider>
                                 <Layout style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
@@ -25,10 +25,10 @@ const router = createBrowserRouter([{
                                 </Layout>
                             </LawListContextProvider>
                         </HightlightContextProvider>
-                    </LanguageContextProvider>
-                </ThemeContextProvider>
+                    </ThemeContextProvider>
+                </SessionContextProvider>
             </BlockNavigationProvider>
-        </SessionContextProvider>
+        </LanguageContextProvider>
     ),
     children: [
         {

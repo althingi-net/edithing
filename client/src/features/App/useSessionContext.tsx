@@ -1,5 +1,7 @@
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { LoginResponse, OpenAPI, User } from 'client-sdk';
+import { FC, PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import useBlockNavigation from './useBlockNavigation';
+import useUserErrors from './useUserErrors';
 
 interface Session extends LoginResponse {
     token: string;
@@ -26,19 +28,25 @@ const retrieveLocalSession = () => {
 
 export const SessionContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [session, setSession] = useState(retrieveLocalSession());
+    const { errorUnsavedChanges } = useUserErrors();
+    const { isNavigationBlocked } = useBlockNavigation();
 
-    const handleSetSession = (session: Session | null) => {
+    const handleSetSession = useCallback((session: Session | null) => {
         setSession(session);
         localStorage.setItem('session', JSON.stringify(session));
-    };
+    }, []);
 
-    const isAuthenticated = () => {
+    const isAuthenticated = useCallback(() => {
         return !!session;
-    };
+    }, [session]);
 
-    const logout = () => {
+    const logout = useCallback(() => {
+        if (isNavigationBlocked) {
+            return errorUnsavedChanges();
+        }
+
         handleSetSession(null);
-    };
+    }, [errorUnsavedChanges, handleSetSession, isNavigationBlocked]);
 
     // Update OpenAPI headers when session changes
     useEffect(() => {

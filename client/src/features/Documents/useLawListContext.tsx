@@ -6,9 +6,7 @@ type LawListContextType = {
     lawList: GithubFile[];
 }
 
-const LawListContext = createContext<LawListContextType>({
-    lawList: [],
-});
+const LawListContext = createContext<LawListContextType | null>(null);
 
 export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [lawList, setLawList] = useState<GithubFile[]>([]);
@@ -27,7 +25,13 @@ export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const useLawListContext = () => {
-    return useContext(LawListContext);
+    const context = useContext(LawListContext);
+
+    if (!context) {
+        throw new Error('useLawListContext must be used within a LawListContextProvider');
+    }
+
+    return context;
 };
 
 export default useLawListContext;

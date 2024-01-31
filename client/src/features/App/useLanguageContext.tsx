@@ -29,11 +29,7 @@ interface LanguageContextType {
     t: (key: string) => string;
 }
 
-export const LanguageContext = createContext<LanguageContextType>({
-    language: getBrowserLanguage(),
-    setLanguage: () => {},
-    t: (key: string) => { return key; },
-});
+export const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export const LanguageContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [language, setLanguage] = useState(getBrowserLanguage());
@@ -70,7 +66,13 @@ export const LanguageContextProvider: FC<PropsWithChildren> = ({ children }) => 
 };
 
 const useLanguageContext = () => {
-    return useContext(LanguageContext);
+    const context = useContext(LanguageContext);
+
+    if (!context) {
+        throw new Error('useLanguageContext must be used within a LanguageContextProvider');
+    }
+
+    return context;
 };
 
 export default useLanguageContext;

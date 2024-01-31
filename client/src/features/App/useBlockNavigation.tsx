@@ -8,11 +8,7 @@ interface BlockNavigationType {
     isNavigationBlocked: boolean;
 }
 
-export const BlockNavigation = createContext<BlockNavigationType>({
-    blockNavigation: () => {},
-    unblockNavigation: () => {},
-    isNavigationBlocked: false,
-});
+export const BlockNavigation = createContext<BlockNavigationType | null>(null);
 
 export const BlockNavigationProvider: FC<PropsWithChildren> = ({ children }) => {
     const [isNavigationBlocked, setBlockNavigation] = useState(false);
@@ -48,8 +44,6 @@ export const BlockNavigationProvider: FC<PropsWithChildren> = ({ children }) => 
         }
     });
 
-    useEffect(() => console.log('isNavigationBlocked', isNavigationBlocked), [isNavigationBlocked]);
-
     return (
         <BlockNavigation.Provider value={{ blockNavigation, unblockNavigation, isNavigationBlocked }}>
             {children}
@@ -58,7 +52,13 @@ export const BlockNavigationProvider: FC<PropsWithChildren> = ({ children }) => 
 };
 
 const useBlockNavigation = () => {
-    return useContext(BlockNavigation);
+    const context = useContext(BlockNavigation);
+
+    if (!context) {
+        throw new Error('useBlockNavigation must be used within a BlockNavigationProvider');
+    }
+
+    return context;
 };
 
 export default useBlockNavigation;

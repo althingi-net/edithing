@@ -16,6 +16,7 @@ import useDocument from '../features/Documents/useDocument';
 import useLawListContext from '../features/Documents/useLawListContext';
 import Editor from '../features/Editor/Editor';
 import useBlockNavigation from '../features/App/useBlockNavigation';
+import useUserErrors from '../features/App/useUserErrors';
 
 const useBillPage = (disableActions = false) => {
     const { t } = useLanguageContext();
@@ -24,10 +25,11 @@ const useBillPage = (disableActions = false) => {
     const navigate = useNavigate();
     const [isBillDocument, setIsBillDocument] = useState<boolean>(false);
     const { setDocument, xml, slate, originalDocument, documentId } = useDocument();
+    const { errorUnsavedChanges } = useUserErrors();
 
     const openDocument = useCallback((identifier?: string) => {
         if (disableActions) {
-            return notification.error({ message: t('Unsaved Changes'), description: t('Current document contains changes, please save first.') });
+            return errorUnsavedChanges();
         }
 
         if (!identifier) {
@@ -35,11 +37,11 @@ const useBillPage = (disableActions = false) => {
         } else {
             navigate(`/bill/${id}/document/${identifier}`);
         }
-    }, [disableActions, id, navigate, t]);
+    }, [disableActions, errorUnsavedChanges, id, navigate]);
 
     const addDocument = useCallback((identifier: string) => {
         if (disableActions) {
-            return notification.error({ message: t('Unsaved Changes'), description: t('Current document contains changes, please save first.') });
+            return errorUnsavedChanges();
         }
 
         if (!bill) {
@@ -50,11 +52,11 @@ const useBillPage = (disableActions = false) => {
             .then(reloadBill)
             .then(() => openDocument(identifier))
             .catch(handleError);
-    }, [bill, disableActions, openDocument, reloadBill, t]);
+    }, [bill, disableActions, errorUnsavedChanges, openDocument, reloadBill]);
 
     const deleteDocument = useCallback((identifier: string) => {
         if (disableActions) {
-            return notification.error({ message: t('Unsaved Changes'), description: t('Current document contains changes, please save first.') });
+            return errorUnsavedChanges();
         }
 
         if (!bill || !bill.id) {
@@ -65,7 +67,7 @@ const useBillPage = (disableActions = false) => {
             .then(reloadBill)
             .then(() => openDocument())
             .catch(handleError);
-    }, [bill, disableActions, openDocument, reloadBill, t]);
+    }, [bill, disableActions, errorUnsavedChanges, openDocument, reloadBill]);
 
     const saveDocument = useCallback((editor: LawEditor) => {
         if (!selected || !slate || !documentId) {

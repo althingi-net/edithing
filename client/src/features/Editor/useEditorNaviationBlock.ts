@@ -1,6 +1,6 @@
-import { LawEditor } from "law-document";
-import { useCallback } from "react";
-import useBlockNavigation from "../App/useBlockNavigation";
+import { LawEditor } from 'law-document';
+import { useCallback } from 'react';
+import useBlockNavigation from '../App/useBlockNavigation';
 
 const useEditorNavigationBlock = (editor: LawEditor, saveDocument: (editor: LawEditor) => void) => {
     const { isNavigationBlocked, blockNavigation, unblockNavigation } = useBlockNavigation();
@@ -21,12 +21,12 @@ const useEditorNavigationBlock = (editor: LawEditor, saveDocument: (editor: LawE
         }
 
         saveDocument(editor);
-    }, [isNavigationBlocked, saveDocument, unblockNavigation]);
+    }, [editor, isNavigationBlocked, saveDocument, unblockNavigation]);
 
     return {
         handleChange,
         handleSave,
-    }
-}
+    };
+};
 
 export default useEditorNavigationBlock;
