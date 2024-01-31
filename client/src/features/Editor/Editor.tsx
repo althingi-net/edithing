@@ -27,6 +27,23 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocumen
     const highlight = useHighlightContext();
     const editor = useMemo(() => createEditorWithPlugins(), []);
     const [value, setValue] = useState<Descendant[]>(slate);
+    const { isNavigationBlocked, blockNavigation, unblockNavigation } = useBlockNavigation();
+
+    const handleChange = useCallback((value: Descendant[]) => {
+        if (!isNavigationBlocked) {
+            blockNavigation();
+        }
+        
+        setValue(value);
+    }, [blockNavigation, isNavigationBlocked]);
+
+    const handleSave = useCallback((editor: LawEditor) => {
+        if (isNavigationBlocked) {
+            unblockNavigation();
+        }
+
+        saveDocument(editor);
+    }, [isNavigationBlocked, saveDocument, unblockNavigation]);
 
     const classNames = [
         'editor',
