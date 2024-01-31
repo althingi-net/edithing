@@ -13,7 +13,7 @@ import useBill from './useBill';
 const useBillPage = (disableActions = false) => {
     const { t } = useLanguageContext();
     const { id, identifier: selected } = useParams();
-    const [bill, reloadBill] = useBill(id);
+    const { bill, reloadBill, hasError: hasBillError } = useBill(id);
     const navigate = useNavigate();
     const [isBillDocument, setIsBillDocument] = useState<boolean>(false);
     const { setDocument, xml, slate, originalDocument, documentId } = useDocument();
@@ -83,7 +83,7 @@ const useBillPage = (disableActions = false) => {
         log('save bill document', { selected, documentId, title });
 
         BillDocumentService.billDocumentControllerUpdate(documentId, { title, content: JSON.stringify(editor.children) })
-            .then(() => notification.success({ message: t('Document saved') }))
+            .then(() => notification.success({ message: t('Document saved'), description: `${selected} ${title}` }))
             .then(reloadBill) // Update titles in the explorer
             .catch(handleError);
     }, [documentId, reloadBill, selected, slate, t]);
@@ -100,9 +100,10 @@ const useBillPage = (disableActions = false) => {
             .then(() => setIsBillDocument(true))
             .catch((error) => {
                 // Fallback to document controller if the bill document is not found
-                if (error.body.name === 'HttpError') {
+                if ('body' in error && error.body.name === 'HttpError') {
                     return DocumentService.documentControllerGet(selected)
                         .then((document) => {
+                            log('loaded document', { document });
                             setDocument(document);
                             setIsBillDocument(false);
                         })
@@ -131,7 +132,7 @@ const useBillPage = (disableActions = false) => {
         slate,
         originalDocument,
         loadDocument,
-        hasError,
+        hasError: hasError || hasBillError,
     };
 };
 
