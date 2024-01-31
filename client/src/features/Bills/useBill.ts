@@ -6,20 +6,27 @@ import useSessionContext from '../App/useSessionContext';
 const useBill = (id?: string | number) => {
     const { isAuthenticated } = useSessionContext();
     const [bill, setBill] = useState<Bill>();
+    const [hasError, setError] = useState(false);
 
-    const reload = useCallback(() => {
+    // reset error when id changes
+    useEffect(() => setError(false), [id]);
+
+    const reloadBill = useCallback(() => {
         if (!isAuthenticated() || !id) {
             return;
         }
         
         BillService.billControllerGet(Number(id))
             .then(setBill)
-            .catch(handleError);
+            .catch((error) => {
+                handleError(error);
+                setError(true);
+            });
     }, [id, isAuthenticated]);
 
-    useEffect(reload, [reload]);
+    useEffect(reloadBill, [reloadBill]);
 
-    return [bill, reload] as const;
+    return { bill, reloadBill, hasError };
 };
 
 export default useBill;
