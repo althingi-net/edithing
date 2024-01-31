@@ -26,7 +26,7 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
             </div>
 
             <Collapse
-                defaultActiveKey={['1']}
+                defaultActiveKey={['1', '2']}
                 size='small'
                 ghost={true}
             >

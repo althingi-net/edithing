@@ -8,7 +8,14 @@
     font-family: "Droid Serif", serif;
     font-size: 16px;
     line-height: 1.5em;
+
+    .ant-collapse-header-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.2em;
+    }
 }
+
 
 .list .list {
     padding-left: 0;
