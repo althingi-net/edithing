@@ -71,5 +71,10 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Current document contains changes, please save first!': 'Núverandi skjal inniheldur breytingar, vinsamlegast vistaðu fyrst!',
         'Please try another page.': 'Vinsamlegast reyndu aðra síðu.',
         'Not Found': 'Fannst ekki',
+        'Bill Document Explorer': 'Lögfræði vafri',
+        'Documents in the Bill': 'Skjöl í frumvarpi',
+        'Add document to bill and start editing': 'Bæta við skjali í frumvarp og byrja að breyta',
+        'Remove document from bill and delete changes': 'Fjarlægja skjal úr frumvarpi og eyða breytingum',
+        'Create New Bill': 'Búa til nýtt frumvarp',
     },
 };
