@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { DeleteOutlined, FileAddOutlined } from '@ant-design/icons';
-import { Collapse } from 'antd';
+import { Collapse, Tooltip } from 'antd';
 import { Document, GithubFile } from 'client-sdk';
 import { FC } from 'react';
 import useLanguageContext from '../App/useLanguageContext';
@@ -22,7 +22,7 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
     return (
         <div className='bill-document-explorer'>
             <div className='bill-header'>
-                <div className='bill-title'>Bill Document Explorer</div>
+                <div className='bill-title'>{t('Bill Document Explorer')}</div>
             </div>
 
             <Collapse
@@ -45,7 +45,11 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                                     <div className='item-title'>{doc.title}</div>
                                 </div>
                                 <div className='item-actions'>
-                                    <div className='item-action delete' role='button' tabIndex={0} onClick={() => onDeleteDocument(doc.identifier)}><DeleteOutlined /></div>
+                                    <Tooltip title={t('Remove document from bill and delete changes')}>
+                                        <div className='item-action delete' role='button' tabIndex={0} onClick={() => onDeleteDocument(doc.identifier)}>
+                                            <DeleteOutlined />
+                                        </div>
+                                    </Tooltip>
                                 </div>
                             </div>
                         )}
@@ -66,7 +70,11 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                                     <div className='item-title'>{doc.name}</div>
                                 </div>
                                 <div className='item-actions'>
-                                    <div className='item-action add' role='button' tabIndex={0} onClick={() => onAddDocument(doc.identifier)}><FileAddOutlined /></div>
+                                    <Tooltip title={t('Add document to bill and start editing')}>
+                                        <div className='item-action add' role='button' tabIndex={0} onClick={() => onAddDocument(doc.identifier)}>
+                                            <FileAddOutlined />
+                                        </div>
+                                    </Tooltip>
                                 </div>
                             </div>
                         )}
