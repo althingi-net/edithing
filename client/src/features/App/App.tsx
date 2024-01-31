@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Layout } from 'antd';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
 import BillPage from '../../pages/BillPage';
 import BillsPage from '../../pages/BillsPage';
 import LawListPage from '../../pages/LawListPage';
@@ -11,6 +12,8 @@ import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
 import { SessionContextProvider } from './useSessionContext';
 import { ThemeContextProvider } from './useThemeContext';
+import Header from './Header';
+import UnknownError from './UnknownError';
 
 const router = createBrowserRouter([{
     element: (
@@ -21,7 +24,10 @@ const router = createBrowserRouter([{
                         <HightlightContextProvider>
                             <LawListContextProvider>
                                 <Layout style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
-                                    <Outlet />
+                                    <Header />
+                                    <ErrorBoundary FallbackComponent={UnknownError} >
+                                        <Outlet />
+                                    </ErrorBoundary>
                                 </Layout>
                             </LawListContextProvider>
                         </HightlightContextProvider>

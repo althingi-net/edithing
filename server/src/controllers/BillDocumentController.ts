@@ -1,6 +1,6 @@
 import { IsString, ValidateNested } from 'class-validator';
 import passport from 'koa-passport';
-import { Body, Delete, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
+import { Body, Delete, Get, HttpError, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Bill from '../entities/Bill';
 import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
@@ -28,8 +28,14 @@ class BillDocumentController {
 
     @Get('/bill/:id/document/:identifier')
     @ResponseSchema(BillDocument)
-    get(@Param('id') id: number, @Param('identifier') identifier: string) {
-        return BillDocument.findOneOrFail({ where: { bill: { id }, identifier } });
+    async get(@Param('id') id: number, @Param('identifier') identifier: string) {
+        const result =  await BillDocument.findOneBy({  bill: { id }, identifier });
+        
+        if (!result) {
+            throw new HttpError(404, 'BillDocument not found');
+        }
+
+        return result;
     }
 
     @Post('/bill/document')

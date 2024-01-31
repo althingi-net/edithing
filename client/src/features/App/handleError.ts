@@ -10,7 +10,7 @@ const handleError = (error: any, t?: Translator) => {
             error = error.body;
         }
     }
-    
+
     notification.error(parseError(error, t));
 };
 

@@ -20,7 +20,7 @@ interface Props {
     originalDocument: Descendant[];
     xml: string;
     readOnly?: boolean;
-    saveDocument: (editor: LawEditor) => void;
+    saveDocument?: (editor: LawEditor) => void;
 }
 
 const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocument }) => {
@@ -30,7 +30,7 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocumen
 
     const classNames = [
         'editor',
-        highlight?.isHighlighted ? 'highlighted' : ''
+        highlight.isHighlighted ? 'highlighted' : ''
     ].join(' ');
 
     return (

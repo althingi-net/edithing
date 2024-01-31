@@ -68,6 +68,8 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Bills': 'Frumvarp',
         'Save': 'Vista',
         'Select a bill': 'Veldu frumvarp',
-        'Current document contains changes, please save first!': 'Núverandi skjal inniheldur breytingar, vinsamlegast vistaðu fyrst!'
+        'Current document contains changes, please save first!': 'Núverandi skjal inniheldur breytingar, vinsamlegast vistaðu fyrst!',
+        'Please try another page.': 'Vinsamlegast reyndu aðra síðu.',
+        'Not Found': 'Fannst ekki',
     },
 };

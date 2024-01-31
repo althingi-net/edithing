@@ -1,170 +1,73 @@
-import { Col, Row, notification } from 'antd';
+import { Col, Row } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import { BillDocumentService, DocumentService } from 'client-sdk';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { LawEditor, getTitle } from 'law-document';
-import Header from '../features/App/Header';
+import { FC } from 'react';
 import Loader from '../features/App/Loader';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
-import handleError, { handleErrorWithTranslations } from '../features/App/handleError';
+import NotFoundError from '../features/App/NotFoundError';
+import useBlockNavigation from '../features/App/useBlockNavigation';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useSessionContext from '../features/App/useSessionContext';
 import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
-import useBill from '../features/Bills/useBill';
-import useDocument from '../features/Documents/useDocument';
+import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
 import Editor from '../features/Editor/Editor';
-import useBlockNavigation from '../features/App/useBlockNavigation';
-import useUserErrors from '../features/App/useUserErrors';
-
-const useBillPage = (disableActions = false) => {
-    const { t } = useLanguageContext();
-    const { id, identifier: selected } = useParams();
-    const [bill, reloadBill] = useBill(id);
-    const navigate = useNavigate();
-    const [isBillDocument, setIsBillDocument] = useState<boolean>(false);
-    const { setDocument, xml, slate, originalDocument, documentId } = useDocument();
-    const { errorUnsavedChanges } = useUserErrors();
-
-    const openDocument = useCallback((identifier?: string) => {
-        if (disableActions) {
-            return errorUnsavedChanges();
-        }
-
-        if (!identifier) {
-            navigate(`/bill/${id}`);
-        } else {
-            navigate(`/bill/${id}/document/${identifier}`);
-        }
-    }, [disableActions, errorUnsavedChanges, id, navigate]);
-
-    const addDocument = useCallback((identifier: string) => {
-        if (disableActions) {
-            return errorUnsavedChanges();
-        }
-
-        if (!bill) {
-            throw new Error('Bill not found');
-        }
-
-        BillDocumentService.billDocumentControllerCreate({ bill, identifier })
-            .then(reloadBill)
-            .then(() => openDocument(identifier))
-            .catch(handleError);
-    }, [bill, disableActions, errorUnsavedChanges, openDocument, reloadBill]);
-
-    const deleteDocument = useCallback((identifier: string) => {
-        if (disableActions) {
-            return errorUnsavedChanges();
-        }
-
-        if (!bill || !bill.id) {
-            throw new Error('Bill not found');
-        }
-
-        BillDocumentService.billDocumentControllerDelete(bill.id, identifier)
-            .then(reloadBill)
-            .then(() => openDocument())
-            .catch(handleError);
-    }, [bill, disableActions, errorUnsavedChanges, openDocument, reloadBill]);
-
-    const saveDocument = useCallback((editor: LawEditor) => {
-        if (!selected || !slate || !documentId) {
-            throw new Error('Invalid params');
-        }
-
-        const title = getTitle(editor.children);
-
-        BillDocumentService.billDocumentControllerUpdate(documentId, { title, content: JSON.stringify(editor.children) })
-            .then(() => notification.success({ message: t('Document saved') }))
-            .then(reloadBill) // Update titles in the explorer
-            .catch(handleError);
-    }, [documentId, reloadBill, selected, slate, t]);
-
-    const loadDocument = useCallback(() => {
-        if (!bill || !bill.id || !selected) {
-            return;
-        }
-
-        BillDocumentService.billDocumentControllerGet(bill.id, selected)
-            .then(setDocument)
-            .then(() => setIsBillDocument(true))
-            .catch((error) => {
-                // Fallback to document controller if the bill document is not found
-                if (error.body.name === 'EntityNotFoundError') {
-                    return DocumentService.documentControllerGet(selected)
-                        .then(setDocument)
-                        .then(() => setIsBillDocument(false))
-                        .catch(handleErrorWithTranslations(t));
-                }
-
-                handleErrorWithTranslations(t)(error);
-            });
-    }, [bill, selected, setDocument, t]);
-
-    useEffect(loadDocument, [loadDocument]);
-
-    return {
-        bill,
-        openDocument,
-        selected,
-        addDocument,
-        deleteDocument,
-        saveDocument,
-        isBillDocument,
-        xml,
-        slate,
-        originalDocument,
-        loadDocument,
-    };
-};
-
 
 const BillPage: FC = () => {
     const { t } = useLanguageContext();
     const { isAuthenticated } = useSessionContext();
     const { isNavigationBlocked } = useBlockNavigation();
     const { lawList } = useLawListContext();
-    const { bill, openDocument, selected, addDocument, deleteDocument, slate, xml, originalDocument, saveDocument } = useBillPage(isNavigationBlocked);
+    const {
+        bill,
+        openDocument,
+        selected,
+        addDocument,
+        deleteDocument,
+        slate,
+        xml,
+        originalDocument,
+        saveDocument,
+        hasError,
+    } = useBillPage(isNavigationBlocked);
 
     if (!isAuthenticated()) {
         return <NotAuthorizedError />;
     }
 
+    if (hasError) {
+        return <NotFoundError />;
+    }
+
     return (
-        <>
-            <Header />
-            <Content style={{ textAlign: 'left', padding: '20px', height: 'calc(100% - 64px)' }}>
-                <Row gutter={16} style={{ height: '100%' }}>
-                    <Col span={4} style={{ height: '100%' }}>
-                        <Loader loading={lawList.length === 0}>
-                            <BillDocumentExplorer
-                                selected={selected}
-                                setSelected={openDocument}
-                                lawList={lawList}
-                                billDocuments={bill?.documents}
-                                onAddDocument={addDocument}
-                                onDeleteDocument={deleteDocument}
-                            />
-                        </Loader>
-                    </Col>
-                    <Col span={20} style={{ height: '100%' }}>
-                        <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden'  }}>
-                            {selected 
-                                ? (
-                                    <Loader loading={!slate || !originalDocument || !xml}>
-                                        <Editor key={selected} slate={slate!} originalDocument={originalDocument!} xml={xml!} saveDocument={saveDocument} />
-                                    </Loader>
-                                ) : (
-                                    <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
-                                )
-                            }
-                        </Content>
-                    </Col>
-                </Row>
-            </Content>
-        </>
+        <Content style={{ textAlign: 'left', padding: '20px', height: 'calc(100% - 64px)' }}>
+            <Row gutter={16} style={{ height: '100%' }}>
+                <Col span={4} style={{ height: '100%' }}>
+                    <Loader loading={lawList.length === 0}>
+                        <BillDocumentExplorer
+                            selected={selected}
+                            setSelected={openDocument}
+                            lawList={lawList}
+                            billDocuments={bill?.documents}
+                            onAddDocument={addDocument}
+                            onDeleteDocument={deleteDocument}
+                        />
+                    </Loader>
+                </Col>
+                <Col span={20} style={{ height: '100%' }}>
+                    <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden'  }}>
+                        {selected 
+                            ? (
+                                <Loader loading={!slate || !originalDocument || !xml}>
+                                    <Editor key={selected} slate={slate!} originalDocument={originalDocument!} xml={xml!} saveDocument={saveDocument} />
+                                </Loader>
+                            ) : (
+                                <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
+                            )
+                        }
+                    </Content>
+                </Col>
+            </Row>
+        </Content>
     );
 };
 

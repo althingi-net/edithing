@@ -2,7 +2,7 @@ import { LawEditor } from 'law-document';
 import { useCallback } from 'react';
 import useBlockNavigation from '../App/useBlockNavigation';
 
-const useEditorNavigationBlock = (editor: LawEditor, saveDocument: (editor: LawEditor) => void) => {
+const useEditorNavigationBlock = (editor: LawEditor, saveDocument?: (editor: LawEditor) => void) => {
     const { isNavigationBlocked, blockNavigation, unblockNavigation } = useBlockNavigation();
 
     const handleChange = useCallback(() => {
@@ -20,7 +20,9 @@ const useEditorNavigationBlock = (editor: LawEditor, saveDocument: (editor: LawE
             unblockNavigation();
         }
 
-        saveDocument(editor);
+        if (saveDocument) {
+            saveDocument(editor);
+        }
     }, [editor, isNavigationBlocked, saveDocument, unblockNavigation]);
 
     return {
