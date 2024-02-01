@@ -14,13 +14,26 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_NAME: edithing
+      DATABASE_USER: edithing
+      DATABASE_PASSWORD: secret-string
+
     steps:
     - uses: actions/checkout@v3
+    - uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql version: '8.0'
+        mysql database: 'edithing'
+        mysql user: "edithing"
+        mysql password: "secret-string"
     - name: Use Node.js 18.x
       uses: actions/setup-node@v3
       with:
         node-version: 18.x
         cache: 'npm'
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: npm run lint
+    - run: npm run typecheck
+    - run: npm run test
+    - run: npm run build
