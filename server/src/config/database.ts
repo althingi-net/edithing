@@ -1,19 +1,19 @@
 import { join } from 'path';
 import { DataSourceOptions } from 'typeorm';
 
+const isTestEnv = process.env.NODE_ENV === 'test';
+const isNotProduction = process.env.NODE_ENV !== 'production';
+
 const database: DataSourceOptions = {
     type: 'mysql',
     host: 'localhost',
-    port: 3306,
+    port: isTestEnv ? 3307 : 3306,
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
-    database:
-        process.env.NODE_ENV === 'test'
-            ? process.env.DATABASE_NAME + '_test'
-            : process.env.DATABASE_NAME,
-    synchronize: process.env.NODE_ENV !== 'production',
+    database: process.env.DATABASE_NAME,
+    synchronize: isNotProduction,
     entities: [
-        process.env.NODE_ENV === 'test'
+        isTestEnv
             ? '**/entities/!(*.test).ts'
             : join(__dirname, '..', '**', 'entities', '!(*.test).{ts,js}')
     ],
