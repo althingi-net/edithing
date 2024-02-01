@@ -1,0 +1,27 @@
+apps:
+  - script: './server/dist/index.js'
+    exec_mode: 'fork'
+    name: 'worker-0'
+    env:
+        PORT: 3500
+        NODE_ENV: production
+        DISABLE_GITHUB: false
+        GITHUB_TOKEN: ''
+        DEBUG: false
+        DATABASE_NAME: 'app'
+        DATABASE_USER: 'root'
+        DATABASE_PASSWORD: 'your-password'
+        JWT_SECRET: ''
+  - script: './server/dist/index.js'
+    exec_mode: 'fork'
+    name: 'worker-1'
+    env:
+        PORT: 3501
+        NODE_ENV: production
+        DISABLE_GITHUB: false
+        GITHUB_TOKEN: ''
+        DEBUG: false
+        DATABASE_NAME: 'app'
+        DATABASE_USER: 'root'
+        DATABASE_PASSWORD: 'your-password'
+        JWT_SECRET: ''

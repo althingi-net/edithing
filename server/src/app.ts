@@ -14,7 +14,7 @@ import errorHandler from './middleware/errorHandler';
 
 const app = createKoaServer({
     routePrefix: '/api',
-    controllers: [__dirname + '/controllers/!(*.test).ts'],
+    controllers: [__dirname + '/controllers/!(*.test).{ts,js}'],
     authorizationChecker: (action, roles) => {
         const user = <User>action.context.state.user;
 

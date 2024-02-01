@@ -79,5 +79,8 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Delete Bill Document': 'Eyða skjali',
         'Are you sure you want to permanently and irreversibly delete this document?': 'Ertu viss um að þú viljir eyða þessu skjali varanlega og óafturkræft?',
         'Yes, delete!': 'Já, eyða!',
+        'Error: Not Authorized': 'Villa: Ekki heimilt',
+        'Please login to continue.': 'Vinsamlegast skráðu þig inn til að halda áfram.',
+        'Document saved': 'Skrá vistað',
     },
 };

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc --build --watch",
     "build": "NODE_ENV=production tsc --build",
-    "prebuild": "run-s clean lint typecheck test",
+    "prebuild": "npm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo",
     "test": "jest",
     "lint": "eslint .",

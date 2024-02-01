@@ -14,7 +14,12 @@ class DocumentController {
     @Get('/document')
     @ResponseSchema(GithubFile, { isArray: true })
     async getAll() {
-        return getLawEntries();
+        try {
+            return await getLawEntries();
+        } catch (error) {
+            console.log(error);
+            throw new Error('Could not get list of documents.');
+        }
     }
 
     /**
