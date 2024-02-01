@@ -3,6 +3,7 @@ import { BillDocumentService, DocumentService } from 'client-sdk';
 import { LawEditor, getTitle } from 'law-document';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import modal from 'antd/es/modal';
 import { log } from '../../logger';
 import handleError from '../App/handleError';
 import useLanguageContext from '../App/useLanguageContext';
@@ -64,17 +65,26 @@ const useBillPage = (disableActions = false) => {
             return errorUnsavedChanges();
         }
 
-        if (!bill || !bill.id) {
-            throw new Error('Bill not found');
-        }
+        modal.confirm({
+            title: t('Delete Bill Document'),
+            content: t('Are you sure you want to permanently and irreversibly delete this document?'),
+            okText: t('Yes, delete!'),
+            cancelText: t('Cancel'),
+            onOk: () => {
+                if (!bill || !bill.id) {
+                    throw new Error('Bill not found');
+                }
+                
+                log('delete bill document', { bill, identifier });
+        
+                BillDocumentService.billDocumentControllerDelete(bill.id, identifier)
+                    .then(reloadBill)
+                    .then(() => openDocument())
+                    .catch(handleError);
+            },
+        });
 
-        log('delete bill document', { bill, identifier });
-
-        BillDocumentService.billDocumentControllerDelete(bill.id, identifier)
-            .then(reloadBill)
-            .then(() => openDocument())
-            .catch(handleError);
-    }, [bill, disableActions, errorUnsavedChanges, openDocument, reloadBill]);
+    }, [bill, disableActions, errorUnsavedChanges, openDocument, reloadBill, t]);
 
     const saveDocument = useCallback((editor: LawEditor) => {
         if (!selected || !slate || !documentId) {

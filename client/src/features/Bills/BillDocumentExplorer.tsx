@@ -17,7 +17,7 @@ interface Props {
 
 const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments, onAddDocument, onDeleteDocument }) => {
     const { t } = useLanguageContext();
-    const availableDocuments = lawList.filter(law => !billDocuments?.find(doc => doc.identifier === law.identifier));   
+    const availableDocuments = lawList.filter(law => !billDocuments?.find(doc => doc.identifier === law.identifier));
 
     return (
         <div className='bill-document-explorer'>
@@ -46,7 +46,15 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                                 </div>
                                 <div className='item-actions'>
                                     <Tooltip title={t('Remove document from bill and delete changes')}>
-                                        <div className='item-action delete' role='button' tabIndex={0} onClick={() => onDeleteDocument(doc.identifier)}>
+                                        <div
+                                            className='item-action delete'
+                                            role='button'
+                                            tabIndex={0}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onDeleteDocument(doc.identifier);
+                                            }}
+                                        >
                                             <DeleteOutlined />
                                         </div>
                                     </Tooltip>
@@ -71,7 +79,15 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                                 </div>
                                 <div className='item-actions'>
                                     <Tooltip title={t('Add document to bill and start editing')}>
-                                        <div className='item-action add' role='button' tabIndex={0} onClick={() => onAddDocument(doc.identifier)}>
+                                        <div
+                                            className='item-action add'
+                                            role='button'
+                                            tabIndex={0}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                onAddDocument(doc.identifier);
+                                            }}
+                                        >
                                             <FileAddOutlined />
                                         </div>
                                     </Tooltip>
