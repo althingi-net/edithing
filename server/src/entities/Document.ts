@@ -8,25 +8,25 @@ class Document extends BaseEntity {
     @IsOptional()
     id?: number;
 
-    /** Path to the law document in Github */
+    /** Unique document identifier, example: '2023-73' */
     @Column({ unique: true })
     @IsString()
-    path!: string;
+    identifier!: string;
 
-    /** Law year */
+    /** Title of the law */
     @Column()
     @IsString()
-    year!: string;
+    title!: string;
     
-    /** Law number */
-    @Column()
-    @IsString()
-    nr!: string;
-
-    /** Cached XML file content of the law document */
-    @Column({ type: 'text' })
+    /** Cached Slate content of the law document */
+    @Column({ type: 'mediumtext' })
     @IsString()
     content!: string;
+
+    /** Cached XML file content of the law document */
+    @Column({ type: 'mediumtext' })
+    @IsString()
+    originalXml!: string;
 
     /** Date when this document was last downloaded from Github */
     @CreateDateColumn()
@@ -39,19 +39,6 @@ class Document extends BaseEntity {
     @IsDate()
     @IsOptional()
     updatedAt?: Date;
-
-    /** Encode content to reduce size in database */
-    // @BeforeInsert()
-    // @BeforeUpdate()
-    // encodeContent() {
-    //     this.content = Buffer.from(this.content).toString('base64');
-    // }
-
-    /** Decode content */
-    // @AfterLoad()
-    // decodeContent() {
-    //     this.content = Buffer.from(this.content, 'base64').toString('utf-8');
-    // }
 }
 
 export default Document;

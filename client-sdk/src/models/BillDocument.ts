@@ -5,10 +5,10 @@
 
 export type BillDocument = {
     id?: number;
-    path: string;
-    year: string;
-    nr: string;
-    slate: Array<any>;
+    identifier: string;
+    bill: any;
+    title: string;
+    content: string;
     originalXml: string;
     createdAt?: string;
     updatedAt?: string;

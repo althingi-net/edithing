@@ -9,7 +9,7 @@ enum BillStatus {
     ARCHIVED = 'archived',
 }
 
-@Entity()
+@Entity({ name: 'bill' })
 class Bill extends BaseEntity {
     @PrimaryGeneratedColumn()
     @IsNumber()
@@ -17,7 +17,7 @@ class Bill extends BaseEntity {
     id?: number;
 
     /** Author of this bill */
-    @ManyToOne(() => User, user => user.bills)
+    @ManyToOne(() => User, user => user.bills, { eager: true })
     @ValidateNested()
     author!: User;
 
@@ -27,7 +27,7 @@ class Bill extends BaseEntity {
     title!: string;
 
     /** Documents that belong to this bill */
-    @OneToMany(() => BillDocument, billDocument => billDocument, { cascade: true })
+    @OneToMany(() => BillDocument, billDocument => billDocument.bill, { cascade: true, eager: true })
     @IsOptional()
     documents?: BillDocument[];
 

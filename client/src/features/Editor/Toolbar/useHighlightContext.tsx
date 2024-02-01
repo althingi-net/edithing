@@ -18,7 +18,13 @@ export const HightlightContextProvider: FC<PropsWithChildren> = ({ children }) =
 };
 
 const useHighlightContext = () => {
-    return useContext(HighlightContext);
+    const context = useContext(HighlightContext);
+
+    if (!context) {
+        throw new Error('useHighlightContext must be used within a HightlightContextProvider');
+    }
+
+    return context;
 };
 
 export default useHighlightContext;

@@ -28,6 +28,7 @@ const app = createKoaServer({
         
         return false;
     },
+    // defaultErrorHandler: false,
 }) as Koa;
 
 // Application error logging.

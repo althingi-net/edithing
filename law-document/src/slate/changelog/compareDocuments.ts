@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../../global.d.ts" />
+
 import { Descendant, Editor } from 'slate';
 import Diff from 'text-diff';
 import { Event } from '../plugins/withEvents';

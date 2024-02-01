@@ -48,7 +48,11 @@ module.exports = {
         'parserOptions': {
             'ecmaVersion': 'latest',
             'sourceType': 'module',
-            'project': './tsconfig.json',
+            'project': [
+                './tsconfig.json',
+                './node_modules/law-document/tsconfig.json',
+                './node_modules/client-sdk/tsconfig.json',
+            ],
             'tsconfigRootDir': __dirname,
             'warnOnUnsupportedTypeScriptVersion': true,
             'EXPERIMENTAL_useProjectService': true,

@@ -1,39 +1,47 @@
-import { Flex } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import { FC } from 'react';
+import { DocumentService } from 'client-sdk';
+import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Header from '../features/App/Header';
-import useLanguageContext from '../features/App/useLanguageContext';
-import useLawListContext from '../features/DocumentSelector/useLawListContext';
-import EditorLoader from '../features/Editor/EditorLoader';
+import Loader from '../features/App/Loader';
+import NotFoundError from '../features/App/NotFoundError';
+import useDocument from '../features/Documents/useDocument';
+import Editor from '../features/Editor/Editor';
 
 const LawPage: FC = () => {
-    const { t } = useLanguageContext();
-    const { nr, year } = useParams();
-    const { lawList } = useLawListContext();
+    const { identifier } = useParams();
+    const { setDocument, xml, slate, originalDocument } = useDocument();
+    const [hasError, setError] = useState(false);
 
-    const lawListEntry = lawList.find(law => law.identifier === `${nr}/${year}`);
-    
-    if (!lawListEntry) {
-        if (lawList.length === 0) {
-            return <h1>{t('Loading...')}</h1>;
-        }
+    // reset error when url changes
+    useEffect(() => {
+        setError(false);
+    }, [identifier]);
 
-        return <h1>{t('Not found!')}</h1>;
+    if (!identifier) {
+        throw new Error('Missing identifier');
     }
 
-    const { identifier, name } = lawListEntry;
+    useEffect(() => {
+        DocumentService.documentControllerGet(identifier)
+            .then(setDocument)
+            .catch((error) => {
+                setError(true);
+                console.error(error);
+            });
+    });
+
+    if (hasError) {
+        return <NotFoundError />;
+    }
+
+    if (!slate || !originalDocument || !xml) {
+        return <Loader />;
+    }
 
     return (
-        <>
-            <Header />
-            <Content style={{ padding: '50px' }}>
-                <Flex align='center' gap='20px'>
-                    <h3 style={{ flexGrow: 1 }}>{identifier} {name}</h3>
-                </Flex>
-                <EditorLoader file={lawListEntry} />
-            </Content>
-        </>
+        <Content style={{ padding: '20px', height: 'calc(100% - 64px)' }}>
+            <Editor readOnly={true} slate={slate} originalDocument={originalDocument} xml={xml} />
+        </Content>
     );
 };
 

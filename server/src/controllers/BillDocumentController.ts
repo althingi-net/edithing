@@ -1,7 +1,18 @@
+import { IsString, ValidateNested } from 'class-validator';
 import passport from 'koa-passport';
-import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
+import { Body, Delete, Get, HttpError, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
-import BillDocument from '../entities/BillDocument';
+import Bill from '../entities/Bill';
+import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
+import { findOrImportDocument } from '../services/DocumentService';
+
+class CreateBillDocument {
+    @IsString()
+    identifier!: string;
+
+    @ValidateNested()
+    bill!: Bill;
+}
 
 @JsonController()
 @OpenAPI({
@@ -9,31 +20,51 @@ import BillDocument from '../entities/BillDocument';
 })
 @UseBefore(passport.authenticate('jwt', { session: false }) )
 class BillDocumentController {
-    @Get('/billDocuments')
+    @Get('/bill/:id/document')
     @ResponseSchema(BillDocument, { isArray: true })
-    getAll() {
-        return BillDocument.find();
+    getAll(@Param('id') id: number) {
+        return BillDocument.findBy({ bill: { id } });
     }
 
-    @Get('/billDocuments/:id')
+    @Get('/bill/:id/document/:identifier')
     @ResponseSchema(BillDocument)
-    get(@Param('id') id: number) {
-        return BillDocument.findOneOrFail({ where: { id } });
+    async get(@Param('id') id: number, @Param('identifier') identifier: string) {
+        const result =  await BillDocument.findOneBy({  bill: { id }, identifier });
+        
+        if (!result) {
+            throw new HttpError(404, 'BillDocument not found');
+        }
+
+        return result;
     }
 
-    @Post('/billDocuments')
+    @Post('/bill/document')
     @ResponseSchema(BillDocument)
-    create(@Body() billDocument: BillDocument) {
-        return BillDocument.save(billDocument);
+    async create(@Body() { bill, identifier }: CreateBillDocument) {
+        const { title, content, originalXml } = await findOrImportDocument(identifier);
+
+        return BillDocument.save({
+            bill,
+            identifier,
+            title,
+            content,
+            originalXml,
+        });
     }
 
-    @Put('/billDocuments/:id')
+    @Put('/bill/document/:id')
     @ResponseSchema(BillDocument)
-    update(
+    async update(
         @Param('id') id: number,
-        @Body({ validate: { skipMissingProperties: true } }) billDocument: Partial<BillDocument>
+        @Body() billDocument: UpdateBillDocument,
     ) {
-        return BillDocument.update({ id }, billDocument);
+        const result = await BillDocument.update({ id }, billDocument);
+        return (result.affected ?? 0) > 1 ? true : false;
+    }
+
+    @Delete('/bill/:id/document/:identifier')
+    delete(@Param('id') id: number, @Param('identifier') identifier: string) {
+        return BillDocument.delete({ identifier, bill: { id } });
     }
 }
 

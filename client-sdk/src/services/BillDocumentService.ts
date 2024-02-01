@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BillDocument } from '../models/BillDocument';
+import type { CreateBillDocument } from '../models/CreateBillDocument';
+import type { UpdateBillDocument } from '../models/UpdateBillDocument';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -12,45 +14,16 @@ export class BillDocumentService {
 
     /**
      * Get all
-     * @returns BillDocument
-     * @throws ApiError
-     */
-    public static billDocumentControllerGetAll(): CancelablePromise<Array<BillDocument>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/billDocuments',
-        });
-    }
-
-    /**
-     * Create
-     * @param requestBody BillDocument
-     * @returns BillDocument
-     * @throws ApiError
-     */
-    public static billDocumentControllerCreate(
-        requestBody?: BillDocument,
-    ): CancelablePromise<BillDocument> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/billDocuments',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Get
      * @param id
      * @returns BillDocument
      * @throws ApiError
      */
-    public static billDocumentControllerGet(
+    public static billDocumentControllerGetAll(
         id: number,
-    ): CancelablePromise<BillDocument> {
+    ): CancelablePromise<Array<BillDocument>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/billDocuments/{id}',
+            url: '/api/bill/{id}/document',
             path: {
                 'id': id,
             },
@@ -58,19 +31,78 @@ export class BillDocumentService {
     }
 
     /**
+     * Get
+     * @param id
+     * @param identifier
+     * @returns BillDocument
+     * @throws ApiError
+     */
+    public static billDocumentControllerGet(
+        id: number,
+        identifier: string,
+    ): CancelablePromise<BillDocument> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/bill/{id}/document/{identifier}',
+            path: {
+                'id': id,
+                'identifier': identifier,
+            },
+        });
+    }
+
+    /**
+     * Delete
+     * @param id
+     * @param identifier
+     * @returns any Successful response
+     * @throws ApiError
+     */
+    public static billDocumentControllerDelete(
+        id: number,
+        identifier: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/bill/{id}/document/{identifier}',
+            path: {
+                'id': id,
+                'identifier': identifier,
+            },
+        });
+    }
+
+    /**
+     * Create
+     * @param requestBody CreateBillDocument
+     * @returns BillDocument
+     * @throws ApiError
+     */
+    public static billDocumentControllerCreate(
+        requestBody?: CreateBillDocument,
+    ): CancelablePromise<BillDocument> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/bill/document',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
      * Update
      * @param id
-     * @param requestBody
+     * @param requestBody UpdateBillDocument
      * @returns BillDocument
      * @throws ApiError
      */
     public static billDocumentControllerUpdate(
         id: number,
-        requestBody?: any,
+        requestBody?: UpdateBillDocument,
     ): CancelablePromise<BillDocument> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/billDocuments/{id}',
+            url: '/api/bill/document/{id}',
             path: {
                 'id': id,
             },

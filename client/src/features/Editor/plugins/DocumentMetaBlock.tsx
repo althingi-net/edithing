@@ -1,4 +1,4 @@
-import { Collapse } from 'antd';
+import { Collapse, Divider } from 'antd';
 import { DocumentMetaElement, ElementType } from 'law-document';
 import { FC } from 'react';
 import { RenderElementProps } from 'slate-react';
@@ -23,7 +23,8 @@ const DocumentMetaBlock: FC<Props> = ({ attributes, element, children }) => {
 
     return (
         <div className={ElementType.DOCUMENT_META} {...attributes} contentEditable={false}>
-            <Collapse items={items} />
+            <Collapse items={items} ghost={true} />
+            <Divider />
             {children}
         </div>
     );

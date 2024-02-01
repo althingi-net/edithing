@@ -25,21 +25,18 @@ export class DocumentService {
 
     /**
      * Get a document from the database if it exists, otherwise it downloads it from github and saves it to the database.
-     * @param nr
-     * @param year
+     * @param identifier
      * @returns Document
      * @throws ApiError
      */
     public static documentControllerGet(
-        nr: string,
-        year: string,
+        identifier: string,
     ): CancelablePromise<Document> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/document/{nr}/{year}',
+            url: '/api/document/{identifier}',
             path: {
-                'nr': nr,
-                'year': year,
+                'identifier': identifier,
             },
         });
     }

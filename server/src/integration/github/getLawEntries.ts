@@ -41,10 +41,19 @@ const getLawEntries = async (): Promise<GithubFile[]> => {
         return {
             name: entry['name'],
             date: entry['@_date'],
-            identifier: entry['identifier'],
+            identifier: convertIdentifier(entry['identifier']),
             path: `data/xml/${entry['@_year']}.${entry['@_nr']}.xml`,
         };
     });
+};
+
+/**
+ * Convert 68/2023 to 2023.68
+ */
+const convertIdentifier = (identifier: string) => {
+    const [nr, year] = identifier.split('/');
+
+    return `${year}.${nr}`;
 };
 
 export default getLawEntries;

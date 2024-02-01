@@ -1,9 +1,8 @@
 import { Body, Get, JsonController, Param, Put } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Document from '../entities/Document';
-import downloadFile from '../integration/github/downloadFile';
 import getLawEntries, { GithubFile } from '../integration/github/getLawEntries';
-
+import { findOrImportDocument } from '../services/DocumentService';
 
 @JsonController()
 class DocumentController {
@@ -29,29 +28,10 @@ class DocumentController {
      * @returns The document.
      */
     @OpenAPI({ summary: 'Get a document from the database if it exists, otherwise it downloads it from github and saves it to the database.' })
-    @Get('/document/:nr/:year')
+    @Get('/document/:identifier')
     @ResponseSchema(Document)
-    async get(@Param('nr') nr: string, @Param('year') year: string) {
-        try {
-            let document = await Document.findOneBy({ nr, year });
-        
-            if (!document) {
-                const path = `data/xml/${year}.${nr}.xml`;
-                const file = await downloadFile(path);
-                
-                document = await Document.create({
-                    path,
-                    content: file,
-                    year,
-                    nr,
-                }).save();
-            }
-
-            return document;
-        } catch (error) {
-            console.log(error);
-            throw new Error(`Document with nr ${nr} and year ${year} does not exist.`);
-        }
+    async get(@Param('identifier') identifier: string) {
+        return findOrImportDocument(identifier);
     }
 
     /** Temporary update endpoint for presentation */
@@ -61,8 +41,7 @@ class DocumentController {
         @Param('identifier') identifier: string,
         @Body({ validate: { skipMissingProperties: true } }) document: Partial<Document>
     ) {
-        const [nr, year] = identifier.split('.');
-        return Document.update({ nr, year }, document);
+        return Document.update({ identifier }, document);
     }
 }
 
