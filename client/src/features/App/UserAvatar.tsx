@@ -1,6 +1,6 @@
-import { Avatar } from "antd";
-import { User } from "client-sdk";
-import { FC } from "react";
+import { Avatar } from 'antd';
+import { User } from 'client-sdk';
+import { FC } from 'react';
 
 interface Props {
     user: User
@@ -13,6 +13,6 @@ const UserAvatar: FC<Props> = ({ user }) => {
     return (
         <Avatar style={{ backgroundColor: '#f56a00' }}>{initials}</Avatar>
     );
-}
+};
 
 export default UserAvatar;

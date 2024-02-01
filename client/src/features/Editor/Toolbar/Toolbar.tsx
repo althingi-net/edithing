@@ -16,7 +16,7 @@ const Toolbar: FC<Props> = ({ saveDocument }) => {
     return (
         <Space direction="horizontal" style={{ justifyContent: 'left', marginBottom: '10px', width: '100%' }}>
             <Button onClick={() => saveDocument(slate)}>{t('Save')}</Button>
-            <Checkbox checked={highlight?.isHighlighted} onChange={(event) => highlight?.setHighlighted(event.target.checked)}>
+            <Checkbox checked={highlight.isHighlighted} onChange={(event) => highlight.setHighlighted(event.target.checked)}>
                 {t('Highlight elements')}
             </Checkbox>
         </Space>

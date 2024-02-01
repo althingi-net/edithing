@@ -17,7 +17,7 @@ const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
         return <span {...attributes} className="bold">{children}</span>;
     }
 
-    if (highlight?.isHighlighted && leaf.nr) {
+    if (highlight.isHighlighted && leaf.nr) {
         const className = Number(leaf.nr) % 2 === 0 ? 'even' : 'odd';
         return <span {...attributes} className={className}>{children}</span>;
     }
