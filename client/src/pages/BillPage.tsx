@@ -28,6 +28,7 @@ const BillPage: FC = () => {
         originalDocument,
         saveDocument,
         hasError,
+        isBillDocument,
     } = useBillPage(isNavigationBlocked);
 
     if (!isAuthenticated()) {
@@ -58,7 +59,14 @@ const BillPage: FC = () => {
                         {selected 
                             ? (
                                 <Loader loading={!slate || !originalDocument || !xml}>
-                                    <Editor key={selected} slate={slate!} originalDocument={originalDocument!} xml={xml!} saveDocument={saveDocument} />
+                                    <Editor
+                                        key={selected}
+                                        slate={slate!}
+                                        originalDocument={originalDocument!}
+                                        xml={xml!}
+                                        saveDocument={saveDocument}
+                                        readOnly={!isBillDocument}
+                                    />
                                 </Loader>
                             ) : (
                                 <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
