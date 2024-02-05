@@ -28,7 +28,7 @@ const LawPage: FC = () => {
                 setError(true);
                 console.error(error);
             });
-    });
+    }, [identifier, setDocument]);
 
     if (hasError) {
         return <NotFoundError />;
