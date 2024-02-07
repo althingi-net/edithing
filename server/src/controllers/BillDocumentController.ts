@@ -49,6 +49,7 @@ class BillDocumentController {
             title,
             content,
             originalXml,
+            events: '[]'
         });
     }
 

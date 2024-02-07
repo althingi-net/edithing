@@ -6,5 +6,6 @@
 export type UpdateBillDocument = {
     title: string;
     content: string;
+    events: string;
 };
 

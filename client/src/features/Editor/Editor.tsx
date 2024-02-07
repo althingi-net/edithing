@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
-import { LawEditor } from 'law-document';
-import { FC, useMemo } from 'react';
+import { Event, LawEditor } from 'law-document';
+import { FC, useEffect, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import './Editor.css';
@@ -18,14 +18,19 @@ import useEditorNavigationBlock from './useEditorNaviationBlock';
 interface Props {
     slate: Descendant[];
     originalDocument: Descendant[];
+    events?: Event[];
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;
 }
 
-const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocument }) => {
+const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocument, events }) => {
     const highlight = useHighlightContext();
-    const editor = useMemo(() => createEditorWithPlugins(), []);
+    const editor = useMemo(() => {
+        const newEditor = createEditorWithPlugins();
+        newEditor.events = events || [];
+        return newEditor;
+    }, [events]);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
 
     const classNames = [

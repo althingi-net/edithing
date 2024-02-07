@@ -30,6 +30,10 @@ class BillDocument extends BaseEntity {
     @IsString()
     content!: string;
 
+    @Column({ type: 'mediumtext' })
+    @IsOptional()
+    events: string = '[]';
+
     /** Original XML file content of the law document */
     @Column({ type: 'mediumtext' })
     @IsString()
@@ -58,6 +62,9 @@ export class UpdateBillDocument {
 
     @IsString()
     content!: string;
+
+    @IsString()
+    events!: string;
 }
 
 export default BillDocument;
