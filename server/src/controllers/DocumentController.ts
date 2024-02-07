@@ -4,6 +4,15 @@ import Document from '../entities/Document';
 import getLawEntries, { GithubFile } from '../integration/github/getLawEntries';
 import { findOrImportDocument } from '../services/DocumentService';
 
+const cacheExpirationInMs = 1000 * 60 * 60 * 24; // 24 hour
+const lawEntriesCache: {
+    content: GithubFile[] | null;
+    lastUpdated: number | null;
+} = {
+    content: null,
+    lastUpdated: null,
+};
+
 @JsonController()
 class DocumentController {
 
@@ -15,7 +24,12 @@ class DocumentController {
     @ResponseSchema(GithubFile, { isArray: true })
     async getAll() {
         try {
-            return await getLawEntries();
+            if (!lawEntriesCache.lastUpdated || lawEntriesCache.lastUpdated < Date.now() - cacheExpirationInMs) {
+                lawEntriesCache.content = await getLawEntries();
+                lawEntriesCache.lastUpdated = Date.now();
+            }
+
+            return lawEntriesCache.content;
         } catch (error) {
             console.log(error);
             throw new Error('Could not get list of documents.');
