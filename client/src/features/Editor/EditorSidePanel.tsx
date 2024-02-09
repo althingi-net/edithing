@@ -28,7 +28,7 @@ const EditorSidePanel: FC<Props> = (props) => {
 
         return (
             <div style={{ height: 'calc(100vh - 104px)', overflowY: 'auto' }}>
-                <Collapse defaultActiveKey={[]} destroyInactivePanel>
+                <Collapse defaultActiveKey={['5']} destroyInactivePanel>
                     <Collapse.Panel disabled={readOnly} header={t('Element Configuration')} key="1">
                         <NodeMetaForm />
                     </Collapse.Panel>
