@@ -29,7 +29,7 @@ const DocumentsList: FC<Props> = ({ documents, onAddDocument, setSelected, selec
         const document = documents[index];
         const size = getTextSize(document.name);
         const lines = Math.ceil(size.width / textBoxWidth);
-        return 15 + 20 + lines * 15;
+        return 20 + 25 + lines * 25;
     };
 
     return (
@@ -39,21 +39,23 @@ const DocumentsList: FC<Props> = ({ documents, onAddDocument, setSelected, selec
                     <VariableSizeList
                         itemCount={documents.length}
                         itemSize={getItemSize}
+                        itemData={documents}
+                        itemKey={(index, data) => data[index].identifier}
                         height={height}
                         width={width}
                     >
-                        {({ index, style }) => (
+                        {({ data, index, style }) => (
                             <div
                                 style={style}
-                                className={['list-item', selected === documents[index].identifier ? 'selected' : ''].join(' ')}
-                                key={documents[index].identifier}
+                                className={['list-item', selected === data[index].identifier ? 'selected' : ''].join(' ')}
+                                key={data[index].identifier}
                                 role="button"
                                 tabIndex={0}
-                                onClick={() => setSelected(documents[index].identifier)}
+                                onClick={() => setSelected(data[index].identifier)}
                             >
                                 <div className='infos'>
-                                    <div className='item-identifier'>{formatIdentifier(documents[index].identifier)}</div>
-                                    <div className='item-title'>{documents[index].name}</div>
+                                    <div className='item-identifier'>{formatIdentifier(data[index].identifier)}</div>
+                                    <div className='item-title'>{data[index].name}</div>
                                 </div>
                                 <div className='item-actions'>
                                     <Tooltip title={t('Add document to bill and start editing')}>
@@ -63,7 +65,7 @@ const DocumentsList: FC<Props> = ({ documents, onAddDocument, setSelected, selec
                                             tabIndex={0}
                                             onClick={(event) => {
                                                 event.stopPropagation();
-                                                onAddDocument(documents[index].identifier);
+                                                onAddDocument(data[index].identifier);
                                             }}
                                         >
                                             <FileAddOutlined />
