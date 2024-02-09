@@ -1,17 +1,16 @@
-import { IsString, ValidateNested } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import passport from 'koa-passport';
 import { Body, Delete, Get, HttpError, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
-import Bill from '../entities/Bill';
 import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import { findOrImportDocument } from '../services/DocumentService';
 
 class CreateBillDocument {
+    @IsNumber()
+    billId!: number;
+
     @IsString()
     identifier!: string;
-
-    @ValidateNested()
-    bill!: Bill;
 }
 
 @JsonController()
@@ -29,7 +28,10 @@ class BillDocumentController {
     @Get('/bill/:id/document/:identifier')
     @ResponseSchema(BillDocument)
     async get(@Param('id') id: number, @Param('identifier') identifier: string) {
-        const result =  await BillDocument.findOneBy({  bill: { id }, identifier });
+        const result =  await BillDocument.findOne({
+            where: {  bill: { id }, identifier },
+            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events'],
+        });
         
         if (!result) {
             throw new HttpError(404, 'BillDocument not found');
@@ -40,17 +42,19 @@ class BillDocumentController {
 
     @Post('/bill/document')
     @ResponseSchema(BillDocument)
-    async create(@Body() { bill, identifier }: CreateBillDocument) {
+    async create(@Body() { billId, identifier }: CreateBillDocument) {
         const { title, content, originalXml } = await findOrImportDocument(identifier);
 
-        return BillDocument.save({
-            bill,
+        await BillDocument.save({
+            bill: { id: billId },
             identifier,
             title,
             content,
             originalXml,
             events: '[]'
         });
+
+        return true;
     }
 
     @Put('/bill/document/:id')
@@ -60,12 +64,13 @@ class BillDocumentController {
         @Body() billDocument: UpdateBillDocument,
     ) {
         const result = await BillDocument.update({ id }, billDocument);
-        return (result.affected ?? 0) > 1 ? true : false;
+        return (result.affected ?? 0) >= 1 ? true : false;
     }
 
     @Delete('/bill/:id/document/:identifier')
-    delete(@Param('id') id: number, @Param('identifier') identifier: string) {
-        return BillDocument.delete({ identifier, bill: { id } });
+    async delete(@Param('id') id: number, @Param('identifier') identifier: string) {
+        const result = await BillDocument.delete({ identifier, bill: { id } });
+        return (result.affected ?? 0) >= 1 ? true : false;
     }
 }
 

@@ -9,7 +9,7 @@ export type BillDocument = {
     bill: any;
     title: string;
     content: string;
-    events?: any;
+    events: string;
     originalXml: string;
     createdAt?: string;
     updatedAt?: string;

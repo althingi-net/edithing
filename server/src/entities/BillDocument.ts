@@ -26,16 +26,16 @@ class BillDocument extends BaseEntity {
     title!: string;
 
     /** Cached Slate content of the law document */
-    @Column({ type: 'mediumtext' })
+    @Column({ type: 'mediumtext', select: false })
     @IsString()
     content!: string;
 
-    @Column({ type: 'mediumtext' })
-    @IsOptional()
-    events: string = '[]';
+    @Column({ type: 'mediumtext', select: false })
+    @IsString()
+    events!: string;
 
     /** Original XML file content of the law document */
-    @Column({ type: 'mediumtext' })
+    @Column({ type: 'mediumtext', select: false })
     @IsString()
     originalXml!: string;
 
@@ -44,13 +44,13 @@ class BillDocument extends BaseEntity {
     // changes!: string;
 
     /** Date document was created */
-    @CreateDateColumn()
+    @CreateDateColumn({ select: false })
     @IsDate()
     @IsOptional()
     createdAt?: Date;
 
     /** Date when this document was last updated */
-    @UpdateDateColumn()
+    @UpdateDateColumn({ select: false })
     @IsDate()
     @IsOptional()
     updatedAt?: Date;

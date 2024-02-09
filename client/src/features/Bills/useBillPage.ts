@@ -48,13 +48,13 @@ const useBillPage = (disableActions = false) => {
             return errorUnsavedChanges();
         }
 
-        if (!bill) {
+        if (!bill || !bill.id) {
             throw new Error('Bill not found');
         }
 
         log('add bill document', { bill, identifier });
 
-        BillDocumentService.billDocumentControllerCreate({ bill, identifier })
+        BillDocumentService.billDocumentControllerCreate({ billId: bill.id , identifier })
             .then(reloadBill)
             .then(() => openDocument(identifier))
             .catch(handleError);

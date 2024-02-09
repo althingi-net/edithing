@@ -3,10 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Bill } from './Bill';
-
 export type CreateBillDocument = {
+    billId: number;
     identifier: string;
-    bill: Bill;
 };
 
