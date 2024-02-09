@@ -45,7 +45,11 @@
 
     .explorer-list {
         height: 100%;
-        overflow-y: auto;
+        overflow-y: hidden;
+
+        &.bill-documents {
+            overflow-y: scroll;
+        }
     }
     
     .list-item {
