@@ -3,6 +3,7 @@
 export * from './logger';
 export * from './slate/findNode';
 export * from './slate/Slate';
+export * from './slate/validateDocument';
 export * from './slate/actions/createLawList';
 export * from './slate/actions/pressEnterKey';
 export * from './slate/actions/setName';

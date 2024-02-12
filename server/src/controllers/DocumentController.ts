@@ -1,17 +1,8 @@
 import { Body, Get, JsonController, Param, Put } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Document from '../entities/Document';
-import getLawEntries, { GithubFile } from '../integration/github/getLawEntries';
-import { findOrImportDocument } from '../services/DocumentService';
-
-const cacheExpirationInMs = 1000 * 60 * 60 * 24; // 24 hour
-const lawEntriesCache: {
-    content: GithubFile[] | null;
-    lastUpdated: number | null;
-} = {
-    content: null,
-    lastUpdated: null,
-};
+import { GithubFile } from '../integration/github/getLawEntries';
+import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
 
 @JsonController()
 class DocumentController {
@@ -23,17 +14,7 @@ class DocumentController {
     @Get('/document')
     @ResponseSchema(GithubFile, { isArray: true })
     async getAll() {
-        try {
-            if (!lawEntriesCache.lastUpdated || lawEntriesCache.lastUpdated < Date.now() - cacheExpirationInMs) {
-                lawEntriesCache.content = await getLawEntries();
-                lawEntriesCache.lastUpdated = Date.now();
-            }
-
-            return lawEntriesCache.content;
-        } catch (error) {
-            console.log(error);
-            throw new Error('Could not get list of documents.');
-        }
+        return loadIndexXml();
     }
 
     /**

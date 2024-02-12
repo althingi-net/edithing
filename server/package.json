@@ -18,7 +18,8 @@
     "start:db": "docker-compose up -d",
     "destroy:db": "docker-compose down -v",
     "build:sdk": "openapi -i http://localhost:3003/api/spec.json -o ../client-sdk/src",
-    "db:seed": "ts-node ./src/bin/seedDb.ts"
+    "db:seed": "ts-node ./src/bin/seedDb.ts",
+    "validate": "ts-node ./src/bin/filterInvalidDocuments.ts"
   },
   "keywords": [],
   "author": "",

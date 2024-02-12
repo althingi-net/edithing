@@ -41,3 +41,6 @@ tsconfig.tsbuildinfo
 
 # [asdf](https://asdf-vm.com/) config
 .tool-versions
+
+# temporary files
+data
