@@ -27,7 +27,8 @@ const BillPage: FC = () => {
         xml,
         originalDocument,
         saveDocument,
-        hasError,
+        hasBillLoadingError,
+        hasDocumentLoadingError,
         isBillDocument,
         events,
     } = useBillPage(isNavigationBlocked);
@@ -36,7 +37,7 @@ const BillPage: FC = () => {
         return <NotAuthorizedError />;
     }
 
-    if (hasError) {
+    if (hasBillLoadingError) {
         return <NotFoundError />;
     }
 
@@ -57,23 +58,26 @@ const BillPage: FC = () => {
                 </Col>
                 <Col span={20} style={{ height: '100%' }}>
                     <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden'  }}>
-                        {selected 
-                            ? (
-                                <Loader loading={!slate || !originalDocument || !xml || !events}>
-                                    <Editor
-                                        key={selected}
-                                        slate={slate!}
-                                        originalDocument={originalDocument!}
-                                        xml={xml!}
-                                        saveDocument={saveDocument}
-                                        events={events}
-                                        readOnly={!isBillDocument}
-                                    />
-                                </Loader>
-                            ) : (
-                                <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
-                            )
-                        }
+                        {hasDocumentLoadingError ? (
+                            <>
+                                <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Document not available')}</h1>
+                                <h2 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select another law')}</h2>
+                            </>
+                        ) : selected ? (
+                            <Loader loading={!slate || !originalDocument || !xml || !events}>
+                                <Editor
+                                    key={selected}
+                                    slate={slate!}
+                                    originalDocument={originalDocument!}
+                                    xml={xml!}
+                                    saveDocument={saveDocument}
+                                    events={events}
+                                    readOnly={!isBillDocument}
+                                />
+                            </Loader>
+                        ) : (
+                            <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
+                        )}
                     </Content>
                 </Col>
             </Row>

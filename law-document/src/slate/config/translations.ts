@@ -49,6 +49,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Copy content to clipboard': 'Afrita efni í klippiborð',
         'Invalid Law Document': 'Ógilt lagasafn',
         'At this time, only the Law Document XML format is supported.': 'Aðeins er stutt við lagasafn í XML sniði.',
+        'Some features are not yet implemented.': 'Sumir eiginleikar eru ekki enn innleiddir.',
         'Login': 'Innskrá',
         'Profile': 'Prófíll',
         'Settings': 'Stillingar',
@@ -82,5 +83,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Error: Not Authorized': 'Villa: Ekki heimilt',
         'Please login to continue.': 'Vinsamlegast skráðu þig inn til að halda áfram.',
         'Document saved': 'Skrá vistað',
+        'Document not available': 'Skjal ekki tiltækt',
+        'Select another law': 'Veldu önnur lög',
     },
 };

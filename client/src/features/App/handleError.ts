@@ -22,6 +22,11 @@ const parseError = (error: any, t?: Translator) => {
         message = 'Invalid Law Document';
         description = 'At this time, only the Law Document XML format is supported.';
     }
+    
+    if (error.message === 'Invalid document') {
+        message = 'Invalid Law Document';
+        description = 'Some features are not yet implemented.';
+    }
 
     if (t) {
         message = t(message as string);

@@ -20,8 +20,14 @@ void (async () => {
             const document = await findOrImportDocument(lawEntry.identifier);
             const slate = JSON.parse(document.content);
 
-            if(validateDocument(slate)) {
-                console.log('Document is valid');
+            try {
+                if(validateDocument(slate)) {
+                    console.log('Document is valid');
+                }
+            } catch (error) {
+                console.error('Invalid', lawEntry.path, error);
+                console.log('xml', document.originalXml);
+                process.exit();
             }
         } catch (error: any) {
             if (error.message === 'Invalid law') {

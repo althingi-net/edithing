@@ -150,7 +150,8 @@ const useBillPage = (disableActions = false) => {
         originalDocument,
         events,
         loadDocument,
-        hasError: hasError || hasBillError,
+        hasBillLoadingError: hasBillError,
+        hasDocumentLoadingError: hasError,
     };
 };
 

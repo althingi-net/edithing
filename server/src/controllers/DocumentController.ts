@@ -1,5 +1,6 @@
-import { Body, Get, JsonController, Param, Put } from 'routing-controllers';
+import { Body, Get, HttpError, JsonController, Param, Put } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import { validateDocument } from 'law-document';
 import Document from '../entities/Document';
 import { GithubFile } from '../integration/github/getLawEntries';
 import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
@@ -26,7 +27,15 @@ class DocumentController {
     @Get('/document/:identifier')
     @ResponseSchema(Document)
     async get(@Param('identifier') identifier: string) {
-        return findOrImportDocument(identifier);
+        const document = await findOrImportDocument(identifier);
+
+        try {
+            validateDocument(JSON.parse(document.content));
+        } catch (error) {
+            throw new HttpError(409, 'Invalid Document.');
+        }
+
+        return document;
     }
 
     /** Temporary update endpoint for presentation */

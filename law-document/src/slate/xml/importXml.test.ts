@@ -296,7 +296,7 @@ test('ignore virtual tags but still import their children', () => {
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [
                 createList(MetaType.NUMART, {}, [
-                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet',  title: 'a. ', text: 'Sendiráðin í Genf.' }),
+                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet', title: 'a. ', text: 'Sendiráðin í Genf.' }),
                 ]),
             ]),
         ]),
@@ -307,7 +307,7 @@ test('ignore virtual tags but still import their children', () => {
     TAGS.art.display = 'virtual';
 
     expect(importXml(input)).toStrictEqual(output);
-    
+
     // restore art
     TAGS.art.display = oldDisplay;
 });

@@ -2,6 +2,7 @@ import { IsNumber, IsString } from 'class-validator';
 import passport from 'koa-passport';
 import { Body, Delete, Get, HttpError, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import { validateDocument } from 'law-document';
 import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import { findOrImportDocument } from '../services/DocumentService';
 
@@ -28,22 +29,34 @@ class BillDocumentController {
     @Get('/bill/:id/document/:identifier')
     @ResponseSchema(BillDocument)
     async get(@Param('id') id: number, @Param('identifier') identifier: string) {
-        const result =  await BillDocument.findOne({
+        const document =  await BillDocument.findOne({
             where: {  bill: { id }, identifier },
             select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events'],
         });
         
-        if (!result) {
+        if (!document) {
             throw new HttpError(404, 'BillDocument not found');
         }
 
-        return result;
+        try {
+            validateDocument(JSON.parse(document.content));
+        } catch (error) {
+            throw new HttpError(409, 'Invalid Document.');
+        }
+
+        return document;
     }
 
     @Post('/bill/document')
     @ResponseSchema(BillDocument)
     async create(@Body() { billId, identifier }: CreateBillDocument) {
         const { title, content, originalXml } = await findOrImportDocument(identifier);
+
+        try {
+            validateDocument(JSON.parse(content));
+        } catch (error) {
+            throw new HttpError(409, 'Invalid Document.');
+        }
 
         await BillDocument.save({
             bill: { id: billId },
