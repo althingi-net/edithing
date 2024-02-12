@@ -1,10 +1,12 @@
 import { Collapse } from 'antd';
 import { BillDocument, GithubFile } from 'client-sdk';
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import useLanguageContext from '../App/useLanguageContext';
+import filterLawEntry from '../Documents/filterLawEntry';
 import './BillDocumentExplorer.css';
 import BillDocumentList from './BillDocumentList';
 import DocumentsList from './DocumentsList';
+import PanelHeader from './PanelHeader';
 
 interface Props {
     selected?: string;
@@ -15,12 +17,18 @@ interface Props {
     onDeleteDocument: (identifier: string) => void;
 }
 
+const isInBillDocuments = (law: GithubFile, billDocuments: BillDocument[] | undefined) => {
+    return billDocuments?.find(doc => doc.identifier === law.identifier);
+};
+
 const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments, onAddDocument, onDeleteDocument }) => {
     const { t } = useLanguageContext();
-    const availableDocuments = useMemo(
-        () => lawList.filter(law => !billDocuments?.find(doc => doc.identifier === law.identifier)), 
-        [lawList, billDocuments]
-    );
+    const [filter, setFilter] = useState('');
+    const availableDocuments = useMemo(() => {
+        return lawList.filter(law => 
+            !isInBillDocuments(law, billDocuments)
+            && filterLawEntry(filter)(law));
+    }, [lawList, billDocuments, filter]);
 
     return (
         <div className='bill-document-explorer'>
@@ -33,7 +41,10 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                 size='small'
                 ghost={true}
             >
-                <Collapse.Panel header={t('Documents in the Bill')} key="1">
+                <Collapse.Panel
+                    header={t('Documents in the Bill')}
+                    key="1"
+                >
                     <div className='explorer-list bill-documents'>
                         <BillDocumentList
                             billDocuments={billDocuments}
@@ -43,7 +54,10 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                         />
                     </div>
                 </Collapse.Panel>
-                <Collapse.Panel header={t('Legal Codex')} key="2">
+                <Collapse.Panel
+                    header={<PanelHeader title={t('Legal Codex')} onFilter={setFilter} />} 
+                    key="2"
+                >
                     <div className='explorer-list'>
                         <DocumentsList
                             documents={availableDocuments}

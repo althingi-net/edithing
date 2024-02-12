@@ -1,9 +1,9 @@
 import { Button, Flex, List, Space } from 'antd';
 import Search from 'antd/es/input/Search';
-import { GithubFile } from 'client-sdk';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLanguageContext from '../App/useLanguageContext';
+import filterLawEntry from './filterLawEntry';
 import useLawListContext from './useLawListContext';
 
 const DocumentSelector: FC = () => {
@@ -44,14 +44,6 @@ const DocumentSelector: FC = () => {
             />
         </Space >
     );
-};
-
-const filterLawEntry = (filter: string) => (item: GithubFile) => {
-    const filterLower = filter.toLowerCase();
-
-    return item.name.toLowerCase().includes(filterLower) ||
-        item.identifier.toLowerCase().includes(filterLower) ||
-        item.date.toLowerCase().includes(filterLower);
 };
 
 export default DocumentSelector;
