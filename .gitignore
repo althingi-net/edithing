@@ -44,3 +44,6 @@ tsconfig.tsbuildinfo
 
 # temporary files
 data
+
+# Production files
+/production/process-production.yml

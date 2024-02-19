@@ -2,6 +2,7 @@ apps:
   - script: './server/dist/index.js'
     exec_mode: 'fork'
     name: 'worker-0'
+    interpreter: 'ts-node'
     env:
         PORT: 3500
         NODE_ENV: production
