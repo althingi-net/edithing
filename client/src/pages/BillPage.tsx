@@ -11,6 +11,7 @@ import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
 import Editor from '../features/Editor/Editor';
+import BillPreview from '../features/Bills/BillPreview';
 
 const BillPage: FC = () => {
     const { t } = useLanguageContext();
@@ -73,10 +74,13 @@ const BillPage: FC = () => {
                                     saveDocument={saveDocument}
                                     events={events}
                                     readOnly={!isBillDocument}
+                                    bill={bill}
                                 />
                             </Loader>
                         ) : (
-                            <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select a bill')}</h1>
+                            <Loader loading={!bill}>
+                                <BillPreview bill={bill!} />
+                            </Loader>
                         )}
                     </Content>
                 </Col>

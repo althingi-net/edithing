@@ -23,7 +23,10 @@ class BillDocumentController {
     @Get('/bill/:id/document')
     @ResponseSchema(BillDocument, { isArray: true })
     getAll(@Param('id') id: number) {
-        return BillDocument.findBy({ bill: { id } });
+        return BillDocument.find({
+            where: { bill: { id } },
+            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events'],
+        });
     }
 
     @Get('/bill/:id/document/:identifier')

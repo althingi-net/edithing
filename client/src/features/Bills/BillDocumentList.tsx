@@ -3,8 +3,8 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import { BillDocument } from 'client-sdk';
 import { FC } from 'react';
+import { formatIdentifier } from 'law-document';
 import useLanguageContext from '../App/useLanguageContext';
-import formatIdentifier from '../Documents/formatIdentifier';
 
 interface Props {
     billDocuments: BillDocument[] | undefined,

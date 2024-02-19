@@ -29,28 +29,49 @@ const EditorSidePanel: FC<Props> = (props) => {
         return (
             <div style={{ height: 'calc(100vh - 104px)', overflowY: 'auto' }}>
                 <Collapse defaultActiveKey={['5']} destroyInactivePanel>
-                    <Collapse.Panel disabled={readOnly} header={t('Element Configuration')} key="1">
+                    <Collapse.Panel
+                        key="1"
+                        header={t('Element Configuration')}
+                        collapsible={readOnly ? 'disabled' : undefined}
+                    >
                         <NodeMetaForm />
                     </Collapse.Panel>
-                    <Collapse.Panel header={t('Old XML')} key="2" extra={<CopyClipboardButton content={xml} />}>
+                    <Collapse.Panel
+                        key="2"
+                        header={t('Old XML')}
+                        extra={<CopyClipboardButton content={xml} />}
+                    >
                         <CodeBlock
                             text={xml}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header="Slate" key="3" extra={<CopyClipboardButton content={slateState} />}>
+                    <Collapse.Panel
+                        key="3"
+                        header="Slate"
+                        extra={<CopyClipboardButton content={slateState} />}
+                    >
                         <CodeBlock
                             text={slateState}
                             language={'json'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel header={t('New XML')} key="4" extra={<CopyClipboardButton content={xmlExport} />}>
+                    <Collapse.Panel
+                        key="4"
+                        header={t('New XML')}
+                        extra={<CopyClipboardButton content={xmlExport} />}
+                    >
                         <CodeBlock
                             text={xmlExport}
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    <Collapse.Panel disabled={readOnly} header={t('Changes')} key="5" extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}>
+                    <Collapse.Panel
+                        key="5"
+                        header={t('Changes')}
+                        extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}
+                        collapsible={readOnly ? 'disabled' : undefined}
+                    >
                         <LawChanges changelog={changelog} />
                     </Collapse.Panel>
                 </Collapse>

@@ -117,7 +117,7 @@ const useBillPage = (disableActions = false) => {
             .then(() => setIsBillDocument(true))
             .catch((error) => {
                 // Fallback to document controller if the bill document is not found
-                if ('body' in error && error.body.name === 'HttpError') {
+                if ('body' in error && error.body?.name === 'HttpError') {
                     return DocumentService.documentControllerGet(selected)
                         .then((document) => {
                             log('loaded document', { document });

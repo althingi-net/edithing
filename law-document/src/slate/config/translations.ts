@@ -85,5 +85,9 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Document saved': 'Skrá vistað',
         'Document not available': 'Skjal ekki tiltækt',
         'Select another law': 'Veldu önnur lög',
+        'Chapter': 'Kafli',
+        'Amendment to': 'Breyting á',
+        'no.': 'nr.',
+        'Open Bill Preview': 'Opna frumvarpsyfirlit',
     },
 };

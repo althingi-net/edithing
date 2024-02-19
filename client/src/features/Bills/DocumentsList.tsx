@@ -5,8 +5,8 @@ import { Tooltip } from 'antd';
 import { GithubFile } from 'client-sdk';
 import { FC } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { formatIdentifier } from 'law-document';
 import useLanguageContext from '../App/useLanguageContext';
-import formatIdentifier from '../Documents/formatIdentifier';
 import Loader from '../App/Loader';
 import getTextSize from '../App/getTextSize';
 

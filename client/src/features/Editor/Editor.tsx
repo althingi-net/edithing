@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd';
+import { Bill } from 'client-sdk';
 import { Event, LawEditor } from 'law-document';
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import './Editor.css';
@@ -22,9 +23,18 @@ interface Props {
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;
+    bill?: Bill;
 }
 
-const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocument, events }) => {
+const Editor: FC<Props> = ({
+    slate,
+    originalDocument,
+    xml,
+    readOnly,
+    saveDocument,
+    events,
+    bill,
+}) => {
     const highlight = useHighlightContext();
     const editor = useMemo(() => {
         const newEditor = createEditorWithPlugins();
@@ -60,8 +70,12 @@ const Editor: FC<Props> = ({ slate, originalDocument, xml, readOnly, saveDocumen
                         </div>
                     </Col>
                     <Col span={12}>
-                        { readOnly ? null : <Toolbar saveDocument={handleSave} /> }
-                        <EditorSidePanel readOnly={readOnly} xml={xml} originalDocument={originalDocument} />
+                        { readOnly ? null : <Toolbar saveDocument={handleSave} bill={bill} /> }
+                        <EditorSidePanel
+                            readOnly={readOnly}
+                            xml={xml}
+                            originalDocument={originalDocument}
+                        />
                     </Col>
                 </Row>
             </div>
