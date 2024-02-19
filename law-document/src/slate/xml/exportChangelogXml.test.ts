@@ -11,9 +11,13 @@ test('export added', () => {
 
     expect(exportChangelogXml(changelog)).toBe(xmlFormat(`
         <changes>
-            <change id="Chapter-1.Art-2" type="added" nr="1">
-                New Paragraph
-            </change>
+            <art nr="1">
+                <subart nr="1">
+                    <sen nr="1" change-type="added" origin-id="Chapter-1.Art-2">
+                        New Paragraph
+                    </sen>
+                </subart>
+            </art>
         </changes>
     `));
 });
@@ -27,9 +31,13 @@ test('export removed', () => {
 
     expect(exportChangelogXml(changelog)).toBe(xmlFormat(`
         <changes>
-            <change id="Chapter-1.Art-2" type="deleted" nr="1">
-                New Paragraph
-            </change>
+            <art nr="1">
+                <subart nr="1">
+                    <sen nr="1" change-type="deleted" origin-id="Chapter-1.Art-2">
+                        New Paragraph
+                    </sen>
+                </subart>
+            </art>
         </changes>
     `));
 });
@@ -43,9 +51,13 @@ test('export changed', () => {
 
     expect(exportChangelogXml(changelog)).toBe(xmlFormat(`
         <changes>
-            <change id="Chapter-1.Art-2" type="changed" nr="1">
-                New Paragraph
-            </change>
+            <art nr="1">
+                <subart nr="1">
+                    <sen nr="1" change-type="changed" origin-id="Chapter-1.Art-2">
+                        New Paragraph
+                    </sen>
+                </subart>
+            </art>
         </changes>
     `));
 });

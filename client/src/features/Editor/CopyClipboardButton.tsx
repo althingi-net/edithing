@@ -28,14 +28,14 @@ const CopyClipboardButton: FC<Props> = ({ content, transform }) => {
         return null;
     }
 
-    const text = typeof content === 'string' ? content
-        : transform ? transform(content)
-            : JSON.stringify(content, null, 2);
-
     return (
         <Tooltip title={t('Copy content to clipboard')}>
             <Button
                 onClick={(event) => {
+                    const text = typeof content === 'string' ? content
+                        : transform ? transform(content)
+                            : JSON.stringify(content, null, 2);
+
                     void navigator.clipboard.writeText(text);
                     setCopied(true);
                     event.stopPropagation();

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { FC, useState } from 'react';
-import { Changelog , parseIdToDisplay } from 'law-document';
+import { Changelog , groupChangesByArticle, parseIdToDisplay } from 'law-document';
 import { Switch, Typography } from 'antd';
 import useLanguageContext, { Translator } from '../App/useLanguageContext';
 
@@ -7,9 +8,11 @@ const { Text } = Typography;
 
 interface Props {
     changelog: Changelog[];
+    displayFullTextOnly?: boolean;
 }
 
-const LawChanges: FC<Props> = ({ changelog }) => {
+
+const LawChanges: FC<Props> = ({ changelog, displayFullTextOnly }) => {
     const { t } = useLanguageContext();
     const [showOnlyDifference, setShowOnlyDifference] = useState(true);
 
@@ -19,15 +22,24 @@ const LawChanges: FC<Props> = ({ changelog }) => {
         );
     }
 
-    const changes = changelog.map((change, index) => (
-        <div key={`${change.id}-${index}`}>
-            <center>{index + 1}. {t('art')}.</center>
-            <div>{parseChange(t, change, showOnlyDifference)}</div>
-        </div>
-    ));
+    const groupedChanges = groupChangesByArticle(changelog);
+    const renderedChanges = Object.entries(groupedChanges).map(([id, changes], index) => {
+        return (
+            <div key={`${id}-${index}`}>
+                <div>{parseIdToDisplay(t, id)}</div>
+                <div>
+                    <ol type='a'>
+                        {changes.map((change) => (
+                            <li key={change.id}>{parseChange(t, change, !displayFullTextOnly && showOnlyDifference)}</li>
+                        ))}
+                    </ol>
+                </div>
+            </div>
+        );
+    });
 
-    return (
-        <div>
+    const headerActions = displayFullTextOnly ? null : (
+        <>
             <center>
                 <Switch
                     checkedChildren={t('Only display differences')}
@@ -37,7 +49,13 @@ const LawChanges: FC<Props> = ({ changelog }) => {
                 />
             </center>
             <hr />
-            {changes}
+        </>
+    );
+
+    return (
+        <div>
+            {headerActions}
+            {renderedChanges}
         </div>
     );
 };

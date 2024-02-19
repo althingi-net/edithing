@@ -2,6 +2,8 @@ import passport from 'koa-passport';
 import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import Bill from '../entities/Bill';
+import BillDocument from '../entities/BillDocument';
+import { exportBillXml } from '../services/BillService/exportBillXml';
 
 @JsonController()
 @OpenAPI({
@@ -19,6 +21,16 @@ class BillController {
     @ResponseSchema(Bill)
     get(@Param('id') id: number) {
         return Bill.findOneOrFail({ where: { id } });
+    }
+
+    @Get('/bills/:id/xml')
+    async getXml(@Param('id') id: number) {
+        const bill = await Bill.findOneOrFail({ where: { id } }) ;
+        const documents = await BillDocument.find({
+            where: { bill },
+            select: ['originalXml', 'content', 'events', 'identifier', 'title']
+        });
+        return exportBillXml(bill, documents);
     }
 
     @Post('/bills')

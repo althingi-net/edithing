@@ -79,4 +79,22 @@ export class BillService {
         });
     }
 
+    /**
+     * Get xml
+     * @param id
+     * @returns any Successful response
+     * @throws ApiError
+     */
+    public static billControllerGetXml(
+        id: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/bills/{id}/xml',
+            path: {
+                'id': id,
+            },
+        });
+    }
+
 }

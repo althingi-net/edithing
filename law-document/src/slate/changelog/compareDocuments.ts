@@ -13,14 +13,14 @@ export const compareDocuments = (editor: Editor, original: Descendant[]) => {
     const originalTexts = flattenSlateParagraphs(original);
     const newTexts = flattenSlateParagraphs(editor.children);
 
-    let changelog = createChangelog(editor, originalTexts, newTexts, editor.events);
+    let changelog = createChangelog(originalTexts, newTexts, editor.events);
     changelog = sortChangelog(changelog);
     changelog = filterUnique(changelog);
     
     return changelog;
 };
 
-const createChangelog = (editor: Editor, originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[], events: Event[]) => {
+const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: FlattenedParagraph[], events: Event[]) => {
     const changelog: Changelog[] = [];
     
     for (const event of events) {
