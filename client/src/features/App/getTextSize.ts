@@ -13,6 +13,6 @@ const getTextSize = (text: string) => {
     };
 
     return size;
-}
+};
 
 export default getTextSize;

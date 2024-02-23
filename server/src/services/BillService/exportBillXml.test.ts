@@ -1,15 +1,14 @@
-import { createEditorWithPlugins } from 'law-document';
 
-const setupEditor = (document: any[]) => {
-    const editor = createEditorWithPlugins(); 
-    editor.children = document;
+// const setupEditor = (document: any[]) => {
+//     const editor = createEditorWithPlugins(); 
+//     editor.children = document;
 
-    const originalDocument = document;
+//     const originalDocument = document;
 
-    return { editor, originalDocument };
-};
+//     return { editor, originalDocument };
+// };
 
-test.todo('export added', () => {
+test.skip('export added', () => {
 
     // const { editor, originalDocument } = setupEditor([
     //     createList(MetaType.CHAPTER, {}, [
@@ -53,7 +52,7 @@ test.todo('export added', () => {
     // `));
 });
 
-test.todo('export removed', () => {
+test.skip('export removed', () => {
     // const changelog: Changelog[] = [{
     //     type: 'deleted',
     //     id: 'Chapter-1.Art-2',
@@ -73,7 +72,7 @@ test.todo('export removed', () => {
     // `));
 });
 
-test.todo('export changed', () => {
+test.skip('export changed', () => {
     // const changelog: Changelog[] = [{
     //     type: 'changed',
     //     id: 'Chapter-1.Art-2',
