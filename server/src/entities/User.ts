@@ -1,6 +1,6 @@
 import { IsDate, IsEnum, IsLowercase, IsNumber, IsOptional, Length } from 'class-validator';
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, OneToMany } from 'typeorm';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import Bill from './Bill';
 
 export enum UserRole {
