@@ -12,5 +12,9 @@
         "typecheck": "npm run typecheck --workspaces --if-present",
         "lint": "npm run lint --workspaces --if-present",
         "test": "npm run test --workspaces --if-present"
+    },
+    "devDependencies": {
+        "@parcel/packager-raw-url": "^2.11.0",
+        "@parcel/transformer-webmanifest": "^2.11.0"
     }
 }
