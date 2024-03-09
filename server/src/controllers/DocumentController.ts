@@ -1,4 +1,5 @@
 import { Body, Get, HttpError, JsonController, Param, Put } from 'routing-controllers';
+import { Descendant } from 'slate';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { validateDocument } from 'law-document';
 import Document from '../entities/Document';
@@ -30,7 +31,7 @@ class DocumentController {
         const document = await findOrImportDocument(identifier);
 
         try {
-            validateDocument(JSON.parse(document.content));
+            validateDocument(JSON.parse(document.content) as Descendant[]);
         } catch (error) {
             throw new HttpError(409, 'Invalid Document.');
         }

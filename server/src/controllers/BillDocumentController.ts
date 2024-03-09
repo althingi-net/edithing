@@ -3,6 +3,7 @@ import passport from 'koa-passport';
 import { Body, Delete, Get, HttpError, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { validateDocument } from 'law-document';
+import { Descendant } from 'slate';
 import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import { findOrImportDocument } from '../services/DocumentService';
 
@@ -42,7 +43,7 @@ class BillDocumentController {
         }
 
         try {
-            validateDocument(JSON.parse(document.content));
+            validateDocument(JSON.parse(document.content) as Descendant[]);
         } catch (error) {
             throw new HttpError(409, 'Invalid Document.');
         }
@@ -56,7 +57,7 @@ class BillDocumentController {
         const { title, content, originalXml } = await findOrImportDocument(identifier);
 
         try {
-            validateDocument(JSON.parse(content));
+            validateDocument(JSON.parse(content) as Descendant[]);
         } catch (error) {
             throw new HttpError(409, 'Invalid Document.');
         }

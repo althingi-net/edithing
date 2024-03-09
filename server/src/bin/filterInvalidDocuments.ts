@@ -2,6 +2,7 @@
 import 'dotenv/config';
 import { validateDocument } from 'law-document';
 import 'reflect-metadata';
+import { Descendant } from 'slate';
 import database from '../config/database';
 import { initConnection } from '../integration/database/connection';
 import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
@@ -18,7 +19,7 @@ void (async () => {
 
         try {
             const document = await findOrImportDocument(lawEntry.identifier);
-            const slate = JSON.parse(document.content);
+            const slate = JSON.parse(document.content) as Descendant[];
 
             try {
                 if(validateDocument(slate)) {

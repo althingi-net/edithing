@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Event, compareDocuments, formatIdentifier } from 'law-document';
-import { LawEditor, MetaType } from 'law-document/src/slate/Slate';
-import { Changelog } from 'law-document/src/slate/changelog/Changelog';
-import { groupChangesByArticle } from 'law-document/src/slate/changelog/groupChangesByArticle';
+import { Event, compareDocuments, formatIdentifier, LawEditor, MetaType, Changelog, groupChangesByArticle } from 'law-document';
 // import { Descendant } from 'slate';
 import xmlFormat from 'xml-formatter';
 import Bill from '../../entities/Bill';
