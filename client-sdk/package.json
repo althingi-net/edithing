@@ -2,10 +2,14 @@
   "name": "client-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "tsc --build --watch",
-    "build": "tsc --build"
+    "build": "NODE_ENV=production tsc --build",
+    "prebuild": "npm run clean",
+    "clean": "rimraf ./dist coverage *.tsbuildinfo"
   },
   "author": "",
   "license": "ISC",

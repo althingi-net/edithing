@@ -23,11 +23,6 @@
         "jsx": "react-jsx",
         "rootDir": "./src"
     },
-    "references": [{
-        "path": "../client-sdk"
-    }, {
-        "path": "../law-document"
-    }],
     "include": [
         "src"
     ]
