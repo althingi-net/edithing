@@ -6,6 +6,7 @@ const isNotProduction = process.env.NODE_ENV !== 'production';
 
 const database: DataSourceOptions = {
     type: 'mysql',
+    driver: require('mysql2'),
     host: 'localhost',
     port: isTestEnv ? 3307 : 3306,
     username: process.env.DATABASE_USER,
