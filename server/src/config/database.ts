@@ -5,8 +5,7 @@ const isTestEnv = process.env.NODE_ENV === 'test';
 const isNotProduction = process.env.NODE_ENV !== 'production';
 
 const database: DataSourceOptions = {
-    type: 'mariadb',
-    driver: require('mysql2'),
+    type: 'mysql',
     host: 'localhost',
     port: isTestEnv ? 3307 : 3306,
     username: process.env.DATABASE_USER,
