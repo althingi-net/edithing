@@ -10,7 +10,7 @@ docker run -p 127.0.0.1:3000:80 production-image
 git pull
 node --max-old-space-size=1000 $(which npm) ci --include=dev
 npm run build
-pm2 restart all
+pm2 restart all (or do pm2 start with watch command, then can skip this step on every update)
 
 ## Installing onto Debian V10 VPS
 
