@@ -36,11 +36,7 @@ const Editor: FC<Props> = ({
     bill,
 }) => {
     const highlight = useHighlightContext();
-    const editor = useMemo(() => {
-        const newEditor = createEditorWithPlugins();
-        newEditor.events = events || [];
-        return newEditor;
-    }, [events]);
+    const editor = useMemo(() => createEditorWithPlugins(events), [events]);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
 
     const classNames = [
