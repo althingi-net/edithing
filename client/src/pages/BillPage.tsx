@@ -8,10 +8,10 @@ import useBlockNavigation from '../features/App/useBlockNavigation';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useSessionContext from '../features/App/useSessionContext';
 import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
+import BillPreview from '../features/Bills/BillPreview';
 import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
 import Editor from '../features/Editor/Editor';
-import BillPreview from '../features/Bills/BillPreview';
 
 const BillPage: FC = () => {
     const { t } = useLanguageContext();

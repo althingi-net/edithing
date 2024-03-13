@@ -66,6 +66,7 @@ export * from './slate/transformations/normalizeListItem';
 export * from './slate/transformations/setListItemMeta';
 export * from './slate/transformations/setListItemTitleFromMeta';
 export * from './slate/transformations/setMeta';
+export * from './slate/xml/exportBillXml';
 export * from './slate/xml/exportChangelogXml';
 export * from './slate/xml/exportXml';
 export * from './slate/xml/getTitle';

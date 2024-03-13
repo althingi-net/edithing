@@ -1,9 +1,9 @@
 import passport from 'koa-passport';
 import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import { exportBillXml } from 'law-document';
 import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
-import { exportBillXml } from '../services/BillService/exportBillXml';
 
 @JsonController()
 @OpenAPI({
@@ -30,7 +30,7 @@ class BillController {
             where: { bill },
             select: ['originalXml', 'content', 'events', 'identifier', 'title']
         });
-        return exportBillXml(bill, documents);
+        return exportBillXml(bill.title, documents);
     }
 
     @Post('/bills')

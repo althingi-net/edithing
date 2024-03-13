@@ -1,11 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Event, compareDocuments, formatIdentifier, LawEditor, MetaType, Changelog, groupChangesByArticle } from 'law-document';
-// import { Descendant } from 'slate';
 import xmlFormat from 'xml-formatter';
-import Bill from '../../entities/Bill';
-import BillDocument from '../../entities/BillDocument';
+import { Descendant } from 'slate';
+import { compareDocuments } from '../changelog/compareDocuments';
+import { LawEditor, MetaType } from '../Slate';
+import { Changelog } from '../changelog/Changelog';
+import { groupChangesByArticle } from '../changelog/groupChangesByArticle';
+import { formatIdentifier } from '../formatIdentifier';
+import { importXml } from './importXml';
 
-export const exportBillXml = (bill: Bill, billDocuments: BillDocument[]): string => {
+export interface BillDocument {
+    originalXml: string;
+    content: string;
+    events: string;
+    identifier: string;
+    title: string;
+}
+
+export const exportBillXml = (billTitle: string, billDocuments: BillDocument[]): string => {
     let articleCountOffset = 0;
 
     const chapters = billDocuments.map((document, index) => {
@@ -18,7 +28,7 @@ export const exportBillXml = (bill: Bill, billDocuments: BillDocument[]): string
     return xmlFormat(`
         <bill>
             <title>
-                ${bill.title}
+                ${billTitle}
             </title>
             ${chapters.join('\n')}
         </bill>
@@ -26,15 +36,15 @@ export const exportBillXml = (bill: Bill, billDocuments: BillDocument[]): string
 };
 
 const parseDocument = (document: BillDocument, chapterNr: number, articleCountOffset: number) => {
-    const originalContent = JSON.parse(document.originalXml) as any[];
-    const newContent = JSON.parse(document.content) as any[];
+    const originalContent = importXml(document.originalXml);
+    const newContent = JSON.parse(document.content) as Descendant[];
     const events = JSON.parse(document.events) as Event[];
     
     const changelog = compareDocuments(
         {
             children: newContent,
             events,
-        } as LawEditor, 
+        } as unknown as LawEditor, 
         originalContent
     );
     const articles = createChangelogXml(changelog, articleCountOffset);
