@@ -7,6 +7,8 @@ import database from '../config/database';
 import { initConnection } from '../integration/database/connection';
 import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
 
+
+
 void (async () => {
     // @ts-ignore
     database.logging = false;
@@ -15,7 +17,11 @@ void (async () => {
     const unsupportedLaws = [];
 
     for (const lawEntry of lawEntries) {
-        console.log('Processing:', lawEntry.identifier);
+        if (lawEntry.identifier !== '2023.66') {
+            continue;
+        }
+        
+        console.log('\nProcessing:', lawEntry.identifier);
 
         try {
             const document = await findOrImportDocument(lawEntry.identifier);
@@ -25,10 +31,9 @@ void (async () => {
                 if(validateDocument(slate)) {
                     console.log('Document is valid');
                 }
-            } catch (error) {
-                console.error('Invalid', lawEntry.path, error);
-                console.log('xml', document.originalXml);
-                process.exit();
+            } catch (error: any) {
+                console.error('Invalid xml', error.name);
+                continue;
             }
         } catch (error: any) {
             if (error.message === 'Invalid law') {

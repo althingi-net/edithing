@@ -1,5 +1,6 @@
-import { Descendant, Editor, Element, Node, Text } from 'slate';
 import { isPlainObject } from 'is-plain-object';
+import { Descendant, Editor, Element, Node, Text } from 'slate';
+import { isListItem } from './element/ListItem';
 
 export class ValidationError extends Error {}
 
@@ -29,11 +30,28 @@ const isNode = (value: any): value is Node => {
 const isElement = (value: any): value is Element => {
     try {
         return (
-            isPlainObject(value) &&
-            isNodeList(value.children) &&
-            !Editor.isEditor(value)
+            isPlainObject(value)
+            && validateListItem(value)
+            && isNodeList(value.children)
+            && !Editor.isEditor(value)
         );
     } catch (error) {
-        throw new ValidationError(`Element is not valid: ${JSON.stringify(value)}`);   
+        const { children, ...valueWithoutChildren } = value;
+        throw new ValidationError(`Element is not valid: ${JSON.stringify(valueWithoutChildren)}`);   
     }
+};
+
+const validateListItem = (value: any) =>  {
+    const { children, ...valueWithoutChildren } = value;
+    console.log('sadeqrf', valueWithoutChildren);
+
+    if (isListItem(value)) {
+        console.log('sad', value.meta?.nr);
+        if (!value.meta?.nr.match(/\d+/)?.[0]) {
+            const { children, ...valueWithoutChildren } = value;
+            throw new ValidationError(`Invalid nr attribute: ${JSON.stringify(valueWithoutChildren)}`);
+        }
+    }
+
+    return true;
 };

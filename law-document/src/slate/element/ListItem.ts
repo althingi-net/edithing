@@ -1,4 +1,4 @@
-import { Descendant, Element, Node } from 'slate';
+import { Descendant, Element } from 'slate';
 import { ElementType, MetaType } from '../Slate';
 import { ListMeta } from './List';
 
@@ -24,7 +24,6 @@ export interface ListItemMeta extends ListMeta {
 
     nrType?: 'roman' | 'numeric' | 'alphabet'; // roman, numeric, alphabet, mixed. By default empty (which means numeric)
 
-
     /** Only set when nrType=roman, should always have the numeric value of nr */
     romanNr?: string;
 
@@ -38,7 +37,7 @@ export interface ListItemMeta extends ListMeta {
     styleNote?: string; // inline-with-parent
 }
 
-export const isListItem = (node?: Partial<Node> | null): node is ListItem => {
+export const isListItem = (node?: any): node is ListItem => {
     return Element.isElementType(node, ElementType.LIST_ITEM);
 };
 
