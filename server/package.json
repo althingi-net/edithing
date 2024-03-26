@@ -20,6 +20,7 @@
     "build:sdk": "openapi -i http://localhost:3003/api/spec.json -o ../client-sdk/src",
     "db:seed": "ts-node ./src/bin/seedDb.ts",
     "db:shell": "ts-node ./src/bin/dbShell.ts",
+    "queue": "ts-node ./src/bin/queueWorker.ts",
     "validate": "ts-node ./src/bin/filterInvalidDocuments.ts"
   },
   "keywords": [],
@@ -30,6 +31,7 @@
     "@koa/cors": "^5.0.0",
     "@koa/multer": "^3.0.2",
     "@koa/router": "^12.0.1",
+    "amqplib": "^0.10.3",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -59,6 +61,7 @@
     "xml-formatter": "^3.6.2"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.5",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.10",

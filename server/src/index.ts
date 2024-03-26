@@ -4,10 +4,15 @@ import 'reflect-metadata';
 import { initConnection } from './integration/database/connection';
 import app from './app';
 import server from './config/server';
+import connection from './integration/messageQueue/connection';
 
 // Start the server
 void (async () => {
-    await initConnection();
+    await Promise.all([
+        initConnection(),
+        connection.connect(),
+    ]);
+
     app.listen(server.port);
     console.log(`🚀 Server is running at ${server.host}`);
 

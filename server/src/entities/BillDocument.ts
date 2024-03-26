@@ -30,6 +30,7 @@ class BillDocument extends BaseEntity {
     @IsString()
     content!: string;
 
+    /** Cached Slate events of the law document */
     @Column({ type: 'mediumtext', select: false })
     @IsString()
     events!: string;
@@ -38,10 +39,6 @@ class BillDocument extends BaseEntity {
     @Column({ type: 'mediumtext', select: false })
     @IsString()
     originalXml!: string;
-
-    // @Column({ type: 'text' })
-    // @IsOptional()
-    // changes!: string;
 
     /** Date document was created */
     @CreateDateColumn({ select: false })

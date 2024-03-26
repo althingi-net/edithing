@@ -25,6 +25,14 @@ services:
     ports:
       - "3307:3306"
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5671:5671"
+      - "5672:5672"
+      - "15671:15672"
+
   adminer:
     image: adminer:latest
     restart: always

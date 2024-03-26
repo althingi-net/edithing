@@ -6,6 +6,8 @@ import { validateDocument } from 'law-document';
 import { Descendant } from 'slate';
 import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import { findOrImportDocument } from '../services/DocumentService';
+import connection from '../integration/messageQueue/connection';
+import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
 
 class CreateBillDocument {
     @IsNumber()
@@ -80,8 +82,21 @@ class BillDocumentController {
         @Param('id') id: number,
         @Body() billDocument: UpdateBillDocument,
     ) {
-        const result = await BillDocument.update({ id }, billDocument);
-        return (result.affected ?? 0) >= 1 ? true : false;
+        const update = await BillDocumentUpdate.save({
+            billDocumentId: id,
+            title: billDocument.title,
+            content: billDocument.content,
+            events: billDocument.events,
+        });
+
+        await connection.sendToQueue('BillDocumentUpdate', update.id!);
+
+        await waitFor(async () => {
+            const updated = await BillDocumentUpdate.findOneBy({ id: update.id! });
+            return updated?.status !== UpdateStatus.PENDING;
+        });
+        
+        return true;
     }
 
     @Delete('/bill/:id/document/:identifier')
@@ -90,5 +105,18 @@ class BillDocumentController {
         return (result.affected ?? 0) >= 1 ? true : false;
     }
 }
+
+const waitFor = (condition: () => Promise<boolean>) => {
+    return new Promise<void>((resolve) => {
+        setTimeout(async () => {
+
+            if (await condition()) {
+                resolve();
+            } else {
+                resolve(waitFor(condition));
+            }
+        }, 300);
+    });
+};
 
 export default BillDocumentController;
