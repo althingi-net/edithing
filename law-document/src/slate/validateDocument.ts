@@ -31,7 +31,7 @@ const isElement = (value: any): value is Element => {
     try {
         return (
             isPlainObject(value)
-            && validateListItem(value)
+            // && validateListItem(value)
             && isNodeList(value.children)
             && !Editor.isEditor(value)
         );
@@ -47,7 +47,7 @@ const validateListItem = (value: any) =>  {
 
     if (isListItem(value)) {
         console.log('sad', value.meta?.nr);
-        if (!value.meta?.nr.match(/\d+/)?.[0]) {
+        if (!value.meta?.nr.match(/(\d|[a-zA-Z])+/)?.[0]) {
             const { children, ...valueWithoutChildren } = value;
             throw new ValidationError(`Invalid nr attribute: ${JSON.stringify(valueWithoutChildren)}`);
         }
