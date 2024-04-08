@@ -17,7 +17,8 @@ export const initConnection = async () => {
 
     if (!connection.isInitialized) {
         await connection.initialize();
-        console.log('Database connection initialized');
+        // @ts-expect-error port is not defined in DataSourceOptions
+        console.log(`Database connection initialized at port ${database.port}`);
     }
 
     connection.entityMetadatas.forEach(metadata => {
@@ -25,7 +26,9 @@ export const initConnection = async () => {
     });
 
     await connection.runMigrations();
-
+    
+    connection.setOptions({ debug: true });
+    
     return connection;
 };
 

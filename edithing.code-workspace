@@ -18,6 +18,10 @@
 		{
 			"name": "law-document",
 			"path": "law-document"
+		},
+		{
+			"name": "git-json-merger",
+			"path": "git-json-merger"
 		}
 	],
 	"settings": {

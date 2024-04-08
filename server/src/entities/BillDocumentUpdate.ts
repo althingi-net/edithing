@@ -23,13 +23,19 @@ class BillDocumentUpdate extends BaseEntity {
     @IsString()
     title!: string;
 
+    /** Hash of last git merge used for applying updates */
+    @Column({ default: '' })
+    @IsString()
+    @IsOptional()
+    gitHash?: string;
+
     /** Cached Slate content of the law document */
-    @Column({ type: 'mediumtext', select: false })
+    @Column({ type: 'mediumtext' })
     @IsString()
     content!: string;
 
     /** Cached Slate events of the law document */
-    @Column({ type: 'mediumtext', select: false })
+    @Column({ type: 'mediumtext' })
     @IsString()
     events!: string;
 

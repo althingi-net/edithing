@@ -2,6 +2,7 @@ import { Descendant, Editor, Element, Node, NodeEntry, Text, Transforms } from '
 
 /**
  * Original normalizeNode from Slate. Needs to runs before custom normalizeNode.
+ * Only difference is that this modified version returns booleans about whether or not it having triggered a change.
  * @param editor 
  * @param entry 
  * @returns true if the node was normalized, false otherwise

@@ -3,6 +3,7 @@
   "workspaces": [
     "client-sdk",
     "law-document",
+    "git-json-merger",
     "server",
     "client"
   ],

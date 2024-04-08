@@ -17,7 +17,7 @@ const useBillPage = (disableActions = false) => {
     const { bill, reloadBill, hasError: hasBillError } = useBill(id);
     const navigate = useNavigate();
     const [isBillDocument, setIsBillDocument] = useState<boolean>(false);
-    const { setDocument, xml, slate, originalDocument, documentId, events } = useDocument();
+    const { setDocument, xml, slate, originalDocument, documentId, events, gitHash } = useDocument();
     const { errorUnsavedChanges } = useUserErrors();
     const [hasError, setError] = useState(false);
 
@@ -97,13 +97,14 @@ const useBillPage = (disableActions = false) => {
 
         BillDocumentService.billDocumentControllerUpdate(documentId, {
             title,
+            gitHash: gitHash || '',
             content: JSON.stringify(editor.children),
             events: JSON.stringify(editor.events),
         })
             .then(() => notification.success({ message: t('Document saved'), description: `${selected} ${title}` }))
             .then(reloadBill) // Update titles in the explorer
             .catch(handleError);
-    }, [documentId, reloadBill, selected, slate, t]);
+    }, [documentId, gitHash, reloadBill, selected, slate    , t]);
 
     const loadDocument = useCallback(() => {
         if (!bill || !bill.id || !selected) {

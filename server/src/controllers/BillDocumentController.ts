@@ -85,6 +85,7 @@ class BillDocumentController {
         const update = await BillDocumentUpdate.save({
             billDocumentId: id,
             title: billDocument.title,
+            gitHash: billDocument.gitHash,
             content: billDocument.content,
             events: billDocument.events,
         });

@@ -25,6 +25,12 @@ class BillDocument extends BaseEntity {
     @IsString()
     title!: string;
 
+    /** Hash of last git merge used for applying updates */
+    @Column({ default: '' })
+    @IsString()
+    @IsOptional()
+    gitHash?: string;
+
     /** Cached Slate content of the law document */
     @Column({ type: 'mediumtext', select: false })
     @IsString()
@@ -56,6 +62,9 @@ class BillDocument extends BaseEntity {
 export class UpdateBillDocument {
     @IsString()
     title!: string;
+
+    @IsString()
+    gitHash?: string;
 
     @IsString()
     content!: string;

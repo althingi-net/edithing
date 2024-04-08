@@ -7,6 +7,7 @@ export type BillDocumentUpdate = {
     id?: number;
     billDocumentId: number;
     title: string;
+    gitHash?: string;
     content: string;
     events: string;
     status?: BillDocumentUpdate.status;

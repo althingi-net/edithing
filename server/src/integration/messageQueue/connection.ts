@@ -27,8 +27,22 @@ class RabbitMqConnection {
         console.log('✅ Rabbit MQ Connection is ready');
   
         this.channel = await this.connection.createChannel();
+
+        // Limit parallel processing tasks to one
+        await this.channel.prefetch(1);
   
         console.log('🛸 Created RabbitMQ Channel successfully');
+    }
+
+    async close() {
+        if (this.channel) {
+            await this.channel.close();
+            this.channel.removeAllListeners();
+        }
+  
+        if (this.connection) {
+            await this.connection.close();
+        }
     }
   
     async sendToQueue(queue: MessageKey, message: Messages[MessageKey]) {
@@ -50,12 +64,12 @@ class RabbitMqConnection {
 
         await this.channel!.consume(
             queue,
-            (msg) => {
+            async (msg) => {
                 if (!msg) {
                     throw new Error('Consumer cancelled by RabbitMQ server');
                 }
 
-                handleIncomingNotification(JSON.parse(msg.content.toString()) as Messages[MessageKey]);
+                await handleIncomingNotification(JSON.parse(msg.content.toString()) as Messages[MessageKey]);
                 
                 this.channel!.ack(msg);
             }

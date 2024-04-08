@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { initConnection } from '../integration/database/connection';
 import app from '../app';
 import seedTestDb from '../integration/database/seedTestDb';
+import connection from '../integration/messageQueue/connection';
 
 const setupIntegrationTestSuite = () => {
     const server: Server = createServer(app.callback());
@@ -12,6 +13,7 @@ const setupIntegrationTestSuite = () => {
         db = await initConnection();
         server.listen();
         await seedTestDb();
+        await connection.connect();
     });
 
     afterAll(async () => {
@@ -22,6 +24,8 @@ const setupIntegrationTestSuite = () => {
         if (db) {
             await db.destroy();
         }
+        
+        await connection.close();
     });
 
     return server;
