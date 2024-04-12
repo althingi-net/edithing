@@ -8,6 +8,7 @@ import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import { findOrImportDocument } from '../services/DocumentService';
 import connection from '../integration/messageQueue/connection';
 import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
+import { waitFor } from '../utils/waitFor';
 
 class CreateBillDocument {
     @IsNumber()
@@ -106,18 +107,5 @@ class BillDocumentController {
         return (result.affected ?? 0) >= 1 ? true : false;
     }
 }
-
-const waitFor = (condition: () => Promise<boolean>) => {
-    return new Promise<void>((resolve) => {
-        setTimeout(async () => {
-
-            if (await condition()) {
-                resolve();
-            } else {
-                resolve(waitFor(condition));
-            }
-        }, 300);
-    });
-};
 
 export default BillDocumentController;

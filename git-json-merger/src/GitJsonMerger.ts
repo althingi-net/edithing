@@ -1,44 +1,47 @@
 import { randomUUID } from 'crypto';
-import { mkdir, readFile, rm, writeFile } from 'fs/promises';
-import { SimpleGit, simpleGit } from 'simple-git';
+import { readFile, writeFile } from 'fs/promises';
+import path from 'path';
+import { parse, stringify } from 'yaml';
+import { GitClient } from './GitClient';
 
 export class GitJsonMerger {
     private mainBranch: string = 'main';
-    private gitFolder: string = './tmp';
-    private repository: string;
-    private git?: SimpleGit;
+    private repositoriesFolder: string = './tmp';
+    private repositoryFolder: string;
+    public git: GitClient;
 
-    public constructor(documentKey?: string) {
-        this.repository = documentKey ?? randomUUID();
+    public constructor(documentKey?: string, cwd?: string) {
+        const repository = documentKey ?? randomUUID();
+        cwd = cwd ?? process.cwd();
+        this.repositoryFolder = path.resolve(cwd, this.repositoriesFolder, repository);
+
+        this.git = new GitClient(this.repositoryFolder);
     }
 
     public async init(document: object) {
-        await this.createRepository();
+        await this.git.init();
         await this.writeDocument(document, 'Initial commit');
     }
 
     public async merge(document: object, headHash?: string) {
-
-        if (!this.git) {
-            throw new Error('Repository not initialized');
-        }
+        const hash = headHash || await this.git.getFirstCommitHash();
 
         // Create branch and commit changes
-        const start = headHash ?? await this.git.firstCommit();
-        await this.git.checkoutBranch('temp', start);
-        const hash = await this.writeDocument(document, 'Update document');
+        await this.git.switchBranch('temp', hash);
+        await this.writeDocument(document, 'Update document');
 
         // Merge branch
         try {
-            await this.git.checkout(this.mainBranch);
-            await this.git.merge(['temp']);
-            await this.git.deleteLocalBranch('temp');
+            await this.git.switchBranch(this.mainBranch);
+            await this.git.merge('temp');
+            await this.git.deleteBranch('temp');
     
             return {
-                hash: hash,
+                hash: await this.git.getCurrentHash(),
                 document: await this.readDocument(),
             };
         } catch (error) {
+            console.error(error);
             return {
                 error: 'Merge conflict',
             };
@@ -46,48 +49,18 @@ export class GitJsonMerger {
     }
 
     private async writeDocument(document: object, msg = '') {
-        if (!this.git) {
-            throw new Error('Repository not initialized');
-        }
+        let content = stringify(document, null, 2);
 
-        const folder = `${this.gitFolder}/${this.repository}`;
+        // Add padding to each line, to avoid git merge conflicts
+        content = content.split('\n').map((line) => line + '\n').join('\n');
 
-        await mkdir(folder, { recursive: true });
-        await writeFile(`${folder}/document.json`, JSON.stringify(document, null, 2));
-
-        await this.git.add('.');
-        const result = await this.git.commit(msg);
-
-        return result.commit;
+        await writeFile(`${this.repositoryFolder}/document.yaml`, content);
+        await this.git.addAndCommitAll(msg);
     }
 
     private async readDocument() {
-        const folder = `${this.gitFolder}/${this.repository}`;
-        const document = await readFile(`${folder}/document.json`, 'utf8');
+        const document = await readFile(`${this.repositoryFolder}/document.yaml`, 'utf8');
 
-        return JSON.parse(document);
-    }
-
-    private async createRepository() {
-        const folder = `${this.gitFolder}/${this.repository}`;
-
-        console.log('createRepository', folder);
-        await rm(folder, { recursive: true, force: true });
-        await mkdir(folder, { recursive: true });
-
-        this.git = simpleGit(folder);
-        await this.git.init();
-
-        // Setup json merge driver
-        //         await this.git.addConfig('merge.json.driver', '$(npm bin)/git-json-merge %A %O %B');
-        //         await this.git.addConfig('merge.json.name', 'Custom merge driver for JSON files');
-        //         await writeFile(`${folder}/.gitattributes`, '*.json merge=json');
-        //         await writeFile(`${folder}/.gitconfig`, `
-        // [core]
-        //     attributesfile = ~/.gitattributes
-        // [merge "json"]
-        //     name = custom merge driver for json files
-        //     driver = git-json-merge %A %O %B
-        //         `);
+        return parse(document);
     }
 }

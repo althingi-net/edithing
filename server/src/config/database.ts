@@ -17,6 +17,7 @@ const database: DataSourceOptions = {
             ? '**/entities/!(*.test).ts'
             : join(__dirname, '..', '**', 'entities', '!(*.test).{ts,js}')
     ],
+    logging: false,
 };
 
 export default database;

@@ -20,6 +20,11 @@ class BillDocument extends BaseEntity {
     @ValidateNested()
     bill!: Bill;
 
+
+    /** ID of the bill that this document belongs to */
+    @Column()
+    billId!: number;
+
     /** Title of this document */
     @Column()
     @IsString()

@@ -1,15 +1,16 @@
+import { GitJsonMerger } from 'git-json-merger';
 import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
-import BillDocumentUpdate from '../entities/BillDocumentUpdate';
-import connection from '../integration/messageQueue/connection';
-import { subscribeBillDocumentUpdateQueue } from '../services/BillDocumentService';
+import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
+import { runBillDocumentUpdate } from '../services/BillDocumentService';
 import setupIntegrationTestSuite from '../test/setupIntegrationTestSuite';
 
 describe('queue worker', () => {
     setupIntegrationTestSuite();
-    
-    test('simple BillDocumentUpdate', async () => {
-        await subscribeBillDocumentUpdateQueue();
+
+    test('simple update', async () => {
+        const merger = new GitJsonMerger('1-2');
+        await merger.git.destroy();
     
         await Bill.save({
             id: 1,
@@ -20,34 +21,41 @@ describe('queue worker', () => {
             identifier: 'identifier',
             bill: { id: 1 },
             title: 'title',
-            content: 'content',
+            content: JSON.stringify({ a: 1, b: 1 }),
             originalXml: 'originalXml',
             events: '[]',
         });
+
         const update = await BillDocumentUpdate.save({
             id: 3,
             billDocumentId: 2,
             title: 'title',
-            content: 'new content',
+            content: JSON.stringify({ a: 2, b: 2 }),
             events: '[]',
         });
     
-        await connection.sendToQueue('BillDocumentUpdate', update.id!);
-    
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await runBillDocumentUpdate(update.id!);
     
         const billDocument = await BillDocument.findOne({
             where: { id: 2 },
             select: ['content', 'events'],
         });
+        const billDocumentUpdate = await BillDocumentUpdate.findOne({
+            where: { id: 3 },
+            select: ['status'],
+        });
     
+        expect(billDocumentUpdate).toEqual({ status: UpdateStatus.SUCCESS });
         expect(billDocument).toEqual({
-            content: 'new content',
+            content: JSON.stringify({ a: 2, b: 2 }),
             events: '[]',
         });
     });
-    
-    test('parallel BillDocumentUpdate`s', async () => {
+
+    test('parallel updates', async () => {
+        const git = new GitJsonMerger('10-20');
+        await git.git.destroy();
+
         await Bill.save({
             id: 10,
             title: 'title',
@@ -57,7 +65,7 @@ describe('queue worker', () => {
             identifier: 'identifier',
             bill: { id: 10 },
             title: 'title',
-            content: JSON.stringify({ a: 1, b: 1 }),
+            content: JSON.stringify({ a: 1, b: 1, c: 1 }),
             originalXml: 'originalXml',
             events: '[]',
         });
@@ -66,7 +74,7 @@ describe('queue worker', () => {
             id: 30,
             billDocumentId: 20,
             title: 'title',
-            content: JSON.stringify({ a: 2, b: 1 }),
+            content: JSON.stringify({ a: 2, b: 1, c: 1 }),
             events: '[]',
         });
     
@@ -74,27 +82,99 @@ describe('queue worker', () => {
             id: 40,
             billDocumentId: 20,
             title: 'title',
-            content: JSON.stringify({ a: 1, b: 2 }),
+            content: JSON.stringify({ a: 1, b: 1, c: 2 }),
             events: '[]',
         });
-    
-        await connection.sendToQueue('BillDocumentUpdate', update1.id!);
-        await connection.sendToQueue('BillDocumentUpdate', update2.id!);
-    
-        await subscribeBillDocumentUpdateQueue();
-    
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        await runBillDocumentUpdate(update1.id!);
+        await runBillDocumentUpdate(update2.id!);
     
         const billDocument = await BillDocument.findOne({
             where: { id: 20 },
             select: ['content', 'events'],
         });
+        const billDocumentUpdate1 = await BillDocumentUpdate.findOne({
+            where: { id: 30 },
+            select: ['status'],
+        });
+        const billDocumentUpdate2 = await BillDocumentUpdate.findOne({
+            where: { id: 40 },
+            select: ['status'],
+        });
     
+        expect(billDocumentUpdate1).toEqual({ status: UpdateStatus.SUCCESS });
+        expect(billDocumentUpdate2).toEqual({ status: UpdateStatus.SUCCESS });
         expect(billDocument).toEqual({
-            content: JSON.stringify({ a: 2, b: 2 }),
+            content: JSON.stringify({ a: 2, b: 1, c: 2 }),
+            events: '[]',
+        });
+    });
+
+    test('sequential updates', async () => {
+        const git = new GitJsonMerger('10-20');
+        await git.git.destroy();
+
+        // Create bill and document
+        await Bill.save({
+            id: 10,
+            title: 'title',
+        });
+        await BillDocument.save({
+            id: 20,
+            identifier: 'identifier',
+            bill: { id: 10 },
+            title: 'title',
+            content: JSON.stringify({ a: 1 }),
+            originalXml: 'originalXml',
             events: '[]',
         });
     
-        await connection.close();
+        // Create first update
+        const update1 = await BillDocumentUpdate.save({
+            id: 30,
+            billDocumentId: 20,
+            title: 'title',
+            content: JSON.stringify({ a: 2 }),
+            events: '[]',
+        });
+
+        await runBillDocumentUpdate(update1.id!);
+        const documentAfterUpdate1 = await BillDocument.findOne({
+            where: { id: 20 },
+            select: ['gitHash'],
+        });
+
+        // Create second update
+        const update2 = await BillDocumentUpdate.save({
+            id: 40,
+            billDocumentId: 20,
+            title: 'title',
+            content: JSON.stringify({ a: 3 }),
+            events: '[]',
+            gitHash: documentAfterUpdate1?.gitHash,
+        });
+
+        await runBillDocumentUpdate(update2.id!);
+    
+        // Check results
+        const billDocument = await BillDocument.findOne({
+            where: { id: 20 },
+            select: ['content', 'events'],
+        });
+        const billDocumentUpdate1 = await BillDocumentUpdate.findOne({
+            where: { id: 30 },
+            select: ['status'],
+        });
+        const billDocumentUpdate2 = await BillDocumentUpdate.findOne({
+            where: { id: 40 },
+            select: ['status'],
+        });
+    
+        expect(billDocumentUpdate1?.status).toEqual(UpdateStatus.SUCCESS);
+        expect(billDocumentUpdate2?.status).toEqual(UpdateStatus.SUCCESS);
+        expect(billDocument).toEqual({
+            content: JSON.stringify({ a: 3 }),
+            events: '[]',
+        });
     });
 });
