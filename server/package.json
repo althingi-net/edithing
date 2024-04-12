@@ -21,7 +21,8 @@
     "db:seed": "ts-node ./src/bin/seedDb.ts",
     "db:shell": "ts-node ./src/bin/dbShell.ts",
     "queue": "ts-node ./src/bin/queueWorker.ts",
-    "validate": "ts-node ./src/bin/filterInvalidDocuments.ts"
+    "validate": "ts-node ./src/bin/filterInvalidDocuments.ts",
+    "reset-git-merger": "ts-node ./src/bin/resetGitMerger.ts" 
   },
   "keywords": [],
   "author": "",
