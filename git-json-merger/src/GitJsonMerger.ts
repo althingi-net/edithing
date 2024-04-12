@@ -42,8 +42,13 @@ export class GitJsonMerger {
             };
         } catch (error) {
             console.error(error);
+            const diff = await this.git.getDiff();
+            await this.git.abortMerge();
+            await this.git.deleteBranch('temp');
+
             return {
                 error: 'Merge conflict',
+                diff,
             };
         }
     }

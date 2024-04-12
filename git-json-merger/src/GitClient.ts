@@ -71,7 +71,7 @@ export class GitClient {
      * @param name of branch to delete
      */
     public async deleteBranch(name: string) {
-        await this.run(`git branch -d ${name}`);
+        await this.run(`git branch -D ${name}`);
     }
 
     /**
@@ -91,6 +91,10 @@ export class GitClient {
         await this.run(`git merge ${branch}`);
     }
 
+    public async abortMerge() {
+        await this.run('git merge --abort');
+    }
+
     public async getCurrentHash() {
         const { stdout } = await this.run('git rev-parse --short HEAD');
         return stdout;
@@ -103,6 +107,11 @@ export class GitClient {
 
     public async addConfig(key: string, value: string) {
         await this.run(`git config ${key} "${value}"`);
+    }
+
+    public async getDiff() {
+        const { stdout } = await this.run('git diff');
+        return stdout;
     }
 
     private async run(cmd: string) {

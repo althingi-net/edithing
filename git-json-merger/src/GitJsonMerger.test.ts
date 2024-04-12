@@ -177,6 +177,39 @@ describe('GitJsonMerger', () => {
         expect(result.error).toEqual('Merge conflict');
     });
 
+    test('after merge conflict, should be able to merge again', async () => {
+        const originalDocument = {
+            a: 1,
+        };
+        const updatedDocument1 = {
+            a: 2,
+        };
+        const updatedDocument2 = {
+            a: 3,
+        };
+        const updatedDocument3 = {
+            a: 4,
+        };
+
+        const merger = new GitJsonMerger('recover from merge conflict');
+        await merger.git.destroy();
+        await merger.init(originalDocument);
+        const hash = await merger.git.getCurrentHash();
+
+        // Create merge conflict
+        const lastMerge = await merger.merge(updatedDocument1, hash);
+        const conflict = await merger.merge(updatedDocument2, hash);
+
+        // Continue with the next merge
+        const result = await merger.merge(updatedDocument3, lastMerge.hash);
+
+        expect(conflict.error).toBeTruthy();
+        expect(result.error).toBeUndefined();
+        expect(result.document).toEqual({
+            a: 4,
+        });
+    });
+
     test.skip('merge same line changes', async () => {
         const originalDocument = {
             children: [
