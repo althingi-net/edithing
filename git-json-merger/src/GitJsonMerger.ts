@@ -1,7 +1,6 @@
 import { randomUUID } from 'crypto';
 import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
-import { parse, stringify } from 'yaml';
 import { GitClient } from './GitClient';
 
 export class GitJsonMerger {
@@ -54,18 +53,20 @@ export class GitJsonMerger {
     }
 
     private async writeDocument(document: object, msg = '') {
-        let content = stringify(document, null, 2);
+        const content = JSON.stringify(document, null, 2);
 
         // Add padding to each line, to avoid git merge conflicts
-        content = content.split('\n').map((line) => line + '\n').join('\n');
+        // content = content.split('\n').map((line) => line + '\n').join('\n');
 
-        await writeFile(`${this.repositoryFolder}/document.yaml`, content);
+        await writeFile(`${this.repositoryFolder}/document.json`, content);
         await this.git.addAndCommitAll(msg);
     }
 
     private async readDocument() {
-        const document = await readFile(`${this.repositoryFolder}/document.yaml`, 'utf8');
+        const document = await readFile(`${this.repositoryFolder}/document.json`, 'utf8');
 
-        return parse(document);
+        // document = document.split('\n\n').map((line) => line.trim()).join('\n');
+
+        return JSON.parse(document);
     }
 }

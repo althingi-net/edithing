@@ -21,7 +21,10 @@ const useBillPage = (disableActions = false) => {
     const { errorUnsavedChanges } = useUserErrors();
     const [hasError, setError] = useState(false);
 
-    log('bill page', { id, selected, bill });
+    useEffect(() => {
+        log('bill page', { billId: id, documentId, selected, gitHash, billTitle: bill?.title });
+    }, [id, documentId, selected, gitHash, bill?.title]);
+
 
     useEffect(() => {
         // reset error
@@ -101,8 +104,14 @@ const useBillPage = (disableActions = false) => {
             content: JSON.stringify(editor.children),
             events: JSON.stringify(editor.events),
         })
-            .then(() => notification.success({ message: t('Document saved'), description: `${selected} ${title}` }))
-            .then(reloadBill) // Update titles in the explorer
+            .then((billDocument) => {
+                notification.success({ message: t('Document saved'), description: `${selected} ${title}` });
+
+                setDocument(billDocument);
+
+                // Update titles in the explorer
+                return reloadBill();
+            })
             .catch(handleError);
     }, [documentId, gitHash, reloadBill, selected, slate    , t]);
 

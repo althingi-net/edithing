@@ -40,7 +40,7 @@ export const runBillDocumentUpdate = async (updateId: number) => {
     const merger = new GitJsonMerger(`${originalDocument.billId}-${billDocumentId}`);
     const isGitInitialized = await merger.git.exists();
     
-    if (!gitHash && !isGitInitialized) {
+    if (!isGitInitialized) {
         await merger.init(
             parsePayload(originalDocument)
         );

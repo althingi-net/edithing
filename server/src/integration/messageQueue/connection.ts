@@ -76,6 +76,14 @@ class RabbitMqConnection {
         );
 
     }
+
+    async purge(queue: MessageKey) {
+        if (!this.channel) {
+            throw new Error('Channel is not connected');
+        }
+
+        await this.channel.purgeQueue(queue);
+    }
 }
   
 const connection = new RabbitMqConnection();

@@ -29,7 +29,7 @@ class BillDocumentController {
     getAll(@Param('id') id: number) {
         return BillDocument.find({
             where: { bill: { id } },
-            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events'],
+            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events', 'gitHash'],
         });
     }
 
@@ -38,7 +38,7 @@ class BillDocumentController {
     async get(@Param('id') id: number, @Param('identifier') identifier: string) {
         const document =  await BillDocument.findOne({
             where: {  bill: { id }, identifier },
-            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events'],
+            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events', 'gitHash'],
         });
         
         if (!document) {
@@ -98,7 +98,10 @@ class BillDocumentController {
             return updated?.status !== UpdateStatus.PENDING;
         });
         
-        return true;
+        return BillDocument.findOneOrFail({
+            where: { id },
+            select: ['id', 'identifier', 'title', 'content', 'originalXml', 'events', 'gitHash'],
+        });
     }
 
     @Delete('/bill/:id/document/:identifier')
