@@ -72,7 +72,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                         extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}
                         collapsible={readOnly ? 'disabled' : undefined}
                     >
-                        <LawChanges changelog={changelog} />
+                        <LawChanges changelog={changelog} displayFullTextOnly />
                     </Collapse.Panel>
                 </Collapse>
             </div>
