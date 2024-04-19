@@ -19,7 +19,7 @@ class BillDocumentUpdate extends BaseEntity {
     billDocumentId!: number;
 
     /** Title of this document */
-    @Column()
+    @Column({ type: 'text' })
     @IsString()
     title!: string;
 

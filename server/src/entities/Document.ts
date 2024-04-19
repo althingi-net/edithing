@@ -14,7 +14,7 @@ class Document extends BaseEntity {
     identifier!: string;
 
     /** Title of the law */
-    @Column()
+    @Column({ type: 'text' })
     @IsString()
     title!: string;
     
