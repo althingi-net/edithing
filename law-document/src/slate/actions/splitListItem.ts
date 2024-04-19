@@ -44,7 +44,7 @@ export const splitListItem = (editor : Editor) => {
             updateMetaAfterContentChanged(editor, listItemPath);
             updateMetaAfterContentChanged(editor, newListItemPath);
 
-            incrementFollowingSiblings(editor, newListItemPath);
+            // incrementFollowingSiblings(editor, newListItemPath);
             
             return true;
         }

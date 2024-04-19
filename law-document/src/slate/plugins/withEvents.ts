@@ -32,7 +32,7 @@ export const withEvents = (editor: Editor) => {
     editor.apply = (operation) => {
         if (operation.type === 'set_selection' || !saveEvents) {
             apply(operation);
-            decrementOnRemoveListItem(editor, operation);
+            // decrementOnRemoveListItem(editor, operation);
             return;
         }
         
@@ -46,7 +46,7 @@ export const withEvents = (editor: Editor) => {
             applyOperation(editor, operation);
         }
 
-        decrementOnRemoveListItem(editor, operation);
+        // decrementOnRemoveListItem(editor, operation);
     };
 
     editor.undo = () => {

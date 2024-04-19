@@ -35,7 +35,7 @@ export const pressEnterKey = (editor: Editor) => {
         return true;
     }
 
-    createLawList(editor, type, path, { bumpVersionNumber: true });
+    createLawList(editor, type, path);
 
     return true;
 };
