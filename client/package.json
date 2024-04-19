@@ -31,6 +31,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@slate-yjs/core": "^1.0.2",
+    "@uidotdev/usehooks": "^2.4.1",
     "antd": "^5.11.1",
     "client-sdk": "file:../client-sdk",
     "is-hotkey": "^0.2.0",

@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { FC, useState } from 'react';
-import { Changelog , groupChangesByArticle, parseIdToDisplay } from 'law-document';
-import { Switch, Typography } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { useHover } from '@uidotdev/usehooks';
+import { Button, Typography } from 'antd';
+import { Changelog, groupChangesByArticle, parseIdToDisplay } from 'law-document';
+import { FC } from 'react';
 import useLanguageContext, { Translator } from '../App/useLanguageContext';
 
 const { Text } = Typography;
@@ -12,9 +14,8 @@ interface Props {
 }
 
 
-const LawChanges: FC<Props> = ({ changelog, displayFullTextOnly }) => {
+const LawChanges: FC<Props> = ({ changelog }) => {
     const { t } = useLanguageContext();
-    const [showOnlyDifference, setShowOnlyDifference] = useState(true);
 
     if (changelog.length === 0) {
         return (
@@ -25,12 +26,12 @@ const LawChanges: FC<Props> = ({ changelog, displayFullTextOnly }) => {
     const groupedChanges = groupChangesByArticle(changelog);
     const renderedChanges = Object.entries(groupedChanges).map(([id, changes], index) => {
         return (
-            <div key={`${id}-${index}`}>
+            <div key={`${id}-${index}`} style={{ position: 'relative' }}>
                 <div>{parseIdToDisplay(t, id)}</div>
                 <div>
                     <ol type='a'>
                         {changes.map((change) => (
-                            <li key={change.id}>{parseChange(t, change, !displayFullTextOnly && showOnlyDifference)}</li>
+                            <LawChange key={change.id} entry={change} />
                         ))}
                     </ol>
                 </div>
@@ -38,29 +39,36 @@ const LawChanges: FC<Props> = ({ changelog, displayFullTextOnly }) => {
         );
     });
 
-    const headerActions = displayFullTextOnly ? null : (
-        <>
-            <center>
-                <Switch
-                    checkedChildren={t('Only display differences')}
-                    unCheckedChildren={t('Show full text')}
-                    checked={showOnlyDifference}
-                    onChange={setShowOnlyDifference}
-                />
-            </center>
-            <hr />
-        </>
-    );
-
     return (
         <div>
-            {headerActions}
             {renderedChanges}
         </div>
     );
 };
 
-const parseChange = (t: Translator, entry: Changelog, showOnlyDifference: boolean) => {
+const LawChange: FC<{ entry: Changelog }> = ({ entry }) => {
+    const { t } = useLanguageContext();
+    const [ref, hovering] = useHover();
+
+    const buttons = [
+        entry.type === 'changed' && (
+            <Button type='primary' size='small' icon={<PlusCircleOutlined />} title='Mark change as added' onClick={() => entry.type = 'added'} />
+        ),
+    ];
+
+    return (
+        <div ref={ref}>
+            <li key={entry.id}>
+                <div style={{ position: 'absolute', right: '-10px', display: hovering ? 'block' : 'none' }}>
+                    {buttons}
+                </div>
+                {parseChange(t, entry)}
+            </li>
+        </div>
+    );
+};
+
+const parseChange = (t: Translator, entry: Changelog) => {
     const id = parseIdToDisplay(t, entry.id);
 
     if (entry.type === 'added') {
@@ -75,15 +83,11 @@ const parseChange = (t: Translator, entry: Changelog, showOnlyDifference: boolea
         return `${id} ${t('of the law shall be')}: ${entry.text}`;
     }
 
-    if (showOnlyDifference) {
-        return `${id} ${t('of the law shall be')}: ${parseTextChanges(entry.changes)}`;
-    } else {
-        return (
-            <>
-                {id} {t('of the law shall be')}: {embedChangesToText(entry.changes)}
-            </>
-        );
-    }
+    return (
+        <>
+            {id} {t('of the law shall be')}: {embedChangesToText(entry.changes)}
+        </>
+    );
 
     return '';
 };
@@ -104,27 +108,6 @@ const embedChangesToText = (changes: NonNullable<Changelog['changes']>) => {
             })}
         </span>
     );
-};
-
-const parseTextChanges = (changes: Changelog['changes']) => {
-    if (!changes) {
-        return '';
-    }
-
-    return changes
-        .filter(([type]) => type !== 0)
-        .map(([type, text]) => {
-            if (type === -1) {
-                return `-${text}`;
-            }
-
-            if (type === 1) {
-                return `+${text}`;
-            }
-
-            return '';
-        })
-        .join(' ');
 };
 
 export default LawChanges;

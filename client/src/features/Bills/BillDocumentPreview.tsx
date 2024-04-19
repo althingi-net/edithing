@@ -33,7 +33,7 @@ const BillDocumentPreview: FC<Props> = ({ bill, document, index }) => {
                 </Link>
                 <span>.</span>
             </h3>
-            <LawChanges changelog={changelog} displayFullTextOnly />
+            <LawChanges changelog={changelog} />
         </div>
     );
 };
