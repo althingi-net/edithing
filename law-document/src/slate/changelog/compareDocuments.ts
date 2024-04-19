@@ -26,7 +26,7 @@ const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: Flattene
     for (const event of events) {
         switch (event.type) {
             case 'added': 
-                parseAdded(changelog, event, newTexts);
+                parseAdded(changelog, event, originalTexts, newTexts);
                 break;
             case 'removed':
                 parseRemoved(changelog, event, originalTexts);
@@ -43,11 +43,18 @@ const createChangelog = (originalTexts: FlattenedParagraph[], newTexts: Flattene
 const parseAdded = (
     changelog: Changelog[],
     event: Event,
+    oldTexts: FlattenedParagraph[],
     newTexts: FlattenedParagraph[],
 ) => {
     const { id } = event;
     const newText = newTexts.find(text => text.id === id);
-    changelog.push({ id, type: 'added', text: newText?.content });
+    const oldText = oldTexts.find(text => text.id === id);
+
+    if (!oldText) {
+        changelog.push({ id, type: 'added', text: newText?.content });
+    } else {
+        parseChanged(changelog, event, oldTexts, newTexts);
+    }
 };
 
 const parseRemoved = (
@@ -76,7 +83,7 @@ const parseChanged = (
 ) => {
     const { originId } = event;
     let { id } = event;
-    const originalText = originalTexts.find(text => text.id === originId);
+    const originalText = originalTexts.find(text => text.id === (originId || id));
     const newText = newTexts.find(text => text.id === id || text.originId === id);
 
     // Re-assigned new id if the events target was moved later in the document
@@ -89,7 +96,7 @@ const parseChanged = (
     }
 
     if (!originalText && newText) {
-        parseAdded(changelog, event, newTexts);
+        parseAdded(changelog, event, originalTexts, newTexts);
     }
 
     if (originalText && newText) {
