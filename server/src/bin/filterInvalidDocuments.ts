@@ -4,7 +4,7 @@ import { validateDocument } from 'law-document';
 import 'reflect-metadata';
 import { Descendant } from 'slate';
 import database from '../config/database';
-import { initConnection } from '../integration/database/connection';
+import { closeConnection, initConnection } from '../integration/database/connection';
 import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
 
 
@@ -17,10 +17,6 @@ void (async () => {
     const unsupportedLaws = [];
 
     for (const lawEntry of lawEntries) {
-        if (lawEntry.identifier !== '2023.66') {
-            continue;
-        }
-        
         console.log('\nProcessing:', lawEntry.identifier);
 
         try {
@@ -48,5 +44,6 @@ void (async () => {
 
     }
 
+    await closeConnection();
     console.log('💥💥💥 Done 💥💥💥');
 })();

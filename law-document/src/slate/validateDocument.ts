@@ -31,23 +31,23 @@ const isElement = (value: any): value is Element => {
     try {
         return (
             isPlainObject(value)
-            // && validateListItem(value)
+            && validateListItem(value)
             && isNodeList(value.children)
             && !Editor.isEditor(value)
         );
     } catch (error) {
+        if (error instanceof ValidationError) {
+            throw error;
+        }
+
         const { children, ...valueWithoutChildren } = value;
         throw new ValidationError(`Element is not valid: ${JSON.stringify(valueWithoutChildren)}`);   
     }
 };
 
 const validateListItem = (value: any) =>  {
-    const { children, ...valueWithoutChildren } = value;
-    console.log('sadeqrf', valueWithoutChildren);
-
     if (isListItem(value)) {
-        console.log('sad', value.meta?.nr);
-        if (!value.meta?.nr.match(/(\d|[a-zA-Z])+/)?.[0]) {
+        if (!value.meta?.nr.match(/^([0-9a-zA-Z]{1,3})$/)?.[0]) {
             const { children, ...valueWithoutChildren } = value;
             throw new ValidationError(`Invalid nr attribute: ${JSON.stringify(valueWithoutChildren)}`);
         }
