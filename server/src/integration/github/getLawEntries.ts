@@ -26,7 +26,7 @@ export class GithubFile implements GithubFile {
 
 interface LawEntry {
     'name': string;
-    'identifier': string;
+    '@_identifier': string;
     '@_date': string;
     '@_year': string;
     '@_nr': string;
@@ -41,7 +41,7 @@ const getLawEntries = async (): Promise<GithubFile[]> => {
         return {
             name: entry['name'],
             date: entry['@_date'],
-            identifier: convertIdentifier(entry['identifier']),
+            identifier: convertIdentifier(entry['@_identifier']),
             path: `data/xml/${entry['@_year']}.${entry['@_nr']}.xml`,
         };
     });
