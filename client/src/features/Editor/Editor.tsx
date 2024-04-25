@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import { Bill } from 'client-sdk';
 import { Event, LawEditor } from 'law-document';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import './Editor.css';
@@ -36,8 +36,20 @@ const Editor: FC<Props> = ({
     bill,
 }) => {
     const highlight = useHighlightContext();
-    const editor = useMemo(() => createEditorWithPlugins(events), [events]);
+    const editor = useMemo(() => createEditorWithPlugins(), []);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
+
+    useEffect(() => {
+        if (events) {
+            editor.events = events;
+            editor.onChange();
+        }
+    }, [events, editor]);
+
+    useEffect(() => {
+        editor.children = slate;
+        editor.onChange();
+    }, [slate, editor]);
 
     const classNames = [
         'editor',

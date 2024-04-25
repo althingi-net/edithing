@@ -21,7 +21,7 @@ const BillDocumentList: FC<Props> = ({ billDocuments, onDeleteDocument, setSelec
             {billDocuments?.map(doc => 
                 <div
                     className={['list-item', selected === doc.identifier ? 'selected' : ''].join(' ')}
-                    key={doc.title}
+                    key={doc.title + doc.identifier}
                     role="button"
                     tabIndex={0}
                     onClick={() => setSelected(doc.identifier)}

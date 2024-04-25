@@ -6,6 +6,12 @@ const useEditorNavigationBlock = (editor: LawEditor, saveDocument?: (editor: Law
     const { isNavigationBlocked, blockNavigation, unblockNavigation } = useBlockNavigation();
 
     const handleChange = useCallback(() => {
+        console.log('editor.operations', editor.operations);
+
+        if (editor.operations.length === 0) {
+            return;
+        }
+
         if (editor.operations.some((op) => op.type === 'set_selection')) {
             return;
         }

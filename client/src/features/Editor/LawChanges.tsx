@@ -52,14 +52,23 @@ const LawChange: FC<{ entry: Changelog }> = ({ entry }) => {
 
     const buttons = [
         entry.type === 'changed' && (
-            <Button type='primary' size='small' icon={<PlusCircleOutlined />} title='Mark change as added' onClick={() => entry.type = 'added'} />
+            <Button key='added' type='primary' size='small' icon={<PlusCircleOutlined />} title='Mark change as added' onClick={() => entry.type = 'added'} />
         ),
     ];
 
     return (
         <div ref={ref}>
             <li key={entry.id}>
-                <div style={{ position: 'absolute', right: '-10px', display: hovering ? 'block' : 'none' }}>
+                <div style={{
+                    display: hovering ? 'flex' : 'none',
+                    position: 'absolute',
+                    right: '0',
+                    flexDirection: 'row',
+                    gap: '10px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    padding: '5px',
+                    borderRadius: '10px'
+                }}>
                     {buttons}
                 </div>
                 {parseChange(t, entry)}
