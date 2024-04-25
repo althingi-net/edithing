@@ -56,7 +56,13 @@ export class GitClient {
      */
     public async switchBranch(name: string, startHash?: string) {
         if (startHash) {
-            await this.run(`git checkout -b ${name} ${startHash}`);
+            try {
+                await this.run(`git checkout -b ${name} ${startHash}`);
+            } catch (error) {
+                // If hash is invalid, create branch without hash (this case could happen when git is reset and browser clients still have old hash)
+                this.log('Failed to checkout branch with hash, trying without..', error);
+                await this.run(`git checkout -b ${name}`);
+            }
         } else {
             try {
                 await this.run(`git switch -c ${name}`);
