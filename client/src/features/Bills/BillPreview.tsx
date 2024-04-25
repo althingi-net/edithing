@@ -19,22 +19,24 @@ const useBillDocuments = (bill: Bill) => {
     const { t } = useLanguageContext();
     const [documents, setDocuments] = useState<BillDocument[]>([]);
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (bill.id) {
             BillDocumentService.billDocumentControllerGetAll(bill.id)
                 .then(setDocuments)
+                .then(() => setIsLoading(false))
                 .catch(handleErrorWithTranslations(t));
         }
     }, [bill.id, navigation, t, navigation]);
 
-    return documents;
+    return { documents, isLoading };
 };
 
 const BillPreview: FC<Props> = ({ bill }) => {
     const { title } = bill;
     const { t } = useLanguageContext();
-    const documents = useBillDocuments(bill);
+    const { documents, isLoading } = useBillDocuments(bill);
     const [display, setDisplay] = useState<'live' | 'xml'>('live');
 
     return (
@@ -49,7 +51,13 @@ const BillPreview: FC<Props> = ({ bill }) => {
             </div>
             <h1>{title}</h1>
             <div className='content'>
-                <Loader loading={documents.length === 0}>
+                <Loader loading={isLoading}>
+                    {documents.length === 0 && (
+                        <>
+                            <h3>{t('This bill is still empty!')}</h3>
+                            <p>{t('Tip: Start editing this bill by adding a document to it.')}</p>
+                        </>
+                    )}
                     {display === 'live' && documents.map((document, index) => 
                         <BillDocumentPreview
                             key={document.id}
