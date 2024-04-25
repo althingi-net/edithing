@@ -51,7 +51,7 @@ export class GitClient {
     }
 
     /**
-     * Switchs branch and creates if not exists
+     * Switch branch and creates if not exists
      * @param name of branch to switch to
      */
     public async switchBranch(name: string, startHash?: string) {
