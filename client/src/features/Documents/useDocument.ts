@@ -10,6 +10,7 @@ const useDocument = () => {
     const [xml, setXml] = useState<string>();
     const [documentId, setDocumentId] = useState<number>();
     const [gitHash, setGitHash] = useState<string>();
+    const [importError, setImportError] = useState<string>();
     
     const setDocument = useCallback((document: BillDocument | Document | null) => {
         if (!document) {
@@ -18,6 +19,7 @@ const useDocument = () => {
             setSlate(null);
             setGitHash(undefined);
             setDocumentId(undefined);
+            setImportError(undefined);
             setEvents([]);
             return;
         }
@@ -26,6 +28,7 @@ const useDocument = () => {
         setOriginalDocument(importXml(document.originalXml));
         setSlate(JSON.parse(document.content) as Descendant[]);
         setDocumentId(document.id);
+        setImportError(document.importError as string | undefined);
         
         if ('gitHash' in document) {
             setGitHash(document.gitHash);
@@ -44,6 +47,7 @@ const useDocument = () => {
         documentId,
         events,
         gitHash,
+        importError,
     };
 };
 

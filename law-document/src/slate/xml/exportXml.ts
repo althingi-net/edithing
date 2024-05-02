@@ -1,5 +1,6 @@
 import { Editor, Element, Node, Path, Text } from 'slate';
 import xmlFormat from 'xml-formatter';
+import escapeHtml from 'escape-html';
 import { isList } from '../element/List';
 import { isListItem } from '../element/ListItem';
 import { isListItemText } from '../element/ListItemText';
@@ -31,15 +32,36 @@ export const exportXml = (editor: Editor, addHeader = false): string => {
 const convertDocumentMetaToXml = (element: DocumentMetaElement, children: string): string => {
     const { nr, year, name, date, original, ministerClause } = element.meta;
 
+    const lawElements = [];
+    const numAndDateElements = [];
+
+    if (name) {
+        lawElements.push(`<name>${name}</name>`);
+    }
+
+    if (date) {
+        numAndDateElements.push(`<date>${date}</date>`);
+    }
+
+    if (nr) {
+        numAndDateElements.push(`<num>${nr}</num>`);
+    }
+
+    if (original) {
+        numAndDateElements.push(`<original>${original}</original>`);
+    }
+
+    if (numAndDateElements.length > 0) {
+        lawElements.push(`<num-and-date>${numAndDateElements.join('\n')}</num-and-date>`);
+    }
+
+    if (ministerClause) {
+        lawElements.push(`<minister-clause>${escapeHtml(ministerClause)}</minister-clause>`);
+    }
+
     return `
         <law nr="${nr}" year="${year}" law-type="law">
-            <name>${name}</name>
-            <num-and-date>
-                <date>${date}</date>
-                <num>${nr}</num>
-                <original>${original}</original>
-            </num-and-date>
-            <minister-clause>${ministerClause}</minister-clause>
+            ${lawElements.join('\n')}
             ${children}
         </law>
     `;

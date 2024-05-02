@@ -9,11 +9,24 @@ import { createDocumentMeta } from '../transformations/createDocumentMeta';
 import { normalizeChildren } from '../transformations/normalizeChildren';
 import { LIST_TAGS, MetaType, ElementType } from '../Slate';
 
+export class ImportError extends Error {
+    // we have to do the following because of: https://github.com/Microsoft/TypeScript/issues/13965
+    // otherwise we cannot use instanceof later to catch a given type
+    public __proto__: Error;
+  
+    constructor(message?: string) {
+        const trueProto = new.target.prototype;
+        super(message);
+  
+        this.__proto__ = trueProto;
+    }
+}
+
 export const importXml = (xml: string) => {
     const object = parseXml(xml);
 
     if (object['law'] && object['law']['@_law-type'] !== 'law') {
-        throw new Error('Invalid law');
+        throw new ImportError('Invalid law');
     }
 
     const slate = convertSlate(object['law'] || object);
@@ -30,7 +43,7 @@ export const parseXml = (xml: string) => {
 
 export const extractMeta = (object: any): DocumentMetaElement => {
     const law = object['law'] || object;
-
+    console.log('minister', law['minister-clause']);
     return createDocumentMeta({
         nr: law['@_nr'],
         year: law['@_year'],

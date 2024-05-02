@@ -32,6 +32,7 @@ const BillPage: FC = () => {
         hasDocumentLoadingError,
         isBillDocument,
         events,
+        importError,
     } = useBillPage(isNavigationBlocked);
 
     if (!isAuthenticated()) {
@@ -59,7 +60,12 @@ const BillPage: FC = () => {
                 </Col>
                 <Col span={20} style={{ height: '100%' }}>
                     <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden'  }}>
-                        {hasDocumentLoadingError ? (
+                        {importError ? (
+                            <>
+                                <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Document not available')}</h1>
+                                <p>{importError}</p>
+                            </>
+                        ) : hasDocumentLoadingError ? (
                             <>
                                 <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Document not available')}</h1>
                                 <h2 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select another law')}</h2>

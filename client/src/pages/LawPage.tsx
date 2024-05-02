@@ -2,14 +2,17 @@ import { Content } from 'antd/es/layout/layout';
 import { DocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { formatIdentifier } from 'law-document';
 import Loader from '../features/App/Loader';
 import NotFoundError from '../features/App/NotFoundError';
 import useDocument from '../features/Documents/useDocument';
 import Editor from '../features/Editor/Editor';
+import useLanguageContext from '../features/App/useLanguageContext';
 
 const LawPage: FC = () => {
     const { identifier } = useParams();
-    const { setDocument, xml, slate, originalDocument } = useDocument();
+    const { t } = useLanguageContext();
+    const { setDocument, xml, slate, originalDocument, importError } = useDocument();
     const [hasError, setError] = useState(false);
 
     // reset error when url changes
@@ -36,6 +39,16 @@ const LawPage: FC = () => {
 
     if (!slate || !originalDocument || !xml) {
         return <Loader />;
+    }
+
+    if (importError) {
+        return (
+            <Content style={{ padding: '20px', height: 'calc(100% - 64px)' }}>
+                <h3>{formatIdentifier(identifier)}</h3>
+                <p><b>{t('Document not available')}</b></p>
+                <p>{importError}</p>
+            </Content>
+        );
     }
 
     return (

@@ -17,7 +17,7 @@ const useBillPage = (disableActions = false) => {
     const { bill, reloadBill, hasError: hasBillError } = useBill(id);
     const navigate = useNavigate();
     const [isBillDocument, setIsBillDocument] = useState<boolean>(false);
-    const { setDocument, xml, slate, originalDocument, documentId, events, gitHash } = useDocument();
+    const { setDocument, xml, slate, originalDocument, documentId, events, gitHash, importError } = useDocument();
     const { errorUnsavedChanges } = useUserErrors();
     const [hasError, setError] = useState(false);
 
@@ -113,7 +113,7 @@ const useBillPage = (disableActions = false) => {
                 return reloadBill();
             })
             .catch(handleError);
-    }, [documentId, gitHash, reloadBill, selected, slate    , t]);
+    }, [documentId, gitHash, reloadBill, selected, setDocument, slate, t]);
 
     const loadDocument = useCallback(() => {
         if (!bill || !bill.id || !selected) {
@@ -162,6 +162,7 @@ const useBillPage = (disableActions = false) => {
         loadDocument,
         hasBillLoadingError: hasBillError,
         hasDocumentLoadingError: hasError,
+        importError,
     };
 };
 

@@ -17,6 +17,12 @@ class Document extends BaseEntity {
     @Column({ type: 'text' })
     @IsString()
     title!: string;
+
+    /** Details of the error when importing slate document */
+    @Column({ nullable: true, type: 'mediumtext' })
+    @IsString()
+    @IsOptional()
+    importError?: string;
     
     /** Cached Slate content of the law document */
     @Column({ type: 'mediumtext' })

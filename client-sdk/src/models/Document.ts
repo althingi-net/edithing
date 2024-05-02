@@ -7,6 +7,7 @@ export type Document = {
     id?: number;
     identifier: string;
     title: string;
+    importError?: string;
     content: string;
     originalXml: string;
     downloadedAt?: string;

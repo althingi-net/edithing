@@ -8,6 +8,7 @@ export type BillDocument = {
     identifier: string;
     bill: any;
     title: string;
+    importError?: string;
     gitHash?: string;
     content: string;
     events: string;

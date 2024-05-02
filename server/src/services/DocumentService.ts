@@ -1,5 +1,7 @@
 import { mkdir, readFile, stat, writeFile } from 'fs/promises';
-import { importXml, getTitle } from 'law-document';
+import { ImportError, LawEditor, exportXml, getTitle, importXml, validateDocument } from 'law-document';
+import Diff from 'text-diff';
+import xmlFormat from 'xml-formatter';
 import Document from '../entities/Document';
 import downloadFile from '../integration/github/downloadFile';
 import getLawEntries from '../integration/github/getLawEntries';
@@ -44,24 +46,55 @@ export const findOrImportDocument = async (identifier: string) => {
     if (!document) {
         const path = `data/xml/${identifier}.xml`;
         const file = await downloadFile(path);
+
+        try {
+            document = await createDocument(identifier, file);
+        } catch (error) {
+            console.error(error);
+            document = await Document.findOneByOrFail({ identifier });
+        }
+    }
+
+    return document;
+};
+
+const createDocument = async (identifier: string, file: string) => {
+    try {
         const slate = importXml(file);
+        validateDocument(slate);
+
+        // check if import matches export
+        const newXml = exportXml({ children: slate } as LawEditor, true);
+        const oldXml = xmlFormat(file);
+        if (newXml !== oldXml) {
+            const diffs = getTextDiffs(oldXml, newXml);
+            throw new ImportError(`Import does not match export in ${identifier}: \n${diffs.map(diff => diff[1]).join('\n')}`);
+        }
+    
         const title = getTitle(slate);
         const content = JSON.stringify(slate);
-
-        // Check again if document was created while we were downloading it
-        document = await Document.findOneBy({ identifier });
-
-        if (document) {
-            return document;
-        }
-
-        document = await Document.create({
+    
+        return await Document.create({
             identifier,
             title,
             content,
             originalXml: file,
         }).save();
+    } catch(error: any) {
+        return await Document.create({
+            identifier,
+            title: '...',
+            content: JSON.stringify([]),
+            originalXml: file,
+            importError: error.message,
+        }).save();
     }
+};
 
-    return document;
+const getTextDiffs = (original: string, newText: string) => {
+    const diff = new Diff();
+    const changes = diff.main(original, newText) as [type: number, text: string][];
+    diff.cleanupSemantic(changes);
+
+    return changes.filter(change => change[0] !== 0);
 };

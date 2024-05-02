@@ -30,6 +30,12 @@ class BillDocument extends BaseEntity {
     @IsString()
     title!: string;
 
+    /** Details of the error when importing slate document */
+    @Column({ nullable: true, type: 'mediumtext' })
+    @IsString()
+    @IsOptional()
+    importError?: string;
+
     /** Hash of last git merge used for applying updates */
     @Column({ default: '' })
     @IsString()
