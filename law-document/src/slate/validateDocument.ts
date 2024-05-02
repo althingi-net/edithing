@@ -2,7 +2,18 @@ import { isPlainObject } from 'is-plain-object';
 import { Descendant, Editor, Element, Node, Text } from 'slate';
 import { isListItem } from './element/ListItem';
 
-export class ValidationError extends Error {}
+export class ValidationError extends Error {
+    // we have to do the following because of: https://github.com/Microsoft/TypeScript/issues/13965
+    // otherwise we cannot use instanceof later to catch a given type
+    public __proto__: Error;
+  
+    constructor(message?: string) {
+        const trueProto = new.target.prototype;
+        super(message);
+  
+        this.__proto__ = trueProto;
+    }
+}
 
 export const validateDocument = (slate: Descendant[]) => {
     return isNodeList(slate);
@@ -47,7 +58,7 @@ const isElement = (value: any): value is Element => {
 
 const validateListItem = (value: any) =>  {
     if (isListItem(value)) {
-        if (!value.meta?.nr.match(/^([0-9a-zA-Z]{1,3})$/)?.[0]) {
+        if (!value.meta?.nr.match(/^([0-9a-zA-Z]{1,5})$/)?.[0]) {
             const { children, ...valueWithoutChildren } = value;
             throw new ValidationError(`Invalid nr attribute: ${JSON.stringify(valueWithoutChildren)}`);
         }
