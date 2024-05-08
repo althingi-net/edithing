@@ -60,12 +60,12 @@ export const findOrImportDocument = async (identifier: string) => {
 
 const createDocument = async (identifier: string, file: string) => {
     try {
-        const slate = importXml(file);
+        const oldXml = xmlFormat(file);
+        const slate = importXml(oldXml);
         validateDocument(slate);
 
         // check if import matches export
         const newXml = exportXml({ children: slate } as LawEditor, true);
-        const oldXml = xmlFormat(file);
         if (newXml !== oldXml) {
             const diffs = getTextDiffs(oldXml, newXml);
             throw new ImportError(`Import does not match export in ${identifier}: \n${diffs.map(diff => diff[1]).join('\n')}`);
@@ -81,6 +81,7 @@ const createDocument = async (identifier: string, file: string) => {
             originalXml: file,
         }).save();
     } catch(error: any) {
+        console.error(error);
         return await Document.create({
             identifier,
             title: '...',

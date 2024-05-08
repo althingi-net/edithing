@@ -43,7 +43,7 @@ export const parseXml = (xml: string) => {
 
 export const extractMeta = (object: any): DocumentMetaElement => {
     const law = object['law'] || object;
-    console.log('minister', law['minister-clause']);
+
     return createDocumentMeta({
         nr: law['@_nr'],
         year: law['@_year'],

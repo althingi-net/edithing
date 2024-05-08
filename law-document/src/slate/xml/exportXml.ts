@@ -1,6 +1,5 @@
 import { Editor, Element, Node, Path, Text } from 'slate';
 import xmlFormat from 'xml-formatter';
-import escapeHtml from 'escape-html';
 import { isList } from '../element/List';
 import { isListItem } from '../element/ListItem';
 import { isListItemText } from '../element/ListItemText';
@@ -36,19 +35,19 @@ const convertDocumentMetaToXml = (element: DocumentMetaElement, children: string
     const numAndDateElements = [];
 
     if (name) {
-        lawElements.push(`<name>${name}</name>`);
+        lawElements.push(`<name>${escapeXml(name)}</name>`);
     }
 
     if (date) {
-        numAndDateElements.push(`<date>${date}</date>`);
+        numAndDateElements.push(`<date>${escapeXml(date)}</date>`);
     }
 
     if (nr) {
-        numAndDateElements.push(`<num>${nr}</num>`);
+        numAndDateElements.push(`<num>${escapeXml(nr)}</num>`);
     }
 
     if (original) {
-        numAndDateElements.push(`<original>${original}</original>`);
+        numAndDateElements.push(`<original>${escapeXml(original)}</original>`);
     }
 
     if (numAndDateElements.length > 0) {
@@ -56,7 +55,7 @@ const convertDocumentMetaToXml = (element: DocumentMetaElement, children: string
     }
 
     if (ministerClause) {
-        lawElements.push(`<minister-clause>${escapeHtml(ministerClause)}</minister-clause>`);
+        lawElements.push(`<minister-clause>${escapeXml(ministerClause)}</minister-clause>`);
     }
 
     return `
@@ -83,15 +82,15 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
         const attributes = [];
 
         if (nr) {
-            attributes.push(`nr="${nr}"`);
+            attributes.push(`nr="${escapeXml(nr, true)}"`);
         }
 
         if (nrType) {
-            attributes.push(`nr-type="${nrType}"`);
+            attributes.push(`nr-type="${escapeXml(nrType, true)}"`);
         }
 
         if (romanNr) {
-            attributes.push(`roman-nr="${romanNr}"`);
+            attributes.push(`roman-nr="${escapeXml(romanNr, true)}"`);
         }
 
         // extract LIST_ITEM_TEXT from children
@@ -117,9 +116,9 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
 
         const xml = `
             <${type} ${attributes.join(' ')}>
-                ${title ? `<nr-title>${title}</nr-title>` : ''}
-                ${name ? `<name>${name}</name>` : ''}
-                ${sentences.map((sentence, index) => `<sen nr="${index + 1}">${sentence.text}</sen>`).join('')}
+                ${title ? `<nr-title>${escapeXml(title)}</nr-title>` : ''}
+                ${name ? `<name>${escapeXml(name)}</name>` : ''}
+                ${sentences.map((sentence, index) => `<sen nr="${index + 1}">${escapeXml(sentence.text)}</sen>`).join('')}
                 ${otherChildren.map((child, index) => convertSlate(editor, child, [...path, index])).join('')}
             </${type}>
         `;
@@ -132,4 +131,19 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
     }
 
     return '';
+};
+
+const escapeXml = (text: string, isAttribute = false): string => {
+    let newText = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    if (isAttribute) {
+        newText = newText
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+    }
+
+    return newText;
 };

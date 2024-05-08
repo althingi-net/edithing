@@ -28,7 +28,7 @@ const useDocument = () => {
         setOriginalDocument(importXml(document.originalXml));
         setSlate(JSON.parse(document.content) as Descendant[]);
         setDocumentId(document.id);
-        setImportError(document.importError as string | undefined);
+        setImportError(document.importError);
         
         if ('gitHash' in document) {
             setGitHash(document.gitHash);
