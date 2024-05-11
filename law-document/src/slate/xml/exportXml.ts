@@ -4,6 +4,7 @@ import { isList } from '../element/List';
 import { isListItem } from '../element/ListItem';
 import { isListItemText } from '../element/ListItemText';
 import { isDocumentMeta, DocumentMetaElement } from '../element/DocumentMetaElement';
+import { escapeXml } from './escapeXml';
 
 export const exportXml = (editor: Editor, addHeader = false): string => {
     const xml = [];
@@ -131,19 +132,4 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
     }
 
     return '';
-};
-
-const escapeXml = (text: string, isAttribute = false): string => {
-    let newText = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-
-    if (isAttribute) {
-        newText = newText
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&apos;');
-    }
-
-    return newText;
 };

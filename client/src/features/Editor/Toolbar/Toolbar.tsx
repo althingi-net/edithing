@@ -9,7 +9,7 @@ import useBlockNavigation from '../../App/useBlockNavigation';
 import useHighlightContext from './useHighlightContext';
 
 interface Props {
-    saveDocument: (editor: LawEditor) => void;
+    saveDocument?: (editor: LawEditor) => void;
     bill?: Bill;
 }
 
@@ -25,7 +25,7 @@ const Toolbar: FC<Props> = ({ saveDocument, bill }) => {
             <Checkbox checked={highlight.isHighlighted} onChange={(event) => highlight.setHighlighted(event.target.checked)}>
                 {t('Highlight elements')}
             </Checkbox>
-            <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>
+            {saveDocument && <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>}
             {bill && <Button onClick={() => navigate(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}
         </Space>
     );

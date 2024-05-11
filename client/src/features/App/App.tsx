@@ -8,6 +8,7 @@ import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
 import { HightlightContextProvider } from '../Editor/Toolbar/useHighlightContext';
+import SpeechPage from '../../pages/SpeechPage';
 import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
 import { SessionContextProvider } from './useSessionContext';
@@ -39,19 +40,22 @@ const router = createBrowserRouter([{
     children: [
         {
             path: '/',
-            element: <LawListPage/>,
+            element: <LawListPage />,
         }, {
             path: '/law/:identifier',
-            element: <LawPage/>,
+            element: <LawPage />,
         }, {
             path: '/bills',
-            element: <BillsPage/>,
+            element: <BillsPage />,
         }, {
             path: '/bill/:id',
-            element: <BillPage/>,
+            element: <BillPage />,
         }, {
             path: '/bill/:id/document/:identifier',
-            element: <BillPage/>,
+            element: <BillPage />,
+        }, {
+            path: '/speech',
+            element: <SpeechPage />,
         },
     ],
 }]);

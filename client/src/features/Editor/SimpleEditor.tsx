@@ -1,0 +1,60 @@
+import { Col, Row } from 'antd';
+import { createEditorWithPlugins as createLawEditor } from 'law-document';
+import { FC, useEffect, useMemo } from 'react';
+import { Descendant } from 'slate';
+import { Editable, Slate, withReact } from 'slate-react';
+import './Editor.css';
+import EditorSidePanel from './EditorSidePanel';
+import HoveringToolbar from './Toolbar/HoverToolbar';
+import SideToolbar from './Toolbar/SideToolbar';
+import Toolbar from './Toolbar/Toolbar';
+import useHighlightContext from './Toolbar/useHighlightContext';
+import renderElement from './plugins/renderElement';
+import renderLeaf from './plugins/renderLeaf';
+
+interface Props {
+    slate: Descendant[];
+}
+
+const Editor: FC<Props> = ({
+    slate,
+}) => {
+    const highlight = useHighlightContext();
+    const editor = useMemo(() => withReact(createLawEditor({ events: false })), []);
+
+    useEffect(() => {
+        editor.children = slate;
+        editor.onChange();
+    }, [slate, editor]);
+
+    const classNames = [
+        'editor',
+        highlight.isHighlighted ? 'highlighted' : ''
+    ].join(' ');
+
+    return (
+        <Slate editor={editor} initialValue={slate}>
+            <div style={{ height: 'calc(100vh - 104px)' }}>
+                <Row gutter={16} style={{ height: '100%' }}>
+                    <Col span={12} style={{ height: '100%' }}>
+                        <div style={{ height: '100%' }}>
+                            <HoveringToolbar />
+                            <SideToolbar />
+                            <Editable
+                                className={classNames}
+                                renderElement={renderElement}
+                                renderLeaf={renderLeaf}
+                            />
+                        </div>
+                    </Col>
+                    <Col span={12}>
+                        <Toolbar />
+                        <EditorSidePanel isSpeech />
+                    </Col>
+                </Row>
+            </div>
+        </Slate>
+    );
+};
+
+export default Editor;
