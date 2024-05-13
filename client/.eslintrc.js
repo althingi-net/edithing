@@ -17,6 +17,7 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
         'plugin:import/recommended',
+        'plugin:storybook/recommended',
     ],
     'plugins': [
         'react',

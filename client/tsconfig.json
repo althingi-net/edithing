@@ -21,7 +21,8 @@
         "noEmit": true,
         "downlevelIteration": true,
         "jsx": "react-jsx",
-        "rootDir": "./src"
+        "rootDir": "./src",
+        "strictNullChecks": true,
     },
     "include": [
         "src"

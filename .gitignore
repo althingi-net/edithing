@@ -48,3 +48,5 @@ tmp
 
 # Production files
 /production/process-production.yml
+
+*storybook.log
