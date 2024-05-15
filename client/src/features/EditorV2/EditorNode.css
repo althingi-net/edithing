@@ -32,6 +32,10 @@
     &.editable {
         display: block;
         margin-left: 20px;
+
+        > .children {
+            padding-bottom: 10px;
+        }
     }
 
     .name > .text {
@@ -47,50 +51,60 @@
     }
 
     &.editable > .text {
-        width: 100%;
+        width: calc(100% - 12px);
+        padding: 5px;
     }
 
     .text::after {
         content: " ";
     }
+
+    .node-type {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
 }
 
-.node > .children {
-    list-style-type: none;
+.node:not(.editable) {
+    &.art > .children > .node.title::before {
+        margin-right: 6px;
+        content: url('../Editor/images/marker-art.png');
+    }
+    
+    &.subart > .children::before {
+        margin-right: 6px;
+        content: url('../Editor//images/marker-subart.png');
+    }
 }
 
-.node.art > .children > .node.title::before {
-    margin-right: 6px;
-    content: url('../Editor/images/marker-art.png');
-}
-
-.node.subart > .children::before {
-    margin-right: 6px;
-    content: url('../Editor//images/marker-subart.png');
-}
-
-.numart .title {
+.numart .title > .text {
     margin-left: 1.04em;
 }
 
-.node > .children > .chapter {
-    margin-top: 1.5em;
-}
-
-.highlighted .title {
+.highlighted .title > .text {
     background-color: rgb(91 167 234);
-}
-
-.chapter > .children > .title,
-.art > .children > .title {
-    font-weight: bold;
 }
 
 .highlighted .name > .text {
     background-color: rgb(239 186 11);
 }
 
+.node > .children > .chapter > .text {
+    margin-top: 1.5em;
+}
+
+.chapter > .children > .title > .text,
+.art > .children > .title > .text {
+    font-weight: bold;
+}
+
 .chapter > .children > .name > .text {
     font-style: normal;
     font-weight: bold;
+}
+
+.add-button {
+    width: calc(100% - 30px);
+    margin-right: 10px;
+    margin-left: 20px;
 }

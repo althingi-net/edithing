@@ -4,29 +4,10 @@ import { FC, useState } from 'react';
 import { AutoTextArea } from 'react-textarea-auto-witdth-height';
 import './EditorNode.css';
 import { Button, Input } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-
-interface Node {
-    id: string;
-    type: string;
-    text?: string;
-    children?: Node[];
-    attributes?: Record<string, string>;
-}
-
-interface Schema {
-    [type: string]: {
-        inline?: boolean;
-        paragraph?: boolean;
-        nestable?: boolean;
-    };
-}
-
-interface Config {
-    debug?: boolean;
-    editable?: boolean;
-    editMenu?: boolean;
-}
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Node } from './Node';
+import { Schema } from './Schema';
+import { Config } from './Config';
 
 interface Props {
     /** Content node representing an XML node */
@@ -92,29 +73,50 @@ const EditorNode: FC<Props> = ({ node, config, schema }) => {
     const menu = config?.editable && config.editMenu && (
         <div className='menu' onClick={(event) => event.stopPropagation()}>
             <span className='node-type'>{type}</span>
+            <Button size='small' onClick={() => console.log('Delete')}><DeleteOutlined /></Button>
             {Object.entries(attributes ?? []).map(([key, value]) => 
                 <Input
+                    size='small'
                     addonBefore={key}
                     key={key}
                     value={value}
                     style={{ width: 'auto' }}
                 />
             )}
-            <Button size='small' onClick={() => console.log('Delete')}><DeleteOutlined /></Button>
+            <Button
+                className='add-attribute-button'
+                size='small'
+                onClick={() => console.log('Add')}
+            >
+                <PlusOutlined />
+            </Button>
         </div>
     );
 
-    return (
-        <div
-            className={cssClasses.join(' ')}
-            data-id={id}
-            data-type={type}
-            onClick={() => inputRef?.focus()}
+    const addButton = config?.editable && config.editMenu && (
+        <Button
+            size='small'
+            className='add-button'
+            onClick={() => console.log('Add')}
         >
-            {menu}
-            {textField}
-            {nested}
-        </div>
+            <PlusOutlined />
+        </Button>
+    );
+
+    return (
+        <>
+            <div
+                className={cssClasses.join(' ')}
+                data-id={id}
+                data-type={type}
+                onClick={() => inputRef?.focus()}
+            >
+                {menu}
+                {textField}
+                {nested}
+            </div>
+            {addButton}
+        </>
     );
 };
 
