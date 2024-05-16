@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { EditorStateContextProvider, InitialPayload } from './EditorStateContext';
 import EditorV2 from './EditorV2';
+import { createBenchmarkSample } from './createBenchmarkSample';
 
 const initialState: InitialPayload = {
     config: {
@@ -101,4 +102,17 @@ export const EditableAdvanced: Story = {
             </EditorStateContextProvider>
         ),
     ]
+};
+
+const benchmarkSample = createBenchmarkSample();
+
+export const Benchmark: Story = {
+    decorators: [
+        (Story) => (
+            <EditorStateContextProvider initialState={{ ...benchmarkSample, config: { editable: true, editMenu: false } }}>
+                <Story />
+            </EditorStateContextProvider>
+        ),
+    ],
+    
 };
