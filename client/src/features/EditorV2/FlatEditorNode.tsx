@@ -15,7 +15,7 @@ interface Props {
 const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     const { schema, config, nodes, addSibling } = useEditorState();
     const node = nodes.byId[nodeId];
-    console.log('FlatEditorNode', node);
+    // console.log('FlatEditorNode', node);
 
     const { id, type, text, descendants, attributes } = node;
     const cssClasses = ['node', type];

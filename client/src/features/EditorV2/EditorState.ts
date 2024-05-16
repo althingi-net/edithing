@@ -40,55 +40,55 @@ export interface EditorState {
 }
 
 export function editorReducer(state: EditorState, action: EditorActionType) {
-    const { nodes } = state;
     const { type, payload } = action;
 
     console.log('action', type, payload);
 
     switch (type) {
-    case EditorAction.ADD_SIBLING: {
-        const { id } = payload;
-        const node = findNode(state.nodes, id);
-        const parent = findParentNode(state.nodes, id);
-
-        if (!node) {
-            throw new Error(`Node ${id} not found.`);
-        }
-
-        const newNode: FlattenedNode = {
-            id: createId(),
-            type: node.type,
-            parent: parent?.id,
-        };
-
-        const newState = {
-            ...state,
-            nodes: {
-                ids: [...nodes.ids, newNode.id],
-                byId: {
-                    ...nodes.byId,
-                    [newNode.id]: newNode,
-                },
-            },
-        };
-
-        // update parent node
-        if (parent) {
-            const newParent: FlattenedNode = {
-                ...parent,
-                descendants: [...(parent.descendants || []), newNode.id],
-            };
-
-            newState.nodes.byId[parent.id] = newParent;
-        }
-
-        return newState;
-    }
-    default: {
+    case EditorAction.ADD_SIBLING: return applyAddSibling(state, payload.id);
+    default:
         throw new Error('Invalid action type.');
     }
-    }
 }
+
+const applyAddSibling = (state: EditorState, id: Node['id']) => {
+    const { nodes } = state;
+    const node = findNode(nodes, id);
+    const parent = findParentNode(nodes, id);
+
+    if (!node) {
+        throw new Error(`Node ${id} not found.`);
+    }
+
+    const newNode: FlattenedNode = {
+        id: createId(),
+        type: node.type,
+        parent: parent?.id,
+    };
+
+    const newState = {
+        ...state,
+        nodes: {
+            ids: [...nodes.ids, newNode.id],
+            byId: {
+                ...nodes.byId,
+                [newNode.id]: newNode,
+            },
+        },
+    };
+
+    // update parent node
+    if (parent) {
+        const newParent: FlattenedNode = {
+            ...parent,
+            descendants: [...(parent.descendants || []), newNode.id],
+        };
+
+        newState.nodes.byId[parent.id] = newParent;
+    }
+
+    return newState;
+};
 
 export const initializeEditorState = (data: { config?: Config, schema?: Schema, nodes: Node[] }): EditorState => {
     const { config, schema, nodes } = data;
