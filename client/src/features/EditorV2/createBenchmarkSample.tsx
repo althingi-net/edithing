@@ -1,8 +1,8 @@
 import { Node } from './Node';
 
-export const createBenchmarkSample = () => {
+export const createV2BenchmarkSample = () => {
     const nodes: Node[] = [];
-    const count = 10;
+    const count = 5;
     let id = 0;
 
     for (let c = 0; c < count; c++) {
@@ -12,7 +12,7 @@ export const createBenchmarkSample = () => {
             id: `${id++}`,
             type: 'chapter',
             attributes: {
-                nr: c.toString(),
+                nr: `${c + 1}`,
                 nrType: 'roman',
             },
             children: cChildren,
@@ -25,7 +25,7 @@ export const createBenchmarkSample = () => {
                 id: `${id++}`,
                 type: 'art',
                 attributes: {
-                    nr: a.toString(),
+                    nr: `${a + 1}`,
                 },
                 children: aChildren,
             });
@@ -37,7 +37,7 @@ export const createBenchmarkSample = () => {
                     id: `${id++}`,
                     type: 'subart',
                     attributes: {
-                        nr: s.toString(),
+                        nr: `${s + 1}`,
                     },
                     children: sChildren,
                 });
@@ -47,7 +47,7 @@ export const createBenchmarkSample = () => {
                         id: `${id++}`,
                         type: 'sen',
                         attributes: {
-                            nr: t.toString(),
+                            nr: `${t + 1}`,
                         },
                         text: 'Lög þessi gilda um uppbyggingu og rekstur flugvalla í eigu íslenska ríkisins og þá rekstrarstjórnun flugumferðar/flugleiðsöguþjónustu sem veitt er af hálfu íslenska ríkisins á íslensku yfirráðasvæði eða á grundvelli alþjóðlegra skuldbindinga',
                     });
