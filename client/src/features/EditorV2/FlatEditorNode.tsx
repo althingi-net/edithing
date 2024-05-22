@@ -4,6 +4,7 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import { ChangeEvent, FC, useCallback, useMemo, useState } from 'react';
 import { AutoTextArea } from 'react-textarea-auto-witdth-height';
+import { useStore } from 'zustand';
 import './EditorNode.css';
 import { FlattenedNode } from './EditorState';
 import { useEditorState } from './EditorStateContext';
@@ -13,11 +14,12 @@ interface Props {
 }
 
 const FlatEditorNode: FC<Props> = ({ nodeId }) => {
-    const { schema, config, nodes, addSibling, updateNodeText } = useEditorState();
-    const node = nodes.byId[nodeId];
-    // console.log('FlatEditorNode', node);
-
+    const { store, addSibling, updateNodeText } = useEditorState();
+    const config = useStore(store, (state) => state.config);
+    const schema = useStore(store, (state) => state.schema);
+    const node = useStore(store, (state) => state.nodes.byId[nodeId]);
     const { id, type, text, descendants, attributes } = node;
+    
     const cssClasses = ['node', type];
     const [inputRef, setInputRef] = useState<HTMLTextAreaElement | null>(null);
     const hasDescendants = descendants && descendants.length > 0;

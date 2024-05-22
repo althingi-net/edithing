@@ -1,20 +1,22 @@
 import { FC } from 'react';
-import FlatEditorNode from './FlatEditorNode';
+import { useStore } from 'zustand';
 import { useEditorState } from './EditorStateContext';
+import FlatEditorNode from './FlatEditorNode';
 
 const EditorV2: FC = () => {
-    const { nodes } = useEditorState();
+    const { store } = useEditorState();
+    const rootNodes = useStore(store, (state) => state.nodes.roots);
 
-    if (!nodes.ids.length) {
+    if (!rootNodes?.length) {
         return null;
     }
 
-    const content = Object.values(nodes.byId)
-        .filter(node => !node.parent)
-        .map((node) => <FlatEditorNode
-            key={node.id}
-            nodeId={node.id}
-        />);
+    const content = rootNodes.map((id) => (
+        <FlatEditorNode
+            key={id}
+            nodeId={id}
+        />
+    ));
 
     return (
         <>

@@ -110,7 +110,7 @@ export const Benchmark: Story = {
     tags: ['!autodocs'],
     decorators: [
         (Story) => (
-            <EditorStateContextProvider initialState={{ ...benchmarkSample, config: { editable: true, editMenu: false } }}>
+            <EditorStateContextProvider initialState={{ ...benchmarkSample, config: { editable: true, editMenu: true } }}>
                 <Story />
             </EditorStateContextProvider>
         ),

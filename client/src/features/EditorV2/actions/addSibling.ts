@@ -33,7 +33,7 @@ export const applyAddSibling = (state: EditorState, id: Node['id']) => {
         parent: parent?.id,
     };
 
-    const newState = {
+    const newState: EditorState = {
         ...state,
         nodes: {
             ids: [...nodes.ids, newNode.id],
@@ -41,6 +41,7 @@ export const applyAddSibling = (state: EditorState, id: Node['id']) => {
                 ...nodes.byId,
                 [newNode.id]: newNode,
             },
+            roots: nodes.roots,
         },
     };
 
@@ -52,6 +53,11 @@ export const applyAddSibling = (state: EditorState, id: Node['id']) => {
         };
 
         newState.nodes.byId[parent.id] = newParent;
+    }
+
+    // add root node
+    if (!parent) {
+        newState.nodes.roots = [...(nodes.roots || []), newNode.id];
     }
 
     return newState;

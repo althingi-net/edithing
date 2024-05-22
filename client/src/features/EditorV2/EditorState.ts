@@ -14,6 +14,7 @@ export interface EditorState {
     nodes: {
         ids: Node['id'][];
         byId: Record<Node['id'], FlattenedNode>;
+        roots?: Node['id'][];
     };
 }
 
@@ -30,6 +31,7 @@ export const initializeEditorState = (data: { config?: Config, schema?: Schema, 
                 map[node.id] = node;
                 return map;
             }, {} as Record<Node['id'], FlattenedNode>),
+            roots: flattenedNodes.filter((node) => !node.parent).map((node) => node.id),
         },
     };
 };
