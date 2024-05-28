@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
-import { ChangeEvent, FC, useCallback, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AutoTextArea } from 'react-textarea-auto-witdth-height';
 import { useStore } from 'zustand';
 import './EditorNode.css';
@@ -19,6 +19,7 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     const schema = useStore(store, (state) => state.schema);
     const node = useStore(store, (state) => state.nodes.byId[nodeId]);
     const { id, type, text, descendants, attributes } = node;
+    const [autoFocus, setAutoFocus] = useState(false);
     
     const cssClasses = ['node', type];
     const [inputRef, setInputRef] = useState<HTMLTextAreaElement | null>(null);
@@ -71,6 +72,20 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
             />
         );
     }
+
+    useEffect(() => {
+        if (inputRef) {
+            if (autoFocus) {
+                inputRef.focus();
+            }
+
+            if (text && !autoFocus) {
+                setAutoFocus(true);
+            }
+        }
+    // ignore change of autoFocus
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inputRef, text]);
 
     // Render edit menu
     const menu = useMemo(() => config.editable && config.editMenu && (
