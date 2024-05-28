@@ -1,4 +1,5 @@
 import { FC, PropsWithChildren, createContext, useContext } from 'react';
+import { temporal } from 'zundo';
 import { createStore } from 'zustand';
 import { devtools, redux } from 'zustand/middleware';
 import { EditorState, FlattenedNode, initializeEditorState } from './EditorState';
@@ -17,7 +18,7 @@ type EditorStateContextType = ReturnType<typeof createContextValue>;
 const EditorStateContext = createContext<EditorStateContextType | null>(null);
 
 const createContextValue = (initialState: InitialPayload) => {
-    const store = createStore(devtools(redux(reducer, initializeEditorState(initialState))));
+    const store = createStoreComposer(initialState);
     const { dispatch } = store;
         
     return {
@@ -33,6 +34,40 @@ const createContextValue = (initialState: InitialPayload) => {
         },
     };
 
+};
+
+const createStoreComposer = (initialState: InitialPayload) => {
+    // const { config: { undoable, reduxDevTools } } = initialState;
+
+    // if (!reduxDevTools && !undoable) {
+    //     return createStore(
+    //         redux(reducer, initializeEditorState(initialState)),
+    //     );
+    // }
+
+    // if (!undoable) {
+    //     return createStore(
+    //         devtools(
+    //             redux(reducer, initializeEditorState(initialState)),
+    //         )
+    //     );
+    // }
+
+    // if (!reduxDevTools) {
+    //     return createStore(
+    //         temporal(
+    //             redux(reducer, initializeEditorState(initialState)),
+    //         )
+    //     );
+    // }
+
+    return createStore(
+        devtools(
+            temporal(
+                redux(reducer, initializeEditorState(initialState)),
+            )
+        )
+    );
 };
 
 export const EditorStateContextProvider: FC<PropsWithChildren & { initialState: InitialPayload }> = ({ children, initialState }) => {

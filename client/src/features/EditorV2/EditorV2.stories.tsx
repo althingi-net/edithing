@@ -88,7 +88,7 @@ export const ReadOnly: Story = {
 export const Editable: Story = {
     decorators: [
         (Story) => (
-            <EditorStateContextProvider initialState={{ ...initialState, config: { editable: true, editMenu: false } }}>
+            <EditorStateContextProvider initialState={{ ...initialState, config: { editable: true, editMenu: false, reduxDevTools: true, undoable: true } }}>
                 <Story />
             </EditorStateContextProvider>
         ),
@@ -97,7 +97,7 @@ export const Editable: Story = {
 export const EditableAdvanced: Story = {
     decorators: [
         (Story) => (
-            <EditorStateContextProvider initialState={{ ...initialState, config: { editable: true, editMenu: true } }}>
+            <EditorStateContextProvider initialState={{ ...initialState, config: { editable: true, editMenu: true, reduxDevTools: true, undoable: true } }}>
                 <Story />
             </EditorStateContextProvider>
         ),
@@ -110,7 +110,7 @@ export const Benchmark: Story = {
     tags: ['!autodocs'],
     decorators: [
         (Story) => (
-            <EditorStateContextProvider initialState={{ ...benchmarkSample, config: { editable: true, editMenu: true } }}>
+            <EditorStateContextProvider initialState={{ ...benchmarkSample, config: { editable: true, editMenu: true, reduxDevTools: true, undoable: true } }}>
                 <Story />
             </EditorStateContextProvider>
         ),
