@@ -1,7 +1,7 @@
 .node {
     border: 1px solid #D9D9D9;
     border-radius: 0.25rem;
-    margin: 10px;
+    margin: 5px;
     background-color: white;
 
     .menu {
@@ -17,7 +17,8 @@
     }
 
     .text {
-        display: inline;
+        display: inline-block;
+        padding: 5px;
         border: 1px solid transparent;
         color: #242424;
         font-family: "Droid Serif", serif;
@@ -26,16 +27,20 @@
     }
 
     &.inline {
-        display: inline;
+        display: inline-block;
     }
 
     &.editable {
-        display: block;
         margin-left: 20px;
 
         > .children {
+            padding-top: 10px;
             padding-bottom: 10px;
         }
+    }
+
+    &.edit-menu {
+        display: block;
     }
 
     .name > .text {
@@ -104,7 +109,6 @@
 }
 
 .add-button {
-    width: calc(100% - 30px);
-    margin-right: 10px;
-    margin-left: 20px;
+    width: calc(100% - 25px);
+    margin: 5px 10px 5px 20px;
 }

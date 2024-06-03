@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { FC, useState } from 'react';
-import { AutoTextArea } from 'react-textarea-auto-witdth-height';
 import './EditorNode.css';
 import { Button, Input } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Node } from './Node';
 import { Schema } from './Schema';
 import { Config } from './Config';
+import TextArea from './TextArea';
 
 interface Props {
     /** Content node representing an XML node */
@@ -21,7 +21,7 @@ interface Props {
 const EditorNode: FC<Props> = ({ node, config, schema }) => {
     const { id, type, text, children, attributes } = node;
     const cssClasses = ['node', type];
-    const [inputRef, setInputRef] = useState<HTMLTextAreaElement | null>(null);
+    const [inputRef, setInputRef] = useState<HTMLDivElement | null>(null);
     const [value, setValue] = useState<string>(text || '');
 
     // Set schema config for node type
@@ -60,11 +60,11 @@ const EditorNode: FC<Props> = ({ node, config, schema }) => {
 
     if (config?.editable && !children) {
         textField = (
-            <AutoTextArea
+            <TextArea
                 className="text"
                 placeholder={type}
                 value={value}
-                onChange={(event) => setValue(event.target.value)}
+                onChange={setValue}
                 ref={setInputRef}
             />
         );

@@ -3,6 +3,7 @@ import { useStore } from 'zustand';
 import { Button } from 'antd';
 import { useEditorState } from './EditorStateContext';
 import FlatEditorNode from './FlatEditorNode';
+import './EditorV2.css';
 
 const EditorV2: FC = () => {
     const { store } = useEditorState();
@@ -30,8 +31,10 @@ const EditorV2: FC = () => {
 
     return (
         <>
-            <div>
+            <div className='actions'>
                 {undoableContent}
+                <Button onClick={() => redo()}>Import XML</Button>
+                <Button onClick={() => redo()}>Export XML</Button>
             </div>
             {content}
         </>

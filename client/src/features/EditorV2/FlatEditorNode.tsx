@@ -2,12 +2,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
-import { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AutoTextArea } from 'react-textarea-auto-witdth-height';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 import './EditorNode.css';
 import { FlattenedNode } from './EditorState';
 import { useEditorState } from './EditorStateContext';
+import TextArea from './TextArea';
+import { toKebabCase } from './toKebabCase';
 
 interface Props {
     nodeId: FlattenedNode['id'];
@@ -22,16 +23,16 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     const [autoFocus, setAutoFocus] = useState(false);
     
     const cssClasses = ['node', type];
-    const [inputRef, setInputRef] = useState<HTMLTextAreaElement | null>(null);
+    const [inputRef, setInputRef] = useState<HTMLDivElement | null>(null);
     const hasDescendants = descendants && descendants.length > 0;
 
     // Set schema config for node type
     if (type in schema) {
         Object.entries(schema[type]).forEach(([key, value]) => {
             if (typeof value === 'boolean' && value) {
-                cssClasses.push(key);
+                cssClasses.push(toKebabCase(key));
             } else {
-                cssClasses.push(`${key}-${value}`);
+                cssClasses.push(`${toKebabCase(key)}-${value}`);
             }
         });
     }
@@ -39,7 +40,7 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     // Set global config for node
     Object.entries(config).forEach(([key, value]) => {
         if (typeof value === 'boolean' && value) {
-            cssClasses.push(key);
+            cssClasses.push(toKebabCase(key));
         }
     });
 
@@ -54,8 +55,7 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     ), [descendants, hasDescendants]);
 
     // Render text field
-    const handleInputChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => { 
-        const text = event.target.value;
+    const handleInputChange = useCallback((text: string) => { 
         updateNodeText(nodeId, text);
     }, [nodeId, updateNodeText]);
 
@@ -63,8 +63,8 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     let textField = text && !hasDescendants && <div className='text'>{text}</div>;
     if (config.editable && !hasDescendants) {
         textField = (
-            <AutoTextArea
-                className="text"
+            <TextArea
+                className='text'
                 placeholder={type}
                 value={text}
                 onChange={handleInputChange}
