@@ -71,7 +71,7 @@ const BillPage: FC = () => {
                                 <h2 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Select another law')}</h2>
                             </>
                         ) : selected ? (
-                            <Loader loading={!slate || !originalDocument || !xml || !events}>
+                            <Loader loading={!slate || !originalDocument || !xml}>
                                 <Editor
                                     key={selected}
                                     slate={slate!}

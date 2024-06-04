@@ -1,9 +1,9 @@
 import { Collapse } from 'antd';
+import { compareDocuments, exportChangelogXml, exportSpeechXml, exportXml } from 'law-document';
 import { FC, useMemo } from 'react';
 import { CodeBlock } from 'react-code-blocks';
-import { useSlate } from 'slate-react';
-import { LawEditor, compareDocuments , exportChangelogXml , exportSpeechXml, exportXml } from 'law-document';
 import { Descendant } from 'slate';
+import { useSlate } from 'slate-react';
 import useLanguageContext from '../App/useLanguageContext';
 import CopyClipboardButton from './CopyClipboardButton';
 import LawChanges from './LawChanges';
@@ -25,6 +25,7 @@ const EditorSidePanel: FC<Props> = (props) => {
     return useMemo(() => {
         const slateState = JSON.stringify(debouncedSlate.children, null, 2);
         const xmlExport = isSpeech ? exportSpeechXml(debouncedSlate, true) : exportXml(debouncedSlate, true);
+        const changelog = originalDocument && compareDocuments(debouncedSlate, originalDocument);
 
         return (
             <div style={{ height: 'calc(100vh - 104px)', overflowY: 'auto' }}>
@@ -66,30 +67,22 @@ const EditorSidePanel: FC<Props> = (props) => {
                             language={'xml'}
                         />
                     </Collapse.Panel>
-                    {originalDocument && <ChangelogPanel slate={debouncedSlate} originalDocument={originalDocument} readOnly={readOnly} />}
+                    {originalDocument && changelog && (
+                        <Collapse.Panel
+                            key="5"
+                            header={t('Changes')}
+                            extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}
+                            collapsible={readOnly ? 'disabled' : undefined}
+                        >
+                            <LawChanges changelog={changelog} />
+                        </Collapse.Panel>
+                    )}
                 </Collapse>
             </div>
         );
     // Note: Important to re-render on changes of debouncedSlate.events and debouncedSlate.children
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedSlate, debouncedSlate.events, debouncedSlate.children, originalDocument, xml, t]);
-};
-
-const ChangelogPanel: FC<{ slate: LawEditor, originalDocument: Descendant[] } & Props> = (props) => {
-    const { slate, originalDocument, readOnly } = props;
-    const changelog = compareDocuments(slate, originalDocument);
-    const { t } = useLanguageContext();
-
-    return (
-        <Collapse.Panel
-            key="5"
-            header={t('Changes')}
-            extra={<CopyClipboardButton content={changelog} transform={exportChangelogXml} />}
-            collapsible={readOnly ? 'disabled' : undefined}
-        >
-            <LawChanges changelog={changelog} />
-        </Collapse.Panel>
-    );
 };
 
 export default EditorSidePanel;
