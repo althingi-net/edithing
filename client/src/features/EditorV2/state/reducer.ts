@@ -1,5 +1,6 @@
 import { EditorState } from '../EditorState';
 import { applyAddSibling, matchAddSibling } from '../actions/addSibling';
+import { applySetEditMenu, matchSetEditMenu } from '../actions/setEditMenu';
 import { applyUpdateNode, matchUpdateNode } from '../actions/updateNode';
 import { matchUpdateNodeText, applyUpdateNodeText } from '../actions/updateNodeText';
 import { AnyAction } from './AnyAction';
@@ -21,6 +22,10 @@ function reducer(state: EditorState, action: AnyAction) {
 
     if (matchUpdateNodeText(action)) {
         return applyUpdateNodeText(state, action.payload.id, action.payload.text);
+    }
+
+    if (matchSetEditMenu(action)) {
+        return applySetEditMenu(state, action.payload.enabled);
     }
 
     console.warn('Unknown action', action);

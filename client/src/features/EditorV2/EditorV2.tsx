@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { useStore } from 'zustand';
-import { Button } from 'antd';
+import { Button, Switch } from 'antd';
 import { useEditorState } from './EditorStateContext';
 import FlatEditorNode from './FlatEditorNode';
 import styles from './EditorV2.module.css';
 
 const EditorV2: FC = () => {
-    const { store } = useEditorState();
+    const { store, setEditMenu } = useEditorState();
     const { undoable, editable, editMenu } = useStore(store, (state) => state.config);
     const rootNodes = useStore(store, (state) => state.nodes.roots);
     const { undo, redo } = store.temporal.getState();
@@ -36,6 +36,13 @@ const EditorV2: FC = () => {
                     {undoableContent}
                     <Button onClick={() => redo()}>Import XML</Button>
                     <Button onClick={() => redo()}>Export XML</Button>
+                    <Switch
+                        title='Edit Menu'
+                        checked={editMenu}
+                        onClick={() => setEditMenu(!editMenu)}
+                        checkedChildren={'On'}
+                        unCheckedChildren={'Off'}
+                    />
                 </div>
             )}
             <div className={styles.content}>

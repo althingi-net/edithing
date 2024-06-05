@@ -15,7 +15,7 @@ const XmlEditor: FC<Props> = (props) => {
         nodes: parseXml(xml),
         config: {
             editable: !readOnly,
-            editMenu: true,
+            editMenu: false,
             reduxDevTools: true,
             undoable: true,
         },

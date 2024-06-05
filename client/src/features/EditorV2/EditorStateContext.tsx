@@ -8,6 +8,7 @@ import { createAddSiblingAction } from './actions/addSibling';
 import { createUpdateNodeAction } from './actions/updateNode';
 import { createUpdateNodeTextAction } from './actions/updateNodeText';
 import reducer from './state/reducer';
+import { createSetEditMenuAction } from './actions/setEditMenu';
 
 export type InitialPayload = Omit<EditorState, 'nodes'> & {
     nodes: Node[];
@@ -31,6 +32,9 @@ const createContextValue = (initialState: InitialPayload) => {
         },
         updateNodeText: (id: string, text: FlattenedNode['text']) => {
             dispatch(createUpdateNodeTextAction(id, text));
+        },
+        setEditMenu: (enabled: boolean) => {
+            dispatch(createSetEditMenuAction(enabled));
         },
     };
 
