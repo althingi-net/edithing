@@ -1,4 +1,5 @@
-import { EditorState, FlattenedNode, createId } from '../EditorState';
+import { EditorState, FlattenedNode } from '../EditorState';
+import { createId } from '../state/createId';
 import { findParentNode } from '../state/selectors/findParentNode';
 import { findNode } from '../state/selectors/findNode';
 import { Node } from '../Node';

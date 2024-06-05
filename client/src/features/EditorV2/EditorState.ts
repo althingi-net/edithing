@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Config } from './Config';
 import { Node } from './Node';
 import { Schema } from './Schema';
@@ -52,10 +51,3 @@ const flattenNodes = (nodes: Node[], parent?: Node['id']): FlattenedNode[] => {
         ];
     }, [] as FlattenedNode[]);
 };
-
-export const createId = () => {
-    return uuidv4();
-};
-
-
-
