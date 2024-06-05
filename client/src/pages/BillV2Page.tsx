@@ -77,7 +77,7 @@ const BillV2Page: FC = () => {
                                     xml={xml!}
                                     // saveDocument={saveDocument}
                                     // events={events}
-                                    // readOnly={!isBillDocument}
+                                    readOnly={!isBillDocument}
                                     // bill={bill}
                                 />
                             </Loader>

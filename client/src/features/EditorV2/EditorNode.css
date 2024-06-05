@@ -31,15 +31,14 @@
     }
 
     &.editable {
-        margin-left: 20px;
-
         > .children {
             padding-top: 10px;
             padding-bottom: 10px;
+            margin-left: 20px;
         }
     }
 
-    &.edit-menu {
+    &.editable + &.edit-menu {
         display: block;
     }
 
@@ -59,13 +58,9 @@
         padding: 5px;
     }
 
-    &.edit-menu > .text {
-        width: calc(100% - 12px);
-    }
-
-    .text::after {
+    /* .text::after {
         content: " ";
-    }
+    } */
 
     .node-type {
         margin-right: 10px;
@@ -74,6 +69,8 @@
 }
 
 .node:not(.editable) {
+    border: 1px solid transparent;
+
     &.art > .children > .node.title::before {
         margin-right: 6px;
         content: url('../Editor/images/marker-art.png');
@@ -112,6 +109,6 @@
 }
 
 .add-button {
-    width: calc(100% - 25px);
-    margin: 5px 10px 5px 20px;
+    width: calc(100% - 10px);
+    margin: 5px;
 }

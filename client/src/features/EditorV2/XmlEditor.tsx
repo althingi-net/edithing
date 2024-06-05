@@ -6,15 +6,16 @@ import { Schema } from './Schema';
 
 interface Props {
     xml: string;
+    readOnly?: boolean;
 }
 
 const XmlEditor: FC<Props> = (props) => {
-    const { xml } = props;
+    const { xml, readOnly } = props;
     const initialState = useMemo(() => ({
         nodes: parseXml(xml),
         config: {
-            editable: true,
-            editMenu: false,
+            editable: !readOnly,
+            editMenu: true,
             reduxDevTools: true,
             undoable: true,
         },
@@ -29,7 +30,7 @@ const XmlEditor: FC<Props> = (props) => {
                 inline: true,
             },
         } as Schema,
-    }), [xml]);
+    }), [readOnly, xml]);
 
     return (
         <EditorStateContextProvider initialState={initialState}>
