@@ -37,10 +37,9 @@
         }
     }
 
-    &.editable + &.edit-menu {
-        display: flex;
-        flex-direction: column;
-    }
+    &.editable.edit-menu {
+        display: block;
+    } 
 
     .name > .text {
         font-style: italic;
