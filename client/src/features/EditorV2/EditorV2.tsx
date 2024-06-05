@@ -36,7 +36,9 @@ const EditorV2: FC = () => {
                 <Button onClick={() => redo()}>Import XML</Button>
                 <Button onClick={() => redo()}>Export XML</Button>
             </div>
-            {content}
+            <div className='editor-content'>
+                {content}
+            </div>
         </>
     );
 };

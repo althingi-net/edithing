@@ -11,7 +11,7 @@ import useUserErrors from '../App/useUserErrors';
 import useDocument from '../Documents/useDocument';
 import useBill from './useBill';
 
-const useBillPage = (disableActions = false) => {
+const useBillPage = (disableActions = false, billPage = '/bill') => {
     const { t } = useLanguageContext();
     const { id, identifier: selected } = useParams();
     const { bill, reloadBill, hasError: hasBillError } = useBill(id);
@@ -40,11 +40,11 @@ const useBillPage = (disableActions = false) => {
         setDocument(null);
 
         if (!identifier) {
-            navigate(`/bill/${id}`);
+            navigate(`${billPage}/${id}`);
         } else {
-            navigate(`/bill/${id}/document/${identifier}`);
+            navigate(`${billPage}/${id}/document/${identifier}`);
         }
-    }, [bill, disableActions, errorUnsavedChanges, id, navigate, setDocument]);
+    }, [bill, billPage, disableActions, errorUnsavedChanges, id, navigate, setDocument]);
 
     const addDocument = useCallback((identifier: string) => {
         if (disableActions) {

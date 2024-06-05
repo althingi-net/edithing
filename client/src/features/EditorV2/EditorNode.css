@@ -56,8 +56,11 @@
     }
 
     &.editable > .text {
-        width: calc(100% - 12px);
         padding: 5px;
+    }
+
+    &.edit-menu > .text {
+        width: calc(100% - 12px);
     }
 
     .text::after {

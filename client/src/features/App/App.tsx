@@ -9,6 +9,8 @@ import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
 import { HightlightContextProvider } from '../Editor/Toolbar/useHighlightContext';
 import SpeechPage from '../../pages/SpeechPage';
+import BillsV2Page from '../../pages/BillsV2Page';
+import BillV2Page from '../../pages/BillV2Page';
 import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
 import { SessionContextProvider } from './useSessionContext';
@@ -44,6 +46,15 @@ const router = createBrowserRouter([{
         }, {
             path: '/law/:identifier',
             element: <LawPage />,
+        }, {
+            path: '/bills2',
+            element: <BillsV2Page />,
+        }, {
+            path: '/bill2/:id',
+            element: <BillV2Page />,
+        }, {
+            path: '/bill2/:id/document/:identifier',
+            element: <BillV2Page />,
         }, {
             path: '/bills',
             element: <BillsPage />,
