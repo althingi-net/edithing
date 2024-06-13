@@ -32,10 +32,14 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
                 nodeRef={nodeRef}
                 classNames='modal'
             >
-                <div className="modal-overlay" onClick={onClose} role="none">
+                <div
+                    className="modal-overlay animation-start"
+                    onClick={onClose}
+                    role="none"
+                    ref={nodeRef}
+                >
                     <Card
                         className='modal'
-                        ref={nodeRef}
                         onClick={(e) => e.stopPropagation()}
                         title={title}
                         extra={<Button onClick={onClose} size="small"><CloseOutlined /></Button>}
