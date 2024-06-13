@@ -5,10 +5,10 @@ import { devtools, redux } from 'zustand/middleware';
 import { EditorState, FlattenedNode, initializeEditorState } from './EditorState';
 import { Node } from './Node';
 import { createAddSiblingAction } from './actions/addSibling';
+import { createSetEditMenuAction } from './actions/setEditMenu';
 import { createUpdateNodeAction } from './actions/updateNode';
 import { createUpdateNodeTextAction } from './actions/updateNodeText';
 import reducer from './state/reducer';
-import { createSetEditMenuAction } from './actions/setEditMenu';
 
 export type InitialPayload = Omit<EditorState, 'nodes'> & {
     nodes: Node[];

@@ -1,5 +1,6 @@
 import { FC, Ref, forwardRef, useCallback, useEffect, useRef } from 'react';
 import { mergeRefs } from 'react-merge-refs';
+import { useDebounceCallback } from 'usehooks-ts';
 import './TextArea.css';
 
 interface Props {
@@ -18,17 +19,27 @@ const TextArea: FC<Props> = forwardRef<HTMLDivElement, Props>((props, outerRef) 
     const innerRef = useRef<HTMLDivElement>(null);
     const initialValue = useRef(value);
 
-    const handleInput = useCallback((event: React.FormEvent<HTMLDivElement>) => {
-        const newText = event.currentTarget.innerText;
+    
+    const onChangeDelayed = useDebounceCallback(
+        onChange ?? (() => {}),
+        300,
+        { trailing: true, leading: false },
+    );
 
-        if (innerRef.current) {
-            innerRef.current.textContent = newText;
-        }
-
-        if (onChange) {
-            onChange(newText);
-        }
-    }, [onChange]);
+    const handleInput = useCallback(
+        (event: React.FormEvent<HTMLDivElement>) => {
+            const newText = event.currentTarget.innerText;
+        
+            if (innerRef.current) {
+                innerRef.current.textContent = newText;
+            }
+        
+            if (onChange) {
+                onChangeDelayed(newText);
+            }
+        },
+        [onChange, onChangeDelayed],
+    );
 
     useEffect(() => {
         if (value && innerRef.current) {
