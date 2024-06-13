@@ -13,6 +13,7 @@ apps:
         DATABASE_USER: 'root'
         DATABASE_PASSWORD: 'your-password'
         JWT_SECRET: ''
+        MESSAGE_BROKER_URL: ''
   - script: './server/dist/index.js'
     exec_mode: 'fork'
     name: 'worker-1'
@@ -27,3 +28,19 @@ apps:
         DATABASE_USER: 'root'
         DATABASE_PASSWORD: 'your-password'
         JWT_SECRET: ''
+        MESSAGE_BROKER_URL: ''
+  - script: './server/dist/bin/queueWorker.js'
+    exec_mode: 'fork'
+    name: 'queue'
+    interpreter: 'ts-node'
+    env:
+        PORT: 3502
+        NODE_ENV: production
+        DISABLE_GITHUB: false
+        GITHUB_TOKEN: ''
+        DEBUG: false
+        DATABASE_NAME: 'app'
+        DATABASE_USER: 'root'
+        DATABASE_PASSWORD: 'your-password'
+        JWT_SECRET: ''
+        MESSAGE_BROKER_URL: ''
