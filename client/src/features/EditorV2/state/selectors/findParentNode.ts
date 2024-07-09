@@ -3,12 +3,12 @@ import { EditorState } from '../../EditorState';
 import { findNode } from './findNode';
 
 
-export const findParentNode = (nodes: EditorState['nodes'], id: Node['id']) => {
-    const node = findNode(nodes, id);
+export const findParentNode = (nodesById: EditorState['nodesById'], id: Node['id']) => {
+    const node = findNode(nodesById, id);
 
     if (!node || !node.parent) {
         return;
     }
 
-    return findNode(nodes, node.parent);
+    return findNode(nodesById, node.parent);
 };

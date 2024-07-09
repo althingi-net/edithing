@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { FlattenedNode, EditorState } from '../EditorState';
 import { Node } from '../Node';
 import { findNode } from '../state/selectors/findNode';
@@ -18,24 +17,24 @@ export const matchUpdateNodeText = (action: any): action is UpdateNodeTextEditor
     return action.type === TYPE;
 };
 
-export const applyUpdateNodeText = (state: EditorState, id: Node['id'], text: FlattenedNode['text']) => {
-    const { nodes } = state;
-    const oldNode = findNode(nodes, id);
+export const applyUpdateNodeText = (
+    state: EditorState,
+    id: Node['id'],
+    text: FlattenedNode['text'],
+): Partial<EditorState> => {
+    const { nodesById } = state;
+    const oldNode = findNode(nodesById, id);
 
     if (!oldNode) {
         throw new Error(`Node ${id} not found.`);
     }
 
     const newState = {
-        ...state,
-        nodes: {
-            ...nodes,
-            byId: {
-                ...nodes.byId,
-                [id]: {
-                    ...oldNode,
-                    text,
-                },
+        nodesById: {
+            ...nodesById,
+            [id]: {
+                ...oldNode,
+                text,
             },
         },
     };

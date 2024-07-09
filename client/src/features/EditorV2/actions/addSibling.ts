@@ -19,10 +19,10 @@ export const matchAddSibling = (action: any): action is AddSiblingEditorAction =
     return action.type === TYPE;
 };
 
-export const applyAddSibling = (state: EditorState, id: Node['id']) => {
-    const { nodes } = state;
-    const node = findNode(nodes, id);
-    const parent = findParentNode(nodes, id);
+export const applyAddSibling = (state: EditorState, id: Node['id']): Partial<EditorState> => {
+    const { nodes, nodesById, rootNodes } = state;
+    const node = findNode(nodesById, id);
+    const parent = findParentNode(nodesById, id);
 
     if (!node) {
         throw new Error(`Node ${id} not found.`);
@@ -34,16 +34,13 @@ export const applyAddSibling = (state: EditorState, id: Node['id']) => {
         parent: parent?.id,
     };
 
-    const newState: EditorState = {
-        ...state,
-        nodes: {
-            ids: [...nodes.ids, newNode.id],
-            byId: {
-                ...nodes.byId,
-                [newNode.id]: newNode,
-            },
-            roots: nodes.roots,
+    const newState = {
+        nodes: [...nodes, newNode.id],
+        nodesById: {
+            ...nodesById,
+            [newNode.id]: newNode,
         },
+        rootNodes: rootNodes,
     };
 
     // update parent node
@@ -53,12 +50,12 @@ export const applyAddSibling = (state: EditorState, id: Node['id']) => {
             descendants: [...(parent.descendants || []), newNode.id],
         };
 
-        newState.nodes.byId[parent.id] = newParent;
+        newState.nodesById[parent.id] = newParent;
     }
 
     // add root node
     if (!parent) {
-        newState.nodes.roots = [...(nodes.roots || []), newNode.id];
+        newState.rootNodes = [...(rootNodes || []), newNode.id];
     }
 
     return newState;

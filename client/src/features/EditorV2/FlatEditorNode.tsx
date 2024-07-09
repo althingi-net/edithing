@@ -18,7 +18,7 @@ const FlatEditorNode: FC<Props> = ({ nodeId }) => {
     const { store, addSibling, updateNodeText } = useEditorState();
     const config = useStore(store, (state) => state.config);
     const schema = useStore(store, (state) => state.schema);
-    const node = useStore(store, (state) => state.nodes.byId[nodeId]);
+    const node = useStore(store, (state) => state.nodesById[nodeId]);
     const { id, type, text, descendants, attributes } = node;
     const [autoFocus, setAutoFocus] = useState(false);
     

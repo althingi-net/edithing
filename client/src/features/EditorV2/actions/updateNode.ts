@@ -17,22 +17,18 @@ export const matchUpdateNode = (action: any): action is UpdateNodeEditorAction =
     return action.type === TYPE;
 };
 
-export const applyUpdateNode = (state: EditorState, id: Node['id'], node: FlattenedNode) => {
-    const { nodes } = state;
-    const oldNode = findNode(nodes, id);
+export const applyUpdateNode = (state: EditorState, id: Node['id'], node: FlattenedNode): Partial<EditorState> => {
+    const { nodesById } = state;
+    const oldNode = findNode(nodesById, id);
 
     if (!oldNode) {
         throw new Error(`Node ${id} not found.`);
     }
 
     const newState = {
-        ...state,
-        nodes: {
-            ...nodes,
-            byId: {
-                ...nodes.byId,
-                [id]: node,
-            },
+        nodesById: {
+            ...nodesById,
+            [id]: node,
         },
     };
 

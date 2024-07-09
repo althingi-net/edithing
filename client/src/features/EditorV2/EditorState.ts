@@ -10,28 +10,26 @@ export interface FlattenedNode extends Omit<Node, 'children'> {
 export interface EditorState {
     config: Config;
     schema: Schema;
-    nodes: {
-        ids: Node['id'][];
-        byId: Record<Node['id'], FlattenedNode>;
-        roots?: Node['id'][];
-    };
+    nodes: Node['id'][];
+    nodesById: Record<Node['id'], FlattenedNode>;
+    rootNodes?: Node['id'][];
 }
 
 export const initializeEditorState = (data: { config?: Config, schema?: Schema, nodes: Node[] }): EditorState => {
+    console.log('initializeEditorState', data);
     const { config, schema, nodes } = data;
     const flattenedNodes = flattenNodes(nodes);
+    console.log('flattenedNodes', flattenedNodes);
 
     return {
         config: config || {},
         schema: schema || {},
-        nodes: {
-            ids: flattenedNodes.map((node) => node.id),
-            byId: flattenedNodes.reduce((map, node) => {
-                map[node.id] = node;
-                return map;
-            }, {} as Record<Node['id'], FlattenedNode>),
-            roots: flattenedNodes.filter((node) => !node.parent).map((node) => node.id),
-        },
+        nodes: flattenedNodes.map((node) => node.id),
+        nodesById: flattenedNodes.reduce((map, node) => {
+            map[node.id] = node;
+            return map;
+        }, {} as Record<Node['id'], FlattenedNode>),
+        rootNodes: flattenedNodes.filter((node) => !node.parent).map((node) => node.id),
     };
 };
 
