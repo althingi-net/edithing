@@ -23,7 +23,6 @@ describe('queue worker', () => {
             title: 'title',
             content: JSON.stringify({ a: 1, b: 1 }),
             originalXml: 'originalXml',
-            events: '[]',
         });
 
         const update = await BillDocumentUpdate.save({
@@ -31,14 +30,13 @@ describe('queue worker', () => {
             billDocumentId: 2,
             title: 'title',
             content: JSON.stringify({ a: 2, b: 2 }),
-            events: '[]',
         });
     
         await runBillDocumentUpdate(update.id!);
     
         const billDocument = await BillDocument.findOne({
             where: { id: 2 },
-            select: ['content', 'events'],
+            select: ['content'],
         });
         const billDocumentUpdate = await BillDocumentUpdate.findOne({
             where: { id: 3 },
@@ -48,7 +46,6 @@ describe('queue worker', () => {
         expect(billDocumentUpdate).toEqual({ status: UpdateStatus.SUCCESS });
         expect(billDocument).toEqual({
             content: JSON.stringify({ a: 2, b: 2 }),
-            events: '[]',
         });
     });
 
@@ -67,7 +64,6 @@ describe('queue worker', () => {
             title: 'title',
             content: JSON.stringify({ a: 1, b: 1, c: 1 }),
             originalXml: 'originalXml',
-            events: '[]',
         });
     
         const update1 = await BillDocumentUpdate.save({
@@ -75,7 +71,6 @@ describe('queue worker', () => {
             billDocumentId: 20,
             title: 'title',
             content: JSON.stringify({ a: 2, b: 1, c: 1 }),
-            events: '[]',
         });
     
         const update2 = await BillDocumentUpdate.save({
@@ -83,7 +78,6 @@ describe('queue worker', () => {
             billDocumentId: 20,
             title: 'title',
             content: JSON.stringify({ a: 1, b: 1, c: 2 }),
-            events: '[]',
         });
 
         await runBillDocumentUpdate(update1.id!);
@@ -91,7 +85,7 @@ describe('queue worker', () => {
     
         const billDocument = await BillDocument.findOne({
             where: { id: 20 },
-            select: ['content', 'events'],
+            select: ['content'],
         });
         const billDocumentUpdate1 = await BillDocumentUpdate.findOne({
             where: { id: 30 },
@@ -106,7 +100,6 @@ describe('queue worker', () => {
         expect(billDocumentUpdate2).toEqual({ status: UpdateStatus.SUCCESS });
         expect(billDocument).toEqual({
             content: JSON.stringify({ a: 2, b: 1, c: 2 }),
-            events: '[]',
         });
     });
 
@@ -126,7 +119,6 @@ describe('queue worker', () => {
             title: 'title',
             content: JSON.stringify({ a: 1 }),
             originalXml: 'originalXml',
-            events: '[]',
         });
     
         // Create first update
@@ -135,7 +127,6 @@ describe('queue worker', () => {
             billDocumentId: 20,
             title: 'title',
             content: JSON.stringify({ a: 2 }),
-            events: '[]',
         });
 
         await runBillDocumentUpdate(update1.id!);
@@ -150,7 +141,6 @@ describe('queue worker', () => {
             billDocumentId: 20,
             title: 'title',
             content: JSON.stringify({ a: 3 }),
-            events: '[]',
             gitHash: documentAfterUpdate1?.gitHash,
         });
 
@@ -159,7 +149,7 @@ describe('queue worker', () => {
         // Check results
         const billDocument = await BillDocument.findOne({
             where: { id: 20 },
-            select: ['content', 'events'],
+            select: ['content'],
         });
         const billDocumentUpdate1 = await BillDocumentUpdate.findOne({
             where: { id: 30 },
@@ -174,7 +164,6 @@ describe('queue worker', () => {
         expect(billDocumentUpdate2?.status).toEqual(UpdateStatus.SUCCESS);
         expect(billDocument).toEqual({
             content: JSON.stringify({ a: 3 }),
-            events: '[]',
         });
     });
 });

@@ -17,7 +17,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
     const { bill, reloadBill, hasError: hasBillError } = useBill(id);
     const navigate = useNavigate();
     const [isBillDocument, setIsBillDocument] = useState<boolean>(false);
-    const { setDocument, xml, slate, originalDocument, documentId, events, gitHash, importError } = useDocument();
+    const { setDocument, xml, slate, originalDocument, documentId, gitHash, importError } = useDocument();
     const { errorUnsavedChanges } = useUserErrors();
     const [hasError, setError] = useState(false);
 
@@ -102,7 +102,6 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
             title,
             gitHash: gitHash || '',
             content: JSON.stringify(editor.children),
-            events: JSON.stringify(editor.events),
         })
             .then((billDocument) => {
                 notification.success({ message: t('Document saved'), description: `${selected} ${title}` });
@@ -158,7 +157,6 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         xml,
         slate,
         originalDocument,
-        events,
         loadDocument,
         hasBillLoadingError: hasBillError,
         hasDocumentLoadingError: hasError,

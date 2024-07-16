@@ -7,6 +7,5 @@ export type UpdateBillDocument = {
     title: string;
     gitHash: string;
     content: string;
-    events: string;
 };
 

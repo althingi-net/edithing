@@ -20,7 +20,6 @@ class BillDocument extends BaseEntity {
     @ValidateNested()
     bill!: Bill;
 
-
     /** ID of the bill that this document belongs to */
     @Column()
     billId!: number;
@@ -46,11 +45,6 @@ class BillDocument extends BaseEntity {
     @Column({ type: 'mediumtext', select: false })
     @IsString()
     content!: string;
-
-    /** Cached Slate events of the law document */
-    @Column({ type: 'mediumtext', select: false })
-    @IsString()
-    events!: string;
 
     /** Original XML file content of the law document */
     @Column({ type: 'mediumtext', select: false })
@@ -79,9 +73,6 @@ export class UpdateBillDocument {
 
     @IsString()
     content!: string;
-
-    @IsString()
-    events!: string;
 }
 
 export default BillDocument;

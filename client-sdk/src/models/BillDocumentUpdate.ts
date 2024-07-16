@@ -9,7 +9,6 @@ export type BillDocumentUpdate = {
     title: string;
     gitHash?: string;
     content: string;
-    events: string;
     status?: BillDocumentUpdate.status;
     createdAt?: string;
     updatedAt?: string;

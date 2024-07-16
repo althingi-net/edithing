@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
 import { Bill } from 'client-sdk';
-import { Event, LawEditor } from 'law-document';
+import { LawEditor } from 'law-document';
 import { FC, useEffect, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
@@ -19,7 +19,6 @@ import useEditorNavigationBlock from './useEditorNaviationBlock';
 interface Props {
     slate: Descendant[];
     originalDocument: Descendant[];
-    events?: Event[];
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;
@@ -32,19 +31,11 @@ const Editor: FC<Props> = ({
     xml,
     readOnly,
     saveDocument,
-    events,
     bill,
 }) => {
     const highlight = useHighlightContext();
     const editor = useMemo(() => createEditorWithPlugins(), []);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
-
-    useEffect(() => {
-        if (events) {
-            editor.events = events;
-            editor.onChange();
-        }
-    }, [events, editor]);
 
     useEffect(() => {
         editor.children = slate;

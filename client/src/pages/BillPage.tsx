@@ -31,7 +31,6 @@ const BillPage: FC = () => {
         hasBillLoadingError,
         hasDocumentLoadingError,
         isBillDocument,
-        events,
         importError,
     } = useBillPage(isNavigationBlocked);
 
@@ -78,7 +77,6 @@ const BillPage: FC = () => {
                                     originalDocument={originalDocument!}
                                     xml={xml!}
                                     saveDocument={saveDocument}
-                                    events={events}
                                     readOnly={!isBillDocument}
                                     bill={bill}
                                 />

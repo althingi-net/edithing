@@ -20,7 +20,7 @@ const Editor: FC<Props> = ({
     slate,
 }) => {
     const highlight = useHighlightContext();
-    const editor = useMemo(() => withReact(createLawEditor({ events: false })), []);
+    const editor = useMemo(() => withReact(createLawEditor()), []);
 
     useEffect(() => {
         editor.children = slate;

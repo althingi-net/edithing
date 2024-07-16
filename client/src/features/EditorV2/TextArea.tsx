@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { FC, Ref, forwardRef, useCallback, useEffect, useRef } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import { useDebounceCallback } from 'usehooks-ts';
@@ -9,6 +10,7 @@ interface Props {
     value?: string;
     ref?: Ref<HTMLDivElement>;
     className?: string;
+    onEnter?: () => void;
 }
 
 /**
@@ -57,6 +59,11 @@ const TextArea: FC<Props> = forwardRef<HTMLDivElement, Props>((props, outerRef) 
                 onInput={handleInput}
                 ref={mergeRefs([outerRef, innerRef])}
                 dangerouslySetInnerHTML={{ __html: initialValue.current ?? '' }}
+                onKeyUp={(event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                    }
+                }}
             />
         </>
     );

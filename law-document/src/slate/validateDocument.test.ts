@@ -28,5 +28,5 @@ test('invalid nr attribute', () => {
         ])
     ];
 
-    expect(() => validateDocument(slate)).toThrow(/Element is not valid/);
+    expect(() => validateDocument(slate)).toThrow(/Invalid nr attribute/);
 });

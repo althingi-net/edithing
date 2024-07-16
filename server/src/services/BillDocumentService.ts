@@ -19,7 +19,7 @@ export const subscribeBillDocumentUpdateQueue = async (overwriteChannel = 'BillD
 export const runBillDocumentUpdate = async (updateId: number) => {
     const update = await BillDocumentUpdate.findOne({
         where: { id: updateId },
-        select: ['billDocumentId', 'title', 'content', 'events', 'gitHash'],
+        select: ['billDocumentId', 'title', 'content', 'gitHash'],
     });
 
     if (!update) {
@@ -29,7 +29,7 @@ export const runBillDocumentUpdate = async (updateId: number) => {
     const { billDocumentId, title, gitHash } = update;
     const originalDocument = await BillDocument.findOne({
         where: { id: billDocumentId },
-        select: ['content', 'events', 'billId'],
+        select: ['content', 'billId'],
     });
 
     if (!originalDocument) {
@@ -69,20 +69,18 @@ export const runBillDocumentUpdate = async (updateId: number) => {
     }
 };
 
-const stringifyPayload = ({ content, events }: { content: object, events: object }) => {
+const stringifyPayload = ({ content }: { content: object }) => {
     return {
         content: JSON.stringify(content),
-        events: JSON.stringify(events),
     };
 };
 
-const parsePayload = ({ content, events }: { content: string, events: string }) => {
+const parsePayload = ({ content }: { content: string }) => {
     return {
         content: JSON.parse(content),
-        events: JSON.parse(events),
     };
 };
 
-const isBillDocumentPayload = (payload: any): payload is { content: object, events: object } => {
-    return payload.content && payload.events;
+const isBillDocumentPayload = (payload: any): payload is { content: object } => {
+    return payload.content;
 };
