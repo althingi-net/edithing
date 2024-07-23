@@ -43,8 +43,10 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
                         onClick={(e) => e.stopPropagation()}
                         title={title}
                         extra={<Button onClick={onClose} size="small"><CloseOutlined /></Button>}
-                        headStyle={{ width: '100%' }}
-                        bodyStyle={{ width: '100%', display: 'flex', flexGrow: 1 }}
+                        styles={{
+                            header: { width: '100%' },
+                            body: { display: 'flex', flexGrow: 1, width: '100%' },
+                        }}
                         role='dialog'
                     >
                         {children}

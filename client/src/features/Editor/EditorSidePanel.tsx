@@ -8,6 +8,7 @@ import useLanguageContext from '../App/useLanguageContext';
 import CopyClipboardButton from './CopyClipboardButton';
 import NodeMetaForm from './NodeMetaForm';
 import useDebounce from './utils/useDebounce';
+import LawDiff from './LawDiff';
 
 interface Props {
     originalDocument?: Descendant[];
@@ -26,7 +27,7 @@ const EditorSidePanel: FC<Props> = (props) => {
         const xmlExport = isSpeech ? exportSpeechXml(debouncedSlate, true) : exportXml(debouncedSlate, true);
 
         return (
-            <div style={{ height: 'calc(100vh - 104px)', overflowY: 'auto' }}>
+            <div style={{ height: 'calc(100vh - 146px)', overflowY: 'auto' }}>
                 <Collapse defaultActiveKey={['5']} destroyInactivePanel>
                     <Collapse.Panel
                         key="1"
@@ -65,6 +66,15 @@ const EditorSidePanel: FC<Props> = (props) => {
                             language={'xml'}
                         />
                     </Collapse.Panel>
+                    {originalDocument && (
+                        <Collapse.Panel
+                            key="5"
+                            header={t('Changes')}
+                            collapsible={readOnly ? 'disabled' : undefined}
+                        >
+                            <LawDiff originalDocument={originalDocument} slate={debouncedSlate} />
+                        </Collapse.Panel>
+                    )}
                 </Collapse>
             </div>
         );
