@@ -6,7 +6,7 @@ import { Bill } from 'client-sdk';
 import { useNavigate } from 'react-router-dom';
 import useLanguageContext from '../../App/useLanguageContext';
 import useBlockNavigation from '../../App/useBlockNavigation';
-import useHighlightContext from './useHighlightContext';
+import { useEditorConfig } from '../EditorConfig';
 
 interface Props {
     saveDocument?: (editor: LawEditor) => void;
@@ -15,15 +15,23 @@ interface Props {
 
 const Toolbar: FC<Props> = ({ saveDocument, bill }) => {
     const { t } = useLanguageContext();
-    const highlight = useHighlightContext();
+    const {
+        setAutoNumberIncrements,
+        setHighlightStructure,
+        highlightStructure,
+        autoNumberIncrements,
+    } = useEditorConfig(state => state);
     const slate = useSlateStatic();
     const navigate = useNavigate();
     const { isNavigationBlocked } = useBlockNavigation();
 
     return (
         <Space direction="horizontal" style={{ justifyContent: 'left', marginBottom: '10px', width: '100%' }}>
-            <Checkbox checked={highlight.isHighlighted} onChange={(event) => highlight.setHighlighted(event.target.checked)}>
-                {t('Highlight elements')}
+            <Checkbox checked={highlightStructure} onChange={(event) => setHighlightStructure(event.target.checked)}>
+                {t('Highlight Structure')}
+            </Checkbox>
+            <Checkbox checked={autoNumberIncrements} onChange={(event) => setAutoNumberIncrements(event.target.checked)}>
+                {t('Auto Increment Numbers')}
             </Checkbox>
             {saveDocument && <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>}
             {bill && <Button onClick={() => navigate(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}

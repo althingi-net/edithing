@@ -4,11 +4,11 @@ import { FC, useEffect, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate, withReact } from 'slate-react';
 import './Editor.css';
+import { useEditorConfig } from './EditorConfig';
 import EditorSidePanel from './EditorSidePanel';
 import HoveringToolbar from './Toolbar/HoverToolbar';
 import SideToolbar from './Toolbar/SideToolbar';
 import Toolbar from './Toolbar/Toolbar';
-import useHighlightContext from './Toolbar/useHighlightContext';
 import renderElement from './plugins/renderElement';
 import renderLeaf from './plugins/renderLeaf';
 
@@ -16,10 +16,10 @@ interface Props {
     slate: Descendant[];
 }
 
-const Editor: FC<Props> = ({
+const SpeechEditor: FC<Props> = ({
     slate,
 }) => {
-    const highlight = useHighlightContext();
+    const highlight = useEditorConfig(state => state.highlightStructure);
     const editor = useMemo(() => withReact(createLawEditor()), []);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const Editor: FC<Props> = ({
 
     const classNames = [
         'editor',
-        highlight.isHighlighted ? 'highlighted' : ''
+        highlight ? 'highlighted' : ''
     ].join(' ');
 
     return (
@@ -57,4 +57,4 @@ const Editor: FC<Props> = ({
     );
 };
 
-export default Editor;
+export default SpeechEditor;

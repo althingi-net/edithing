@@ -11,6 +11,7 @@ export * from './slate/actions/setName';
 export * from './slate/actions/setSentence';
 export * from './slate/actions/setTitle';
 export * from './slate/actions/splitListItem';
+export * from './slate/config/EditorConfigState';
 export * from './slate/config/tags';
 export * from './slate/config/translations';
 export * from './slate/element/DocumentMetaElement';

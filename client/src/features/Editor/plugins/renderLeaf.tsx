@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { RenderLeafProps } from 'slate-react';
-import useHighlightContext from '../Toolbar/useHighlightContext';
+import { useEditorConfig } from '../EditorConfig';
 
 const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
-    const highlight = useHighlightContext();
+    const highlight = useEditorConfig(state => state.highlightStructure);
 
     if (leaf.title) {
         return <span {...attributes} className="title">{children}</span>;
@@ -17,7 +17,7 @@ const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
         return <span {...attributes} className="bold">{children}</span>;
     }
 
-    if (highlight.isHighlighted && leaf.nr) {
+    if (highlight && leaf.nr) {
         const className = Number(leaf.nr) % 2 === 0 ? 'even' : 'odd';
         return <span {...attributes} className={className}>{children}</span>;
     }

@@ -4,6 +4,7 @@ import { Node, Path } from 'slate';
 import { ReactEditor, useSlateStatic } from 'slate-react';
 import { MetaType, findListItemAtSelection, isListItemWithMeta, getListItemHierarchy, getListItemTitle, getParentListItem, getAllowedTagChildren, createLawList } from 'law-document';
 import useLanguageContext from '../../App/useLanguageContext';
+import { useEditorConfig } from '../EditorConfig';
 
 interface Props {
     onSubmit: () => void;
@@ -13,7 +14,8 @@ interface Props {
 const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
     const { t } = useLanguageContext();
     const editor = useSlateStatic();
-    const [bumpVersionNumber, setBumpVersionNumber] = useState(true);
+    const autoNumberIncrements = useEditorConfig(state => state.autoNumberIncrements);
+    const [bumpVersionNumber, setBumpVersionNumber] = useState(autoNumberIncrements);
     const [type, setType] = useState<MetaType | null>(null);
     const [listItem, listItemPath] = useMemo(() => findListItemAtSelection(editor) ?? [], [editor]);
     const [locationToAdd, setLocationToAdd] = useState</* 'nested-list' |  */string>(JSON.stringify(listItemPath ?? []));

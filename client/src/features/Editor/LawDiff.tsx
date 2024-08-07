@@ -27,14 +27,13 @@ const LawDiff: FC<Props> = ({ originalDocument }) => {
 
     const groupedChanges = groupChangesByArticle(changelog);
     const renderedChanges = Object.entries(groupedChanges).map(([id, changes], index) => {
-
         return (
             <div key={`${id}-${index}`} style={{ position: 'relative' }}>
                 <div>{parseIdToDisplay(t, id)}</div>
                 <div>
                     <ol type='a'>
                         {changes.map((change) => (
-                            <LawChange key={change.id} entry={change} />
+                            <LawChange key={`${id}-${index}-${change.id}`} entry={change} />
                         ))}
                     </ol>
                 </div>

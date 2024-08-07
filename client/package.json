@@ -57,7 +57,7 @@
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4",
     "zundo": "^2.1.0",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.3.5",

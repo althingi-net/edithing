@@ -10,6 +10,7 @@ import { createListMeta } from '../transformations/createListMeta';
 import { incrementFollowingSiblings } from '../transformations/incrementFollowingSiblings';
 import { setListItemMeta } from '../transformations/setListItemMeta';
 import { setMeta } from '../transformations/setMeta';
+import { EditorConfigState } from '../config/EditorConfigState';
 import { normalizeNode } from './normalizeNode';
 
 export const withLawParagraphs = (editor: Editor) => {
@@ -63,6 +64,7 @@ const normalizeEmptyEditor = (editor: Editor, entry: NodeEntry) => {
 
 const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {
     const [node, path] = entry;
+    const withAutoIncrements = EditorConfigState.getState().autoNumberIncrements;
 
     if (isList(node) && !node['meta']) {
         const meta = createListMeta(editor, path);
@@ -76,7 +78,10 @@ const normalizeMissingMeta = (editor: Editor, entry: NodeEntry) => {
         log('add missing meta to list item', { node, path, meta });
 
         setListItemMeta(editor, node, path, meta);
-        incrementFollowingSiblings(editor, path);
+
+        if (withAutoIncrements) {
+            incrementFollowingSiblings(editor, path);
+        }
 
         return true;
     }

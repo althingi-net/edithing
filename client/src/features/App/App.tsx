@@ -7,10 +7,10 @@ import BillsPage from '../../pages/BillsPage';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
-import { HightlightContextProvider } from '../Editor/Toolbar/useHighlightContext';
 import SpeechPage from '../../pages/SpeechPage';
 import BillsV2Page from '../../pages/BillsV2Page';
 import BillV2Page from '../../pages/BillV2Page';
+import { EditorConfigContextProvider } from '../Editor/EditorConfig';
 import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
 import { SessionContextProvider } from './useSessionContext';
@@ -24,7 +24,7 @@ const router = createBrowserRouter([{
             <BlockNavigationProvider>
                 <SessionContextProvider>
                     <ThemeContextProvider>
-                        <HightlightContextProvider>
+                        <EditorConfigContextProvider>
                             <LawListContextProvider>
                                 <Layout style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
                                     <Header />
@@ -33,7 +33,7 @@ const router = createBrowserRouter([{
                                     </ErrorBoundary>
                                 </Layout>
                             </LawListContextProvider>
-                        </HightlightContextProvider>
+                        </EditorConfigContextProvider>
                     </ThemeContextProvider>
                 </SessionContextProvider>
             </BlockNavigationProvider>

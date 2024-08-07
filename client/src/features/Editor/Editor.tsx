@@ -5,11 +5,11 @@ import { FC, useEffect, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import './Editor.css';
+import { useEditorConfig } from './EditorConfig';
 import EditorSidePanel from './EditorSidePanel';
 import HoveringToolbar from './Toolbar/HoverToolbar';
 import SideToolbar from './Toolbar/SideToolbar';
 import Toolbar from './Toolbar/Toolbar';
-import useHighlightContext from './Toolbar/useHighlightContext';
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';
@@ -33,7 +33,7 @@ const Editor: FC<Props> = ({
     saveDocument,
     bill,
 }) => {
-    const highlight = useHighlightContext();
+    const hasHighlight = useEditorConfig(state => state.highlightStructure);
     const editor = useMemo(() => createEditorWithPlugins(), []);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
 
@@ -44,7 +44,7 @@ const Editor: FC<Props> = ({
 
     const classNames = [
         'editor',
-        highlight.isHighlighted ? 'highlighted' : ''
+        hasHighlight ? 'highlighted' : ''
     ].join(' ');
 
     return (
