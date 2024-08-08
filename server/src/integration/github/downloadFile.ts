@@ -1,23 +1,10 @@
-import { HttpError } from 'routing-controllers';
-import github from '../../config/github';
-import octokit from './octokit';
+import { readFile } from 'fs/promises';
+import { importAllDocuments, XML_CODEX_REPOSITORY } from './importAllDocuments';
 
 const downloadFile = async (file: string) => {
-    try {
-        const response = await octokit.rest.repos.getContent({
-            owner: github.owner,
-            repo: github.repo,
-            path: file,
-            mediaType: {
-                format: 'raw',
-            },
-        });
-        const { data } = response;
+    await importAllDocuments();
     
-        return data as unknown as string;
-    } catch(error) {
-        throw new HttpError(404, 'File not found');
-    }
+    return await readFile(`${XML_CODEX_REPOSITORY}/${file}`, { encoding: 'utf-8' });
 };
 
 export default downloadFile;

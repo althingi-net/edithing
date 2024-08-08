@@ -28,6 +28,31 @@ export class GitClient {
     }
 
     /**
+     * Clone repository
+     * @param user repository owner
+     * @param repository repository name
+     * @param token personal access token
+     */
+    public async clone(user: string, repository: string, token?: string) {
+        // Create folder
+        await mkdir(this.repositoryFolder, { recursive: true });
+
+        // Clone repository
+        const url = token
+            ? `https://${user}:${encodeURIComponent(token)}@github.com/${user}/${repository}.git`
+            : `https://${user}@github.com/${user}/${repository}.git`;
+
+        await this.run(`git clone ${url} ${this.repositoryFolder}`);
+    }
+
+    /**
+     * Pull latest changes
+     */
+    public async pull() {
+        await this.run('git pull');
+    }
+
+    /**
      * Destroy git repository and delete content
      */
     public async destroy() {
