@@ -11,7 +11,6 @@ export type BillDocument = {
     importError?: string;
     gitHash?: string;
     content: string;
-    events: string;
     originalXml: string;
     createdAt?: string;
     updatedAt?: string;

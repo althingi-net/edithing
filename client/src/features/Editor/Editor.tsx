@@ -1,15 +1,15 @@
 import { Col, Row } from 'antd';
 import { Bill } from 'client-sdk';
-import { Event, LawEditor } from 'law-document';
+import { LawEditor } from 'law-document';
 import { FC, useEffect, useMemo } from 'react';
 import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import './Editor.css';
+import { useEditorConfig } from './EditorConfig';
 import EditorSidePanel from './EditorSidePanel';
 import HoveringToolbar from './Toolbar/HoverToolbar';
 import SideToolbar from './Toolbar/SideToolbar';
 import Toolbar from './Toolbar/Toolbar';
-import useHighlightContext from './Toolbar/useHighlightContext';
 import createEditorWithPlugins from './plugins/createEditorWithPlugins';
 import handleKeyDown from './plugins/handleKeyDown';
 import renderElement from './plugins/renderElement';
@@ -19,7 +19,6 @@ import useEditorNavigationBlock from './useEditorNaviationBlock';
 interface Props {
     slate: Descendant[];
     originalDocument: Descendant[];
-    events?: Event[];
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;
@@ -32,19 +31,11 @@ const Editor: FC<Props> = ({
     xml,
     readOnly,
     saveDocument,
-    events,
     bill,
 }) => {
-    const highlight = useHighlightContext();
+    const hasHighlight = useEditorConfig(state => state.highlightStructure);
     const editor = useMemo(() => createEditorWithPlugins(), []);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, saveDocument);
-
-    useEffect(() => {
-        if (events) {
-            editor.events = events;
-            editor.onChange();
-        }
-    }, [events, editor]);
 
     useEffect(() => {
         editor.children = slate;
@@ -53,7 +44,7 @@ const Editor: FC<Props> = ({
 
     const classNames = [
         'editor',
-        highlight.isHighlighted ? 'highlighted' : ''
+        hasHighlight ? 'highlighted' : ''
     ].join(' ');
 
     return (

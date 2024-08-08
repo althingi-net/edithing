@@ -24,14 +24,10 @@ const BillV2Page: FC = () => {
         selected,
         addDocument,
         deleteDocument,
-        slate,
         xml,
-        originalDocument,
-        saveDocument,
         hasBillLoadingError,
         hasDocumentLoadingError,
         isBillDocument,
-        events,
         importError,
     } = useBillPage(isNavigationBlocked, '/bill2');
 
@@ -76,7 +72,6 @@ const BillV2Page: FC = () => {
                                     key={selected}
                                     xml={xml!}
                                     // saveDocument={saveDocument}
-                                    // events={events}
                                     readOnly={!isBillDocument}
                                     // bill={bill}
                                 />

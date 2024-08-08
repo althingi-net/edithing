@@ -28,7 +28,7 @@ class BillController {
         const bill = await Bill.findOneOrFail({ where: { id } }) ;
         const documents = await BillDocument.find({
             where: { bill },
-            select: ['originalXml', 'content', 'events', 'identifier', 'title']
+            select: ['originalXml', 'content', 'identifier', 'title']
         });
         return exportBillXml(bill.title, documents);
     }

@@ -3,13 +3,12 @@ import 'dotenv/config';
 import 'reflect-metadata';
 import * as repl from 'repl';
 import database from '../config/database';
-import { initConnection } from '../integration/database/connection';
-import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
 import Bill from '../entities/Bill';
 import BillDocument, { UpdateBillDocument } from '../entities/BillDocument';
 import Document from '../entities/Document';
-import History from '../entities/History';
 import User, { UserRole } from '../entities/User';
+import { initConnection } from '../integration/database/connection';
+import { findOrImportDocument, loadIndexXml } from '../services/DocumentService';
 
 void (async () => {
     // @ts-ignore
@@ -21,7 +20,6 @@ void (async () => {
         BillDocument,
         UpdateBillDocument,
         Document,
-        History,
         User,
         UserRole,
         findOrImportDocument,

@@ -26,11 +26,6 @@ test('export changed article', () => {
     const result = exportBillXml('bill title', [{
         originalXml,
         content: JSON.stringify(slate),
-        events: `[{
-            "id": "art-1.subart-1",
-            "originId": "art-1.subart-1",
-            "type": "changed"
-        }]`,
         identifier: '1232.12',
         title: 'document 1',
     }]);
@@ -40,18 +35,21 @@ test('export changed article', () => {
             <title>
                 bill title
             </title>
-            <chapter nr="1" identifier="1232.12">
-                <title>
-                    Breyting á document 1, no. 12/1232.
-                </title>
+            <law nr="undefined" year="undefined" law-type="law">
                 <art nr="1">
+                    <nr-title>
+                        1. gr.
+                    </nr-title>
+                    <name>
+                        Markmið.
+                    </name>
                     <subart nr="1">
-                        <sen nr="1" change-type="changed" origin-id="art-1.subart-1">
+                        <sen nr="1">
                             Markmið laga þessara er að kveða á um skilyrði fyrir stofnsetningu, rekstri og markaðssetningu peningamarkaðssjóða. appended change
                         </sen>
                     </subart>
                 </art>
-            </chapter>
+            </law>
         </bill>
     `));
 });
@@ -78,11 +76,6 @@ test('export removed article', () => {
     const result = exportBillXml('bill title', [{
         originalXml,
         content: JSON.stringify(slate),
-        events: `[{
-            "id": "art-1.subart-1",
-            "originId": "art-1.subart-1",
-            "type": "removed"
-        }]`,
         identifier: '1232.12',
         title: 'document 1',
     }]);
@@ -92,18 +85,16 @@ test('export removed article', () => {
             <title>
                 bill title
             </title>
-            <chapter nr="1" identifier="1232.12">
-                <title>
-                    Breyting á document 1, no. 12/1232.
-                </title>
+            <law nr="undefined" year="undefined" law-type="law">
                 <art nr="1">
-                    <subart nr="1">
-                        <sen nr="1" change-type="deleted" origin-id="art-1.subart-1">
-                            Markmið laga þessara er að kveða á um skilyrði fyrir stofnsetningu, rekstri og markaðssetningu peningamarkaðssjóða.
-                        </sen>
-                    </subart>
+                    <nr-title>
+                        1. gr.
+                    </nr-title>
+                    <name>
+                        Markmið.
+                    </name>
                 </art>
-            </chapter>
+            </law>
         </bill>
     `));
 });
@@ -130,11 +121,6 @@ test('export added article', () => {
     const result = exportBillXml('bill title', [{
         originalXml,
         content: JSON.stringify(slate),
-        events: `[{
-            "id": "art-1.subart-2",
-            "originId": "art-1.subart-2",
-            "type": "added"
-        }]`,
         identifier: '1232.12',
         title: 'document 1',
     }]);
@@ -144,18 +130,26 @@ test('export added article', () => {
             <title>
                 bill title
             </title>
-            <chapter nr="1" identifier="1232.12">
-                <title>
-                    Breyting á document 1, no. 12/1232.
-                </title>
+            <law nr="undefined" year="undefined" law-type="law">
                 <art nr="1">
+                    <nr-title>
+                        1. gr.
+                    </nr-title>
+                    <name>
+                        Markmið.
+                    </name>
                     <subart nr="1">
-                        <sen nr="1" change-type="added" origin-id="art-1.subart-2">
+                        <sen nr="1">
+                            Markmið laga þessara er að kveða á um skilyrði fyrir stofnsetningu, rekstri og markaðssetningu peningamarkaðssjóða.
+                        </sen>
+                    </subart>
+                    <subart nr="2">
+                        <sen nr="1">
                             added article
                         </sen>
                     </subart>
                 </art>
-            </chapter>
+            </law>
         </bill>
     `));
 });

@@ -1,12 +1,11 @@
 import { BillDocument, Document } from 'client-sdk';
-import { Event, importXml } from 'law-document';
+import { importXml } from 'law-document';
 import { useCallback, useState } from 'react';
 import { Descendant } from 'slate';
 
 const useDocument = () => {
     const [slate, setSlate] = useState<Descendant[] | null>(null);
     const [originalDocument, setOriginalDocument] = useState<Descendant[]>();
-    const [events, setEvents] = useState<Event[] | undefined>();
     const [xml, setXml] = useState<string>();
     const [documentId, setDocumentId] = useState<number>();
     const [gitHash, setGitHash] = useState<string>();
@@ -20,7 +19,6 @@ const useDocument = () => {
             setGitHash(undefined);
             setDocumentId(undefined);
             setImportError(undefined);
-            setEvents([]);
             return;
         }
 
@@ -33,10 +31,6 @@ const useDocument = () => {
         if ('gitHash' in document) {
             setGitHash(document.gitHash);
         }
-
-        if ('events' in document && document.events) {
-            setEvents(JSON.parse(document.events) as Event[]);
-        }
     }, []);
 
     return {
@@ -45,7 +39,6 @@ const useDocument = () => {
         originalDocument,
         xml,
         documentId,
-        events,
         gitHash,
         importError,
     };

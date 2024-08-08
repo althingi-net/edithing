@@ -1,7 +1,5 @@
 import { Descendant } from 'slate';
-import { createList } from '../transformations/createList';
-import { createListItem } from '../transformations/createListItem';
-import { MetaType } from '../Slate';
+import { createList, MetaType, createListItem } from 'law-document';
 import { flattenSlateParagraphs } from './flattenSlateParagraphs';
 
 test('flatten simple chapter>paragraph', () => {

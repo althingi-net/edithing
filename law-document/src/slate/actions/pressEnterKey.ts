@@ -3,10 +3,12 @@ import { TAGS } from '../config/tags';
 import { findListItemAtSelection } from '../query/findListItemAtSelection';
 import { findListItemMarkedText } from '../query/findListItemMarkedText';
 import { isSelectionAtTitle } from '../query/isSelectionAtTitle';
+import { EditorConfigState } from '../config/EditorConfigState';
 import { createLawList } from './createLawList';
 
 export const pressEnterKey = (editor: Editor) => {
     const [listItem, path] = findListItemAtSelection(editor) ?? [];
+    const autoNumberIncrements = EditorConfigState.getState().autoNumberIncrements;
 
     if (!listItem || !path || !listItem.meta) {
         return false;
@@ -35,7 +37,7 @@ export const pressEnterKey = (editor: Editor) => {
         return true;
     }
 
-    createLawList(editor, type, path);
+    createLawList(editor, type, path, { bumpVersionNumber: autoNumberIncrements });
 
     return true;
 };

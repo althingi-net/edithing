@@ -70,7 +70,7 @@ test('export document meta data', () => {
             name: 'Stjórnarskrá lýðveldisins Íslands',
             date: '1944-06-17',
             original: '1944 nr. 33 17. júní',
-            ministerClause: '&lt;a href=&quot;http://www.althingi.is//dba-bin/fe&quot;&gt;',
+            ministerClause: '<a href="http://www.althingi.is//dba-bin/fe">',
         }),
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
@@ -84,7 +84,7 @@ test('export document meta data', () => {
                 <num>33</num>
                 <original>1944 nr. 33 17. júní</original>
             </num-and-date>
-            <minister-clause>&lt;a href=&quot;http://www.althingi.is//dba-bin/fe&quot;&gt;</minister-clause>
+            <minister-clause>&lt;a href="http://www.althingi.is//dba-bin/fe"&gt;</minister-clause>
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>I.</nr-title>
             </chapter>

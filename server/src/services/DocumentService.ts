@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { mkdir, readFile, stat, writeFile } from 'fs/promises';
 import { ImportError, LawEditor, exportXml, getTitle, importXml, validateDocument } from 'law-document';
+// @ts-ignore
 import Diff from 'text-diff';
 import xmlFormat from 'xml-formatter';
 import Document from '../entities/Document';

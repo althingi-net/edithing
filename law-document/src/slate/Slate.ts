@@ -6,7 +6,6 @@ import { ListItemText } from './element/ListItemText';
 import { DocumentMetaElement } from './element/DocumentMetaElement';
 import { Paragraph } from './element/Paragraph';
 import { TextNode } from './element/TextNode';
-import { EventsEditor } from './plugins/withEvents';
 
 declare module 'slate' {
     interface CustomTypes {
@@ -16,7 +15,7 @@ declare module 'slate' {
     }
 }
 
-export interface LawEditor extends BaseEditor, EventsEditor, HistoryEditor {}
+export interface LawEditor extends BaseEditor, HistoryEditor {}
 
 export type LawElement = List | ListItem | ListItemText | DocumentMetaElement | Paragraph;
 

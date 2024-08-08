@@ -1,5 +1,5 @@
+import { isListItemText } from 'law-document';
 import { Descendant, Node, Path } from 'slate';
-import { isListItemText } from '../element/ListItemText';
 import { getParagraphId } from './getParagraphId';
 
 export interface FlattenedParagraph {

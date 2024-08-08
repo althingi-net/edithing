@@ -1,21 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { PlusCircleOutlined } from '@ant-design/icons';
-import { useHover } from '@uidotdev/usehooks';
-import { Button, Typography } from 'antd';
-import { Changelog, groupChangesByArticle, parseIdToDisplay } from 'law-document';
+import { Typography } from 'antd';
+import { LawEditor } from 'law-document';
 import { FC } from 'react';
+import { Descendant } from 'slate';
+import { useSlate } from 'slate-react';
 import useLanguageContext, { Translator } from '../App/useLanguageContext';
+import { Changelog, diffLaw } from './utils/diffLaw';
 
 const { Text } = Typography;
 
 interface Props {
-    changelog: Changelog[];
-    displayFullTextOnly?: boolean;
+    slate: LawEditor;
+    originalDocument: Descendant[];
 }
 
 
-const LawChanges: FC<Props> = ({ changelog }) => {
+const LawDiff: FC<Props> = ({ originalDocument }) => {
+    const slate = useSlate();
     const { t } = useLanguageContext();
+    const changelog = diffLaw(slate, originalDocument);
 
     if (changelog.length === 0) {
         return (
@@ -31,7 +33,7 @@ const LawChanges: FC<Props> = ({ changelog }) => {
                 <div>
                     <ol type='a'>
                         {changes.map((change) => (
-                            <LawChange key={change.id} entry={change} />
+                            <LawChange key={`${id}-${index}-${change.id}`} entry={change} />
                         ))}
                     </ol>
                 </div>
@@ -46,35 +48,41 @@ const LawChanges: FC<Props> = ({ changelog }) => {
     );
 };
 
+const groupChangesByArticle = (changelog: Changelog[]) => {
+    const changes: Record<string, Changelog[]> = {};
+
+    changelog.forEach(change => {
+        const articleId = change.id.split('.')[1] ?? change.id;
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (!changes[articleId]) {
+            changes[articleId] = [];
+        }
+
+        changes[articleId].push(change);
+    });
+
+    return changes;
+};
+
 const LawChange: FC<{ entry: Changelog }> = ({ entry }) => {
     const { t } = useLanguageContext();
-    const [ref, hovering] = useHover();
-
-    const buttons = [
-        entry.type === 'changed' && (
-            <Button key='added' type='primary' size='small' icon={<PlusCircleOutlined />} title='Mark change as added' onClick={() => entry.type = 'added'} />
-        ),
-    ];
 
     return (
-        <div ref={ref}>
+        <div>
             <li key={entry.id}>
-                <div style={{
-                    display: hovering ? 'flex' : 'none',
-                    position: 'absolute',
-                    right: '0',
-                    flexDirection: 'row',
-                    gap: '10px',
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    padding: '5px',
-                    borderRadius: '10px'
-                }}>
-                    {buttons}
-                </div>
                 {parseChange(t, entry)}
             </li>
         </div>
     );
+};
+
+const parseIdToDisplay = (t: Translator, id: string) => {
+    return id.split('.')
+        .map(level => level.split('-'))
+        .map(([type, nr]) => nr ? `${nr}. ${t(type)}.` : `${t(type)}`)
+        .reverse()
+        .join(' ');
 };
 
 const parseChange = (t: Translator, entry: Changelog) => {
@@ -119,4 +127,4 @@ const embedChangesToText = (changes: NonNullable<Changelog['changes']>) => {
     );
 };
 
-export default LawChanges;
+export default LawDiff;

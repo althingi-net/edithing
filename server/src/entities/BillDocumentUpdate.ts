@@ -34,11 +34,6 @@ class BillDocumentUpdate extends BaseEntity {
     @IsString()
     content!: string;
 
-    /** Cached Slate events of the law document */
-    @Column({ type: 'mediumtext' })
-    @IsString()
-    events!: string;
-
     @Column({
         type: 'enum',
         enum: UpdateStatus,
