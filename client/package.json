@@ -36,6 +36,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "antd": "^5.11.1",
     "client-sdk": "file:../client-sdk",
+    "diff-js-xml": "^1.0.8",
     "fast-xml-parser": "^4.4.0",
     "is-hotkey": "^0.2.0",
     "law-document": "file:../law-document",
