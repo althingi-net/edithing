@@ -57,7 +57,7 @@ export class GitJsonMerger {
 
         // Add padding to each line, to avoid git merge conflicts
         // content = content.split('\n').map((line) => line + '\n').join('\n');
-
+        console.log('Writing document to', `${this.repositoryFolder}/document.json`);
         await writeFile(`${this.repositoryFolder}/document.json`, content);
         await this.git.addAndCommitAll(msg);
     }

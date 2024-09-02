@@ -1,7 +1,10 @@
+import { writeFile } from 'fs/promises';
 import { GitJsonMerger } from 'git-json-merger';
+import { exportBillXml } from 'law-document';
 import BillDocument from '../entities/BillDocument';
 import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
 import connection from '../integration/messageQueue/connection';
+import Bill from '../entities/Bill';
 
 export const subscribeBillDocumentUpdateQueue = async (overwriteChannel = 'BillDocumentUpdate') => {
     // @ts-expect-error - dynamic name for testing purposes
@@ -67,6 +70,26 @@ export const runBillDocumentUpdate = async (updateId: number) => {
 
         await BillDocumentUpdate.update({ id: updateId }, { status: UpdateStatus.SUCCESS });
     }
+
+    // Export bill xml to disk
+    const bill = await Bill.findOne({
+        where: { id: originalDocument.billId },
+        select: ['title'],
+        loadEagerRelations: false,
+    });
+    const documents = await BillDocument.find({
+        where: { billId: originalDocument.billId },
+        select: ['content'],
+        loadEagerRelations: false,
+    });
+
+    if (!bill) {
+        throw new Error('Bill not found');
+    }
+
+    const billXml = exportBillXml(bill.title, documents);
+    await writeFile(`./tmp/bill-${originalDocument.billId}.xml`, billXml);
+    console.log('Bill XML exported to', `./tmp/bill-${originalDocument.billId}.xml`);
 };
 
 const stringifyPayload = ({ content }: { content: object }) => {
