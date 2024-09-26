@@ -1,11 +1,12 @@
 import { Descendant } from 'slate';
 import xmlFormat from 'xml-formatter';
-import { MetaType } from '../Slate';
+import { LawEditor, MetaType } from '../Slate';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createDocumentMeta } from '../transformations/createDocumentMeta';
 import { createList } from '../transformations/createList';
 import { createListItem } from '../transformations/createListItem';
 import { exportXml } from './exportXml';
+import { importXml } from './importXml';
 
 const createEditor = (input: Descendant[]) => {
     const editor = createEditorWithPlugins();
@@ -166,6 +167,40 @@ test('sen being exported', () => {
     `;
 
     expect(exportXml(input)).toBe(xmlFormat(output));
+});
+
+test('expiry-symbol-offset being exported', () => {
+    const input = createEditor([
+        createList(MetaType.PARAGRAPH, {}, [
+            createListItem(MetaType.PARAGRAPH, '1', { text: ['one.'], textMeta: { expirySymbolOffset: '0' } }),
+        ]),
+    ]);
+    const output = `
+        <law>
+            <paragraph nr="1">
+                <sen nr="1" expiry-symbol-offset="0">one.</sen>
+            </paragraph>
+        </law>
+    `;
+
+    expect(exportXml(input)).toBe(xmlFormat(output));
+});
+
+test('import & export', () => {
+    const xml = `
+        <law nr="1" year="1" law-type="law">
+            <num-and-date>
+                <num>
+                    1
+                </num>
+            </num-and-date>
+            <paragraph nr="1">
+                <sen nr="1" expiry-symbol-offset="0">one.</sen>
+            </paragraph>
+        </law>
+    `;
+
+    expect(exportXml({ children: importXml(xml) } as LawEditor)).toBe(xmlFormat(xml));
 });
 
 test('do not modify input', () => {

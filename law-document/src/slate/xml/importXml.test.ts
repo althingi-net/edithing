@@ -258,6 +258,24 @@ test('sen link', () => {
     expect(importXml(input)).toStrictEqual(output);
 });
 
+test('expiry-symbol-offset', () => {
+    const input = `
+        <law law-type="law">
+            <art nr="1">
+                <sen nr="1" expiry-symbol-offset="0">Úrskurður þessi öðlast þegar gildi.</sen>
+            </art>
+        </law>
+    `;
+    const output: Descendant[] = [
+        createEmptyDocumentMeta(),
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: 'Úrskurður þessi öðlast þegar gildi.', textMeta: { expirySymbolOffset: '0' } }),
+        ]),
+    ];
+
+    expect(importXml(input)).toStrictEqual(output);
+});
+
 test('ensure after editor normalization, content stays the same (if not it means import is not clean, but previously was implemented to match the desired structure)', () => {
     const input = `
         <law law-type="law">

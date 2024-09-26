@@ -6,6 +6,7 @@ export interface TextNode {
     name?: boolean;
     nr?: string;
     bold?: boolean;
+    expirySymbolOffset?: string;
 }
 
 export const isName = (node?: Node | null): node is Text => {

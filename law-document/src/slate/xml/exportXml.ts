@@ -119,7 +119,7 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
             <${type} ${attributes.join(' ')}>
                 ${title ? `<nr-title>${escapeXml(title)}</nr-title>` : ''}
                 ${name ? `<name>${escapeXml(name)}</name>` : ''}
-                ${sentences.map((sentence, index) => `<sen nr="${index + 1}">${escapeXml(sentence.text)}</sen>`).join('')}
+                ${sentences.map(convertSentenceToXml).join('')}
                 ${otherChildren.map((child, index) => convertSlate(editor, child, [...path, index])).join('')}
             </${type}>
         `;
@@ -132,4 +132,23 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
     }
 
     return '';
+};
+
+const convertSentenceToXml = (sentence: Text, index: number): string => {
+    const { text, ...attributes } = sentence;
+    const attributesXml = [
+        ...convertAttributesToXml(attributes),
+        `nr="${index + 1}"`,
+    ];
+
+    return `<sen ${attributesXml.join(' ')}>${escapeXml(sentence.text)}</sen>`;
+};
+
+const convertAttributesToXml = (attributes: Record<string, any>): string[] => {
+    return Object.entries(attributes)
+        .map(([key, value]) => `${convertCamelCaseToKebabCase(key)}="${value}"`);
+};
+
+const convertCamelCaseToKebabCase = (str: string): string => {
+    return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 };

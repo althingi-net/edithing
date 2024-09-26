@@ -148,10 +148,16 @@ const convertList = (key: string, values: any[]): Descendant => {
         }
 
         if (element['#text']) {
-            textNode.children.push({
+            const textElement: Text = {
                 nr: element['@_nr'] ?? '1',
                 text: element['#text'],
-            });
+            };
+
+            if (element['@_expiry-symbol-offset']) {
+                textElement.expirySymbolOffset = element['@_expiry-symbol-offset'];
+            }
+
+            textNode.children.push(textElement);
         }
 
         convertSlate(element).forEach((child) => {
@@ -180,15 +186,21 @@ const convertSen = (sentences: any[]): Descendant => {
     const texts: Text[] = sentences
         .filter((child) => !child['a'])
         .map((child) => {
-            const nr = child['@_nr'] ?? '1';
-            const text = child['#text'] ?? child ?? '';
+            const values: Text = {
+                nr: child['@_nr'] ?? '1',
+                text: child['#text'] ?? child ?? '',
+            };
+
+            if (child['@_expiry-symbol-offset']) {
+                values.expirySymbolOffset = child['@_expiry-symbol-offset'];
+            }
 
             // TODO: handle links
             // if (child['a']) {
             //     return child['@_href'];
             // }
 
-            return { text, nr };
+            return values;
         });
 
     return {
@@ -196,7 +208,3 @@ const convertSen = (sentences: any[]): Descendant => {
         children: texts,
     };
 };
-
-
-
-importXml;

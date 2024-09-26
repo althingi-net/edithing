@@ -1,6 +1,6 @@
 import { Descendant } from 'slate';
 import { ListItemMeta, ListItemWithMeta } from '../element/ListItem';
-import { ListItemText } from '../element/ListItemText';
+import { ListItemText, ListItemTextMeta } from '../element/ListItemText';
 import { MetaType, ElementType } from '../Slate';
 import { convertRomanNumber } from '../number/convertRomanNumber';
 import { createListItemText } from './createListItemText';
@@ -10,6 +10,7 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' |
     title?: string | boolean;
     name?: string | boolean;
     originNr?: string;
+    textMeta?: ListItemTextMeta;
 }
 
 /**
@@ -19,9 +20,9 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' |
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
-    const { title, name, text, nrType, styleNote, romanNr, originNr } = options;
+    const { title, name, text, nrType, styleNote, romanNr, originNr, textMeta } = options;
 
-    const textElement: ListItemText = createListItemText();
+    const textElement: ListItemText = createListItemText(undefined, textMeta);
     
     const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
@@ -62,12 +63,12 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     if (text != null) {
         if (Array.isArray(text)) {
-            textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}` })));
+            textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}`, ...textMeta })));
         } else {
-            textElement.children.push({ text, nr: '1' });
+            textElement.children.push({ text, nr: '1', ...textMeta });
         }
     } else {
-        textElement.children.push({ text: '' });
+        textElement.children.push({ text: '', ...textMeta });
     }
 
     // remove empty text nodes but keep at least one 
