@@ -22,11 +22,6 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
     const [hasError, setError] = useState(false);
 
     useEffect(() => {
-        log('bill page', { billId: id, documentId, selected, gitHash, billTitle: bill?.title });
-    }, [id, documentId, selected, gitHash, bill?.title]);
-
-
-    useEffect(() => {
         // reset error
         setError(false);
     }, [id, selected]);

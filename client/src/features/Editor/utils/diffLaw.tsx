@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { diffAsXml } from 'diff-js-xml';
-import { exportXml } from 'law-document';
-import { Descendant, Editor } from 'slate';
+import { exportXml, LawEditor } from 'law-document';
+import { Descendant, Editor, Text } from 'slate';
 import Diff from 'text-diff';
+import { getNodeByParagraphId } from './getNodeByParagraphId';
 
 const diff = new Diff();
 
@@ -28,15 +29,29 @@ export const diffLaw = async (editor: Editor, original: Descendant[]) => {
         diffAsXml(oldXml, newXml, undefined, undefined, resolve)
     );
 
-    return parseResults(results);
+    return parseResults(results, editor);
 };
 
-const parseResults = (results: XmlDiffResult[]) => {
+const parseResults = (results: XmlDiffResult[], editor: LawEditor) => {
     const mergedResults: LawDiffResult[] = [];
 
     for (const result of results) {
         const { path, message } = result;
         const id = convertPathToId(path);
+
+        if (message.includes('not present in lhs')) {
+            const texts = extractTextById(editor, id);
+
+            mergedResults.push({
+                id,
+                texts,
+                originalTexts: [],
+                type: 'added',
+            });
+
+            continue;
+        }
+
         const { lhs, rhs } = convertMessage(path, message);
         const texts = deepExtractText(rhs);
         const originalTexts = deepExtractText(lhs);
@@ -91,6 +106,7 @@ const convertPathToId = (path: string) => {
  * Converts the message from the xml diff to json for easier handling
  */
 const convertMessage = (path: string, message: string) => {
+    console.log('convertMessage', path, message);
     const [lhs, rhs] = message
         .replace(`field ${path} has lhs value`, '')
         .split(' and rhs value ')
@@ -115,7 +131,6 @@ const deepExtractText = (json: unknown): string[] => {
     }
 
     if (Array.isArray(json)) {
-        // TODO: Why?
         if (json.length > 1 && typeof json[0] === 'string') {
             return [json.map(s => s.trim()).join(' ')];
         }
@@ -128,6 +143,21 @@ const deepExtractText = (json: unknown): string[] => {
     }
 
     return [];
+};
+
+const extractTextById = (editor: Editor, id: string) => {
+    const node = getNodeByParagraphId(editor, id);
+    const texts = node ? extractSlateText(node) : [];
+    
+    return texts;
+};
+
+const extractSlateText = (node: Descendant | LawEditor): string[] => {
+    if (Text.isText(node)) {
+        return [node.text];
+    }
+
+    return node.children.flatMap(extractSlateText);
 };
 
 /**
