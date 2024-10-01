@@ -11,19 +11,20 @@ export const createLawTitle = (nr: string, type: MetaType, previousTitle?: strin
             return title.replace(/^([IVXLCDM]+)/, convertRomanNumber(nr));
         }
 
-        const digit = extractDigitFromNr(nr);
-        return title.replace(/\d+/, digit);
+        const digit = nr.match(/\d+/)?.[0];
+
+        if (digit) {
+            return title.replace(/\d+/, digit);
+        }
+
+        const letter = nr.match(/[A-Za-z]+/)?.[0];
+
+        if (letter) {
+            return title.replace(/[A-Za-z]+/, letter);
+        }
+
+        return title;
     }
 
     return '';
-};
-
-const extractDigitFromNr = (nr: string) => {
-    const digit = nr.match(/\d+/)?.[0];
-
-    if (!digit) {
-        throw new Error('No digit found in nr');
-    }
-
-    return digit;
 };
