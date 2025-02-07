@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "tsc --build --watch",
+    "start": "tsc --build --watch --preserveWatchOutput",
     "build": "NODE_ENV=production tsc --build",
     "prebuild": "npm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo",
