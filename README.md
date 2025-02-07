@@ -1,5 +1,21 @@
 # Tech-stack
 
+## How to run
+
+```bash
+# Run MySQL and RabbitMQ
+docker-compose up -d
+
+# Install dependencies
+npm install
+
+# Init database (will drop existing tables)
+cd server && npm run db:seed
+
+# Run all lib build scripts, api server, message queue consumer, and client
+npm run start
+```
+
 ## Requirements
 
 - Node v18
