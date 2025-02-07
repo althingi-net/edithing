@@ -2,6 +2,7 @@
 import { IsString } from 'class-validator';
 import { XMLParser } from 'fast-xml-parser';
 import downloadFile from './downloadFile';
+import { LEGAL_CODEX_EPOCH } from './importAllDocuments';
 
 export interface GithubFile {
     name: string;
@@ -33,7 +34,7 @@ interface LawEntry {
 }
 
 const getLawEntries = async (): Promise<GithubFile[]> => {
-    const xml = await downloadFile('data/xml/index.xml');
+    const xml = await downloadFile(`data/xml/${LEGAL_CODEX_EPOCH}/index.xml`);
     const parser = new XMLParser({ ignoreAttributes: false });
     const object = parser.parse(xml);
 
@@ -42,7 +43,7 @@ const getLawEntries = async (): Promise<GithubFile[]> => {
             name: entry['name'],
             date: entry['@_date'],
             identifier: convertIdentifier(entry['@_identifier']),
-            path: `data/xml/${entry['@_year']}.${entry['@_nr']}.xml`,
+            path: `data/xml/${LEGAL_CODEX_EPOCH}/${entry['@_year']}.${entry['@_nr']}.xml`,
         };
     });
 };

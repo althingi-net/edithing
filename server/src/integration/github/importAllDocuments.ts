@@ -2,6 +2,7 @@ import path from 'path';
 import { GitClient } from 'git-json-merger';
 import github from '../../config/github';
 
+export const LEGAL_CODEX_EPOCH = '154c';
 
 export const XML_CODEX_REPOSITORY = path.resolve(process.cwd(), './tmp', 'xml-codex');
 

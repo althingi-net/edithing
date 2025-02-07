@@ -7,6 +7,7 @@ import xmlFormat from 'xml-formatter';
 import Document from '../entities/Document';
 import downloadFile from '../integration/github/downloadFile';
 import getLawEntries from '../integration/github/getLawEntries';
+import { LEGAL_CODEX_EPOCH } from '../integration/github/importAllDocuments';
 
 const cacheExpirationInMs = 1000 * 60 * 60 * 24; // 24 hour
 const indexXmlCacheFile = 'data/index.json';
@@ -46,7 +47,7 @@ export const findOrImportDocument = async (identifier: string) => {
     let document = await Document.findOneBy({ identifier });
 
     if (!document) {
-        const path = `data/xml/${identifier}.xml`;
+        const path = `data/xml/${LEGAL_CODEX_EPOCH}/${identifier}.xml`;
         const file = await downloadFile(path);
 
         try {
