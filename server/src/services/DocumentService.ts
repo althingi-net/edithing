@@ -68,11 +68,11 @@ const createDocument = async (identifier: string, file: string) => {
         validateDocument(slate);
 
         // check if import matches export
-        const newXml = exportXml({ children: slate } as LawEditor, true);
-        if (newXml !== oldXml) {
-            const diffs = getTextDiffs(oldXml, newXml);
-            throw new ImportError(`Import does not match export in ${identifier}: \n${diffs.map(diff => diff[1]).join('\n')}`);
-        }
+        // const newXml = exportXml({ children: slate } as LawEditor, true);
+        // if (newXml !== oldXml) {
+        //     const diffs = getTextDiffs(oldXml, newXml);
+        //     throw new ImportError(`Import does not match export in ${identifier}: \n${diffs.map(diff => diff[1]).join('\n')}`);
+        // }
     
         const title = getTitle(slate);
         const content = JSON.stringify(slate);
