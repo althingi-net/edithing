@@ -1,0 +1,36 @@
+{
+  "name": "law-document-editor",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "start": "parcel watch",
+    "build": "parcel build",
+    "prebuild": "npm run clean",
+    "clean": "rimraf ./dist coverage *.tsbuildinfo tmp",
+    "test": "jest",
+    "lint": "eslint .",
+    "build:index": "nodemon --watch src --exec ctix build --mode bundle -p ./tsconfig.json --start-from ./src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "slate": "^0.112.0",
+    "slate-history": "^0.110.3",
+    "slate-react": "^0.112.1",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@parcel/packager-ts": "^2.13.3",
+    "@parcel/transformer-typescript-types": "^2.13.3",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "ctix": "^2.7.0",
+    "parcel": "^2.13.3",
+    "rimraf": "^6.0.1"
+  }
+}
