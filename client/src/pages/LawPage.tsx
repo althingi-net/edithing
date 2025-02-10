@@ -3,10 +3,11 @@ import { DocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatIdentifier } from 'law-document';
+import { Editor } from 'law-document-editor';
 import Loader from '../features/App/Loader';
 import NotFoundError from '../features/App/NotFoundError';
 import useDocument from '../features/Documents/useDocument';
-import Editor from '../features/Editor/Editor';
+// import Editor from '../features/Editor/Editor';
 import useLanguageContext from '../features/App/useLanguageContext';
 
 const LawPage: FC = () => {
