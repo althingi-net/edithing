@@ -1,10 +1,11 @@
 import { writeFile } from 'fs/promises';
 import { GitJsonMerger } from 'git-json-merger';
 import { exportBillXml } from 'law-document';
+import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
 import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
+import { postBillForValidation } from '../integration/lagasafnApi';
 import connection from '../integration/messageQueue/connection';
-import Bill from '../entities/Bill';
 
 export const subscribeBillDocumentUpdateQueue = async (overwriteChannel = 'BillDocumentUpdate') => {
     // @ts-expect-error - dynamic name for testing purposes
@@ -54,6 +55,7 @@ export const runBillDocumentUpdate = async (updateId: number) => {
         gitHash,
     );
 
+
     // Save new document state
     if (result.error) {
         await BillDocumentUpdate.update({ id: updateId }, { status: UpdateStatus.ERROR });
@@ -90,6 +92,8 @@ export const runBillDocumentUpdate = async (updateId: number) => {
     const billXml = exportBillXml(bill.title, documents);
     await writeFile(`./tmp/bill-${originalDocument.billId}.xml`, billXml);
     console.log('Bill XML exported to', `./tmp/bill-${originalDocument.billId}.xml`);
+
+    await postBillForValidation(billXml);
 };
 
 const stringifyPayload = ({ content }: { content: object }) => {
