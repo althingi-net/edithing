@@ -2,6 +2,10 @@
   "name": "law-document-editor",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": ">=22.14.0",
+    "npm": ">=10.9.2"
+  },
   "source": "src/index.ts",
   "main": "dist/main.js",
   "types": "dist/types.d.ts",

@@ -2,11 +2,11 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "source": "./public/index.html",
   "engines": {
-    "node": ">=18.12.1",
-    "npm": ">=8.19.2"
+    "node": ">=22.14.0",
+    "npm": ">=10.9.2"
   },
+  "source": "./public/index.html",
   "scripts": {
     "start": "parcel -p 3000",
     "build": "parcel build",
