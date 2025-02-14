@@ -1,2 +1,5 @@
-export * from './GitJsonMerger';
+// created from ctix
+
+
 export * from './GitClient';
+export * from './GitJsonMerger';

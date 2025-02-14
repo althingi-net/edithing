@@ -1,6 +1,7 @@
 import { isPlainObject } from 'is-plain-object';
-import { Descendant, Editor, Element, Node, Text } from 'slate';
+import { Editor, Element, Node, Text } from 'slate';
 import { isListItem } from './element/ListItem';
+import { SlateFragment } from './Slate';
 
 export class ValidationError extends Error {
     // we have to do the following because of: https://github.com/Microsoft/TypeScript/issues/13965
@@ -15,7 +16,7 @@ export class ValidationError extends Error {
     }
 }
 
-export const validateDocument = (slate: Descendant[]) => {
+export const validateDocument = (slate: SlateFragment) => {
     return isNodeList(slate);
 };
 

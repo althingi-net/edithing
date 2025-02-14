@@ -1,9 +1,9 @@
-import { Descendant, Element, Node } from 'slate';
-import { ElementType } from '../Slate';
+import { Element, Node } from 'slate';
+import { ElementType, SlateFragment } from '../Slate';
 
 export interface DocumentMetaElement {
     type: ElementType.DOCUMENT_META;
-    children: Descendant[];
+    children: SlateFragment;
     meta: DocumentMeta
 }
 

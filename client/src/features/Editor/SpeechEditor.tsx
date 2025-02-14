@@ -13,7 +13,7 @@ import renderElement from './plugins/renderElement';
 import renderLeaf from './plugins/renderLeaf';
 
 interface Props {
-    slate: Descendant[];
+    slate: SlateFragment;
 }
 
 const SpeechEditor: FC<Props> = ({

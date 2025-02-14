@@ -9,7 +9,7 @@ import { Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-reac
  ************/
 
 interface Props {
-    slate: Descendant[];
+    slate: SlateFragment;
     readOnly?: boolean;
 }
 
@@ -63,7 +63,7 @@ interface ListItemText {
 
 interface List {
     type: ElementType.LIST;
-    children: Descendant[];
+    children: SlateFragment;
     meta?: ListMeta;
 }
 
@@ -183,7 +183,7 @@ const TAGS: { [key in MetaType]: TagConfig } = {
 
 interface ListItem {
     type: ElementType.LIST_ITEM;
-    children: Descendant[];
+    children: SlateFragment;
     meta?: ListItemMeta;
 }
 
@@ -229,7 +229,7 @@ interface createListOptions {
     nrType?: 'roman' | 'numeric' | 'alphabet';
 }
 
-const createList = (type: MetaType, options: createListOptions = {}, children: Descendant[] = []): List => {
+const createList = (type: MetaType, options: createListOptions = {}, children: SlateFragment = []): List => {
     const { nrType } = options;
 
     const list: ListWithMeta = {
@@ -269,7 +269,7 @@ const convertRomanNumber = (value: string | number): string => {
  * @param type The meta type of the list item.
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
-const createListItem = (type: MetaType, nr: string, options: createListItemOptions = {}, children: Descendant[] = []): ListItemWithMeta => {
+const createListItem = (type: MetaType, nr: string, options: createListItemOptions = {}, children: SlateFragment = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr, originNr } = options;
 
     const textElement: ListItemText = createListItemText();
@@ -354,21 +354,21 @@ const createListItemText = (children: Text[] = [{ text: '' }]) => {
  ************/
 
 
-const createV1BenchmarkSample = (): Descendant[] => {
-    const nodes: Descendant[] = [];
+const createV1BenchmarkSample = (): SlateFragment => {
+    const nodes: SlateFragment = [];
     const count = 5;
 
     for (let c = 0; c < count; c++) {
         nodes.push(
             createList(MetaType.CHAPTER, {}, [
                 createListItem(MetaType.CHAPTER, `${c + 1}`, {}, [
-                    ...Array.from<Descendant[], Descendant>({ length: count }, (_, art) => (
+                    ...Array.from<SlateFragment, Descendant>({ length: count }, (_, art) => (
                         createList(MetaType.ART, {}, [
                             createListItem(MetaType.ART, `${art + 1}`, {}, [
-                                ...Array.from<Descendant[], Descendant>({ length: count }, (_, subart) => (
+                                ...Array.from<SlateFragment, Descendant>({ length: count }, (_, subart) => (
                                     createList(MetaType.SUBART, {}, [
                                         createListItem(MetaType.SUBART, `${subart + 1}`, {}, [
-                                            ...Array.from<Descendant[], Descendant>({ length: count }, (_, sen) => (
+                                            ...Array.from<SlateFragment, Descendant>({ length: count }, (_, sen) => (
                                                 createList(MetaType.SEN, {}, [
                                                     createListItem(MetaType.SEN, `${sen + 1}`, { text: 'Lög þessi gilda um uppbyggingu og rekstur flugvalla í eigu íslenska ríkisins og þá rekstrarstjórnun flugumferðar/flugleiðsöguþjónustu sem veitt er af hálfu íslenska ríkisins á íslensku yfirráðasvæði eða á grundvelli alþjóðlegra skuldbindinga' }),
                                                 ])

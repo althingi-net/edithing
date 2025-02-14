@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { diffAsXml } from 'diff-js-xml';
-import { exportXml, LawEditor } from 'law-document';
-import { Descendant, Editor, Text } from 'slate';
+import { exportXml, extractTextById, LawEditor, SlateFragment } from 'law-document';
+import { Editor } from 'slate';
 import Diff from 'text-diff';
-import { getNodeByParagraphId } from './getNodeByParagraphId';
 
 const diff = new Diff();
 
@@ -21,7 +20,7 @@ export type LawDiffResult = {
     changes?: [type: number, text: string][];
 };
 
-export const diffLaw = async (editor: Editor, original: Descendant[]) => {
+export const diffLaw = async (editor: Editor, original: SlateFragment) => {
     const newXml = exportXml(editor);
     const oldXml = exportXml({ children: original } as Editor);
 
@@ -145,20 +144,6 @@ const deepExtractText = (json: unknown): string[] => {
     return [];
 };
 
-const extractTextById = (editor: Editor, id: string) => {
-    const node = getNodeByParagraphId(editor, id);
-    const texts = node ? extractSlateText(node) : [];
-    
-    return texts;
-};
-
-const extractSlateText = (node: Descendant | LawEditor): string[] => {
-    if (Text.isText(node)) {
-        return [node.text];
-    }
-
-    return node.children.flatMap(extractSlateText);
-};
 
 /**
  * Returns the diff between two strings as an array of changes

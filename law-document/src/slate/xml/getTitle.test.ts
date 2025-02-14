@@ -1,12 +1,11 @@
-import { Descendant } from 'slate';
-import { MetaType } from '../Slate';
+import { MetaType, SlateFragment } from '../Slate';
 import { createDocumentMeta } from '../transformations/createDocumentMeta';
 import { createList } from '../transformations/createList';
 import { createListItem } from '../transformations/createListItem';
 import { getTitle } from './getTitle';
 
 test('return existing title', () => {
-    const input: Descendant[] = [
+    const input: SlateFragment = [
         createDocumentMeta({
             nr: '33',
             year: '1944',
@@ -26,7 +25,7 @@ test('return existing title', () => {
 });
 
 test('return empty title if not exists', () => {
-    const input: Descendant[] = [
+    const input: SlateFragment = [
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
         ]),

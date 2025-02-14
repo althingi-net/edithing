@@ -1,11 +1,11 @@
 import xmlFormat from 'xml-formatter';
-import { Descendant, Text } from 'slate';
+import { Text } from 'slate';
 import { createEmptyDocumentMeta } from '../transformations/createDocumentMeta';
-import { LawEditor, MetaType, createList, createListItem, exportXml, findNode, isList } from '../..';
+import { LawEditor, MetaType, SlateFragment, createList, createListItem, exportXml, findNode, isList } from '../..';
 import { exportBillXml } from './exportBillXml';
 
 test('export changed article', () => {
-    const slate: Descendant[] = [
+    const slate: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ', name: 'Markmið. ' }, [
@@ -55,7 +55,7 @@ test('export changed article', () => {
 });
 
 test('export removed article', () => {
-    const slate: Descendant[] = [
+    const slate: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ', name: 'Markmið. ' }, [
@@ -100,7 +100,7 @@ test('export removed article', () => {
 });
 
 test('export added article', () => {
-    const slate: Descendant[] = [
+    const slate: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ', name: 'Markmið. ' }, [

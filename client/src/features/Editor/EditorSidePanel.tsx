@@ -11,7 +11,7 @@ import useDebounce from './utils/useDebounce';
 import LawDiff from './LawDiff';
 
 interface Props {
-    originalDocument?: Descendant[];
+    originalDocument?: SlateFragment;
     xml?: string;
     readOnly?: boolean;
     isSpeech?: boolean;

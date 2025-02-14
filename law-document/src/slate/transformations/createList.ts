@@ -1,12 +1,11 @@
-import { Descendant } from 'slate';
 import { List, ListWithMeta } from '../element/List';
-import { MetaType, ElementType } from '../Slate';
+import { MetaType, ElementType, SlateFragment } from '../Slate';
 
 interface Options {
     nrType?: 'roman' | 'numeric' | 'alphabet';
 }
 
-export const createList = (type: MetaType, options: Options = {}, children: Descendant[] = []): List => {
+export const createList = (type: MetaType, options: Options = {}, children: SlateFragment = []): List => {
     const { nrType } = options;
 
     const list: ListWithMeta = {

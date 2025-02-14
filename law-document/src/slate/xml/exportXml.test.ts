@@ -1,6 +1,5 @@
-import { Descendant } from 'slate';
 import xmlFormat from 'xml-formatter';
-import { LawEditor, MetaType } from '../Slate';
+import { LawEditor, MetaType, SlateFragment } from '../Slate';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createDocumentMeta } from '../transformations/createDocumentMeta';
 import { createList } from '../transformations/createList';
@@ -8,7 +7,7 @@ import { createListItem } from '../transformations/createListItem';
 import { exportXml } from './exportXml';
 import { importXml } from './importXml';
 
-const createEditor = (input: Descendant[]) => {
+const createEditor = (input: SlateFragment) => {
     const editor = createEditorWithPlugins();
 
     editor.children = input;

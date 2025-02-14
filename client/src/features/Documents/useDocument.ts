@@ -1,11 +1,10 @@
 import { BillDocument, Document } from 'client-sdk';
-import { importXml } from 'law-document';
+import { importXml, SlateFragment } from 'law-document';
 import { useCallback, useState } from 'react';
-import { Descendant } from 'slate';
 
 const useDocument = () => {
-    const [slate, setSlate] = useState<Descendant[] | null>(null);
-    const [originalDocument, setOriginalDocument] = useState<Descendant[]>();
+    const [slate, setSlate] = useState<SlateFragment | null>(null);
+    const [originalDocument, setOriginalDocument] = useState<SlateFragment>();
     const [xml, setXml] = useState<string>();
     const [documentId, setDocumentId] = useState<number>();
     const [gitHash, setGitHash] = useState<string>();
@@ -24,7 +23,7 @@ const useDocument = () => {
 
         setXml(document.originalXml);
         setOriginalDocument(importXml(document.originalXml));
-        setSlate(JSON.parse(document.content) as Descendant[]);
+        setSlate(JSON.parse(document.content) as SlateFragment);
         setDocumentId(document.id);
         setImportError(document.importError);
         

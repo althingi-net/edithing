@@ -1,10 +1,10 @@
-import { Descendant, Element } from 'slate';
-import { ElementType, MetaType } from '../Slate';
+import { Element } from 'slate';
+import { ElementType, MetaType, SlateFragment } from '../Slate';
 import { ListMeta } from './List';
 
 export interface ListItem {
     type: ElementType.LIST_ITEM;
-    children: Descendant[];
+    children: SlateFragment;
     meta?: ListItemMeta;
 }
 

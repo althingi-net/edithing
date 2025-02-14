@@ -1,13 +1,13 @@
 import { XMLParser } from 'fast-xml-parser';
 import { Descendant, Text } from 'slate';
-import { ListWithMeta } from '../element/List';
-import { ListItemWithMeta } from '../element/ListItem';
 import { TAGS } from '../config/tags';
 import { DocumentMetaElement } from '../element/DocumentMetaElement';
+import { ListWithMeta } from '../element/List';
+import { ListItemWithMeta } from '../element/ListItem';
 import { ListItemText, isListItemText } from '../element/ListItemText';
+import { ElementType, LIST_TAGS, MetaType, SlateFragment } from '../Slate';
 import { createDocumentMeta } from '../transformations/createDocumentMeta';
 import { normalizeChildren } from '../transformations/normalizeChildren';
-import { LIST_TAGS, MetaType, ElementType } from '../Slate';
 
 export class ImportError extends Error {
     // we have to do the following because of: https://github.com/Microsoft/TypeScript/issues/13965
@@ -54,8 +54,8 @@ export const extractMeta = (object: any): DocumentMetaElement => {
     });
 };
 
-const convertSlate = (object: any): Descendant[] => {
-    const nodes: Descendant[] = [];
+const convertSlate = (object: any): SlateFragment => {
+    const nodes: SlateFragment = [];
 
     for (const key in object) {
         const value = object[key];

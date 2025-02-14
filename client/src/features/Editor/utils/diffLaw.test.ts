@@ -1,5 +1,5 @@
-import { createList, createListItem, MetaType } from 'law-document';
-import { Descendant, Editor } from 'slate';
+import { createList, createListItem, MetaType, SlateFragment } from 'law-document';
+import { Editor } from 'slate';
 import { diffLaw } from './diffLaw';
 
 describe('diffLaw', () => {
@@ -20,7 +20,7 @@ describe('diffLaw', () => {
                 ])
             ])
         ])
-    ] as Descendant[];
+    ] as SlateFragment;
 
     it('empty array if there are no differences', async () => {
         const editor = { children: original } as unknown as Editor;

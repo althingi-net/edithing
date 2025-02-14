@@ -11,7 +11,7 @@ const { Text } = Typography;
 
 interface Props {
     slate: LawEditor;
-    originalDocument: Descendant[];
+    originalDocument: SlateFragment;
 }
 
 const LawDiff: FC<Props> = ({ originalDocument }) => {

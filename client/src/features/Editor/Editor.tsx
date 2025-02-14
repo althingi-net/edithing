@@ -1,8 +1,7 @@
 import { Col, Row } from 'antd';
 import { Bill } from 'client-sdk';
-import { LawEditor } from 'law-document';
+import { LawEditor, SlateFragment } from 'law-document';
 import { FC, useEffect, useMemo } from 'react';
-import { Descendant } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import './Editor.css';
 import { useEditorConfig } from './EditorConfig';
@@ -17,8 +16,8 @@ import renderLeaf from './plugins/renderLeaf';
 import useEditorNavigationBlock from './useEditorNaviationBlock';
 
 interface Props {
-    slate: Descendant[];
-    originalDocument: Descendant[];
+    slate: SlateFragment;
+    originalDocument: SlateFragment;
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;

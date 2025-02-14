@@ -1,6 +1,5 @@
-import { Descendant } from 'slate';
 import xmlFormat from 'xml-formatter';
-import { LawEditor } from '../Slate';
+import { LawEditor, SlateFragment } from '../Slate';
 import { exportXml } from './exportXml';
 
 export interface BillDocument {
@@ -24,7 +23,7 @@ export const exportBillXml = (billTitle: string, billDocuments: BillDocument[]):
 };
 
 const parseDocument = (document: BillDocument) => {
-    const newContent = JSON.parse(document.content) as Descendant[];
+    const newContent = JSON.parse(document.content) as SlateFragment;
     const xml = exportXml({ children: newContent } as LawEditor);
 
     return `${xml}`;

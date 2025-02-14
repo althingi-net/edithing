@@ -1,5 +1,4 @@
-import { Descendant } from 'slate';
-import { MetaType } from './Slate';
+import { MetaType, SlateFragment } from './Slate';
 import { createEmptyDocumentMeta } from './transformations/createDocumentMeta';
 import { createList } from './transformations/createList';
 import { createListItem } from './transformations/createListItem';
@@ -16,7 +15,7 @@ test('valid document', () => {
 });
 
 test('empty document', () => {
-    const slate: Descendant[] = [];
+    const slate: SlateFragment = [];
     expect(validateDocument(slate)).toBe(true);
 });
 
