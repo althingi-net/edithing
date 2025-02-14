@@ -1,5 +1,7 @@
-import { isList, isListItem, MetaType } from 'law-document';
 import { Descendant, Editor, Text } from 'slate';
+import { isList } from '../element/List';
+import { isListItem } from '../element/ListItem';
+import { MetaType, SlateFragment } from '../Slate';
 
 /**
  * 
@@ -19,7 +21,7 @@ export const getNodeByParagraphId = (editor: Editor, paragraphId: string) => {
     }, editor);
 };
 
-const findListItemNode = (nodes: Descendant[] | undefined, type: MetaType, nr: string) => {
+const findListItemNode = (nodes: SlateFragment | undefined, type: MetaType, nr: string) => {
     if (!nodes) {
         return null;
     }

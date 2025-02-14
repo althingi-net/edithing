@@ -1,5 +1,7 @@
 import { Node } from 'slate';
-import { createList, MetaType, createListItem } from 'law-document';
+import { MetaType } from '../Slate';
+import { createList } from '../transformations/createList';
+import { createListItem } from '../transformations/createListItem';
 import { getParagraphId } from './getParagraphId';
 
 /**

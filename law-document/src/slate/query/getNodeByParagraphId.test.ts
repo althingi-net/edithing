@@ -1,5 +1,7 @@
-import { createEditorWithPlugins, createList, createListItem, MetaType } from 'law-document';
-import { Descendant } from 'slate';
+import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
+import { SlateFragment, MetaType } from '../Slate';
+import { createList } from '../transformations/createList';
+import { createListItem } from '../transformations/createListItem';
 import { getNodeByParagraphId } from './getNodeByParagraphId';
 
 
@@ -8,7 +10,7 @@ import { getNodeByParagraphId } from './getNodeByParagraphId';
  * @param children 
  * @returns root node
  */
-const wrapEditor = (children: Descendant[]) => {
+const wrapEditor = (children: SlateFragment) => {
     const editor = createEditorWithPlugins();
     editor.children = children;
     return editor;

@@ -1,5 +1,6 @@
-import { findNode, getListItemHierarchy } from 'law-document';
 import { Node, Path } from 'slate';
+import { findNode } from '../findNode';
+import { getListItemHierarchy } from './getListItemHierarchy';
 
 /**
  * Return an id to identify a law paragraph down to the sentence level.
