@@ -12,6 +12,7 @@
     "build": "NODE_ENV=production tsc --build",
     "prebuild": "npm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo",
+    "reset": "npm run db:seed && npm run reset-git-merger",
     "test": "NODE_ENV=test jest",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
