@@ -21,6 +21,10 @@
 			"path": "law-document"
 		},
 		{
+			"name": "law-document-editor",
+			"path": "law-document-editor"
+		},
+		{
 			"name": "git-json-merger",
 			"path": "git-json-merger"
 		}
