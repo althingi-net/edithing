@@ -6,7 +6,7 @@
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "start": "parcel watch",
+    "start": "parcel watch & npm run build:index",
     "build": "parcel build",
     "prebuild": "npm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo tmp",
