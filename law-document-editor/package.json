@@ -18,27 +18,37 @@
     "lint": "eslint .",
     "build:index": "nodemon --watch src --exec ctix build --mode bundle -p ./tsconfig.json --start-from ./src"
   },
+  "alias": {
+    "process": false
+  },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "law-document": "file:../law-document",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+  "peerDependencies": {
+    "react": "19.0",
+    "react-dom": "19.0",
     "slate": "^0.112.0",
     "slate-history": "^0.110.3",
-    "slate-react": "^0.112.1",
-    "typescript": "^5.7.3"
+    "slate-react": "^0.112.1"
   },
   "devDependencies": {
     "@parcel/packager-ts": "^2.13.3",
     "@parcel/transformer-typescript-types": "^2.13.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
     "ctix": "^2.7.0",
     "nodemon": "^3.1.9",
     "parcel": "^2.13.3",
-    "rimraf": "^6.0.1"
+    "react": "19.0",
+    "react-dom": "19.0",
+    "rimraf": "^6.0.1",
+    "slate": "^0.112.0",
+    "slate-history": "^0.110.3",
+    "slate-react": "^0.112.1",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "law-document": "file:../law-document"
   }
 }

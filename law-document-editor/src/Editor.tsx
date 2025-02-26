@@ -1,7 +1,21 @@
-import { createList, createListItem, MetaType, SlateFragment } from 'law-document';
-import React, { FC, ReactNode, useMemo, useState } from 'react';
-import { createEditor } from 'slate';
+import { createEditorWithPlugins, createList, createListItem, LawEditor, LawElement, MetaType, SlateFragment, TextNode } from 'law-document';
+import React, { FC, useMemo, useState } from 'react';
 import { Editable, Slate, withReact } from 'slate-react';
+
+
+declare module 'slate' {
+    interface CustomTypes {
+        Editor: LawEditor;
+        Element: LawElement;
+        Text: TextNode;
+    }
+}
+
+const createEditor = () => {
+    const editor = withReact(createEditorWithPlugins());
+
+    return editor;
+};
 
 interface Props {
     slate: SlateFragment;
@@ -13,7 +27,7 @@ interface Props {
 }
 
 export const Editor: FC<Props> = (props) => {
-    const editor = useMemo(() => withReact(createEditor()), []);
+    const editor = useMemo(() => createEditor(), []);
     const [value, setValue] = useState<SlateFragment>([
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. kafli.', text: 'the first chapter' }),

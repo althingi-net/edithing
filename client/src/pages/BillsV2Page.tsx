@@ -1,6 +1,6 @@
 import { Button, Flex, List, Space } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import UserAvatar from '../features/App/UserAvatar';
 import useLanguageContext from '../features/App/useLanguageContext';

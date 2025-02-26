@@ -2,7 +2,7 @@
 import { Switch } from 'antd';
 import { Bill, BillDocument, BillDocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
-import { useNavigation } from 'react-router-dom';
+import { useNavigation } from 'react-router';
 import { exportBillXml } from 'law-document';
 import { CodeBlock } from 'react-code-blocks';
 import Loader from '../App/Loader';

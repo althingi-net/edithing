@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import { BillDocumentService, DocumentService } from 'client-sdk';
 import { LawEditor, getTitle } from 'law-document';
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import modal from 'antd/es/modal';
 import { log } from '../../logger';
 import handleError from '../App/handleError';

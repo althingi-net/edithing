@@ -1,7 +1,7 @@
 import { Button, Flex, List, Space } from 'antd';
 import Search from 'antd/es/input/Search';
 import { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import useLanguageContext from '../App/useLanguageContext';
 import filterLawEntry from './filterLawEntry';
 import useLawListContext from './useLawListContext';

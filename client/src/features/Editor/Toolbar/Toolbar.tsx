@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useSlateStatic } from 'slate-react';
 import { LawEditor } from 'law-document';
 import { Bill } from 'client-sdk';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import useLanguageContext from '../../App/useLanguageContext';
 import useBlockNavigation from '../../App/useBlockNavigation';
 import { useEditorConfig } from '../EditorConfig';

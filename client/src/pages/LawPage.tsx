@@ -1,7 +1,7 @@
 import { Content } from 'antd/es/layout/layout';
 import { DocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { formatIdentifier } from 'law-document';
 import { Editor } from 'law-document-editor';
 import Loader from '../features/App/Loader';

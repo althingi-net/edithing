@@ -2,7 +2,7 @@ import { Menu, Space } from 'antd';
 import { Header as AntHeader } from 'antd/es/layout/layout';
 import { MenuItemType } from 'antd/es/menu/hooks/useItems';
 import { FC, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import LoginButton from './LoginButton';
 import ProfileMenu from './ProfileMenu';
 import useThemeContext from './useThemeContext';

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Layout } from 'antd';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 import BillPage from '../../pages/BillPage';
 import BillsPage from '../../pages/BillsPage';

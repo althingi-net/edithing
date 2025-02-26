@@ -1,7 +1,7 @@
 import { Bill, BillDocument } from 'client-sdk';
 import { convertRomanNumber, formatIdentifier } from 'law-document';
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import useLanguageContext from '../App/useLanguageContext';
 
 interface Props {

@@ -1,17 +1,14 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { LoginRequestBody } from '../models/LoginRequestBody';
 import type { LoginResponse } from '../models/LoginResponse';
 import type { User } from '../models/User';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class AuthService {
-
     /**
      * Authenticate with email and password
      * @param requestBody LoginRequestBody
@@ -28,7 +25,6 @@ export class AuthService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Register
      * @param requestBody User
@@ -45,7 +41,6 @@ export class AuthService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Activate
      * @param requestBody
@@ -64,7 +59,6 @@ export class AuthService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Get me
      * @returns any Successful response
@@ -76,5 +70,4 @@ export class AuthService {
             url: '/api/auth/me',
         });
     }
-
 }

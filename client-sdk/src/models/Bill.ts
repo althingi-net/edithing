@@ -1,8 +1,7 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type Bill = {
     id?: number;
     author: any;
@@ -12,15 +11,11 @@ export type Bill = {
     createdAt?: string;
     updatedAt?: string;
 };
-
 export namespace Bill {
-
     export enum status {
         DRAFT = 'draft',
         PUBLISHED = 'published',
         ARCHIVED = 'archived',
     }
-
-
 }
 
