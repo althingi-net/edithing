@@ -19,6 +19,7 @@
     "build-storybook": "storybook build"
   },
   "alias": {
+    "react": "../law-document-editor/node_modules/react",
     "process": false
   },
   "browserslist": {
