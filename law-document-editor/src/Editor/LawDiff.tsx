@@ -5,7 +5,7 @@ import { Descendant } from 'slate';
 import { useSlate } from 'slate-react';
 import { useDebounce } from '@uidotdev/usehooks';
 import useLanguageContext, { Translator } from '../App/useLanguageContext';
-import { diffLaw, LawDiffResult } from './utils/diffLaw';
+import { diffLaw, LawDiffResult } from '../utils/diffLaw';
 
 const { Text } = Typography;
 

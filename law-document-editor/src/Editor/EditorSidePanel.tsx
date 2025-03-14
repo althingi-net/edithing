@@ -4,22 +4,23 @@ import { FC, useMemo } from 'react';
 import { CodeBlock } from 'react-code-blocks';
 import { Descendant } from 'slate';
 import { useSlate } from 'slate-react';
-import useLanguageContext from '../App/useLanguageContext';
 import CopyClipboardButton from './CopyClipboardButton';
 import NodeMetaForm from './NodeMetaForm';
-import useDebounce from './utils/useDebounce';
+import useDebounce from '../utils/useDebounce';
 import LawDiff from './LawDiff';
+import React from 'react';
+import { Translator } from '../translations';
 
 interface Props {
     originalDocument?: SlateFragment;
     xml?: string;
     readOnly?: boolean;
     isSpeech?: boolean;
+    t: Translator;
 }
 
 const EditorSidePanel: FC<Props> = (props) => {
-    const { t } = useLanguageContext();
-    const { originalDocument, xml, readOnly, isSpeech } = props;
+    const { originalDocument, xml, readOnly, isSpeech, t } = props;
     const debouncedSlate = useDebounce(useSlate(), 500);
 
     return useMemo(() => {
@@ -34,12 +35,12 @@ const EditorSidePanel: FC<Props> = (props) => {
                         header={t('Element Configuration')}
                         collapsible={readOnly ? 'disabled' : undefined}
                     >
-                        <NodeMetaForm />
+                        <NodeMetaForm t={t} />
                     </Collapse.Panel>
                     {xml && <Collapse.Panel
                         key="2"
                         header={t('Old XML')}
-                        extra={<CopyClipboardButton content={xml} />}
+                        extra={<CopyClipboardButton t={t} content={xml} />}
                     >
                         <CodeBlock
                             text={xml}
@@ -49,7 +50,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                     <Collapse.Panel
                         key="3"
                         header="Slate"
-                        extra={<CopyClipboardButton content={slateState} />}
+                        extra={<CopyClipboardButton t={t} content={slateState} />}
                     >
                         <CodeBlock
                             text={slateState}
@@ -59,7 +60,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                     <Collapse.Panel
                         key="4"
                         header={t('New XML')}
-                        extra={<CopyClipboardButton content={xmlExport} />}
+                        extra={<CopyClipboardButton t={t} content={xmlExport} />}
                     >
                         <CodeBlock
                             text={xmlExport}

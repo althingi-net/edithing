@@ -1,7 +1,6 @@
 import { Col, Row } from 'antd';
-import { createEditorWithPlugins as createLawEditor } from 'law-document';
+import { createEditorWithPlugins as createLawEditor, SlateFragment } from 'law-document';
 import { FC, useEffect, useMemo } from 'react';
-import { Descendant } from 'slate';
 import { Editable, Slate, withReact } from 'slate-react';
 import './Editor.css';
 import { useEditorConfig } from './EditorConfig';

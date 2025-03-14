@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SlateFragment } from 'law-document';
+import React from 'react';
 import { FC, useEffect, useMemo } from 'react';
 import { Descendant, Element, Text, createEditor } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
+import { Editable, ReactEditor, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
 
 /************
  * COPY & PASTE OF law-documents, because of issue with vite not bundling law-documents correctly
  ************/
+
+
 
 interface Props {
     slate: SlateFragment;

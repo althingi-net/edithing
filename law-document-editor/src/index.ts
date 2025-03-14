@@ -1,5 +1,4 @@
 // created from ctix
 
 
-export * from './add';
-export * from './Editor';
+export * from './Editor/Editor';
