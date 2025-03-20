@@ -3,12 +3,12 @@ import { Bill } from 'client-sdk';
 import { createEditorWithPlugins, LawEditor, SlateFragment } from 'law-document';
 import React, { FC, useEffect, useMemo } from 'react';
 import { Editable, Slate, withReact } from 'slate-react';
-import handleKeyDown from '../plugins/handleKeyDown';
-import renderElement from '../plugins/renderElement';
-import renderLeaf from '../plugins/renderLeaf';
-import HoveringToolbar from '../Toolbar/HoverToolbar';
-import SideToolbar from '../Toolbar/SideToolbar';
-import Toolbar from '../Toolbar/Toolbar';
+import handleKeyDown from './plugins/handleKeyDown';
+import renderElement from './plugins/renderElement';
+import renderLeaf from './plugins/renderLeaf';
+import HoveringToolbar from './Toolbar/HoverToolbar';
+import SideToolbar from './Toolbar/SideToolbar';
+import Toolbar from './Toolbar/Toolbar';
 import { Translator } from '../translations';
 import { useEditorConfig } from './EditorConfig';
 import EditorSidePanel from './EditorSidePanel';
@@ -55,8 +55,8 @@ export const Editor: FC<Props> = (props) => {
                         <div style={{ height: '100%' }}>
                             {readOnly ? null : (
                                 <>
-                                    <HoveringToolbar />
-                                    <SideToolbar />
+                                    <HoveringToolbar t={t} />
+                                    <SideToolbar t={t} />
                                 </>
                             )}
                             <Editable
@@ -69,7 +69,7 @@ export const Editor: FC<Props> = (props) => {
                         </div>
                     </Col>
                     <Col span={12}>
-                        { readOnly ? null : <Toolbar saveDocument={handleSave} bill={bill} /> }
+                        { readOnly ? null : <Toolbar saveDocument={handleSave} bill={bill} t={t} navigationBlocker={navigationBlocker} /> }
                         <EditorSidePanel
                             t={t}
                             readOnly={readOnly}

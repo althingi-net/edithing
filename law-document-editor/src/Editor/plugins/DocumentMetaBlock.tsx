@@ -1,6 +1,6 @@
 import { Collapse, Divider } from 'antd';
 import { DocumentMetaElement, ElementType } from 'law-document';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { RenderElementProps } from 'slate-react';
 
 interface Props extends RenderElementProps {

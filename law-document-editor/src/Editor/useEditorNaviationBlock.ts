@@ -5,6 +5,7 @@ export interface NavigationBlocker {
     blockNavigation: () => void;
     unblockNavigation: () => void;
     isNavigationBlocked: boolean;
+    goTo: (path: string) => void;
 }
 
 const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void) => {

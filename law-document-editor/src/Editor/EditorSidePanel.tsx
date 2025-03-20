@@ -73,7 +73,7 @@ const EditorSidePanel: FC<Props> = (props) => {
                             header={t('Changes')}
                             collapsible={readOnly ? 'disabled' : undefined}
                         >
-                            <LawDiff originalDocument={originalDocument} slate={debouncedSlate} />
+                            <LawDiff originalDocument={originalDocument} slate={debouncedSlate} t={t} />
                         </Collapse.Panel>
                     )}
                 </Collapse>

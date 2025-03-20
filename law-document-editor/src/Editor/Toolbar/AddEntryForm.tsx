@@ -1,18 +1,18 @@
 import { Button, Checkbox, Divider, Radio, Space } from 'antd';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { MetaType, createLawList, findListItemAtSelection, getAllowedTagChildren, getListItemHierarchy, getListItemTitle, getParentListItem, isListItemWithMeta } from 'law-document';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Node, Path } from 'slate';
 import { ReactEditor, useSlateStatic } from 'slate-react';
-import { MetaType, findListItemAtSelection, isListItemWithMeta, getListItemHierarchy, getListItemTitle, getParentListItem, getAllowedTagChildren, createLawList } from 'law-document';
-import useLanguageContext from '../../App/useLanguageContext';
-import { useEditorConfig } from '../Editor/EditorConfig';
+import { Translator } from '../../translations';
+import { useEditorConfig } from '../EditorConfig';
 
 interface Props {
     onSubmit: () => void;
     onCancel: () => void;
+    t: Translator;
 }
 
-const AddEntryForm: FC<Props> = ({ onCancel, onSubmit }) => {
-    const { t } = useLanguageContext();
+const AddEntryForm: FC<Props> = ({ onCancel, onSubmit, t }) => {
     const editor = useSlateStatic();
     const autoNumberIncrements = useEditorConfig(state => state.autoNumberIncrements);
     const [bumpVersionNumber, setBumpVersionNumber] = useState(autoNumberIncrements);

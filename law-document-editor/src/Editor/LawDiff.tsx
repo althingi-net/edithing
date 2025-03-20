@@ -1,10 +1,9 @@
+import { useDebounce } from '@uidotdev/usehooks';
 import { Typography } from 'antd';
 import { LawEditor, SlateFragment } from 'law-document';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { Descendant } from 'slate';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useSlate } from 'slate-react';
-import { useDebounce } from '@uidotdev/usehooks';
-import useLanguageContext, { Translator } from '../App/useLanguageContext';
+import { Translator } from '../translations';
 import { diffLaw, LawDiffResult } from '../utils/diffLaw';
 
 const { Text } = Typography;
@@ -12,11 +11,11 @@ const { Text } = Typography;
 interface Props {
     slate: LawEditor;
     originalDocument: SlateFragment;
+    t: Translator;
 }
 
-const LawDiff: FC<Props> = ({ originalDocument }) => {
+const LawDiff: FC<Props> = ({ originalDocument, t }) => {
     const slate = useSlate();
-    const { t } = useLanguageContext();
     const [diff, setDiff] = useState<LawDiffResult[]>([]);
     const debouncedChildren = useDebounce(slate.children, 250);
 

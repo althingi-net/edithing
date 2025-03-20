@@ -1,20 +1,20 @@
 import { Button, Checkbox, Space } from 'antd';
-import { FC } from 'react';
-import { useSlateStatic } from 'slate-react';
-import { LawEditor } from 'law-document';
 import { Bill } from 'client-sdk';
-import { useNavigate } from 'react-router';
-import useLanguageContext from '../../App/useLanguageContext';
-import useBlockNavigation from '../../App/useBlockNavigation';
-import { useEditorConfig } from '../Editor/EditorConfig';
+import { LawEditor } from 'law-document';
+import React, { FC } from 'react';
+import { useSlateStatic } from 'slate-react';
+import { useEditorConfig } from '../EditorConfig';
+import { NavigationBlocker } from '../useEditorNaviationBlock';
+import { Translator } from '../../translations';
 
 interface Props {
     saveDocument?: (editor: LawEditor) => void;
     bill?: Bill;
+    t: Translator;
+    navigationBlocker: NavigationBlocker;
 }
 
-const Toolbar: FC<Props> = ({ saveDocument, bill }) => {
-    const { t } = useLanguageContext();
+const Toolbar: FC<Props> = ({ saveDocument, bill, t, navigationBlocker }) => {
     const {
         setAutoNumberIncrements,
         setHighlightStructure,
@@ -22,8 +22,7 @@ const Toolbar: FC<Props> = ({ saveDocument, bill }) => {
         autoNumberIncrements,
     } = useEditorConfig(state => state);
     const slate = useSlateStatic();
-    const navigate = useNavigate();
-    const { isNavigationBlocked } = useBlockNavigation();
+    const { isNavigationBlocked, goTo } = navigationBlocker;
 
     return (
         <Space direction="horizontal" style={{ justifyContent: 'left', marginBottom: '10px', width: '100%' }}>
@@ -34,7 +33,7 @@ const Toolbar: FC<Props> = ({ saveDocument, bill }) => {
                 {t('Auto Increment Numbers')}
             </Checkbox>
             {saveDocument && <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>}
-            {bill && <Button onClick={() => navigate(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}
+            {bill && <Button onClick={() => goTo(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}
         </Space>
     );
 };

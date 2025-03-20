@@ -11,12 +11,15 @@ import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import BillPreview from '../features/Bills/BillPreview';
 import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
-import Editor from '../features/Editor/Editor';
+import { Editor } from 'law-document-editor';
+import { useNavigate } from 'react-router';
 
 const BillPage: FC = () => {
     const { t } = useLanguageContext();
     const { isAuthenticated } = useSessionContext();
-    const { isNavigationBlocked } = useBlockNavigation();
+    const navigate = useNavigate();
+    const navigationBlocker = { ...useBlockNavigation(), goTo: navigate };
+    const { isNavigationBlocked } = navigationBlocker;
     const { lawList } = useLawListContext();
     const {
         bill,
@@ -79,6 +82,8 @@ const BillPage: FC = () => {
                                     saveDocument={saveDocument}
                                     readOnly={!isBillDocument}
                                     bill={bill}
+                                    t={t}
+                                    navigationBlocker={navigationBlocker}
                                 />
                             </Loader>
                         ) : (

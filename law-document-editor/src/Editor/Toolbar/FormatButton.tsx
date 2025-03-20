@@ -1,9 +1,9 @@
 import { Button, Tooltip } from 'antd';
-import { FC, ReactNode } from 'react';
+import { TextNode, findTitleAndName, setName, setSentence, setTitle } from 'law-document';
+import React, { FC, ReactNode } from 'react';
 import { Editor } from 'slate';
 import { useSlate } from 'slate-react';
-import { TextNode, findTitleAndName, setName, setSentence, setTitle } from 'law-document';
-import useLanguageContext, { Translator } from '../../App/useLanguageContext';
+import { Translator } from '../../translations';
 import showNameFormatButton from './utils/showNameFormatButton';
 import showSentenceFormatButton from './utils/showSentenceFormatButton';
 import showTitleFormatButton from './utils/showTitleFormatButton';
@@ -13,11 +13,11 @@ type Marks = keyof Omit<TextNode, 'text' | 'title' | 'name' | 'nr'> | 'title' | 
 interface Props {
     format: Marks;
     icon: ReactNode;
+    t: Translator;
 }
 
-const FormatButton: FC<Props> = ({ format, icon }) => {
+const FormatButton: FC<Props> = ({ format, icon, t }) => {
     const editor = useSlate();
-    const { t } = useLanguageContext();
 
     const handleClick = () => {
         if (format === 'title') {

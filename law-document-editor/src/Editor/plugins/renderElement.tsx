@@ -1,5 +1,6 @@
+import { ElementType, isDocumentMeta, isListItem, TAGS } from 'law-document';
+import React from 'react';
 import { RenderElementProps } from 'slate-react';
-import { isListItem, TAGS, isDocumentMeta, ElementType } from 'law-document';
 import DocumentMetaBlock from './DocumentMetaBlock';
 
 function renderElement({ element, attributes, children }: RenderElementProps) {

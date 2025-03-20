@@ -1,12 +1,17 @@
 import { BoldOutlined } from '@ant-design/icons';
-import { useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { Editor, Range } from 'slate';
 import { useFocused, useSlate } from 'slate-react';
-import Portal from '../../App/Portal';
-import './HoverToolbar.css';
+import Portal from '../../utils/Portal';
 import FormatButton from './FormatButton';
+import './HoverToolbar.css';
+import { Translator } from '../../translations';
 
-const HoveringToolbar = () => {
+interface Props {
+    t: Translator;
+}
+
+const HoveringToolbar: FC<Props> = ({ t }) => {
     const ref = useRef<HTMLDivElement>(null);
     const editor = useSlate();
     const inFocus = useFocused();
@@ -52,10 +57,10 @@ const HoveringToolbar = () => {
                 }}
                 role='toolbar'
             >
-                <FormatButton format="bold" icon={<BoldOutlined />} />
-                <FormatButton format="title" icon="T" />
-                <FormatButton format="name" icon="N" />
-                <FormatButton format="nr" icon="S" />
+                <FormatButton t={t} format="bold" icon={<BoldOutlined />} />
+                <FormatButton t={t} format="title" icon="T" />
+                <FormatButton t={t} format="name" icon="N" />
+                <FormatButton t={t} format="nr" icon="S" />
             </div>
         </Portal>
     );

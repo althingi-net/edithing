@@ -1,11 +1,16 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Tooltip, Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import isHotkey from 'is-hotkey';
-import { FC, useState, useEffect } from 'react';
-import getMetaKey from '../utils/getMetaKey';
+import React, { FC, useEffect, useState } from 'react';
+import getMetaKey from '../../utils/getMetaKey';
 import AddEntryModal from './AddEntryModal';
+import { Translator } from '../../translations';
 
-const AddEntryButton: FC = () => {
+interface Props {
+    t: Translator;
+}
+
+const AddEntryButton: FC<Props> = ({ t }) => {
     const [isOpen, setOpen] = useState(false);
     const metaKey = getMetaKey();
 
@@ -24,7 +29,7 @@ const AddEntryButton: FC = () => {
 
     return (
         <>
-            <AddEntryModal isOpen={isOpen} onClose={() => setOpen(false)} />
+            <AddEntryModal t={t} isOpen={isOpen} onClose={() => setOpen(false)} />
             <Tooltip title={<small><i>{metaKey.toUpperCase()} + ENTER</i></small>}>
                 <Button
                     style={{ width: '100%', height: '100%' }}

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import React from 'react';
 import { RenderLeafProps } from 'slate-react';
-import { useEditorConfig } from '../Editor/EditorConfig';
+import { useEditorConfig } from '../EditorConfig';
 
 const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     const highlight = useEditorConfig(state => state.highlightStructure);
