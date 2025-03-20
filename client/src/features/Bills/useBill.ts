@@ -17,7 +17,10 @@ const useBill = (id?: string | number) => {
         }
         
         BillService.billControllerGet(Number(id))
-            .then(setBill)
+            .then((bill) => {
+                setBill(bill);
+                setError(false);
+            })
             .catch((error) => {
                 handleError(error);
                 setError(true);
