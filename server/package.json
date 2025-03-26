@@ -8,7 +8,9 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts --watch src & npm run queue",
+    "start": "nodemon --exec run-p start:** --watch src",
+    "start:api": "ts-node ./src/index.ts",
+    "start:queue": "ts-node ./src/bin/queueWorker.ts",
     "build": "NODE_ENV=production tsc --build",
     "prebuild": "npm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo",
@@ -21,7 +23,6 @@
     "db:destroy": "docker-compose down -v",
     "db:seed": "ts-node ./src/bin/seedDb.ts && npm run reset-git-merger",
     "db:shell": "ts-node ./src/bin/dbShell.ts",
-    "queue": "ts-node ./src/bin/queueWorker.ts",
     "validate": "ts-node ./src/bin/filterInvalidDocuments.ts",
     "reset-git-merger": "ts-node ./src/bin/resetGitMerger.ts"
   },
