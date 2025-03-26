@@ -19,12 +19,6 @@ const useHeaderMenuItems = () => {
     }, {
         key: '/bills',
         label: t('Bills'),
-    }, {
-        key: '/speech',
-        label: t('Speech Editor'),
-    }, {
-        key: '/bills2',
-        label: t('Bills V2'),
     }], [t]);
 
     return headerMenuItems;
