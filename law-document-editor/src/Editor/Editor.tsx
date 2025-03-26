@@ -1,3 +1,4 @@
+/// <reference types="../global.d.ts" />
 import { Col, Row } from 'antd';
 import { Bill } from 'client-sdk';
 import { createEditorWithPlugins, LawEditor, SlateFragment } from 'law-document';
@@ -13,6 +14,7 @@ import { Translator } from '../translations';
 import { useEditorConfig } from './EditorConfig';
 import EditorSidePanel from './EditorSidePanel';
 import useEditorNavigationBlock, { NavigationBlocker } from './useEditorNaviationBlock';
+import './Editor.css';
 
 const createEditor = () => {
     const editor = withReact(createEditorWithPlugins());

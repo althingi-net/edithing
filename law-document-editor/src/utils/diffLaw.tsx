@@ -105,7 +105,6 @@ const convertPathToId = (path: string) => {
  * Converts the message from the xml diff to json for easier handling
  */
 const convertMessage = (path: string, message: string) => {
-    console.log('convertMessage', path, message);
     const [lhs, rhs] = message
         .replace(`field ${path} has lhs value`, '')
         .split(' and rhs value ')
