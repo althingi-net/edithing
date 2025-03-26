@@ -7,9 +7,9 @@ import { Editor } from 'law-document-editor';
 import Loader from '../features/App/Loader';
 import NotFoundError from '../features/App/NotFoundError';
 import useDocument from '../features/Documents/useDocument';
-// import Editor from '../features/Editor/Editor';
 import useLanguageContext from '../features/App/useLanguageContext';
 import useBlockNavigation from '../features/App/useBlockNavigation';
+import 'law-document-editor/src/Editor/Editor.css';
 
 const LawPage: FC = () => {
     const { identifier } = useParams();
