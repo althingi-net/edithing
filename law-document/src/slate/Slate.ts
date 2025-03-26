@@ -1,4 +1,4 @@
-import { BaseEditor } from 'slate';
+import { BaseEditor, Descendant } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { List } from './element/List';
 import { ListItem } from './element/ListItem';
@@ -14,6 +14,8 @@ declare module 'slate' {
         Text: TextNode;
     }
 }
+
+export type SlateFragment = Descendant[];
 
 export interface LawEditor extends BaseEditor, HistoryEditor {}
 

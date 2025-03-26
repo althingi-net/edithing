@@ -1,5 +1,6 @@
 // created from ctix
 
+
 export * from './logger';
 export * from './slate/findNode';
 export * from './slate/formatIdentifier';
@@ -30,12 +31,15 @@ export * from './slate/number/incrementRomanNumber';
 export * from './slate/plugins/createEditorWithPlugins';
 export * from './slate/plugins/normalizeNode';
 export * from './slate/plugins/withLawParagraphs';
+export * from './slate/query/extractTextById';
 export * from './slate/query/findListItemAtSelection';
 export * from './slate/query/findListItemMarkedText';
 export * from './slate/query/findTitleAndName';
 export * from './slate/query/getListItemHierarchy';
 export * from './slate/query/getListItemName';
 export * from './slate/query/getListItemTitle';
+export * from './slate/query/getNodeByParagraphId';
+export * from './slate/query/getParagraphId';
 export * from './slate/query/getParentList';
 export * from './slate/query/getParentListItem';
 export * from './slate/query/getPreviousSibling';

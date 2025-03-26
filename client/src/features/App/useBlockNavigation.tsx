@@ -1,6 +1,6 @@
 import modal from 'antd/es/modal';
 import { FC, PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useBlocker } from 'react-router-dom';
+import { useBlocker } from 'react-router';
 
 interface BlockNavigationType {
     blockNavigation: () => void;

@@ -1,15 +1,12 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { User } from '../models/User';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class UserService {
-
     /**
      * Get all
      * @returns User
@@ -21,7 +18,6 @@ export class UserService {
             url: '/api/users',
         });
     }
-
     /**
      * Create
      * @param requestBody User
@@ -38,7 +34,6 @@ export class UserService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Get
      * @param id
@@ -56,7 +51,6 @@ export class UserService {
             },
         });
     }
-
     /**
      * Update
      * @param id
@@ -78,5 +72,4 @@ export class UserService {
             mediaType: 'application/json',
         });
     }
-
 }

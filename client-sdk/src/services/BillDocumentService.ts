@@ -1,17 +1,14 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { BillDocument } from '../models/BillDocument';
 import type { CreateBillDocument } from '../models/CreateBillDocument';
 import type { UpdateBillDocument } from '../models/UpdateBillDocument';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class BillDocumentService {
-
     /**
      * Get all
      * @param id
@@ -29,7 +26,6 @@ export class BillDocumentService {
             },
         });
     }
-
     /**
      * Get
      * @param id
@@ -50,7 +46,6 @@ export class BillDocumentService {
             },
         });
     }
-
     /**
      * Delete
      * @param id
@@ -71,7 +66,6 @@ export class BillDocumentService {
             },
         });
     }
-
     /**
      * Create
      * @param requestBody CreateBillDocument
@@ -88,7 +82,6 @@ export class BillDocumentService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Update
      * @param id
@@ -110,5 +103,4 @@ export class BillDocumentService {
             mediaType: 'application/json',
         });
     }
-
 }

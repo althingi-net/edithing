@@ -1,8 +1,7 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type User = {
     id?: number;
     firstName: string;
@@ -12,14 +11,10 @@ export type User = {
     createdAt?: string;
     updatedAt?: string;
 };
-
 export namespace User {
-
     export enum role {
         ADMIN = 'admin',
         EDITOR = 'editor',
     }
-
-
 }
 

@@ -1,19 +1,23 @@
 import { Content } from 'antd/es/layout/layout';
 import { DocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { formatIdentifier } from 'law-document';
+import { Editor } from 'law-document-editor';
 import Loader from '../features/App/Loader';
 import NotFoundError from '../features/App/NotFoundError';
 import useDocument from '../features/Documents/useDocument';
-import Editor from '../features/Editor/Editor';
 import useLanguageContext from '../features/App/useLanguageContext';
+import useBlockNavigation from '../features/App/useBlockNavigation';
+import 'law-document-editor/src/Editor/Editor.css';
 
 const LawPage: FC = () => {
     const { identifier } = useParams();
     const { t } = useLanguageContext();
     const { setDocument, xml, slate, originalDocument, importError } = useDocument();
     const [hasError, setError] = useState(false);
+    const navigate = useNavigate();
+    const navigationBlocker = { ...useBlockNavigation(), goTo: navigate };
 
     // reset error when url changes
     useEffect(() => {
@@ -53,7 +57,14 @@ const LawPage: FC = () => {
 
     return (
         <Content style={{ padding: '20px', height: 'calc(100% - 64px)' }}>
-            <Editor readOnly={true} slate={slate} originalDocument={originalDocument} xml={xml} />
+            <Editor
+                readOnly={true}
+                slate={slate}
+                originalDocument={originalDocument}
+                xml={xml}
+                t={t}
+                navigationBlocker={navigationBlocker}
+            />
         </Content>
     );
 };

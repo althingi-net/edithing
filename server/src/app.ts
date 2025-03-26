@@ -35,9 +35,9 @@ const app = createKoaServer({
 app.on('error', console.error);
 
 // Middleware
+app.use(logger());
 app.use(errorHandler);
 app.use(json());
-app.use(logger());
 app.use(bodyParser());
 setupPassport(app);
 

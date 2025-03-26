@@ -1,7 +1,6 @@
-import { Descendant } from 'slate';
 import { ListItemMeta, ListItemWithMeta } from '../element/ListItem';
 import { ListItemText, ListItemTextMeta } from '../element/ListItemText';
-import { MetaType, ElementType } from '../Slate';
+import { MetaType, ElementType, SlateFragment } from '../Slate';
 import { convertRomanNumber } from '../number/convertRomanNumber';
 import { createListItemText } from './createListItemText';
 
@@ -19,7 +18,7 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' |
  * @param type The meta type of the list item.
  * @param nr The number of the list item. (starts at 1, can be digit, letter, roman number, digit+letter)
  */
-export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: Descendant[] = []): ListItemWithMeta => {
+export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: SlateFragment = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr, originNr, textMeta } = options;
 
     const textElement: ListItemText = createListItemText(undefined, textMeta);

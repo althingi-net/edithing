@@ -50,13 +50,7 @@ export const SessionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // Update OpenAPI headers when session changes
     useEffect(() => {
-        if (session?.token) {
-            OpenAPI.HEADERS = {
-                Authorization: `Bearer ${session.token}`,
-            };
-        } else {
-            OpenAPI.HEADERS = {};
-        }
+        OpenAPI.TOKEN = session?.token;
     }, [session]);
     
     return (

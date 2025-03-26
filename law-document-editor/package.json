@@ -2,6 +2,10 @@
   "name": "law-document-editor",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": ">=22.14.0",
+    "npm": ">=10.9.2"
+  },
   "source": "src/index.ts",
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
@@ -9,28 +13,66 @@
     "start": "parcel watch",
     "build": "parcel build",
     "prebuild": "npm run clean",
-    "clean": "rimraf ./dist coverage *.tsbuildinfo tmp",
+    "clean": "rimraf ./dist coverage *.tsbuildinfo .parcel-cache",
     "test": "jest",
     "lint": "eslint .",
-    "build:index": "nodemon --watch src --exec ctix build --mode bundle -p ./tsconfig.json --start-from ./src"
+    "build:index": "nodemon --watch src --exec ctix build --mode bundle -p ./tsconfig.json --start-from ./src",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "alias": {
+    "process": false
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+  "peerDependencies": {
+    "react": "19.0",
+    "react-dom": "19.0",
+    "slate": "^0.112.0",
+    "slate-history": "^0.110.3",
+    "slate-react": "^0.112.1"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.5",
+    "@parcel/packager-ts": "^2.13.3",
+    "@parcel/transformer-typescript-types": "^2.13.3",
+    "@storybook/addon-essentials": "^8.6.4",
+    "@storybook/addon-interactions": "^8.6.4",
+    "@storybook/addon-onboarding": "^8.6.4",
+    "@storybook/blocks": "^8.6.4",
+    "@storybook/react": "^8.6.4",
+    "@storybook/react-vite": "^8.6.4",
+    "@storybook/test": "^8.6.4",
+    "@types/is-hotkey": "^0.1.10",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/react-transition-group": "^4.4.12",
+    "ctix": "^2.7.0",
+    "eslint-plugin-storybook": "^0.11.4",
+    "nodemon": "^3.1.9",
+    "parcel": "^2.13.3",
+    "react": "19.0",
+    "react-dom": "19.0",
+    "rimraf": "^6.0.1",
     "slate": "^0.112.0",
     "slate-history": "^0.110.3",
     "slate-react": "^0.112.1",
+    "storybook": "^8.6.4",
     "typescript": "^5.7.3"
   },
-  "devDependencies": {
-    "@parcel/packager-ts": "^2.13.3",
-    "@parcel/transformer-typescript-types": "^2.13.3",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "ctix": "^2.7.0",
-    "parcel": "^2.13.3",
-    "rimraf": "^6.0.1"
+  "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@uidotdev/usehooks": "^2.4.1",
+    "antd": "^5.24.2",
+    "client-sdk": "file:../client-sdk",
+    "diff-js-xml": "^1.0.8",
+    "is-hotkey": "^0.2.0",
+    "law-document": "file:../law-document",
+    "react-code-blocks": "^0.1.6",
+    "react-transition-group": "^4.4.5",
+    "text-diff": "^1.0.1",
+    "zustand": "^5.0.3"
   }
 }

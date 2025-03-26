@@ -1,8 +1,7 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type BillDocumentUpdate = {
     id?: number;
     billDocumentId: number;
@@ -13,15 +12,11 @@ export type BillDocumentUpdate = {
     createdAt?: string;
     updatedAt?: string;
 };
-
 export namespace BillDocumentUpdate {
-
     export enum status {
         PENDING = 'pending',
         SUCCESS = 'success',
         ERROR = 'error',
     }
-
-
 }
 

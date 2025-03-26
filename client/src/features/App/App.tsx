@@ -1,22 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Layout } from 'antd';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 import BillPage from '../../pages/BillPage';
 import BillsPage from '../../pages/BillsPage';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
-import SpeechPage from '../../pages/SpeechPage';
-import BillsV2Page from '../../pages/BillsV2Page';
-import BillV2Page from '../../pages/BillV2Page';
-import { EditorConfigContextProvider } from '../Editor/EditorConfig';
 import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
 import { SessionContextProvider } from './useSessionContext';
 import { ThemeContextProvider } from './useThemeContext';
 import Header from './Header';
 import UnknownError from './UnknownError';
+import { EditorConfigContextProvider } from 'law-document-editor';
 
 const router = createBrowserRouter([{
     element: (
@@ -47,15 +44,6 @@ const router = createBrowserRouter([{
             path: '/law/:identifier',
             element: <LawPage />,
         }, {
-            path: '/bills2',
-            element: <BillsV2Page />,
-        }, {
-            path: '/bill2/:id',
-            element: <BillV2Page />,
-        }, {
-            path: '/bill2/:id/document/:identifier',
-            element: <BillV2Page />,
-        }, {
             path: '/bills',
             element: <BillsPage />,
         }, {
@@ -64,9 +52,6 @@ const router = createBrowserRouter([{
         }, {
             path: '/bill/:id/document/:identifier',
             element: <BillPage />,
-        }, {
-            path: '/speech',
-            element: <SpeechPage />,
         },
     ],
 }]);

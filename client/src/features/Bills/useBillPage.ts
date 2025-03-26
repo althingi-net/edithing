@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import { BillDocumentService, DocumentService } from 'client-sdk';
 import { LawEditor, getTitle } from 'law-document';
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import modal from 'antd/es/modal';
 import { log } from '../../logger';
 import handleError from '../App/handleError';
@@ -117,8 +117,12 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         log('load bill document', { bill, selected });
 
         BillDocumentService.billDocumentControllerGet(bill.id, selected)
-            .then(setDocument)
-            .then(() => setIsBillDocument(true))
+            .then((billDocument) => {
+                log('loaded bill document', { billDocument });
+                setDocument(billDocument);
+                setIsBillDocument(true);
+                setError(false);
+            })
             .catch((error) => {
                 // Fallback to document controller if the bill document is not found
                 if ('body' in error && error.body?.name === 'HttpError') {
@@ -127,6 +131,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
                             log('loaded document', { document });
                             setDocument(document);
                             setIsBillDocument(false);
+                            setError(false);
                         })
                         .catch((error) => {
                             setError(true);

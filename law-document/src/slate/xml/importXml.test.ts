@@ -1,7 +1,6 @@
-import { Descendant } from 'slate';
 import { TAGS } from '../config/tags';
-import { MetaType } from '../Slate';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
+import { MetaType, SlateFragment } from '../Slate';
 import { createDocumentMeta, createEmptyDocumentMeta } from '../transformations/createDocumentMeta';
 import { createList } from '../transformations/createList';
 import { createListItem } from '../transformations/createListItem';
@@ -51,7 +50,7 @@ test('roman list item', () => {
             </chapter>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }),
@@ -69,7 +68,7 @@ test('list item with title', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ' }),
@@ -85,7 +84,7 @@ test('empty list item', () => {
             <art nr="1"></art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1'),
@@ -105,7 +104,7 @@ test('list item with title+name+sen', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '1. gr. ', name: 'Markmið. ', text: 'text' }),
@@ -124,7 +123,7 @@ test('list item with 2 sentences', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: ['one.', 'two.'] }),
@@ -141,7 +140,7 @@ test('multiple list items with text', () => {
             <art nr="2"><sen nr="1">second</sen></art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: 'first' }),
@@ -165,7 +164,7 @@ test('multiple nested numart', () => {
             </numart>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.NUMART, {}, [
             createListItem(MetaType.NUMART, '1', { nrType: 'numeric' }, [
@@ -193,7 +192,7 @@ test('list item with title and 2 sentences', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: 'a. ', text: ['Sendiráð skulu.', 'Sendiráðin í Genf.'] }),
@@ -218,7 +217,7 @@ test('title+sen+numart needs to become one ListItem', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { title: '2. ', text: 'Umdæmi sendiráða skulu vera sem hér segir:' }, [
@@ -248,7 +247,7 @@ test('sen link', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: 'Úrskurður þessi öðlast þegar gildi.' }),
@@ -266,7 +265,7 @@ test('expiry-symbol-offset', () => {
             </art>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.ART, {}, [
             createListItem(MetaType.ART, '1', { text: 'Úrskurður þessi öðlast þegar gildi.', textMeta: { expirySymbolOffset: '0' } }),
@@ -309,7 +308,7 @@ test('ignore virtual tags but still import their children', () => {
             </chapter>
         </law>
     `;
-    const output: Descendant[] = [
+    const output: SlateFragment = [
         createEmptyDocumentMeta(),
         createList(MetaType.CHAPTER, {}, [
             createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [

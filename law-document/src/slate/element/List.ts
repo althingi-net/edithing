@@ -1,9 +1,9 @@
-import { Descendant, Element, Node } from 'slate';
-import { ElementType, MetaType } from '../Slate';
+import { Element, Node } from 'slate';
+import { ElementType, MetaType, SlateFragment } from '../Slate';
 
 export interface List {
     type: ElementType.LIST;
-    children: Descendant[];
+    children: SlateFragment;
     meta?: ListMeta;
 }
 

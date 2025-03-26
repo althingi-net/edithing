@@ -6,7 +6,7 @@ type LawListContextType = {
     lawList: GithubFile[];
 }
 
-const LawListContext = createContext<LawListContextType | null>(null);
+const LawListContext = createContext<LawListContextType>([] as unknown as LawListContextType);
 
 export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [lawList, setLawList] = useState<GithubFile[]>([]);
@@ -27,6 +27,7 @@ export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
 const useLawListContext = () => {
     const context = useContext(LawListContext);
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!context) {
         throw new Error('useLawListContext must be used within a LawListContextProvider');
     }

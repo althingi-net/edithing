@@ -7,10 +7,7 @@ module.exports = {
         'node_modules/',
         'dist/'
     ],
-    'extends': [
-        'eslint:recommended',
-        'plugin:import/recommended',
-    ],'overrides': [{
+    'extends': ['eslint:recommended', 'plugin:import/recommended', 'plugin:storybook/recommended'],'overrides': [{
         // Config files
         'env': {
             'node': true
