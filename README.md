@@ -22,6 +22,19 @@ npm run start
 - MySQL v8
 - RabbitMQ v3
 
+## Documentation
+
+### Architecture Diagrams
+- [Client Flow](docs/client-flow.mmd) - React application structure and component hierarchy
+- [Server Flow](docs/server-flow.mmd) - Backend architecture and request flow
+- [Law Document Flow](docs/law-document-flow.mmd) - Document structure and processing pipeline
+- [Law Document Editor Flow](docs/law-document-editor-flow.mmd) - Editor component architecture
+- [Git JSON Merger Flow](docs/git-json-merger-flow.mmd) - JSON merging process and Git operations
+- [Client SDK Flow](docs/client-sdk-flow.mmd) - SDK architecture and API interactions
+
+### Implementation Details
+- [Slate Editor Documentation](docs/slate-editor.md) - Detailed documentation of the legal document editor implementation
+
 ## Frameworks
 
 - [React](https://react.dev/)

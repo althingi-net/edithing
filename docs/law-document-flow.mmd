@@ -1,0 +1,40 @@
+graph TD
+    A[Law Document] --> B[Document Structure]
+    B --> C[Slate Editor]
+    
+    subgraph Document Structure
+        D[Title]
+        E[Chapters]
+        F[Articles]
+        G[Paragraphs]
+    end
+    
+    subgraph Slate Editor
+        H[Editor Core]
+        I[Custom Elements]
+        J[Validation]
+    end
+    
+    subgraph Processing
+        K[Parsing]
+        L[Serialization]
+        M[Version Control]
+    end
+    
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    
+    C --> H
+    C --> I
+    C --> J
+    
+    H --> K
+    H --> L
+    H --> M
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Document Structure fill:#bbf,stroke:#333,stroke-width:2px
+    style Slate Editor fill:#bfb,stroke:#333,stroke-width:2px
+    style Processing fill:#fbb,stroke:#333,stroke-width:2px 

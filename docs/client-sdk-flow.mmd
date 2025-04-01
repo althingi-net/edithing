@@ -1,0 +1,50 @@
+graph TD
+    A[Client SDK] --> B[Core]
+    A --> C[Services]
+    A --> D[Models]
+    
+    subgraph Core
+        E[API Client]
+        F[Authentication]
+        G[Error Handling]
+        H[Request/Response]
+    end
+    
+    subgraph Services
+        I[DocumentService]
+        J[UserService]
+        K[BillService]
+        L[EditorService]
+    end
+    
+    subgraph Models
+        M[Document Types]
+        N[User Types]
+        O[Bill Types]
+        P[Editor Types]
+    end
+    
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+    
+    C --> I
+    C --> J
+    C --> K
+    C --> L
+    
+    D --> M
+    D --> N
+    D --> O
+    D --> P
+    
+    E --> I
+    E --> J
+    E --> K
+    E --> L
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Core fill:#bbf,stroke:#333,stroke-width:2px
+    style Services fill:#bfb,stroke:#333,stroke-width:2px
+    style Models fill:#fbb,stroke:#333,stroke-width:2px 

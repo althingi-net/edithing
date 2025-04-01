@@ -1,0 +1,40 @@
+graph TD
+    A[App] --> B[RouterProvider]
+    B --> C[Layout]
+    C --> D[Header]
+    C --> E[ErrorBoundary]
+    E --> F[Outlet]
+    
+    subgraph Context Providers
+        G[LanguageContextProvider]
+        H[BlockNavigationProvider]
+        I[SessionContextProvider]
+        J[ThemeContextProvider]
+        K[EditorConfigContextProvider]
+        L[LawListContextProvider]
+    end
+    
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> C
+    
+    subgraph Routes
+        F --> M[LawListPage]
+        F --> N[LawPage]
+        F --> O[BillsPage]
+        F --> P[BillPage]
+    end
+    
+    subgraph Features
+        Q[Documents]
+        R[App]
+        S[Editor]
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Context Providers fill:#bbf,stroke:#333,stroke-width:2px
+    style Routes fill:#bfb,stroke:#333,stroke-width:2px
+    style Features fill:#fbb,stroke:#333,stroke-width:2px 

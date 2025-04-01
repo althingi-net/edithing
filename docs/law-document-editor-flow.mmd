@@ -1,0 +1,50 @@
+graph TD
+    A[Law Document Editor] --> B[Editor Core]
+    A --> C[Model]
+    A --> D[Utils]
+    
+    subgraph Editor Core
+        E[Editor Component]
+        F[Toolbar]
+        G[Context Menu]
+        H[Keyboard Shortcuts]
+    end
+    
+    subgraph Model
+        I[Document Model]
+        J[Selection Model]
+        K[History Model]
+        L[Validation Model]
+    end
+    
+    subgraph Utils
+        M[Formatting]
+        N[Search/Replace]
+        O[Export/Import]
+        P[Collaboration]
+    end
+    
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+    
+    C --> I
+    C --> J
+    C --> K
+    C --> L
+    
+    D --> M
+    D --> N
+    D --> O
+    D --> P
+    
+    E --> I
+    E --> J
+    E --> K
+    E --> L
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Editor Core fill:#bbf,stroke:#333,stroke-width:2px
+    style Model fill:#bfb,stroke:#333,stroke-width:2px
+    style Utils fill:#fbb,stroke:#333,stroke-width:2px 

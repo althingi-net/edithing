@@ -1,0 +1,45 @@
+graph TD
+    A[Server Entry] --> B[App Setup]
+    B --> C[Middleware]
+    C --> D[Authentication]
+    D --> E[Controllers]
+    
+    subgraph Controllers
+        F[DocumentController]
+        G[UserController]
+        H[BillController]
+    end
+    
+    subgraph Services
+        I[DocumentService]
+        J[UserService]
+        K[BillService]
+    end
+    
+    subgraph Integration
+        L[MessageQueue]
+        M[Database]
+        N[GitHub]
+    end
+    
+    E --> F
+    E --> G
+    E --> H
+    
+    F --> I
+    G --> J
+    H --> K
+    
+    I --> L
+    I --> M
+    I --> N
+    
+    J --> M
+    
+    K --> L
+    K --> M
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Controllers fill:#bbf,stroke:#333,stroke-width:2px
+    style Services fill:#bfb,stroke:#333,stroke-width:2px
+    style Integration fill:#fbb,stroke:#333,stroke-width:2px 

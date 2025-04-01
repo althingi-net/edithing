@@ -1,0 +1,44 @@
+graph TD
+    A[Git JSON Merger] --> B[Git Client]
+    A --> C[Merger Core]
+    
+    subgraph Git Client
+        D[Repository Access]
+        E[Branch Management]
+        F[Commit Operations]
+        G[Conflict Detection]
+    end
+    
+    subgraph Merger Core
+        H[JSON Parsing]
+        I[Diff Generation]
+        J[Conflict Resolution]
+        K[Merge Strategy]
+    end
+    
+    subgraph Process Flow
+        L[Load JSON Files]
+        M[Compare Versions]
+        N[Resolve Conflicts]
+        O[Generate Result]
+    end
+    
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    
+    C --> H
+    C --> I
+    C --> J
+    C --> K
+    
+    D --> L
+    E --> M
+    F --> N
+    G --> O
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style Git Client fill:#bbf,stroke:#333,stroke-width:2px
+    style Merger Core fill:#bfb,stroke:#333,stroke-width:2px
+    style Process Flow fill:#fbb,stroke:#333,stroke-width:2px 
