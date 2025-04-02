@@ -7,7 +7,7 @@ interface TagConfig {
     hasName?: boolean;
     defaultTitle?: string;
     canHave: MetaType[];
-    display?: 'list' | 'block' | 'inline' | 'virtual';
+    display?: 'list' | 'block' | 'inline';
 }
 
 export const TAGS: { [key in MetaType]: TagConfig } = {
@@ -57,5 +57,5 @@ export const TAGS: { [key in MetaType]: TagConfig } = {
 
 export const getAllowedTagChildren = (type: MetaType) => {
     return TAGS[type].canHave
-        .filter(type => TAGS[type].display !== 'virtual' && TAGS[type].isList)  ;
+        .filter(type => TAGS[type].isList);
 };

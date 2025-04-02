@@ -70,7 +70,7 @@ interface TagConfig {
     hasName?: boolean;               // Whether the element has a name
     defaultTitle?: string;           // Default title format
     canHave: MetaType[];            // Allowed child element types
-    display?: 'list' | 'block' | 'inline' | 'virtual'; // Display type
+    display?: 'list' | 'block' | 'inline'; // Display type
 }
 ```
 
@@ -164,18 +164,6 @@ The editor comes with predefined tags for legal documents:
    - Cannot contain other elements
    - Displayed inline
    - No title or name
-
-#### Helper Functions
-
-The configuration includes helper functions:
-
-```typescript
-export const getAllowedTagChildren = (type: MetaType) => {
-    return TAGS[type].canHave
-        .filter(type => TAGS[type].display !== 'virtual' && TAGS[type].isList);
-};
-```
-This function returns the allowed child elements for a given tag type, filtering out virtual and non-list elements.
 
 ### Props Interface
 

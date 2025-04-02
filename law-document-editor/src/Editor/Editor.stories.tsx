@@ -137,7 +137,7 @@ interface TagConfig {
     hasName?: boolean;
     defaultTitle?: string;
     canHave: MetaType[];
-    display?: 'list' | 'block' | 'inline' | 'virtual';
+    display?: 'list' | 'block' | 'inline';
 }
 
 const TAGS: { [key in MetaType]: TagConfig } = {

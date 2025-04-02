@@ -294,41 +294,6 @@ test('ensure after editor normalization, content stays the same (if not it means
     expect(inputSlate).toStrictEqual(editor.children);
 });
 
-test('ignore virtual tags but still import their children', () => {
-    const input = `
-        <law law-type="law">
-            <chapter nr="1" nr-type="roman" roman-nr="I">
-                <nr-title>I.</nr-title>
-                <numart nr="a" type="alphabet">
-                    <nr-title>a.</nr-title>
-                    <art nr="1">
-                        <sen nr="1">Sendiráðin í Genf.</sen>
-                    </art>
-                </numart>
-            </chapter>
-        </law>
-    `;
-    const output: SlateFragment = [
-        createEmptyDocumentMeta(),
-        createList(MetaType.CHAPTER, {}, [
-            createListItem(MetaType.CHAPTER, '1', { title: 'I. ' }, [
-                createList(MetaType.NUMART, {}, [
-                    createListItem(MetaType.NUMART, 'a', { nrType: 'alphabet', title: 'a. ', text: 'Sendiráðin í Genf.' }),
-                ]),
-            ]),
-        ]),
-    ];
-
-    // change art to be virtual
-    const oldDisplay = TAGS.art.display;
-    TAGS.art.display = 'virtual';
-
-    expect(importXml(input)).toStrictEqual(output);
-
-    // restore art
-    TAGS.art.display = oldDisplay;
-});
-
 test('ignore law without law-type="law"', () => {
     const input = `
         <law>

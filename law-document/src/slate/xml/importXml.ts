@@ -62,13 +62,7 @@ const convertSlate = (object: any): SlateFragment => {
         const values = Array.isArray(value) ? value : [value];
 
         if (isMetaType(key) && LIST_TAGS.includes(key)) {
-            // if virtual skip that tag and add children directly
-            if (TAGS[key].display === 'virtual') {
-                nodes.push(...values.map(convertSlate).flat());
-                continue;
-            }
-            
-            nodes.push(convertList(key, values));
+                        nodes.push(convertList(key, values));
         }
 
         if (key === 'sen') {
