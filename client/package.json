@@ -8,7 +8,7 @@
   },
   "source": "./public/index.html",
   "scripts": {
-    "start": "parcel -p 3000",
+    "start": "parcel -p 3000 --no-cache --watch-dir ../",
     "build": "parcel build",
     "prebuild": "npm run clean",
     "clean": "rimraf ./dist *.tsbuildinfo .parcel-cache",
