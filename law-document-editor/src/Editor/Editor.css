@@ -30,9 +30,19 @@
     content: url('./images/marker-art.png');
 }
 
+.list-item.subart {
+    position: relative;
+}
+
 .list-item.subart::before {
     margin-right: 6px;
     content: url('./images/marker-subart.png');
+}
+
+.list-item.subart > .list {
+    padding-left: 1.0em;
+    top: -1.5em;
+    position: relative;
 }
 
 .numart .title {

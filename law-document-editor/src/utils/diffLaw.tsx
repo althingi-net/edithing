@@ -105,15 +105,30 @@ const convertPathToId = (path: string) => {
  * Converts the message from the xml diff to json for easier handling
  */
 const convertMessage = (path: string, message: string) => {
-    const [lhs, rhs] = message
-        .replace(`field ${path} has lhs value`, '')
-        .split(' and rhs value ')
-        .map<unknown>(value => JSON.parse(value));
+    try {
+        const [lhs, rhs] = message
+            .replace(`field ${path} has lhs value`, '')
+            .split(' and rhs value ')
+            .map(value => {
+                try {
+                    return JSON.parse(value);
+                } catch {
+                    // If JSON parsing fails, return the raw string
+                    return value.trim();
+                }
+            });
 
-    return {
-        lhs,
-        rhs,
-    };
+        return {
+            lhs,
+            rhs,
+        };
+    } catch {
+        // If splitting fails, return empty values
+        return {
+            lhs: '',
+            rhs: '',
+        };
+    }
 };
 
 /**

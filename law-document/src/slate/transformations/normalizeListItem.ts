@@ -1,10 +1,12 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
 import { ListItemWithMeta } from '../element/ListItem';
-import { isListItemText } from '../element/ListItemText';
+import { isListItemText, ListItemText } from '../element/ListItemText';
 import { isTitle } from '../element/TextNode';
 import { isListItemWithMeta } from '../query/isListItemWithMeta';
 import { createListItemText } from './createListItemText';
 import { setListItemTitleFromMeta } from './setListItemTitleFromMeta';
+import { TAGS } from '../config/tags';
+import { ElementType, MetaType } from '../Slate';
 
 export const normalizeListItem = (editor: Editor, path: Path, select = true) => {
     const listItem = Node.get(editor, path);
@@ -13,6 +15,21 @@ export const normalizeListItem = (editor: Editor, path: Path, select = true) => 
         throw new Error('normalizeListItem: listItem is not a ListItemWithMeta');
     }
 
+    const tagConfig = TAGS[listItem.meta.type];
+    const shouldHaveTitle = tagConfig.hasTitle && listItem.meta.title;
+    const shouldHaveName = tagConfig.hasName && listItem.meta.name;
+    const hasTextContent = listItem.children.some(child => 
+        isListItemText(child) && child.children.some(text => 
+            Text.isText(text) && text.text.length > 0
+        )
+    );
+
+    // if there is no text content and no title or name, remove the list item text
+    if (!(hasTextContent || shouldHaveTitle || shouldHaveName)) {
+        listItem.children = listItem.children.filter(child => !isListItemText(child));
+    }
+
+    // if there is only one child and it is not a list item text, create a new list item text
     if ((listItem.children.length === 1 && !isListItemText(listItem.children[0])) || listItem.children.length === 0) {
         const listItemText = createListItemText();
         Transforms.insertNodes(editor, listItemText, { at: [...path, 0] });
