@@ -62,7 +62,7 @@ const convertSlate = (object: any): SlateFragment => {
         const values = Array.isArray(value) ? value : [value];
 
         if (isMetaType(key) && LIST_TAGS.includes(key)) {
-                        nodes.push(convertList(key, values));
+            nodes.push(convertList(key, values));
         }
 
         if (key === 'sen') {
@@ -121,54 +121,82 @@ const convertList = (key: string, values: any[]): Descendant => {
             listItem.meta.name = true;
         }
 
-        const textNode: ListItemText = {
-            type: ElementType.LIST_ITEM_TEXT,
-            children: [], 
-        };
-        listItem.children.push(textNode);
+        const tagConfig = TAGS[key as MetaType];
+        const shouldHaveTitle = tagConfig.hasTitle && listItem.meta.title;
+        const shouldHaveName = tagConfig.hasName && listItem.meta.name;
+        const hasTextContent = element['#text'] != null || element['sen'] != null || (shouldHaveTitle || shouldHaveName);
+        const hasNestedContent = Object.keys(element).some(k => isMetaType(k) && LIST_TAGS.includes(k));
 
-        if (listItem.meta.title) {
-            textNode.children.push({
-                title: true,
-                text: element['nr-title'] + ' ',
-            });
-        }
-
-        if (listItem.meta.name) {
-            textNode.children.push({
-                name: true,
-                text: element['name'] + ' ',
-            });
-        }
-
-        if (element['#text']) {
-            const textElement: Text = {
-                nr: element['@_nr'] ?? '1',
-                text: element['#text'],
+        if (hasTextContent) {
+            const textNode: ListItemText = {
+                type: ElementType.LIST_ITEM_TEXT,
+                children: [], 
             };
+            listItem.children.push(textNode);
 
-            if (element['@_expiry-symbol-offset']) {
-                textElement.expirySymbolOffset = element['@_expiry-symbol-offset'];
+            if (listItem.meta.title) {
+                textNode.children.push({
+                    title: true,
+                    text: element['nr-title'] + ' ',
+                });
             }
 
-            textNode.children.push(textElement);
-        }
+            if (listItem.meta.name) {
+                textNode.children.push({
+                    name: true,
+                    text: element['name'] + ' ',
+                });
+            }
 
-        convertSlate(element).forEach((child) => {
-            if (Text.isText(child)) {
-                if (!child.text) {
-                    return null;
+            if (element['#text']) {
+                const textElement: Text = {
+                    nr: element['@_nr'] ?? '1',
+                    text: element['#text'],
+                };
+
+                if (element['@_expiry-symbol-offset']) {
+                    textElement.expirySymbolOffset = element['@_expiry-symbol-offset'];
                 }
 
-                textNode.children.push(child);
-            } else if (isListItemText(child)) {
-                textNode.children.push(...child.children);
-            } else {
-                listItem.children.push(child);
+                textNode.children.push(textElement);
             }
-        });
 
-        normalizeChildren(textNode);
+            convertSlate(element).forEach((child) => {
+                if (Text.isText(child)) {
+                    if (!child.text) {
+                        return null;
+                    }
+
+                    textNode.children.push(child);
+                } else if (isListItemText(child)) {
+                    textNode.children.push(...child.children);
+                }/*  else {
+                    listItem.children.push(child);
+                } */
+            });
+
+            normalizeChildren(textNode);
+        }
+        
+        if (hasNestedContent) {
+            convertSlate(element).forEach((child) => {
+                if (!Text.isText(child) && !isListItemText(child)) {
+                    listItem.children.push(child);
+                }
+            });
+        }
+
+        if (listItem.children.length === 0) {
+            listItem.children.push({
+                type: ElementType.LIST_ITEM_TEXT,
+                children: [
+                    {
+                        nr: '1',
+                        text: '',
+                    },
+                ],
+            });
+        }
 
         node.children.push(listItem);
     });

@@ -38,6 +38,8 @@ export const TAGS: { [key in MetaType]: TagConfig } = {
     [MetaType.NUMART]: {
         type: MetaType.NUMART,
         isList: true,
+        hasTitle: true,
+        hasName: true,
         display: 'list',
         canHave: [MetaType.PARAGRAPH, MetaType.SEN, MetaType.NUMART],
     },

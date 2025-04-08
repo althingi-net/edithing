@@ -3,6 +3,7 @@ import { ListItemText, ListItemTextMeta } from '../element/ListItemText';
 import { MetaType, ElementType, SlateFragment } from '../Slate';
 import { convertRomanNumber } from '../number/convertRomanNumber';
 import { createListItemText } from './createListItemText';
+import { TAGS } from '../config/tags';
 
 export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
@@ -21,7 +22,10 @@ export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' |
 export const createListItem = (type: MetaType, nr: string, options: Options = {}, children: SlateFragment = []): ListItemWithMeta => {
     const { title, name, text, nrType, styleNote, romanNr, originNr, textMeta } = options;
 
-    const textElement: ListItemText = createListItemText(undefined, textMeta);
+    const tagConfig = TAGS[type];
+    const shouldHaveTitle = tagConfig.hasTitle && title != null && title !== false;
+    const shouldHaveName = tagConfig.hasName && name != null && name !== false;
+    const hasTextContent = text != null || (shouldHaveTitle || shouldHaveName);
     
     const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,
@@ -30,27 +34,49 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
             nr,
             originNr: originNr ?? nr,
         },
-        children: [
-            textElement,
-            ...children
-        ],
+        children: [],
     };
 
-    if (name != null && name !== false) {
-        listItem.meta.name = true;
+    if (hasTextContent) {
+        const textElement: ListItemText = createListItemText(undefined, textMeta);
+        listItem.children.push(textElement);
 
-        if (typeof name === 'string') {
-            textElement.children.unshift({ text: name, name: true });
+        if (shouldHaveName) {
+            listItem.meta.name = true;
+
+            if (typeof name === 'string') {
+                textElement.children.unshift({ text: name, name: true });
+            }
+        }
+
+        if (shouldHaveTitle) {
+            listItem.meta.title = true;
+
+            if (typeof title === 'string') {
+                textElement.children.unshift({ text: title, title: true });
+            }
+        }
+
+        if (text != null) {
+            if (Array.isArray(text)) {
+                textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}`, ...textMeta })));
+            } else {
+                textElement.children.push({ text, nr: '1', ...textMeta });
+            }
+        } else if (children.length === 0 && (shouldHaveTitle || shouldHaveName)) {
+            // Only add empty text node if we have no children and should have title/name
+            textElement.children.push({ text: '', nr: '1', ...textMeta });
+        }
+
+        // remove empty text nodes but keep at least one if we should have title/name
+        textElement.children = textElement.children.filter((item => item.text !== ''));
+
+        if (textElement.children.length === 0) {
+            textElement.children.push({ text: '', nr: '1' });
         }
     }
 
-    if (title != null && title !== false) {
-        listItem.meta.title = true;
-
-        if (typeof title === 'string') {
-            textElement.children.unshift({ text: title, title: true });
-        }
-    }
+    listItem.children.push(...children);
 
     if (nrType) {
         listItem.meta.nrType = nrType;
@@ -58,23 +84,6 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     if (styleNote) {
         listItem.meta.styleNote = styleNote;
-    }
-
-    if (text != null) {
-        if (Array.isArray(text)) {
-            textElement.children.push(...text.map((text, index) => ({ text, nr: `${index + 1}`, ...textMeta })));
-        } else {
-            textElement.children.push({ text, nr: '1', ...textMeta });
-        }
-    } else {
-        textElement.children.push({ text: '', ...textMeta });
-    }
-
-    // remove empty text nodes but keep at least one 
-    textElement.children = textElement.children.filter((item => item.text !== ''));
-
-    if (textElement.children.length === 0) {
-        textElement.children.push({ text: '', nr: '1' });
     }
 
     if (type === MetaType.CHAPTER) {

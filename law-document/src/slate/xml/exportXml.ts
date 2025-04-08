@@ -17,13 +17,9 @@ export const exportXml = (editor: Editor, addHeader = false): string => {
 
     if (editor.children.length > 0 && isDocumentMeta(editor.children[0])) {
         const documentMetaElement = editor.children[0];
-
         xml.push(convertDocumentMetaToXml(documentMetaElement, slateXml));
     } else {
-        xml.push(`
-        <law>
-            ${slateXml}
-        </law>`);
+        xml.push(`<law law-type="law">${slateXml}</law>`);
     }
 
     return xmlFormat(xml.join(''));
@@ -113,6 +109,9 @@ const convertSlate = (editor: Editor, node: Node, path: Path): string => {
                 name = sentences.slice(0, 1).map(item => item.text).join('').trim();
                 sentences = sentences.slice(1);
             }
+        } else {
+            // If there's no ListItemText node, process all children as other children
+            otherChildren.unshift(listItemText);
         }
 
         const xml = `

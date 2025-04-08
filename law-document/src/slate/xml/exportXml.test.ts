@@ -28,7 +28,7 @@ test('export chapters', () => {
         ]),
     ]);
     const output = `
-        <law>
+        <law law-type="law">
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>I.</nr-title>
                 <paragraph nr="1">
@@ -55,8 +55,7 @@ test('export xml header', () => {
     const input = createEditor([]);
     const output = `
         <?xml version="1.0" encoding="utf-8"?>
-        <law>
-        </law>
+        <law law-type="law"></law>
     `;
     
     expect(exportXml(input, true)).toBe(xmlFormat(output));
@@ -101,7 +100,7 @@ test('export no title if meta.title is undefined', () => {
         ]),
     ]);
     const output = `
-        <law>
+        <law law-type="law">
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <sen nr="1">some text</sen>
             </chapter>
@@ -118,7 +117,7 @@ test('export title from LIST_ITEM_TEXT', () => {
         ]),
     ]);
     const output = `
-        <law>
+        <law law-type="law">
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>title</nr-title>
                 <sen nr="1">text1</sen>
@@ -137,7 +136,7 @@ test('export name from LIST_ITEM_TEXT', () => {
         ]),
     ]);
     const output = `
-        <law>
+        <law law-type="law">
             <chapter nr="1" nr-type="roman" roman-nr="I">
                 <nr-title>title</nr-title>
                 <name>name</name>
@@ -157,7 +156,7 @@ test('sen being exported', () => {
         ]),
     ]);
     const output = `
-        <law>
+        <law law-type="law">
             <paragraph nr="1">
                 <sen nr="1">one.</sen>
                 <sen nr="2">two.</sen>
@@ -175,7 +174,7 @@ test('expiry-symbol-offset being exported', () => {
         ]),
     ]);
     const output = `
-        <law>
+        <law law-type="law">
             <paragraph nr="1">
                 <sen nr="1" expiry-symbol-offset="0">one.</sen>
             </paragraph>

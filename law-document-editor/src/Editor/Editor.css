@@ -30,13 +30,27 @@
     content: url('./images/marker-art.png');
 }
 
+.list-item.subart {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
 .list-item.subart::before {
     margin-right: 6px;
     content: url('./images/marker-subart.png');
+    position: absolute;
+    left: 0;
+    top: 0.0em;
+}
+
+.list-item.subart > .list {
+    padding-left: 1.0em;
+    margin: 0;
 }
 
 .numart .title {
-    margin-left: 1.04em;
+    /* margin-left: 1.04em; */
 }
 
 .list-item.chapter {

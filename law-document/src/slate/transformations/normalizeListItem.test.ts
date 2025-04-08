@@ -3,6 +3,9 @@ import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from './createList';
 import { createListItem } from './createListItem';
 import { normalizeListItem } from './normalizeListItem';
+import { ElementType } from '../Slate';
+import { ListItemWithMeta } from '../element/ListItem';
+import { createEditor } from 'slate';
 
 test('missing title', () => {
     const listItem = createListItem(MetaType.CHAPTER, '1', { title: true, text: 'the first chapter' });
@@ -79,4 +82,23 @@ test('missing listItemText node', () => {
             createListItem(MetaType.CHAPTER, '2', { title: 'II. kafli.' }),
         ]),
     ]);
+});
+
+test('list item without configured title/name should not have empty text node if it has other content', () => {
+    const editor = createEditor();
+    const input = createListItem(MetaType.PARAGRAPH, '1', { text: '' }, [
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: 'Sendiráð skulu.' })
+        ])
+    ]);
+
+    const expected = createListItem(MetaType.PARAGRAPH, '1', {}, [
+        createList(MetaType.ART, {}, [
+            createListItem(MetaType.ART, '1', { text: 'Sendiráð skulu.' })
+        ])
+    ]);
+
+    editor.children = [input];
+    normalizeListItem(editor, [0], false);
+    expect(input).toStrictEqual(expected);
 });
