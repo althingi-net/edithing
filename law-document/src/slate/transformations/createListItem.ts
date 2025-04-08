@@ -25,7 +25,7 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
     const tagConfig = TAGS[type];
     const shouldHaveTitle = tagConfig.hasTitle && title != null && title !== false;
     const shouldHaveName = tagConfig.hasName && name != null && name !== false;
-    const hasTextContent = text != null || children.length === 0 || (shouldHaveTitle || shouldHaveName);
+    const hasTextContent = text != null || (shouldHaveTitle || shouldHaveName);
     
     const listItem: ListItemWithMeta = {
         type: ElementType.LIST_ITEM,

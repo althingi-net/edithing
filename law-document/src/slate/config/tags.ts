@@ -32,8 +32,6 @@ export const TAGS: { [key in MetaType]: TagConfig } = {
     [MetaType.SUBART]: {
         type: MetaType.SUBART,
         isList: true,
-        hasTitle: true,
-        hasName: true,
         display: 'list',
         canHave: [MetaType.PARAGRAPH],
     },
