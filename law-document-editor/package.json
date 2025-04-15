@@ -68,6 +68,7 @@
     "antd": "^5.24.2",
     "client-sdk": "file:../client-sdk",
     "diff-js-xml": "^1.0.8",
+    "eslint": "^8.57.1",
     "is-hotkey": "^0.2.0",
     "law-document": "file:../law-document",
     "react-code-blocks": "^0.1.6",
