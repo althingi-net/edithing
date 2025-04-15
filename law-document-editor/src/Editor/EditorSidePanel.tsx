@@ -1,15 +1,13 @@
 import { Collapse } from 'antd';
 import { exportSpeechXml, exportXml, SlateFragment } from 'law-document';
-import { FC, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { CodeBlock } from 'react-code-blocks';
-import { Descendant } from 'slate';
 import { useSlate } from 'slate-react';
-import CopyClipboardButton from './CopyClipboardButton';
-import NodeMetaForm from './NodeMetaForm';
-import useDebounce from '../utils/useDebounce';
-import LawDiff from './LawDiff';
-import React from 'react';
 import { Translator } from '../translations';
+import { useDebounce } from '../utils/useDebounce';
+import { CopyClipboardButton } from './CopyClipboardButton';
+import { LawDiff } from './LawDiff';
+import { NodeMetaForm } from './NodeMetaForm';
 
 interface Props {
     originalDocument?: SlateFragment;
@@ -19,7 +17,7 @@ interface Props {
     t: Translator;
 }
 
-const EditorSidePanel: FC<Props> = (props) => {
+export const EditorSidePanel: FC<Props> = (props) => {
     const { originalDocument, xml, readOnly, isSpeech, t } = props;
     const debouncedSlate = useDebounce(useSlate(), 500);
 
@@ -83,5 +81,3 @@ const EditorSidePanel: FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedSlate, debouncedSlate.children, originalDocument, xml, t]);
 };
-
-export default EditorSidePanel;

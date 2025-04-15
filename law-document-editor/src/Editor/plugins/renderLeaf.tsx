@@ -3,7 +3,7 @@ import React from 'react';
 import { RenderLeafProps } from 'slate-react';
 import { useEditorConfig } from '../EditorConfig';
 
-const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
+export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     const highlight = useEditorConfig(state => state.highlightStructure);
 
     if (leaf.title) {
@@ -25,5 +25,3 @@ const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
 
     return <span {...attributes}>{children}</span>;
 };
-
-export default renderLeaf;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { exec } from 'child_process';
 import { mkdir, rm } from 'fs/promises';
 import { promisify } from 'util';

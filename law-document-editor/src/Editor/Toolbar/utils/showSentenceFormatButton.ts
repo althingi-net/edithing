@@ -1,7 +1,7 @@
 import { isWithoutMarks , findTitleAndName , findListItemMarkedText, findListItemAtSelection , isAtEdgeOf } from 'law-document';
 import { Editor } from 'slate';
 
-const showSentenceFormatButton = (editor: Editor) => {
+export const showSentenceFormatButton = (editor: Editor) => {
     const [, listItemPath] = findListItemAtSelection(editor) ?? [];
     if (!listItemPath || !editor.selection) {
         return false;
@@ -20,5 +20,3 @@ const showSentenceFormatButton = (editor: Editor) => {
 
     return false;
 };
-
-export default showSentenceFormatButton;

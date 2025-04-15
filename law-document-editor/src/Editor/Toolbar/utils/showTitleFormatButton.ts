@@ -1,7 +1,7 @@
 import { Editor } from 'slate';
 import { isAtEdgeOf , isWithoutMarks , findTitleAndName, findListItemAtSelection } from 'law-document';
 
-const showTitleFormatButton = (editor: Editor) => {
+export const showTitleFormatButton = (editor: Editor) => {
     const [, listItemPath] = findListItemAtSelection(editor) ?? [];
     if (!listItemPath) {
         return false;
@@ -20,5 +20,3 @@ const showTitleFormatButton = (editor: Editor) => {
 
     return false;
 };
-
-export default showTitleFormatButton;

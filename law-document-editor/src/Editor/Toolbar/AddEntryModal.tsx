@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Translator } from '../../translations';
-import AddEntryForm from './AddEntryForm';
-import Modal from '../../Model/Modal';
+import { Modal } from '../../Model/Modal';
+import { AddEntryForm } from './AddEntryForm';
 
 interface Props {
     isOpen: boolean;
@@ -9,7 +9,7 @@ interface Props {
     t: Translator;
 }
 
-const AddEntryModal: FC<Props> = ({ isOpen, onClose, t }) => {
+export const AddEntryModal: FC<Props> = ({ isOpen, onClose, t }) => {
     return (
         <Modal title={t('Add new Entry')} isOpen={isOpen} onClose={onClose}>
             <div>
@@ -18,5 +18,3 @@ const AddEntryModal: FC<Props> = ({ isOpen, onClose, t }) => {
         </Modal>
     );
 };
-
-export default AddEntryModal;

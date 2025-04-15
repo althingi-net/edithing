@@ -1,13 +1,28 @@
 module.exports = {
     'env': {
+        'browser': true,
         'node': true,
         'es2021': true
+    },
+    settings: {
+        react: { version: 'detect' },
     },
     ignorePatterns: [
         'node_modules/',
         'dist/'
     ],
-    'extends': ['eslint:recommended', 'plugin:import/recommended', 'plugin:storybook/recommended'],'overrides': [{
+    'extends': [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:jsx-a11y/recommended',
+        'plugin:import/recommended',
+        'plugin:storybook/recommended',
+    ],
+    'plugins': [
+        'react',
+    ],
+    'overrides': [{
         // Config files
         'env': {
             'node': true
@@ -34,8 +49,13 @@ module.exports = {
         'parserOptions': {
             'ecmaVersion': 'latest',
             'sourceType': 'module',
-            'project': './tsconfig.json',
+            'project': [
+                './tsconfig.json',
+                './node_modules/law-document/tsconfig.json',
+            ],
             'tsconfigRootDir': __dirname,
+            'warnOnUnsupportedTypeScriptVersion': true,
+            'EXPERIMENTAL_useProjectService': true,
         },
         'files': ['src/**/*.ts?(x)'],
         'rules': {
@@ -46,7 +66,7 @@ module.exports = {
             '@typescript-eslint/no-unnecessary-condition': ['error', {
                 'allowConstantLoopConditions': true
             }],
-            '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true }],
+            '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true, caughtErrors: 'none' }],
             
             // Code quality
             'import/no-duplicates': 'error',
@@ -79,17 +99,19 @@ module.exports = {
         },
         'plugins': [
             'jest',
+            'jest-dom',
         ],
         'extends': [
             'plugin:jest/recommended',
+            'plugin:testing-library/react',
+            'plugin:jest-dom/recommended',
         ],
     }],
     'rules': {
         // Formatting
         'indent': [
             'error',
-            4,
-            { 'SwitchCase': 1, 'ignoredNodes': ['PropertyDefinition'] }
+            4
         ],
         'linebreak-style': [
             'error',
@@ -107,5 +129,8 @@ module.exports = {
             'error',
             'always'
         ],
+
+        // Must have config
+        'react/react-in-jsx-scope': 'off',
     },
 };

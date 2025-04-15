@@ -4,16 +4,16 @@ import { Bill } from 'client-sdk';
 import { createEditorWithPlugins, LawEditor, SlateFragment } from 'law-document';
 import React, { FC, useEffect, useMemo } from 'react';
 import { Editable, Slate, withReact } from 'slate-react';
-import handleKeyDown from './plugins/handleKeyDown';
-import renderElement from './plugins/renderElement';
-import renderLeaf from './plugins/renderLeaf';
-import HoveringToolbar from './Toolbar/HoverToolbar';
-import SideToolbar from './Toolbar/SideToolbar';
-import Toolbar from './Toolbar/Toolbar';
 import { Translator } from '../translations';
+import { handleKeyDown } from './plugins/handleKeyDown';
+import { renderElement } from './plugins/renderElement';
+import { renderLeaf } from './plugins/renderLeaf';
+import { HoveringToolbar } from './Toolbar/HoverToolbar';
+import { SideToolbar } from './Toolbar/SideToolbar';
+import { Toolbar } from './Toolbar/Toolbar';
 import { useEditorConfig } from './EditorConfig';
-import EditorSidePanel from './EditorSidePanel';
-import useEditorNavigationBlock, { NavigationBlocker } from './useEditorNaviationBlock';
+import { EditorSidePanel } from './EditorSidePanel';
+import { useEditorNavigationBlock, NavigationBlocker } from './useEditorNaviationBlock';
 import './Editor.css';
 
 const createEditor = () => {

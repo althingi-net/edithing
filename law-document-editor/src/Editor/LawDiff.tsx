@@ -14,7 +14,7 @@ interface Props {
     t: Translator;
 }
 
-const LawDiff: FC<Props> = ({ originalDocument, t }) => {
+export const LawDiff: FC<Props> = ({ originalDocument, t }) => {
     const slate = useSlate();
     const [diff, setDiff] = useState<LawDiffResult[]>([]);
     const debouncedChildren = useDebounce(slate.children, 250);
@@ -76,5 +76,3 @@ const parseIdToDisplay = (t: Translator, id: string) => {
         .reverse()
         .join(' ');
 };
-
-export default LawDiff;

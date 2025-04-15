@@ -1,4 +1,4 @@
-const getMetaKey = () => {
+export const getMetaKey = () => {
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
     if (isMac) {
@@ -7,5 +7,3 @@ const getMetaKey = () => {
         return 'ctrl';
     }
 };
-
-export default getMetaKey;

@@ -6,6 +6,7 @@
         "client",
         "client-sdk",
         "server",
-        "law-document"
+        "law-document",
+        "law-document-editor"
     ]
 }

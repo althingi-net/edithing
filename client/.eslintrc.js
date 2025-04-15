@@ -64,7 +64,7 @@ module.exports = {
             '@typescript-eslint/no-unnecessary-condition': ['error', {
                 'allowConstantLoopConditions': true
             }],
-            '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true }],
+            '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true, caughtErrors: 'none' }],
             'jsx-a11y/no-autofocus': 'off',
             
             // Code quality

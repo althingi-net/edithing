@@ -1,6 +1,7 @@
+/* eslint-disable jest/expect-expect */
 import { Path } from 'slate';
 import { Options, createEditorWithPlugins, createList, MetaType, createListItem, createSelectionWithDistance } from 'law-document';
-import showSentenceFormatButton from './showSentenceFormatButton';
+import { showSentenceFormatButton } from './showSentenceFormatButton';
 
 const testShowSentenceFormatButton = (path: Path, startOffset: number, distance: number, options: Options, expectTruthy: boolean) => {
     const editor = createEditorWithPlugins();

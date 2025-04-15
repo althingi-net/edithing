@@ -2,15 +2,15 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import isHotkey from 'is-hotkey';
 import React, { FC, useEffect, useState } from 'react';
-import getMetaKey from '../../utils/getMetaKey';
-import AddEntryModal from './AddEntryModal';
+import { getMetaKey } from '../../utils/getMetaKey';
 import { Translator } from '../../translations';
+import { AddEntryModal } from './AddEntryModal';
 
 interface Props {
     t: Translator;
 }
 
-const AddEntryButton: FC<Props> = ({ t }) => {
+export const AddEntryButton: FC<Props> = ({ t }) => {
     const [isOpen, setOpen] = useState(false);
     const metaKey = getMetaKey();
 
@@ -42,5 +42,3 @@ const AddEntryButton: FC<Props> = ({ t }) => {
         </>
     );
 };
-
-export default AddEntryButton;

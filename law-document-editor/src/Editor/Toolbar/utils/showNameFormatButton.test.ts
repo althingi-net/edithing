@@ -1,6 +1,6 @@
 import { MetaType, createList , createListItem , createSelectionWithDistance } from 'law-document';
-import createEditorWithPlugins from '../../plugins/createEditorWithPlugins';
-import showNameFormatButton from './showNameFormatButton';
+import { createEditorWithPlugins } from '../../plugins/createEditorWithPlugins';
+import { showNameFormatButton } from './showNameFormatButton';
 
 test('at beginning of title should hide', () => {
     const editor = createEditorWithPlugins();

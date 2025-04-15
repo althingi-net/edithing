@@ -4,9 +4,9 @@ import React, { FC, ReactNode } from 'react';
 import { Editor } from 'slate';
 import { useSlate } from 'slate-react';
 import { Translator } from '../../translations';
-import showNameFormatButton from './utils/showNameFormatButton';
-import showSentenceFormatButton from './utils/showSentenceFormatButton';
-import showTitleFormatButton from './utils/showTitleFormatButton';
+import { showNameFormatButton } from './utils/showNameFormatButton';
+import { showSentenceFormatButton } from './utils/showSentenceFormatButton';
+import { showTitleFormatButton } from './utils/showTitleFormatButton';
 
 type Marks = keyof Omit<TextNode, 'text' | 'title' | 'name' | 'nr'> | 'title' | 'name' | 'nr';
 
@@ -16,7 +16,7 @@ interface Props {
     t: Translator;
 }
 
-const FormatButton: FC<Props> = ({ format, icon, t }) => {
+export const FormatButton: FC<Props> = ({ format, icon, t }) => {
     const editor = useSlate();
 
     const handleClick = () => {
@@ -104,5 +104,3 @@ const isMarkActive = (editor: Editor, format: Marks) => {
     const marks = Editor.marks(editor);
     return marks ? marks[format] === true : false;
 };
-
-export default FormatButton;

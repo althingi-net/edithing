@@ -9,7 +9,7 @@ interface Props {
     t: Translator;
 }
 
-const NodeMetaForm: FC<Props> = ({ t }) => {
+export const NodeMetaForm: FC<Props> = ({ t }) => {
     const editor = useSlateStatic();
     const [listItem, path] = useSlateSelector(findListItemAtSelection) ?? [];
     const [form] = Form.useForm();
@@ -56,5 +56,3 @@ const NodeMetaForm: FC<Props> = ({ t }) => {
         </div>
     );
 };
-
-export default NodeMetaForm;

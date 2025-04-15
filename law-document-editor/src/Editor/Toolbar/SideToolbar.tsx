@@ -1,18 +1,17 @@
-import { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { Range } from 'slate';
 import { ReactEditor, useFocused, useSlate } from 'slate-react';
 import { findListItemAtSelection } from 'law-document';
-import AddEntryButton from './AddEntryButton';
-import * as styles from './SideToolbar.module.css';
-import React from 'react';
-import Portal from '../../utils/Portal';
+import { Portal } from '../../utils/Portal';
 import { Translator } from '../../translations';
+import { AddEntryButton } from './AddEntryButton';
+import * as styles from './SideToolbar.module.css';
 
 interface Props {
     t: Translator;
 }
 
-const SideToolbar: FC<Props> = ({ t }) => {
+export const SideToolbar: FC<Props> = ({ t }) => {
     const ref = useRef<HTMLDivElement>(null);
     const editor = useSlate();
     const inFocus = useFocused();
@@ -73,5 +72,3 @@ const SideToolbar: FC<Props> = ({ t }) => {
         </Portal>
     );
 };
-
-export default SideToolbar;

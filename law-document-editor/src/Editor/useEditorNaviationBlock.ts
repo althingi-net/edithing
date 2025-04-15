@@ -8,7 +8,7 @@ export interface NavigationBlocker {
     goTo: (path: string) => void;
 }
 
-const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void) => {
+export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void) => {
     const { isNavigationBlocked, blockNavigation, unblockNavigation } = navigationBlocker;
 
     const handleChange = useCallback(() => {
@@ -40,5 +40,3 @@ const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: Navigati
         handleSave,
     };
 };
-
-export default useEditorNavigationBlock;

@@ -1,9 +1,9 @@
 import { ElementType, isDocumentMeta, isListItem, TAGS } from 'law-document';
 import React from 'react';
 import { RenderElementProps } from 'slate-react';
-import DocumentMetaBlock from './DocumentMetaBlock';
+import { DocumentMetaBlock } from './DocumentMetaBlock';
 
-function renderElement({ element, attributes, children }: RenderElementProps) {
+export function renderElement({ element, attributes, children }: RenderElementProps) {
     const className = [
         element.type,
         hasMetaType(element) ? element.meta.type : '',
@@ -40,8 +40,6 @@ function renderElement({ element, attributes, children }: RenderElementProps) {
     }
 }
 
-const hasMetaType = (element: any): element is { meta: { type: string } } => {
+export const hasMetaType = (element: any): element is { meta: { type: string } } => {
     return 'meta' in element && element.meta && 'type' in element.meta;
 };
-
-export default renderElement;

@@ -7,7 +7,7 @@ interface Props extends RenderElementProps {
     element: DocumentMetaElement
 }
 
-const DocumentMetaBlock: FC<Props> = ({ attributes, element, children }) => {
+export const DocumentMetaBlock: FC<Props> = ({ attributes, element, children }) => {
     const { nr, year, name, original, ministerClause } = element.meta;
 
     const items = [{
@@ -29,5 +29,3 @@ const DocumentMetaBlock: FC<Props> = ({ attributes, element, children }) => {
         </div>
     );
 };
-
-export default DocumentMetaBlock;

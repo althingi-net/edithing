@@ -1,8 +1,7 @@
 import { CheckOutlined, CopyOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Translator } from '../translations';
-import React from 'react';
 
 interface Props {
     content?: string | any[];
@@ -10,7 +9,7 @@ interface Props {
     t: Translator;
 }
 
-const CopyClipboardButton: FC<Props> = ({ content, transform, t }) => {
+export const CopyClipboardButton: FC<Props> = ({ content, transform, t }) => {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -49,5 +48,3 @@ const CopyClipboardButton: FC<Props> = ({ content, transform, t }) => {
         </Tooltip>
     );
 };
-
-export default CopyClipboardButton;

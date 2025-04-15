@@ -1,8 +1,8 @@
-import { LawEditor, LawElement, TextNode } from "law-document";
-import { ReactEditor } from "slate-react";
+import { LawEditor, LawElement, TextNode } from 'law-document';
+import { ReactEditor } from 'slate-react';
 
 declare module 'law-document' {
-    interface LawEditor extends ReactEditor {}
+    type LawEditor = ReactEditor
 }
 
 declare module 'slate' {

@@ -5,7 +5,7 @@ import { Editor } from 'slate';
 
 const isEnterKey = isHotkey('enter');
 
-const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => {
+export const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => {
     if (isEnterKey(event)) {
         event.preventDefault();
 
@@ -14,5 +14,3 @@ const handleKeyDown = (editor: Editor, event: KeyboardEvent<HTMLDivElement>) => 
         }
     }
 };
-
-export default handleKeyDown;

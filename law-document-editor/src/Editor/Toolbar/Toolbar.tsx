@@ -14,7 +14,7 @@ interface Props {
     navigationBlocker: NavigationBlocker;
 }
 
-const Toolbar: FC<Props> = ({ saveDocument, bill, t, navigationBlocker }) => {
+export const Toolbar: FC<Props> = ({ saveDocument, bill, t, navigationBlocker }) => {
     const {
         setAutoNumberIncrements,
         setHighlightStructure,
@@ -37,5 +37,3 @@ const Toolbar: FC<Props> = ({ saveDocument, bill, t, navigationBlocker }) => {
         </Space>
     );
 };
-
-export default Toolbar;

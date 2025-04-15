@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 import { Button, Checkbox, Divider, Radio, Space } from 'antd';
 import { MetaType, createLawList, findListItemAtSelection, getAllowedTagChildren, getListItemHierarchy, getListItemTitle, getParentListItem, isListItemWithMeta } from 'law-document';
 import React, { FC, useEffect, useMemo, useState } from 'react';
@@ -12,7 +13,7 @@ interface Props {
     t: Translator;
 }
 
-const AddEntryForm: FC<Props> = ({ onCancel, onSubmit, t }) => {
+export const AddEntryForm: FC<Props> = ({ onCancel, onSubmit, t }) => {
     const editor = useSlateStatic();
     const autoNumberIncrements = useEditorConfig(state => state.autoNumberIncrements);
     const [bumpVersionNumber, setBumpVersionNumber] = useState(autoNumberIncrements);
@@ -139,5 +140,3 @@ const AddEntryForm: FC<Props> = ({ onCancel, onSubmit, t }) => {
         </>
     );
 };
-
-export default AddEntryForm;

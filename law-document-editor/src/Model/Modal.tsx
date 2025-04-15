@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button, Card } from 'antd';
 import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Portal from '../utils/Portal';
+import { Portal } from '../utils/Portal';
 import './Modal.css';
 
 interface Props extends PropsWithChildren {
@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren {
     title?: string;
 }
 
-const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
+export const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
     const nodeRef = useRef(null);
     useEffect(() => {
         const closeOnEscapeKey = (event: KeyboardEvent) => event.key === 'Escape' ? onClose() : null;
@@ -56,5 +56,3 @@ const Modal: FC<Props> = ({ children, isOpen, onClose, title }) => {
         </Portal >
     );
 };
-
-export default Modal;

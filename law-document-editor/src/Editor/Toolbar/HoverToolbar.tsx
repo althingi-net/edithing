@@ -2,16 +2,16 @@ import { BoldOutlined } from '@ant-design/icons';
 import React, { FC, useEffect, useRef } from 'react';
 import { Editor, Range } from 'slate';
 import { useFocused, useSlate } from 'slate-react';
-import Portal from '../../utils/Portal';
-import FormatButton from './FormatButton';
-import './HoverToolbar.css';
 import { Translator } from '../../translations';
+import { Portal } from '../../utils/Portal';
+import { FormatButton } from './FormatButton';
+import './HoverToolbar.css';
 
 interface Props {
     t: Translator;
 }
 
-const HoveringToolbar: FC<Props> = ({ t }) => {
+export const HoveringToolbar: FC<Props> = ({ t }) => {
     const ref = useRef<HTMLDivElement>(null);
     const editor = useSlate();
     const inFocus = useFocused();
@@ -65,6 +65,3 @@ const HoveringToolbar: FC<Props> = ({ t }) => {
         </Portal>
     );
 };
-
-
-export default HoveringToolbar;
