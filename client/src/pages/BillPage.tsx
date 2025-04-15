@@ -1,6 +1,8 @@
 import { Col, Row } from 'antd';
 import { Content } from 'antd/es/layout/layout';
+import { Editor } from 'law-document-editor';
 import { FC } from 'react';
+import { useNavigate } from 'react-router';
 import Loader from '../features/App/Loader';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import NotFoundError from '../features/App/NotFoundError';
@@ -11,8 +13,6 @@ import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import BillPreview from '../features/Bills/BillPreview';
 import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
-import { Editor } from 'law-document-editor';
-import { useNavigate } from 'react-router';
 
 const BillPage: FC = () => {
     const { t } = useLanguageContext();

@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Layout } from 'antd';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router';
+import { EditorConfigContextProvider } from 'law-document-editor';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router';
 import BillPage from '../../pages/BillPage';
 import BillsPage from '../../pages/BillsPage';
 import LawListPage from '../../pages/LawListPage';
 import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
+import Header from './Header';
+import UnknownError from './UnknownError';
 import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
 import { SessionContextProvider } from './useSessionContext';
 import { ThemeContextProvider } from './useThemeContext';
-import Header from './Header';
-import UnknownError from './UnknownError';
-import { EditorConfigContextProvider } from 'law-document-editor';
 
 const router = createBrowserRouter([{
     element: (

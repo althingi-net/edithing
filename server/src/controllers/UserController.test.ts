@@ -5,7 +5,7 @@ import User from '../entities/User';
 import setupIntegrationTestSuite from '../test/setupIntegrationTestSuite';
 
 const adminUserToken = generateJwtToken({ id: 1 } as User);
-// const editorUserToken = generateJwtToken({ id: 2 } as User);
+const editorUserToken = generateJwtToken({ id: 2 } as User);
 
 describe('user controller', () => {
     const server = setupIntegrationTestSuite();
@@ -34,10 +34,11 @@ describe('user controller', () => {
             });
     });
 
+    // eslint-disable-next-line jest/no-commented-out-tests
     // test('save user', async () => {
     //     await supertest(server)
     //         .post('/api/users')
-    //         .set('Authorization', `Bearer ${user1Token}`)
+    //         .set('Authorization', `Bearer ${adminUserToken}`)
     //         .send({
     //             firstName: 'New',
     //             lastName: 'User',
@@ -53,7 +54,7 @@ describe('user controller', () => {
 
     //     await supertest(server)
     //         .post('/api/users')
-    //         .set('Authorization', `Bearer ${user1Token}`)
+    //         .set('Authorization', `Bearer ${adminUserToken}`)
     //         .send({
     //             active: true,
     //         })
@@ -66,16 +67,18 @@ describe('user controller', () => {
     //         });
     // });
 
-    // test('refuse non admin user to update users', async () => {
-    //     return supertest(server)
-    //         .post('/api/users')
-    //         .set('Authorization', `Bearer ${editorUserToken}`)
-    //         .send({
-    //             active: true,
-    //         })
-    //         .expect(HttpStatus.FORBIDDEN);
-    // });
+    // eslint-disable-next-line jest/expect-expect
+    test('refuse non admin user to update users', async () => {
+        return supertest(server)
+            .post('/api/users')
+            .set('Authorization', `Bearer ${editorUserToken}`)
+            .send({
+                active: true,
+            })
+            .expect(HttpStatus.FORBIDDEN);
+    });
 
+    // eslint-disable-next-line jest/expect-expect
     test('refuse public access', async () => {
         return supertest(server)
             .get('/api/users')

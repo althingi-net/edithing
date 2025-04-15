@@ -5,7 +5,8 @@ module.exports = {
     },
     ignorePatterns: [
         'node_modules/',
-        'dist/'
+        'dist/',
+        'tmp/'
     ],
     'extends': [
         'eslint:recommended',

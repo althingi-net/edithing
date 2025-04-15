@@ -26,7 +26,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         setError(false);
     }, [id, selected]);
 
-    const openDocument = useCallback((identifier?: string) => {
+    const openDocument = useCallback(async (identifier?: string) => {
         if (disableActions) {
             return errorUnsavedChanges();
         }
@@ -35,9 +35,9 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         setDocument(null);
 
         if (!identifier) {
-            navigate(`${billPage}/${id}`);
+            await navigate(`${billPage}/${id}`);
         } else {
-            navigate(`${billPage}/${id}/document/${identifier}`);
+            await navigate(`${billPage}/${id}/document/${identifier}`);
         }
     }, [bill, billPage, disableActions, errorUnsavedChanges, id, navigate, setDocument]);
 

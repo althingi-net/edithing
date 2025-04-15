@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { mkdir, readFile, stat, writeFile } from 'fs/promises';
-import { ImportError, LawEditor, exportXml, getTitle, importXml, validateDocument } from 'law-document';
+import { getTitle, importXml, validateDocument } from 'law-document';
 // @ts-ignore
-import Diff from 'text-diff';
+// import Diff from 'text-diff';
 import xmlFormat from 'xml-formatter';
 import Document from '../entities/Document';
 import downloadFile from '../integration/github/downloadFile';
@@ -95,10 +95,10 @@ const createDocument = async (identifier: string, file: string) => {
     }
 };
 
-const getTextDiffs = (original: string, newText: string) => {
-    const diff = new Diff();
-    const changes = diff.main(original, newText) as [type: number, text: string][];
-    diff.cleanupSemantic(changes);
+// const getTextDiffs = (original: string, newText: string) => {
+//     const diff = new Diff();
+//     const changes = diff.main(original, newText) as [type: number, text: string][];
+//     diff.cleanupSemantic(changes);
 
-    return changes.filter(change => change[0] !== 0);
-};
+//     return changes.filter(change => change[0] !== 0);
+// };

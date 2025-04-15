@@ -1,6 +1,6 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown } from 'antd';
-import { ItemType } from 'antd/es/menu/hooks/useItems';
+import { ItemType } from 'antd/es/menu/interface';
 import { FC, useCallback, useMemo, useState } from 'react';
 import LanguageSelect from './LanguageSelect';
 import ThemeSwitch from './ThemeSwitch';
