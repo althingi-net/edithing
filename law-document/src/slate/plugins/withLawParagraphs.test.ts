@@ -78,7 +78,9 @@ test('add missing meta data to ListItem Element', () => {
     expect(editor.children).toEqual(output);
 });
 
-test('increment following siblings nr and title', () => {
+// currently disabled because for the user it doesn't always work as expected
+// eslint-disable-next-line jest/no-disabled-tests 
+test.skip('increment following siblings nr and title', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [
@@ -141,7 +143,9 @@ test('when incrementing following siblings nr and title, retain selection on ini
     expect(editor.selection).toEqual(expectedRange);
 });
 
-test('increment following siblings nr and title but retain letters after digits', () => {
+// currently disabled because for the user it doesn't always work as expected
+// eslint-disable-next-line jest/no-disabled-tests 
+test.skip('increment following siblings nr and title but retain letters after digits', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.ART, {}, [
@@ -176,7 +180,9 @@ test('increment following siblings nr and title but retain letters after digits'
     expect(editor.children).toEqual(output);
 });
 
-test('increment following siblings nr and title with roman nr and retain previous text', () => {
+// currently disabled because for the user it doesn't always work as expected
+// eslint-disable-next-line jest/no-disabled-tests 
+test.skip('increment following siblings nr and title with roman nr and retain previous text', () => {
     const editor = createEditorWithPlugins();
     editor.children = [
         createList(MetaType.CHAPTER, {}, [

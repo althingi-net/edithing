@@ -32,5 +32,3 @@ export const findTitleAndName = (editor: Editor, at?: Location): ReturnValue => 
 
     return result;
 };
-
-findTitleAndName;

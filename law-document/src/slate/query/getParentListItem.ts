@@ -27,5 +27,3 @@ export const getParentListItem = (editor: Editor, at: Location): NodeEntry<ListI
     return [parent, parentListItem[1]];
 
 };
-
-getParentListItem;

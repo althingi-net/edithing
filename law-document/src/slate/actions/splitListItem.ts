@@ -1,10 +1,9 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
 import { log } from '../../logger';
 import { isListItemText } from '../element/ListItemText';
-import { createListItemMetaFromSibling } from '../transformations/createListItemMetaFromSibling';
 import { getParentListItem } from '../query/getParentListItem';
-import { incrementFollowingSiblings } from '../transformations/incrementFollowingSiblings';
 import { isListItemWithMeta } from '../query/isListItemWithMeta';
+import { createListItemMetaFromSibling } from '../transformations/createListItemMetaFromSibling';
 import { normalizeListItem } from '../transformations/normalizeListItem';
 import { setMeta } from '../transformations/setMeta';
 

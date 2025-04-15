@@ -1,11 +1,9 @@
+import { createEditor } from 'slate';
 import { MetaType } from '../Slate';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from './createList';
 import { createListItem } from './createListItem';
 import { normalizeListItem } from './normalizeListItem';
-import { ElementType } from '../Slate';
-import { ListItemWithMeta } from '../element/ListItem';
-import { createEditor } from 'slate';
 
 test('missing title', () => {
     const listItem = createListItem(MetaType.CHAPTER, '1', { title: true, text: 'the first chapter' });

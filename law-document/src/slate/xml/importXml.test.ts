@@ -1,4 +1,3 @@
-import { TAGS } from '../config/tags';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { MetaType, SlateFragment } from '../Slate';
 import { createDocumentMeta, createEmptyDocumentMeta } from '../transformations/createDocumentMeta';
@@ -376,7 +375,7 @@ describe('importXml', () => {
 
         const editor = createEditorWithPlugins();
         editor.children = inputSlate;
-        editor.normalize({ force: true })
+        editor.normalize({ force: true });
 
         expect(inputSlate).toStrictEqual(editor.children);
     });

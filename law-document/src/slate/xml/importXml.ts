@@ -125,7 +125,7 @@ const convertList = (key: string, values: any[]): Descendant => {
         const shouldHaveTitle = tagConfig.hasTitle && listItem.meta.title;
         const shouldHaveName = tagConfig.hasName && listItem.meta.name;
         const hasTextContent = element['#text'] != null || element['sen'] != null || (shouldHaveTitle || shouldHaveName);
-        const hasNestedContent = Object.keys(element).some(k => isMetaType(k) && LIST_TAGS.includes(k));
+        const hasNestedContent = Object.keys(element as object).some(k => isMetaType(k) && LIST_TAGS.includes(k));
 
         if (hasTextContent) {
             const textNode: ListItemText = {

@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { MetaType } from '../Slate';
 import { createEditorWithPlugins } from '../plugins/createEditorWithPlugins';
 import { createList } from '../transformations/createList';

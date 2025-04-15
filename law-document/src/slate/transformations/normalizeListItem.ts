@@ -1,12 +1,11 @@
 import { Editor, Node, Path, Text, Transforms } from 'slate';
+import { TAGS } from '../config/tags';
 import { ListItemWithMeta } from '../element/ListItem';
-import { isListItemText, ListItemText } from '../element/ListItemText';
+import { isListItemText } from '../element/ListItemText';
 import { isTitle } from '../element/TextNode';
 import { isListItemWithMeta } from '../query/isListItemWithMeta';
 import { createListItemText } from './createListItemText';
 import { setListItemTitleFromMeta } from './setListItemTitleFromMeta';
-import { TAGS } from '../config/tags';
-import { ElementType, MetaType } from '../Slate';
 
 export const normalizeListItem = (editor: Editor, path: Path, select = true) => {
     const listItem = Node.get(editor, path);

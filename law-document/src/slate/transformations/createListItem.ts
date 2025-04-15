@@ -2,8 +2,8 @@ import { ListItemMeta, ListItemWithMeta } from '../element/ListItem';
 import { ListItemText, ListItemTextMeta } from '../element/ListItemText';
 import { MetaType, ElementType, SlateFragment } from '../Slate';
 import { convertRomanNumber } from '../number/convertRomanNumber';
-import { createListItemText } from './createListItemText';
 import { TAGS } from '../config/tags';
+import { createListItemText } from './createListItemText';
 
 export interface Options extends Omit<ListItemMeta, 'nr' | 'originNr' | 'type' | 'title' | 'name'> {
     text?: string | string[];
@@ -93,6 +93,10 @@ export const createListItem = (type: MetaType, nr: string, options: Options = {}
 
     if (type === MetaType.NUMART && !nrType) {
         listItem.meta.nrType = 'numeric';
+    }
+
+    if (listItem.children.length === 0) {
+        listItem.children.push(createListItemText());
     }
 
     return listItem;

@@ -14,7 +14,8 @@ export interface ListItemTextWithMeta extends ListItemText {
 }
 
 export interface ListItemTextMeta {
-
+    nothing?: string; // TODO: remove this
+    expirySymbolOffset?: string;
 }
 
 export const isListItemText = (node?: Node | null): node is ListItemText => {
