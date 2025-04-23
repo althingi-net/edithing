@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './features/App/App';
+import '@ant-design/v5-patch-for-react-19';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
