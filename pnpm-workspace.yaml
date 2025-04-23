@@ -1,0 +1,7 @@
+packages:
+  - 'client-sdk'
+  - 'law-document'
+  - 'law-document-editor'
+  - 'git-json-merger'
+  - 'server'
+  - 'client' 

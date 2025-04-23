@@ -50,3 +50,11 @@ tmp
 /production/process-production.yml
 
 *storybook.log
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log
+pnpm-lock.yaml
+
+# Turborepo
+.turbo

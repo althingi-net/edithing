@@ -4,7 +4,7 @@
   "description": "",
   "engines": {
     "node": ">=22.14.0",
-    "npm": ">=10.9.2"
+    "pnpm": ">=8.0.0"
   },
   "main": "dist/index.js",
   "scripts": {
@@ -12,16 +12,16 @@
     "start:api": "ts-node ./src/index.ts",
     "start:queue": "ts-node ./src/bin/queueWorker.ts",
     "build": "NODE_ENV=production tsc --build",
-    "prebuild": "npm run clean",
+    "prebuild": "pnpm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo",
-    "reset": "npm run db:seed && npm run reset-git-merger",
+    "reset": "pnpm run db:seed && pnpm run reset-git-merger",
     "test": "NODE_ENV=test jest",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "build:sdk": "openapi -i http://localhost:3003/api/spec.json -o ../client-sdk/src",
     "db:start": "docker-compose up -d",
     "db:destroy": "docker-compose down -v",
-    "db:seed": "ts-node ./src/bin/seedDb.ts && npm run reset-git-merger",
+    "db:seed": "ts-node ./src/bin/seedDb.ts && pnpm run reset-git-merger",
     "db:shell": "ts-node ./src/bin/dbShell.ts",
     "validate": "ts-node ./src/bin/filterInvalidDocuments.ts",
     "reset-git-merger": "ts-node ./src/bin/resetGitMerger.ts"
@@ -41,7 +41,7 @@
     "class-validator-jsonschema": "^5.0.1",
     "dotenv": "^16.4.7",
     "fast-xml-parser": "^4.5.2",
-    "git-json-merger": "file:../git-json-merger",
+    "git-json-merger": "workspace:*",
     "http-status-codes": "^2.3.0",
     "koa": "^2.15.4",
     "koa-bodyparser": "^4.4.1",
@@ -50,7 +50,7 @@
     "koa-logger": "^3.2.1",
     "koa-passport": "^6.0.0",
     "koa2-swagger-ui": "^5.11.0",
-    "law-document": "file:../law-document",
+    "law-document": "workspace:*",
     "mysql": "^2.18.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "build/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "build:index": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "build:sdk": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "outputs": ["src/**"]
+    },
+    "db:seed": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "reset-git-merger": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+} 
