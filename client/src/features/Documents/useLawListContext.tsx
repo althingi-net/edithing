@@ -6,7 +6,7 @@ type LawListContextType = {
     lawList: GithubFile[];
 }
 
-const LawListContext = createContext<LawListContextType>([] as unknown as LawListContextType);
+const LawListContext = createContext<LawListContextType>({ lawList: [] });
 
 export const LawListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [lawList, setLawList] = useState<GithubFile[]>([]);
