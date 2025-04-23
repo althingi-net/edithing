@@ -21,6 +21,8 @@ jobs:
 
     steps:
     - uses: pnpm/action-setup@v4
+      with:
+        version: 8
     - uses: actions/checkout@v3
     - uses: mirromutth/mysql-action@v1.1
       with:
