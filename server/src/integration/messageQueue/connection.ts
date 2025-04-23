@@ -1,4 +1,4 @@
-import client, { Connection, Channel } from 'amqplib';
+import client, { Channel, ChannelModel } from 'amqplib';
 import messageQueue from '../../config/messageQueue';
 
 type ConsumerCallback<MsgKey extends MessageKey> = (msg: Messages[MsgKey]) => any;
@@ -10,7 +10,7 @@ type Messages = {
 type MessageKey = keyof Messages;
 
 class RabbitMqConnection {
-    private connection?: Connection;
+    private connection?: ChannelModel;
     private channel?: Channel;
     private connected?: boolean;
   
