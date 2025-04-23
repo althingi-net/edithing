@@ -35,7 +35,10 @@ jobs:
         cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
+
+    - name: Build all packages
+      run: pnpm -r build
 
     - uses: mirromutth/mysql-action@v1.1
       with:
