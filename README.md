@@ -3,22 +3,26 @@
 ## How to run
 
 ```bash
+# Install pnpm (if not already installed)
+npm install -g pnpm
+
 # Run MySQL and RabbitMQ
 docker-compose up -d
 
 # Install dependencies
-npm install
+pnpm install
 
 # Init database (will drop existing tables)
-cd server && npm run db:seed
+cd server && pnpm run db:seed
 
 # Run all lib build scripts, api server, message queue consumer, and client
-npm run start
+pnpm run start
 ```
 
 ## Requirements
 
-- Node v18
+- Node v22+ 
+- pnpm v8+
 - MySQL v8
 - RabbitMQ v3
 
@@ -51,7 +55,7 @@ npm run start
 - [Octokit](https://github.com/octokit)
 - [Slate](https://www.slatejs.org/)
 - [Jest](https://jestjs.io/)
-- [Lerna](https://lerna.js.org/)
+- [Turborepo](https://turbo.build/)
 - [Parcel](https://parceljs.org/languages/typescript/)
 
 ## Tools
