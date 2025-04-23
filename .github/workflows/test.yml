@@ -33,8 +33,8 @@ jobs:
       with:
         node-version: 22.x
         cache: 'npm'
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run test
-    - run: npm run build
-    - run: npm run typecheck
+    - run: pnpm i
+    - run: pnpm run lint
+    - run: pnpm run test
+    - run: pnpm run build
+    - run: pnpm run typecheck
