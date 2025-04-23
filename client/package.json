@@ -8,8 +8,8 @@
   },
   "source": "./public/index.html",
   "scripts": {
-    "start": "parcel -p 3000 --no-cache --watch-dir ../",
-    "build": "parcel build",
+    "start": "parcel -p 3000 --no-cache --watch-dir ../ --cache-dir=.parcel-cache",
+    "build": "parcel build --cache-dir=.parcel-cache",
     "prebuild": "pnpm run clean",
     "clean": "rimraf ./dist *.tsbuildinfo .parcel-cache",
     "test": "jest",

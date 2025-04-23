@@ -10,8 +10,8 @@
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "start": "parcel watch",
-    "build": "parcel build",
+    "start": "parcel watch --cache-dir=.parcel-cache",
+    "build": "parcel build --cache-dir=.parcel-cache",
     "prebuild": "pnpm run clean",
     "clean": "rimraf ./dist coverage *.tsbuildinfo .parcel-cache",
     "test": "jest",
