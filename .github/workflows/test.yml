@@ -20,22 +20,31 @@ jobs:
       DATABASE_PASSWORD: secret-string
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
     - uses: pnpm/action-setup@v4
+      name: Install pnpm
       with:
         version: 8
-    - uses: actions/checkout@v3
+        run_install: false
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install
+
     - uses: mirromutth/mysql-action@v1.1
       with:
         mysql version: '8.0'
         mysql database: 'edithing'
         mysql user: "edithing"
         mysql password: "secret-string"
-    - name: Use Node.js 22.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: 22.x
-        cache: 'npm'
-    - run: pnpm i
+        
     - run: pnpm run lint
     - run: pnpm run test
     - run: pnpm run build
