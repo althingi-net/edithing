@@ -59,6 +59,14 @@ jobs:
         mysql user: "edithing"
         mysql password: "secret-string"
         host port: 3307
+        mysql root password: "root-password"
+        character set server: 'utf8mb4'
+        collation server: 'utf8mb4_general_ci'
+        mysql options: '--default-authentication-plugin=mysql_native_password'
+        
+    - name: Configure MySQL user
+      run: |
+        mysql -h127.0.0.1 -P3307 -uroot -proot-password -e "ALTER USER 'edithing'@'%' IDENTIFIED WITH mysql_native_password BY 'secret-string'; FLUSH PRIVILEGES;"
         
     - name: Run tests
       run: pnpm run test
@@ -66,3 +74,5 @@ jobs:
         username: "edithing"
         password: "secret-string"
         database: "edithing"
+        host: "127.0.0.1"
+        port: 3307
