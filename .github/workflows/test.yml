@@ -64,6 +64,9 @@ jobs:
         collation server: 'utf8mb4_general_ci'
         mysql options: '--default-authentication-plugin=mysql_native_password'
         
+    - name: Wait for MySQL
+      run: sleep 15
+
     - name: Configure MySQL user
       run: |
         mysql -h127.0.0.1 -P3307 -uroot -proot-password -e "ALTER USER 'edithing'@'%' IDENTIFIED WITH mysql_native_password BY 'secret-string'; FLUSH PRIVILEGES;"
