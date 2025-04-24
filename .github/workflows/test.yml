@@ -41,8 +41,8 @@ jobs:
     - name: Prepare git to be executed by the app
       run: |
         git --version
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "<>"
         git status
         git config --global --add safe.directory ${{ github.workspace }}
 
