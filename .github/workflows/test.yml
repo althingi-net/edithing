@@ -37,8 +37,22 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
+
+    - name: Prepare git to be executed by the app
+      run: |
+        git --version
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+        git status
+        git tag
+        git describe
+        git config --global --add safe.directory ${{ github.workspace }}
+
     - name: Build all packages
       run: pnpm -r build
+
+    - run: pnpm run lint
+    - run: pnpm run typecheck
 
     - uses: mirromutth/mysql-action@v1.1
       with:
@@ -47,7 +61,4 @@ jobs:
         mysql user: "edithing"
         mysql password: "secret-string"
         
-    - run: pnpm run lint
     - run: pnpm run test
-    - run: pnpm run build
-    - run: pnpm run typecheck
