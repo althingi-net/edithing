@@ -45,7 +45,7 @@
     "slate-history": "^0.100.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^4.5.2",
+    "fast-xml-parser": "^5.2.1",
     "is-plain-object": "^5.0.0",
     "romans": "^3.0.0",
     "text-diff": "^1.0.1",

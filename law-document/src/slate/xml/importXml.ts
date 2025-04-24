@@ -37,7 +37,10 @@ export const importXml = (xml: string) => {
 };
 
 export const parseXml = (xml: string) => {
-    const parser = new XMLParser({ ignoreAttributes: false });
+    const parser = new XMLParser({
+        ignoreAttributes: false,
+        parseTagValue: false,
+    });
     return parser.parse(xml);
 };
 
