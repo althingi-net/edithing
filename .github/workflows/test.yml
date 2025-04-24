@@ -58,5 +58,11 @@ jobs:
         mysql database: 'edithing'
         mysql user: "edithing"
         mysql password: "secret-string"
+        host port: 3307
         
-    - run: pnpm run test
+    - name: Run tests
+      run: pnpm run test
+      env:
+        username: "edithing"
+        password: "secret-string"
+        database: "edithing"
