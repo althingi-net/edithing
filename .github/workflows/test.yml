@@ -63,15 +63,19 @@ jobs:
         character set server: 'utf8mb4'
         collation server: 'utf8mb4_general_ci'
         mysql options: '--default-authentication-plugin=mysql_native_password'
-        
-    - name: Wait for MySQL
-      run: sleep 15
-
+          
+    - name: Wait for MySQL and configure access
+      run: |
+        sleep 15
+        mysql -h127.0.0.1 -P3307 -uroot -proot-password -e "CREATE USER IF NOT EXISTS 'edithing'@'%' IDENTIFIED BY 'secret-string';"
+        mysql -h127.0.0.1 -P3307 -uroot -proot-password -e "GRANT ALL PRIVILEGES ON edithing.* TO 'edithing'@'%';"
+        mysql -h127.0.0.1 -P3307 -uroot -proot-password -e "GRANT ALL PRIVILEGES ON *.* TO 'edithing'@'%';"
+        mysql -h127.0.0.1 -P3307 -uroot -proot-password -e "FLUSH PRIVILEGES;"
+  
     - name: Run tests
       run: pnpm run test
       env:
-        username: "edithing"
-        password: "secret-string"
-        database: "edithing"
-        host: "127.0.0.1"
-        port: 3307
+        DATABASE_PORT: 3307
+        DATABASE_USER: "edithing"
+        DATABASE_PASSWORD: "secret-string"
+        DATABASE_NAME: "edithing"
