@@ -52,7 +52,7 @@ jobs:
     - run: pnpm run lint
     - run: pnpm run typecheck
 
-    - uses: mirromutth/mysql-action@v1.1
+    - uses: haltuf/mysql-action@master
       with:
         mysql version: '8.0'
         mysql database: 'edithing'
