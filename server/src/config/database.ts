@@ -7,7 +7,7 @@ const port = process.env.DATABASE_PORT ?? isTestEnv ? 3307 : 3306;
 
 const database: DataSourceOptions = {
     type: 'mysql',
-    host: '127.0.0.1',
+    host: 'localhost',
     port: port,
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
