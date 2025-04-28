@@ -57,16 +57,21 @@ jobs:
         mysql version: '8.0'
         mysql database: 'edithing'
         mysql user: "edithing"
-        mysql password: "secret-string"
+        mysql password: "password"
         host port: 3307
-        mysql root password: "root-password"
         character set server: 'utf8mb4'
         collation server: 'utf8mb4_general_ci'
     
+    - name: Wait for MySQL
+      run: |
+        while ! mysqladmin ping --host=127.0.0.1 --user edithing --password=password --silent; do
+        sleep 1
+        done
+
     - name: Run tests
       run: pnpm run test
       env:
         DATABASE_PORT: 3307
         DATABASE_USER: "root"
         DATABASE_NAME: "edithing"
-        DATABASE_PASSWORD: "root-password"
+        DATABASE_PASSWORD: "password"
