@@ -1,5 +1,5 @@
 import passport from 'koa-passport';
-import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
+import { Body, Get, JsonController, Param, Post, Put, UseBefore, ContentType } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { exportBillXml } from 'law-document';
 import Bill from '../entities/Bill';
