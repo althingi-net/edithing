@@ -46,12 +46,11 @@ class BillController {
     ) {
         const bill = await Bill.findOneOrFail({ where: { id } }) ;
         const documents = await BillDocument.find({
-            where: { bill },
-            select: ['originalXml', 'content', 'identifier', 'title']
+            where: { id: bill.id },
+            select: ['content']
         });
         const billXml = await exportBillXml(bill.title, documents);
 
-	console.log(JSON.stringify(billXml));
 	// First, validate XML.
 	await postBillForValidation( billXml );
 
