@@ -1,6 +1,6 @@
 import { notification } from 'antd';
-import { BillDocumentService, DocumentService } from 'client-sdk';
-import { LawEditor, getTitle } from 'law-document';
+import { BillDocumentService, DocumentService, BillService } from 'client-sdk';
+import { LawEditor, getTitle, exportXml } from 'law-document';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import modal from 'antd/es/modal';
@@ -146,6 +146,25 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
     useEffect(loadDocument, [loadDocument]);
 
+    const publishDocument = useCallback((editor: LawEditor) => {
+        if (!bill || !bill.id || !selected) {
+		log('not publish');
+            return;
+        }
+        log('publish bill document', { bill, selected });
+
+	BillService.billControllerPublishXml(bill.id)
+            .then((billItem) => {
+                log('published bill', { billItem });
+                setError(false);
+            })
+            .catch((error) => {
+                log('Error publishing bill');
+                setError(true);
+                console.error(error);
+            });
+    }, [bill, selected, exportXml]);
+
     return {
         bill,
         openDocument,
@@ -158,6 +177,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         slate,
         originalDocument,
         loadDocument,
+	publishDocument,
         hasBillLoadingError: hasBillError,
         hasDocumentLoadingError: hasError,
         importError,
