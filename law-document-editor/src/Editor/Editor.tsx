@@ -28,7 +28,7 @@ interface Props {
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;
-    publishDocument?: (editor: LawEditor) => void;
+    publishDocument?: () => void;
     bill?: Bill;
     navigationBlocker: NavigationBlocker;
     t: Translator;
