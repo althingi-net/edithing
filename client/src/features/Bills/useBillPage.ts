@@ -146,7 +146,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
     useEffect(loadDocument, [loadDocument]);
 
-    const publishDocument = useCallback() => {
+    const publishDocument = useCallback(() => {
         if (!bill || !bill.id || !selected) {
             log('not publish');
             return;
