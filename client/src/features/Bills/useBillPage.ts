@@ -146,14 +146,15 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
     useEffect(loadDocument, [loadDocument]);
 
-    const publishDocument = useCallback((editor: LawEditor) => {
+    const publishDocument = useCallback() => {
         if (!bill || !bill.id || !selected) {
-		log('not publish');
+            log('not publish');
             return;
         }
+
         log('publish bill document', { bill, selected });
 
-	BillService.billControllerPublishXml(bill.id)
+        BillService.billControllerPublishXml(bill.id)
             .then((billItem) => {
                 log('published bill', { billItem });
                 setError(false);
@@ -163,7 +164,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
                 setError(true);
                 console.error(error);
             });
-    }, [bill, selected, exportXml]);
+    }, [bill, selected]);
 
     return {
         bill,
@@ -177,7 +178,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         slate,
         originalDocument,
         loadDocument,
-	publishDocument,
+        publishDocument,
         hasBillLoadingError: hasBillError,
         hasDocumentLoadingError: hasError,
         importError,
