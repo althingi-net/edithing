@@ -25,7 +25,6 @@ class BillController {
     }
 
     @Get('/bills/:id/xml')
-    @ContentType("text/xml")
     async getXml(@Param('id') id: number) {
         const bill = await Bill.findOneOrFail({ where: { id } }) ;
         const documents = await BillDocument.find({
@@ -42,6 +41,7 @@ class BillController {
     }
 
     @Post('/bills/:id/xml')
+    @ContentType('text/xml')
     async publish(
         @Param('id') id: number,
     ) {
@@ -50,16 +50,16 @@ class BillController {
             where: { id: bill.id },
             select: ['content']
         });
-        const billXml = await exportBillXml(bill.title, documents);
+        const billXml = exportBillXml(bill.title, documents);
 
         // First, validate XML.
         await postBillForValidation( billXml );
 
         // Second, publish the XML.
-        await postBillForPublishing( billXml );
+        postBillForPublishing( billXml );
 
         return billXml;
-   }
+    }
 
     @Put('/bills/:id')
     @ResponseSchema(Bill)
