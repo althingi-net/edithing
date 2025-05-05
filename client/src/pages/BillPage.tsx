@@ -31,7 +31,7 @@ const BillPage: FC = () => {
         xml,
         originalDocument,
         saveDocument,
-	publishDocument,
+        publishDocument,
         hasBillLoadingError,
         hasDocumentLoadingError,
         isBillDocument,
