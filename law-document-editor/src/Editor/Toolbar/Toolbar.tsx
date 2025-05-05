@@ -36,6 +36,6 @@ export const Toolbar: FC<Props> = ({ saveDocument, publishDocument, bill, t, nav
             {saveDocument && <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>}
             {bill && <Button onClick={() => goTo(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}
 	    {publishDocument && <Button onClick={() => publishDocument(slate) }>{t('Publish Bill')}</Button>}
-      </Space>
+        </Space>
     );
 };
