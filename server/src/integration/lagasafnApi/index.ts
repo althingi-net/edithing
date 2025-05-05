@@ -8,3 +8,7 @@ export const postBillForValidation = async (billXml: string) => {
         console.log('Request to lagasafn failed', error);
     }
 };
+
+export const postBillForPublishing = async( billxml: string) => {
+	console.log('Bill published');
+};
