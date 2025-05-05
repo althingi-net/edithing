@@ -9,6 +9,6 @@ export const postBillForValidation = async (billXml: string) => {
     }
 };
 
-export const postBillForPublishing = async( billXml: string) => {
+export const postBillForPublishing = ( billXml: string) => {
     console.log('Bill XML published: ' + billXml);
 };
