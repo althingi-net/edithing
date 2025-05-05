@@ -1,5 +1,6 @@
 import { LawEditor } from 'law-document';
 import { useCallback } from 'react';
+import { exportXml } from 'law-document';
 
 export interface NavigationBlocker {
     blockNavigation: () => void;
@@ -8,7 +9,7 @@ export interface NavigationBlocker {
     goTo: (path: string) => void;
 }
 
-export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void) => {
+export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void, publishDocument?: (editor: LawEditor) => void) => {
     const { isNavigationBlocked, blockNavigation, unblockNavigation } = navigationBlocker;
 
     const handleChange = useCallback(() => {
@@ -35,8 +36,15 @@ export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: N
         }
     }, [editor, isNavigationBlocked, saveDocument, unblockNavigation]);
 
+    const handlePublish = useCallback(() => {
+	if (publishDocument) {
+	    publishDocument(editor);
+	}
+    }, [editor, publishDocument]);
+
     return {
         handleChange,
         handleSave,
+	handlePublish,
     };
 };
