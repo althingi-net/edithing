@@ -81,7 +81,7 @@ const BillPage: FC = () => {
                                     originalDocument={originalDocument!}
                                     xml={xml!}
                                     saveDocument={saveDocument}
-				    publishDocument={publishDocument}
+                                    publishDocument={publishDocument}
                                     readOnly={!isBillDocument}
                                     bill={bill}
                                     t={t}
