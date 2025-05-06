@@ -42,7 +42,10 @@ class BillController {
 
     @Post('/bills/:id/xml')
     @ContentType('text/xml')
-    async publish(
+    @OpenAPI({
+        description: 'Publish bill XML',
+    })
+    async publishXml(
         @Param('id') id: number,
     ) {
         const bill = await Bill.findOneOrFail({ where: { id } }) ;
