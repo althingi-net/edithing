@@ -90,7 +90,7 @@ export class BillService {
         });
     }
     /**
-     * Publish bill XML.
+     * Publish xml
      * @param id
      * @returns any Successful response
      * @throws ApiError
