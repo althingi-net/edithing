@@ -146,7 +146,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
     useEffect(loadDocument, [loadDocument]);
 
-    const publishDocument = useCallback(() => {
+    const publishBill = useCallback(() => {
         if (!bill || !bill.id || !selected) {
             log('not publish');
             return;
@@ -178,7 +178,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         slate,
         originalDocument,
         loadDocument,
-        publishDocument,
+        publishBill,
         hasBillLoadingError: hasBillError,
         hasDocumentLoadingError: hasError,
         importError,

@@ -9,13 +9,13 @@ import { Translator } from '../../translations';
 
 interface Props {
     saveDocument?: (editor: LawEditor) => void;
-    publishDocument?: (editor: LawEditor) => void;
+    publishBill?: (editor: LawEditor) => void;
     bill?: Bill;
     t: Translator;
     navigationBlocker: NavigationBlocker;
 }
 
-export const Toolbar: FC<Props> = ({ saveDocument, publishDocument, bill, t, navigationBlocker }) => {
+export const Toolbar: FC<Props> = ({ saveDocument, publishBill, bill, t, navigationBlocker }) => {
     const {
         setAutoNumberIncrements,
         setHighlightStructure,
@@ -35,7 +35,7 @@ export const Toolbar: FC<Props> = ({ saveDocument, publishDocument, bill, t, nav
             </Checkbox>
             {saveDocument && <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>}
             {bill && <Button onClick={() => goTo(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}
-	    {publishDocument && <Button onClick={() => publishDocument(slate) }>{t('Publish Bill')}</Button>}
+	    {publishBill && <Button onClick={() => publishBill(slate) }>{t('Publish Bill')}</Button>}
         </Space>
     );
 };

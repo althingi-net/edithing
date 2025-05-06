@@ -9,7 +9,7 @@ export interface NavigationBlocker {
     goTo: (path: string) => void;
 }
 
-export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void, publishDocument?: (editor: LawEditor) => void) => {
+export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: NavigationBlocker, saveDocument?: (editor: LawEditor) => void, publishBill?: (editor: LawEditor) => void) => {
     const { isNavigationBlocked, blockNavigation, unblockNavigation } = navigationBlocker;
 
     const handleChange = useCallback(() => {
@@ -37,10 +37,10 @@ export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: N
     }, [editor, isNavigationBlocked, saveDocument, unblockNavigation]);
 
     const handlePublish = useCallback(() => {
-	if (publishDocument) {
-	    publishDocument(editor);
+	if (publishBill) {
+	    publishBill(editor);
 	}
-    }, [editor, publishDocument]);
+    }, [editor, publishBill]);
 
     return {
         handleChange,
