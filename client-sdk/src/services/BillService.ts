@@ -91,6 +91,7 @@ export class BillService {
     }
     /**
      * Publish xml
+     * Publish bill XML
      * @param id
      * @returns any Successful response
      * @throws ApiError
