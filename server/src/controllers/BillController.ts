@@ -62,7 +62,7 @@ class BillController {
             // Second, publish the XML.
             await postBillForPublishing( billXml );
         } catch( error: any ) {
-            throw new HttpError( 400, error?.message ?? 'Unknown error' );
+            throw new HttpError( 400, error?.message );
         }
 
         return billXml;
