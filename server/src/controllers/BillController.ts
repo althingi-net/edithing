@@ -1,5 +1,5 @@
 import passport from 'koa-passport';
-import { Body, Get, JsonController, Param, Post, Put, UseBefore, ContentType } from 'routing-controllers';
+import { Body, Get, JsonController, Param, Post, Put, UseBefore, ContentType, HttpError } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { exportBillXml } from 'law-document';
 import Bill from '../entities/Bill';
@@ -55,11 +55,15 @@ class BillController {
         });
         const billXml = exportBillXml(bill.title, documents);
 
-        // First, validate XML.
-        await postBillForValidation( billXml );
+        try {
+            // First, validate XML.
+            await postBillForValidation( billXml );
 
-        // Second, publish the XML.
-        postBillForPublishing( billXml );
+            // Second, publish the XML.
+            await postBillForPublishing( billXml );
+        } catch( error: any ) {
+            throw new HttpError( 400, error?.message ?? 'Unknown error' );
+        }
 
         return billXml;
     }
