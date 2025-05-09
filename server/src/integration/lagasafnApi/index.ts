@@ -7,7 +7,7 @@ export const postBillForValidation = async (billXml: string) => {
     try {
         await axios.post(lagasafnApi.url + '/api/bill/validate', billXml);
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) )
+        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
     }
 };
 
@@ -15,6 +15,6 @@ export const postBillForPublishing = async (billXml: string) => {
     try {
         await axios.post(lagasafnApi.url + '/api/bill/publish', billXml);
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) )
+        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
     }
 };
