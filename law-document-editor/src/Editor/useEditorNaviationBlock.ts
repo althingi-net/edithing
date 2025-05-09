@@ -37,9 +37,9 @@ export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: N
     }, [editor, isNavigationBlocked, saveDocument, unblockNavigation]);
 
     const handlePublish = useCallback(() => {
-	if (publishBill) {
-	    publishBill(editor);
-	}
+        if (publishBill) {
+            publishBill(editor);
+        }
     }, [editor, publishBill]);
 
     return {
