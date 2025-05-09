@@ -1,6 +1,6 @@
 import { notification } from 'antd';
 import { BillDocumentService, DocumentService, BillService } from 'client-sdk';
-import { LawEditor, getTitle, exportXml } from 'law-document';
+import { LawEditor, getTitle } from 'law-document';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import modal from 'antd/es/modal';
