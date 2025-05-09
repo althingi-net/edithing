@@ -35,7 +35,7 @@ export const Toolbar: FC<Props> = ({ saveDocument, publishBill, bill, t, navigat
             </Checkbox>
             {saveDocument && <Button type={isNavigationBlocked ? 'primary' : 'default'} disabled={!isNavigationBlocked} onClick={() => saveDocument(slate)}>{t('Save')}</Button>}
             {bill && <Button onClick={() => goTo(`/bill/${bill.id}`)}>{t('Open Bill Preview')}</Button>}
-	    {publishBill && <Button onClick={() => publishBill(slate) } disabled={!!isNavigationBlocked}>{t('Publish Bill')}</Button>}
+            {publishBill && <Button onClick={() => publishBill(slate) } disabled={!!isNavigationBlocked}>{t('Publish Bill')}</Button>}
         </Space>
     );
 };
