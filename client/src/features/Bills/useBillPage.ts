@@ -156,6 +156,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
         BillService.billControllerPublishXml(bill.id)
             .then((billItem) => {
+                notification.success({ message: t('Bill published'), description: `${selected} ${bill.title}` });
                 log('published bill', { billItem });
                 setError(false);
             })

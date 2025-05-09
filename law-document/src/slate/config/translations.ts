@@ -93,5 +93,6 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'This bill is still empty!': 'Þetta frumvarp er enn tómt!',
         'Tip: Start editing this bill by adding a document to it.': 'Ábending: Byrjaðu á að breyta þessu frumvarpi með því að bæta við skjali í það.',
         'Publish Bill': 'Birta frumvarp',
+        'Bill published': 'Frumvarp hefur verið birt',
     },
 };
