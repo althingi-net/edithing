@@ -1,6 +1,5 @@
 import { LawEditor } from 'law-document';
 import { useCallback } from 'react';
-import { exportXml } from 'law-document';
 
 export interface NavigationBlocker {
     blockNavigation: () => void;
