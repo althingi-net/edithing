@@ -45,6 +45,6 @@ export const useEditorNavigationBlock = (editor: LawEditor, navigationBlocker: N
     return {
         handleChange,
         handleSave,
-	handlePublish,
+        handlePublish,
     };
 };
