@@ -165,7 +165,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
                 setError(true);
                 console.error(error);
             });
-    }, [bill, selected]);
+    }, [bill, selected, t]);
 
     return {
         bill,
