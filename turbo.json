@@ -17,8 +17,7 @@
       "cache": false
     },
     "test": {
-      "outputs": [""],
-      "env": ["DATABASE_PORT", "DATABASE_USER", "DATABASE_NAME", "DATABASE_PASSWORD"]
+      "outputs": [""]
     },
     "typecheck": {
       "outputs": []
