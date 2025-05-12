@@ -63,10 +63,6 @@ jobs:
         collation server: 'utf8mb4_general_ci'
 
     - name: Run tests
-      shell: bash
-      run: echo "$DATABASE_USER"
-
-    - name: Run tests
       run: pnpm run test
       env:
         DATABASE_PORT: 3307
