@@ -9,6 +9,8 @@ export const setConnection = (ds: DataSource) => {
 };
 
 export const initConnection = async () => {
+    console.log(database);
+    
     await createDatabase({ ifNotExist: true, options: database });
 
     if (!connection) {
