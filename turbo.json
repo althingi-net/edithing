@@ -4,8 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "build/**"],
-      "env": ["DATABASE_PORT", "DATABASE_USER", "DATABASE_NAME", "DATABASE_PASSWORD"]
+      "outputs": ["dist/**", ".next/**", "build/**"]
     },
     "lint": {
       "outputs": []
@@ -18,7 +17,8 @@
       "cache": false
     },
     "test": {
-      "outputs": [""]
+      "outputs": [""],
+      "env": ["DATABASE_PORT", "DATABASE_USER", "DATABASE_NAME", "DATABASE_PASSWORD"]
     },
     "typecheck": {
       "outputs": []
