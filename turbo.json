@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "build/**"],
-      "env": ["DATABASE_PORT", "DATABASE_USER", "DATABASE_NAME", "DATABASE_PASSWORD"],
+      "env": ["DATABASE_PORT", "DATABASE_USER", "DATABASE_NAME", "DATABASE_PASSWORD"]
     },
     "lint": {
       "outputs": []
