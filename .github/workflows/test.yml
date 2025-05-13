@@ -62,6 +62,9 @@ jobs:
         character set server: 'utf8mb4'
         collation server: 'utf8mb4_general_ci'
 
+    - name: Start docker containers
+      run: cd server && docker-compose up -d
+      
     - name: Run tests
       run: pnpm run test
       env:
