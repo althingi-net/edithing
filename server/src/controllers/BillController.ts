@@ -48,24 +48,35 @@ class BillController {
     async publishXml(
         @Param('id') id: number,
     ) {
-        const bill = await Bill.findOneOrFail({ where: { id } }) ;
-        const documents = await BillDocument.find({
-            where: { id: bill.id },
-            select: ['content']
-        });
-        const billXml = exportBillXml(bill.title, documents);
+        const bills = await Bill.find({ where: { id } });
 
-        try {
-            // First, validate XML.
-            await postBillForValidation( billXml );
-
-            // Second, publish the XML.
-            await postBillForPublishing( billXml );
-        } catch( error: any ) {
-            throw new HttpError( 400, <string>error?.message );
+        if ( bills.length < 1 || ! bills[0]?.documents ) {
+            throw new HttpError( 404, 'Unable to find bill documents');
         }
 
-        return billXml;
+        const billsXml: string[] = [];
+
+        bills[0].documents.forEach( async bill => {
+            const documents = await BillDocument.find({
+                where: { id: bill.id },
+                select: ['content']
+            });
+
+            const billXml = exportBillXml(bill.title, documents);
+            billsXml.push( billXml );
+
+            try {
+                // First, validate XML.
+                await postBillForValidation( billXml );
+
+                // Second, publish the XML.
+                await postBillForPublishing( billXml );
+            } catch( error: any ) {
+                throw new HttpError( 400, <string>error?.message );
+            }
+        } );
+
+        return billsXml;
     }
 
     @Put('/bills/:id')
