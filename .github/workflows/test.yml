@@ -62,6 +62,12 @@ jobs:
         character set server: 'utf8mb4'
         collation server: 'utf8mb4_general_ci'
 
+    - uses: hoverkraft-tech/compose-action@v2.0.1
+      with:
+        compose-file: "./server/docker-compose.yml"
+        services: |
+          rabbitmq
+      
     - name: Run tests
       run: pnpm run test
       env:
