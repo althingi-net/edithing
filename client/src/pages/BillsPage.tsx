@@ -44,7 +44,7 @@ const BillsPage = () => {
                             <List.Item.Meta
                                 avatar={<UserAvatar user={item.author} />}
                                 title={item.title}
-                                description={item.status}
+                                description={item.description + ' (' + t(item.status) + ')'}
                             />
                         </List.Item>
                     }
