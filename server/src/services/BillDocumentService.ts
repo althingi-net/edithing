@@ -89,11 +89,9 @@ export const runBillDocumentUpdate = async (updateId: number) => {
         throw new Error('Bill not found');
     }
 
-    const billXml = exportBillXml(bill.title, documents);
+    const billXml = exportBillXml(documents);
     await writeFile(`./tmp/bill-${originalDocument.billId}.xml`, billXml);
     console.log('Bill XML exported to', `./tmp/bill-${originalDocument.billId}.xml`);
-
-    await postBillForValidation(billXml);
 };
 
 const stringifyPayload = ({ content }: { content: object }) => {
