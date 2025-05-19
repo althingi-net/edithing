@@ -1,6 +1,6 @@
 import { notification } from 'antd';
 import { BillDocumentService, DocumentService, BillService } from 'client-sdk';
-import { LawEditor, getTitle } from 'law-document';
+import { LawEditor, getTitle, getDescription } from 'law-document';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import modal from 'antd/es/modal';
@@ -90,8 +90,9 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         }
 
         const title = getTitle(editor.children);
+        const description = getDescription(editor.children);
 
-        log('save bill document', { selected, documentId, title });
+        log('save bill document', { selected, documentId, title, description });
 
         BillDocumentService.billDocumentControllerUpdate(documentId, {
             title,

@@ -68,7 +68,7 @@ const BillPreview: FC<Props> = ({ bill }) => {
                     )}
                     {display === 'xml' && (
                         <CodeBlock
-                            text={exportBillXml(bill.title, documents)}
+                            text={exportBillXml(documents)}
                             language={'xml'}
                             customStyle={{ overflowX: 'visible' }}
                         />
