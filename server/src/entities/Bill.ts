@@ -3,7 +3,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, Pri
 import BillDocument from './BillDocument';
 import User from './User';
 
-enum BillStatus {
+export enum BillStatus {
     DRAFT = 'draft',
     PUBLISHED = 'published',
     ARCHIVED = 'archived',
@@ -21,10 +21,20 @@ class Bill extends BaseEntity {
     @ValidateNested()
     author!: User;
 
+    /** Public ID of this bill */
+    @Column()
+    @IsString()
+    lagasafnID!: number;
+
     /** Title of this bill */
     @Column()
     @IsString()
     title!: string;
+
+    /** Description of this bill */
+    @Column()
+    @IsString()
+    description!: string;
 
     /** Documents that belong to this bill */
     @OneToMany(() => BillDocument, billDocument => billDocument.bill, { cascade: true, eager: true })
