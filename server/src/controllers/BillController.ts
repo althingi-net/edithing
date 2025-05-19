@@ -1,10 +1,10 @@
 import passport from 'koa-passport';
 import { Body, Get, JsonController, Param, Post, Put, UseBefore, ContentType, HttpError } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
-import { exportBillXml } from 'law-document';
-import Bill from '../entities/Bill';
+import { exportBillMetaXml, exportBillXml } from 'law-document';
+import Bill, { BillStatus } from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
-import { postBillForValidation, postBillForPublishing } from '../integration/lagasafnApi';
+import { postBillMeta, postBillForValidation, postBillForPublishing } from '../integration/lagasafnApi';
 
 @JsonController()
 @OpenAPI({
@@ -31,7 +31,7 @@ class BillController {
             where: { bill },
             select: ['originalXml', 'content', 'identifier', 'title']
         });
-        return exportBillXml(bill.title, documents);
+        return exportBillXml(documents);
     }
 
     @Post('/bills')
@@ -54,6 +54,9 @@ class BillController {
             throw new HttpError( 404, 'Unable to find bill documents');
         }
 
+        const billMetaXml = exportBillMetaXml( bills[0].lagasafnID, bills[0].title, bills[0].description ?? '' );
+        await postBillMeta( billMetaXml );
+
         const billsXml: string[] = [];
 
         bills[0].documents.forEach( async bill => {
@@ -62,7 +65,7 @@ class BillController {
                 select: ['content']
             });
 
-            const billXml = exportBillXml(bill.title, documents);
+            const billXml = exportBillXml(documents);
             billsXml.push( billXml );
 
             try {
@@ -70,11 +73,15 @@ class BillController {
                 await postBillForValidation( billXml );
 
                 // Second, publish the XML.
-                await postBillForPublishing( billXml );
+                await postBillForPublishing( id, billXml );
             } catch( error: any ) {
                 throw new HttpError( 400, <string>error?.message );
             }
         } );
+
+        // Set status as 'published'.
+        bills[0].status = BillStatus.PUBLISHED;
+        bills[0].save();
 
         return billsXml;
     }
