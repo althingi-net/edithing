@@ -6,17 +6,31 @@ export interface BillDocument {
     originalXml: string;
     content: string;
     identifier: string;
-    title: string;
 }
 
-export const exportBillXml = (billTitle: string, billDocuments: BillDocument[]): string => {
+export const exportBillMetaXml = (billPublicID: number, billTitle: string, billDescription: string): string => {
+
+    return xmlFormat(`
+        <bill>
+            <lagasafnID>
+                ${billPublicID}
+            </lagasafnID>
+            <title>
+                ${billTitle}
+            </title>
+            <description>
+                ${billDescription}
+            </description>
+        </bill>
+    `);
+};
+
+
+export const exportBillXml = (billDocuments: BillDocument[]): string => {
     const documents = billDocuments.map(document => parseDocument(document));
 
     return xmlFormat(`
         <bill>
-            <title>
-                ${billTitle}
-            </title>
             ${documents.join('\n')}
         </bill>
     `);
