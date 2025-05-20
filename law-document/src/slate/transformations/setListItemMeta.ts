@@ -7,12 +7,11 @@ import { setMeta } from './setMeta';
 
 interface Options {
     updateTitle?: boolean;
-    updateDescription?: boolean;
     select?: boolean;
 }
 
 export const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta, options: Options = {}) => {  
-    const { updateTitle = true, updateDescription = true, select = true } = options;
+    const { updateTitle = true, select = true } = options;
 
     // Add romanNr and nrType
     if (meta.type === MetaType.CHAPTER) {
@@ -30,7 +29,7 @@ export const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta
 
     setMeta(editor, path, meta);
 
-    if (updateTitle || updateDescription) {
+    if (updateTitle) {
         setListItemTitleFromMeta(editor, path, meta, select);
     }
 };
