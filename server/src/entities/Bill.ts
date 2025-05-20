@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString, IsInt, ValidateNested, Min, Length } from 'class-validator';
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import BillDocument from './BillDocument';
 import User from './User';
@@ -23,17 +23,20 @@ class Bill extends BaseEntity {
 
     /** Public ID of this bill */
     @Column()
-    @IsString()
+    @IsInt()
+    @Min(1)
     lagasafnID!: number;
 
     /** Title of this bill */
     @Column()
     @IsString()
+    @Length(3)
     title!: string;
 
     /** Description of this bill */
     @Column()
     @IsString()
+    @Length(10)
     description!: string;
 
     /** Documents that belong to this bill */
