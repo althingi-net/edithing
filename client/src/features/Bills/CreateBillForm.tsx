@@ -24,7 +24,7 @@ const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
         }
 
         BillService.billControllerCreate({
-            lagasafnID,
+            lagasafnID: Number( lagasafnID ),
             title,
             description,
             author: session.user,
