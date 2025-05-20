@@ -73,7 +73,7 @@ class BillController {
                 await postBillForValidation( billXml );
 
                 // Second, publish the XML.
-                await postBillForPublishing( id, billXml );
+                await postBillForPublishing( bills[0].lagasafnID, billXml );
             } catch( error: any ) {
                 throw new HttpError( 400, <string>error?.message );
             }
