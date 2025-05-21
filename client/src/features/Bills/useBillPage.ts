@@ -149,7 +149,6 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
     const publishBill = useCallback(() => {
         if (!bill || !bill.id || !selected) {
-            log('not publish');
             return;
         }
 
