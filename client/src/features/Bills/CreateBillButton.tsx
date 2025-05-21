@@ -25,7 +25,7 @@ const CreateBillButton: FC<Props> = ({ onSubmit }) => {
             >
                 <PlusOutlined /> {t('Create New Bill')}
             </Button>
-            <Modal title={t('Add new Entry')} isOpen={isOpen} onClose={onClose}>
+            <Modal title={t('Create New Bill')} isOpen={isOpen} onClose={onClose}>
                 <div>
                     <CreateBillForm onSubmit={onClose} onCancel={onClose} />
                 </div>
