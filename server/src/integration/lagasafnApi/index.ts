@@ -2,6 +2,7 @@ import axios from 'axios';
 import { lagasafnApi } from '../../config/lagasafnApi';
 
 axios.defaults.headers.post['Content-Type'] = 'application/xml';
+axios.defaults.headers.post['Authorization'] = 'Bearer ' + lagasafnApi.api_access_token;
 
 export const postBillMeta = async (billMetaXml: string) => {
     try {
