@@ -15,7 +15,8 @@ export const postBillForValidation = async (billXml: string) => {
             config
         );
     } catch (error: any) {
-        throw new Error(<string>error?.response.data?.message || 'Unknown error');
+        // Do not interrupt processing in case of external service failure
+        console.log('Request to lagasafn failed', error);
     }
 };
 
@@ -27,6 +28,7 @@ export const postBillForPublishing = async (billXml: string) => {
             config
         );
     } catch (error: any) {
-        throw new Error(<string>error?.response.data?.message || 'Unknown error');
+        // Do not interrupt processing in case of external service failure
+        console.log('Request to lagasafn failed', error);
     }
 };
