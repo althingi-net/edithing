@@ -41,6 +41,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Increase following chapters nr attribute and title?': 'Uppfæra númer og nöfn færslna sem koma á eftir',
         'Cancel': 'Hætta við',
         'Add': 'Bæta við',
+        'Add new Entry': 'Bæta við nýrri færslu',
         'Create a title for this paragraph. Needs to be first text of paragraph': 'Búðu til titil fyrir þessa málsgrein. Þarf að vera fyrsti texti málsgreinar',
         'Create a name for this paragraph. Needs to be first text of paragraph if there is no title or be right after the title': 'Búðu til nafn fyrir þessa málsgrein. Þarf að vera fyrsti texti málsgreinar ef það er enginn titill eða vera rétt á eftir titlinum',
         'Format the selected text as its own sentence.': 'Gera valinn texta að málslið.',
