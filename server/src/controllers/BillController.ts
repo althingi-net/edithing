@@ -1,9 +1,10 @@
 import passport from 'koa-passport';
-import { Body, Get, JsonController, Param, Post, Put, UseBefore } from 'routing-controllers';
+import { Body, Get, JsonController, Param, Post, Put, UseBefore, ContentType, HttpError } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { exportBillXml } from 'law-document';
 import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
+import { postBillForValidation, postBillForPublishing } from '../integration/lagasafnApi';
 
 @JsonController()
 @OpenAPI({
@@ -37,6 +38,45 @@ class BillController {
     @ResponseSchema(Bill)
     create(@Body() bill: Bill) {
         return Bill.save(bill);
+    }
+
+    @Post('/bills/:id/xml')
+    @ContentType('text/xml')
+    @OpenAPI({
+        description: 'Publish bill XML',
+    })
+    async publishXml(
+        @Param('id') id: number,
+    ) {
+        const bills = await Bill.find({ where: { id } });
+
+        if ( bills.length < 1 || ! bills[0]?.documents ) {
+            throw new HttpError( 404, 'Unable to find bill documents');
+        }
+
+        const billsXml: string[] = [];
+
+        bills[0].documents.forEach( async bill => {
+            const documents = await BillDocument.find({
+                where: { id: bill.id },
+                select: ['content']
+            });
+
+            const billXml = exportBillXml(bill.title, documents);
+            billsXml.push( billXml );
+
+            try {
+                // First, validate XML.
+                await postBillForValidation( billXml );
+
+                // Second, publish the XML.
+                await postBillForPublishing( billXml );
+            } catch( error: any ) {
+                throw new HttpError( 400, <string>error?.message );
+            }
+        } );
+
+        return billsXml;
     }
 
     @Put('/bills/:id')

@@ -77,7 +77,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Documents in the Bill': 'Skjöl í frumvarpi',
         'Add document to bill and start editing': 'Bæta við skjali í frumvarp og byrja að breyta',
         'Remove document from bill and delete changes': 'Fjarlægja skjal úr frumvarpi og eyða breytingum',
-        'Create New Bill': 'Búa til nýtt frumvarp',
+        'Create New Bill': 'Stofna nýtt frumvarp',
         'Delete Bill Document': 'Eyða skjali',
         'Are you sure you want to permanently and irreversibly delete this document?': 'Ertu viss um að þú viljir eyða þessu skjali varanlega og óafturkræft?',
         'Yes, delete!': 'Já, eyða!',
@@ -92,5 +92,7 @@ export const translations: { [key: string]: { [key: string]: string } } = {
         'Open Bill Preview': 'Opna frumvarpsyfirlit',
         'This bill is still empty!': 'Þetta frumvarp er enn tómt!',
         'Tip: Start editing this bill by adding a document to it.': 'Ábending: Byrjaðu á að breyta þessu frumvarpi með því að bæta við skjali í það.',
+        'Publish Bill': 'Birta frumvarp',
+        'Bill published': 'Frumvarp hefur verið birt',
     },
 };

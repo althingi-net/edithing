@@ -89,4 +89,22 @@ export class BillService {
             },
         });
     }
+    /**
+     * Publish xml
+     * Publish bill XML
+     * @param id
+     * @returns any Successful response
+     * @throws ApiError
+     */
+    public static billControllerPublishXml(
+        id: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/bills/{id}/xml',
+            path: {
+                'id': id,
+            },
+        });
+    }
 }

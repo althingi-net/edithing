@@ -28,13 +28,14 @@ interface Props {
     xml: string;
     readOnly?: boolean;
     saveDocument?: (editor: LawEditor) => void;
+    publishBill?: () => void;
     bill?: Bill;
     navigationBlocker: NavigationBlocker;
     t: Translator;
 }
 
 export const Editor: FC<Props> = (props) => {
-    const { slate, originalDocument, xml, readOnly, saveDocument, bill, navigationBlocker, t } = props;
+    const { slate, originalDocument, xml, readOnly, saveDocument, publishBill, bill, navigationBlocker, t } = props;
     const hasHighlight = useEditorConfig(state => state.highlightStructure);
     const editor = useMemo(() => createEditor(), []);
     const { handleChange, handleSave } = useEditorNavigationBlock(editor, navigationBlocker, saveDocument);
@@ -71,7 +72,7 @@ export const Editor: FC<Props> = (props) => {
                         </div>
                     </Col>
                     <Col span={12}>
-                        { readOnly ? null : <Toolbar saveDocument={handleSave} bill={bill} t={t} navigationBlocker={navigationBlocker} /> }
+                        { readOnly ? null : <Toolbar saveDocument={handleSave} publishBill={publishBill} bill={bill} t={t} navigationBlocker={navigationBlocker} /> }
                         <EditorSidePanel
                             t={t}
                             readOnly={readOnly}
