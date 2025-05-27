@@ -15,7 +15,7 @@ export const postBillForValidation = async (billXml: string) => {
             config
         );
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
+        throw new Error(error?.response.data?.message ?? 'Unknown error');
     }
 };
 
@@ -27,6 +27,6 @@ export const postBillForPublishing = async (billXml: string) => {
             config
         );
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
+        throw new Error(error?.response.data?.message ?? 'Unknown error');
     }
 };
