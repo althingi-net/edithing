@@ -4,7 +4,6 @@ import { exportBillXml } from 'law-document';
 import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
 import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
-import { postBillForValidation } from '../integration/lagasafnApi';
 import connection from '../integration/messageQueue/connection';
 
 export const subscribeBillDocumentUpdateQueue = async (overwriteChannel = 'BillDocumentUpdate') => {
