@@ -8,13 +8,12 @@ export interface BillDocument {
     identifier: string;
 }
 
-export const exportBillMetaXml = (billPublicID: number, billTitle: string, billDescription: string): string => {
-
+export const exportBillMetaXml = (billPublicId: number, billTitle: string, billDescription: string): string => {
     return xmlFormat(`
         <bill>
-            <lagasafnID>
-                ${billPublicID}
-            </lagasafnID>
+            <lagasafnId>
+                ${billPublicId}
+            </lagasafnId>
             <title>
                 ${billTitle}
             </title>
