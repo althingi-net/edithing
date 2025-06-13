@@ -90,9 +90,8 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
         }
 
         const title = getTitle(editor.children);
-        const description = getDescription(editor.children);
 
-        log('save bill document', { selected, documentId, title, description });
+        log('save bill document', { selected, documentId, title });
 
         BillDocumentService.billDocumentControllerUpdate(documentId, {
             title,
