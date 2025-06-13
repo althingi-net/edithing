@@ -31,7 +31,7 @@ export const postBillForValidation = async (billXml: string) => {
 };
 
 export const postBillForPublishing = async (billNr: number, billXml: string) => {
-    const url = lagasafnApi.url + '/api/bill/' + String( billNr ) + '/document/publish';
+    const url = `${lagasafnApi.url}/api/bill/${billNr}/document/publish`;
 
     try {
         await axios.post(url, billXml, getConfig());
