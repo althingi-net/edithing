@@ -1,11 +1,9 @@
 import { Node, Text } from 'slate';
 
 export interface TextNode {
-    lagasafnID?: string;
     text: string;
     title?: boolean;
     name?: boolean;
-    description?: string;
     nr?: string;
     bold?: boolean;
     expirySymbolOffset?: string;
