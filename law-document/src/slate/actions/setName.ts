@@ -31,7 +31,7 @@ export const setName = (
     );
 
     const meta = { ...listItem.meta, name: true };
-    
+
     // Remove title from meta
     if (meta.title) {
         const titleNode = Node.get(editor, [...path, 0, 0]);

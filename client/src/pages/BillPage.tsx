@@ -62,7 +62,7 @@ const BillPage: FC = () => {
                     </Loader>
                 </Col>
                 <Col span={20} style={{ height: '100%' }}>
-                    <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden'  }}>
+                    <Content style={{ paddingLeft: '20px', height: '100%', overflow: 'hidden' }}>
                         {importError ? (
                             <>
                                 <h1 style={{ flexGrow: 1, textAlign: 'center' }}>{t('Document not available')}</h1>

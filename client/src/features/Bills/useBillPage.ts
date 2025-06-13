@@ -52,7 +52,7 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
 
         log('add bill document', { bill, identifier });
 
-        BillDocumentService.billDocumentControllerCreate({ billId: bill.id , identifier })
+        BillDocumentService.billDocumentControllerCreate({ billId: bill.id, identifier })
             .then(reloadBill)
             .then(() => openDocument(identifier))
             .catch(handleError);
@@ -72,9 +72,9 @@ const useBillPage = (disableActions = false, billPage = '/bill') => {
                 if (!bill || !bill.id) {
                     throw new Error('Bill not found');
                 }
-                
+
                 log('delete bill document', { bill, identifier });
-        
+
                 BillDocumentService.billDocumentControllerDelete(bill.id, identifier)
                     .then(reloadBill)
                     .then(() => openDocument())
