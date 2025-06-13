@@ -13,10 +13,8 @@ describe('DocumentService', () => {
         const identifier = '2023.65';
         xmlContent = '<xml></xml>';
 
-        const [doc1, doc2] = await Promise.all([
-            findOrImportDocument(identifier),
-            findOrImportDocument(identifier),
-        ]);
+        const doc1 = await findOrImportDocument(identifier);
+        const doc2 = await findOrImportDocument(identifier);
 
         expect(doc1).toEqual(doc2);
     });

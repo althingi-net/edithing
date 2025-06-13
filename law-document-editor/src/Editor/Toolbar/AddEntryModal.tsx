@@ -11,7 +11,7 @@ interface Props {
 
 export const AddEntryModal: FC<Props> = ({ isOpen, onClose, t }) => {
     return (
-        <Modal title={t('Create New Bill')} isOpen={isOpen} onClose={onClose}>
+        <Modal title={t('Add new Entry')} isOpen={isOpen} onClose={onClose}>
             <div>
                 <AddEntryForm onSubmit={onClose} onCancel={onClose} t={t} />
             </div>
