@@ -25,7 +25,7 @@ class Bill extends BaseEntity {
     @Column()
     @IsInt()
     @Min(1)
-    lagasafnID!: number;
+    lagasafnId!: number;
 
     /** Title of this bill */
     @Column()

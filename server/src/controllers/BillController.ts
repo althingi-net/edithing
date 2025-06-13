@@ -54,7 +54,7 @@ class BillController {
             throw new HttpError( 404, 'Unable to find bill documents');
         }
 
-        const billMetaXml = exportBillMetaXml( bills[0].lagasafnID, bills[0].title, bills[0].description ?? '' );
+        const billMetaXml = exportBillMetaXml( bills[0].lagasafnId, bills[0].title, bills[0].description ?? '' );
         await postBillMeta( billMetaXml );
 
         const billsXml: string[] = [];
@@ -73,7 +73,7 @@ class BillController {
                 await postBillForValidation( billXml );
 
                 // Second, publish the XML.
-                await postBillForPublishing( bills[0].lagasafnID, billXml );
+                await postBillForPublishing( bills[0].lagasafnId, billXml );
             } catch( error: any ) {
                 throw new HttpError( 400, <string>error?.message );
             }
