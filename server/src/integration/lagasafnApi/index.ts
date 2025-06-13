@@ -16,7 +16,7 @@ export const postBillMeta = async (billMetaXml: string) => {
     try {
         await axios.post(url, billMetaXml, getConfig());
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
+        console.log('Request to lagasafn failed', error);
     }
 };
 
@@ -26,7 +26,7 @@ export const postBillForValidation = async (billXml: string) => {
     try {
         await axios.post(url, billXml, getConfig());
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
+        console.log('Request to lagasafn failed', error);
     }
 };
 
@@ -36,6 +36,6 @@ export const postBillForPublishing = async (billNr: number, billXml: string) => 
     try {
         await axios.post(url, billXml, getConfig());
     } catch (error: any) {
-        throw new Error( <string>( error?.response.data?.message ?? 'Unknown error' ) );
+        console.log('Request to lagasafn failed', error);
     }
 };
