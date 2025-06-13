@@ -68,6 +68,5 @@ export * from './slate/xml/escapeXml';
 export * from './slate/xml/exportBillXml';
 export * from './slate/xml/exportSpeechXml';
 export * from './slate/xml/exportXml';
-export * from './slate/xml/getDescription';
 export * from './slate/xml/getTitle';
 export * from './slate/xml/importXml';
