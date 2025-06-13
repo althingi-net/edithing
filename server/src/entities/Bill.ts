@@ -1,9 +1,9 @@
-import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString, IsInt, ValidateNested, Min, Length } from 'class-validator';
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import BillDocument from './BillDocument';
 import User from './User';
 
-enum BillStatus {
+export enum BillStatus {
     DRAFT = 'draft',
     PUBLISHED = 'published',
     ARCHIVED = 'archived',
@@ -21,10 +21,23 @@ class Bill extends BaseEntity {
     @ValidateNested()
     author!: User;
 
+    /** Public ID of this bill */
+    @Column()
+    @IsInt()
+    @Min(1)
+    lagasafnId!: number;
+
     /** Title of this bill */
     @Column()
     @IsString()
+    @Length(3)
     title!: string;
+
+    /** Description of this bill */
+    @Column()
+    @IsString()
+    @Length(10)
+    description!: string;
 
     /** Documents that belong to this bill */
     @OneToMany(() => BillDocument, billDocument => billDocument.bill, { cascade: true, eager: true })

@@ -15,6 +15,8 @@ describe('queue worker', () => {
         await Bill.save({
             id: 1,
             title: 'title',
+            lagasafnId: 1,
+            description: 'description',
         });
         await BillDocument.save({
             id: 2,
@@ -56,6 +58,8 @@ describe('queue worker', () => {
         await Bill.save({
             id: 10,
             title: 'title',
+            lagasafnId: 2,
+            description: 'description',
         });
         await BillDocument.save({
             id: 20,
@@ -111,6 +115,8 @@ describe('queue worker', () => {
         await Bill.save({
             id: 10,
             title: 'title',
+            lagasafnId: 3,
+            description: 'description',
         });
         await BillDocument.save({
             id: 20,

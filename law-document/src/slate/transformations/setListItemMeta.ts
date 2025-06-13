@@ -10,9 +10,9 @@ interface Options {
     select?: boolean;
 }
 
-export const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta, options: Options = {}) => {  
+export const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta: ListItemMeta, options: Options = {}) => {
     const { updateTitle = true, select = true } = options;
-    
+
     // Add romanNr and nrType
     if (meta.type === MetaType.CHAPTER) {
         meta = {
@@ -21,7 +21,7 @@ export const setListItemMeta = (editor: Editor, node: ListItem, path: Path, meta
             nrType: 'roman',
         };
 
-    // Remove romanNr and nrType
+        // Remove romanNr and nrType
     } else if (node.meta?.type === MetaType.CHAPTER) {
         const { romanNr, nrType, ...reducedMeta } = meta;
         meta = reducedMeta;

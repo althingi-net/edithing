@@ -4,7 +4,6 @@ import { exportBillXml } from 'law-document';
 import Bill from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
 import BillDocumentUpdate, { UpdateStatus } from '../entities/BillDocumentUpdate';
-import { postBillForValidation } from '../integration/lagasafnApi';
 import connection from '../integration/messageQueue/connection';
 
 export const subscribeBillDocumentUpdateQueue = async (overwriteChannel = 'BillDocumentUpdate') => {
@@ -89,11 +88,9 @@ export const runBillDocumentUpdate = async (updateId: number) => {
         throw new Error('Bill not found');
     }
 
-    const billXml = exportBillXml(bill.title, documents);
+    const billXml = exportBillXml(documents);
     await writeFile(`./tmp/bill-${originalDocument.billId}.xml`, billXml);
     console.log('Bill XML exported to', `./tmp/bill-${originalDocument.billId}.xml`);
-
-    await postBillForValidation(billXml);
 };
 
 const stringifyPayload = ({ content }: { content: object }) => {

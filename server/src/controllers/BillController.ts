@@ -1,16 +1,16 @@
 import passport from 'koa-passport';
 import { Body, Get, JsonController, Param, Post, Put, UseBefore, ContentType, HttpError } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
-import { exportBillXml } from 'law-document';
-import Bill from '../entities/Bill';
+import { exportBillMetaXml, exportBillXml } from 'law-document';
+import Bill, { BillStatus } from '../entities/Bill';
 import BillDocument from '../entities/BillDocument';
-import { postBillForValidation, postBillForPublishing } from '../integration/lagasafnApi';
+import { postBillMeta, postBillForValidation, postBillForPublishing } from '../integration/lagasafnApi';
 
 @JsonController()
 @OpenAPI({
     security: [{ bearerAuth: [] }],
 })
-@UseBefore(passport.authenticate('jwt', { session: false }) )
+@UseBefore(passport.authenticate('jwt', { session: false }))
 class BillController {
     @Get('/bills')
     @ResponseSchema(Bill, { isArray: true })
@@ -26,12 +26,12 @@ class BillController {
 
     @Get('/bills/:id/xml')
     async getXml(@Param('id') id: number) {
-        const bill = await Bill.findOneOrFail({ where: { id } }) ;
+        const bill = await Bill.findOneOrFail({ where: { id } });
         const documents = await BillDocument.find({
             where: { bill },
             select: ['originalXml', 'content', 'identifier', 'title']
         });
-        return exportBillXml(bill.title, documents);
+        return exportBillXml(documents);
     }
 
     @Post('/bills')
@@ -48,33 +48,40 @@ class BillController {
     async publishXml(
         @Param('id') id: number,
     ) {
-        const bills = await Bill.find({ where: { id } });
+        const bill = await Bill.findOneOrFail({ where: { id } });
 
-        if ( bills.length < 1 || ! bills[0]?.documents ) {
-            throw new HttpError( 404, 'Unable to find bill documents');
+        if (!bill.documents) {
+            throw new HttpError(404, 'Unable to find bill documents');
         }
+
+        const billMetaXml = exportBillMetaXml(bill.lagasafnId, bill.title, bill.description);
+        await postBillMeta(billMetaXml);
 
         const billsXml: string[] = [];
 
-        bills[0].documents.forEach( async bill => {
+        bill.documents.forEach(async billDocument => {
             const documents = await BillDocument.find({
-                where: { id: bill.id },
+                where: { id: billDocument.id },
                 select: ['content']
             });
 
-            const billXml = exportBillXml(bill.title, documents);
-            billsXml.push( billXml );
+            const billXml = exportBillXml(documents);
+            billsXml.push(billXml);
 
             try {
                 // First, validate XML.
-                await postBillForValidation( billXml );
+                await postBillForValidation(billXml);
 
                 // Second, publish the XML.
-                await postBillForPublishing( billXml );
-            } catch( error: any ) {
-                throw new HttpError( 400, <string>error?.message );
+                await postBillForPublishing(bill.lagasafnId, billXml);
+            } catch (error: any) {
+                throw new HttpError(400, <string>error?.message);
             }
-        } );
+        });
+
+        // Set status as 'published'.
+        bill.status = BillStatus.PUBLISHED;
+        await bill.save();
 
         return billsXml;
     }

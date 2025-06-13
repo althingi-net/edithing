@@ -5,7 +5,9 @@
 export type Bill = {
     id?: number;
     author: any;
+    lagasafnId: number;
     title: string;
+    description: string;
     documents?: any;
     status?: Bill.status;
     createdAt?: string;

@@ -23,18 +23,14 @@ test('export changed article', () => {
         node.text += ' appended change';
     }
 
-    const result = exportBillXml('bill title', [{
+    const result = exportBillXml([{
         originalXml,
         content: JSON.stringify(slate),
         identifier: '1232.12',
-        title: 'document 1',
     }]);
 
     expect(result).toBe(xmlFormat(`
         <bill>
-            <title>
-                bill title
-            </title>
             <law nr="undefined" year="undefined" law-type="law">
                 <art nr="1">
                     <nr-title>
@@ -73,18 +69,14 @@ test('export removed article', () => {
         node.children = [];
     }
 
-    const result = exportBillXml('bill title', [{
+    const result = exportBillXml([{
         originalXml,
         content: JSON.stringify(slate),
         identifier: '1232.12',
-        title: 'document 1',
     }]);
 
     expect(result).toBe(xmlFormat(`
         <bill>
-            <title>
-                bill title
-            </title>
             <law nr="undefined" year="undefined" law-type="law">
                 <art nr="1">
                     <nr-title>
@@ -118,18 +110,14 @@ test('export added article', () => {
         node.children.push(createListItem(MetaType.SUBART, '2', { text: 'added article' }));
     }
 
-    const result = exportBillXml('bill title', [{
+    const result = exportBillXml([{
         originalXml,
         content: JSON.stringify(slate),
         identifier: '1232.12',
-        title: 'document 1',
     }]);
 
     expect(result).toBe(xmlFormat(`
         <bill>
-            <title>
-                bill title
-            </title>
             <law nr="undefined" year="undefined" law-type="law">
                 <art nr="1">
                     <nr-title>

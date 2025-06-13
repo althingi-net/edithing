@@ -13,8 +13,10 @@ interface Props {
 const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
     const { t } = useLanguageContext();
     const [title, setTitle] = useState<string>('');
+    const [lagasafnId, setLagasafnId] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
     const { session } = useSessionContext();
-    const [form] = Form.useForm<{ title: string }>();
+    const [form] = Form.useForm<{ title: string, lagasafnId: number, description: string }>();
 
     const handleSubmit = () => {
         if (!session) {
@@ -22,7 +24,9 @@ const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
         }
 
         BillService.billControllerCreate({
+            lagasafnId: Number(lagasafnId),
             title,
+            description,
             author: session.user,
         })
             .then(() => {
@@ -37,10 +41,18 @@ const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
             form={form}
             onFinish={handleSubmit}
         >
+            <Form.Item label={t('Bill Number')}>
+                <Input placeholder={t('Bill Number')} value={lagasafnId} onChange={(event) => setLagasafnId(event.target.value)} />
+            </Form.Item>
+
             <Form.Item label={t('Title')}>
                 <Input placeholder={t('Title')} value={title} onChange={(event) => setTitle(event.target.value)} />
             </Form.Item>
-            
+
+            <Form.Item label={t('Description')}>
+                <Input placeholder={t('Description')} value={description} onChange={(event) => setDescription(event.target.value)} />
+            </Form.Item>
+
             <Divider />
 
             <Space direction="horizontal" style={{ float: 'right', marginBottom: '-24px' }}>
