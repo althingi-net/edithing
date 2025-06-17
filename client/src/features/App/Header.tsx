@@ -28,7 +28,7 @@ const Header: FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const headerMenuItems = useHeaderMenuItems();
-    const { isAuthenticated } = useStore();
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
     
     return (
         <AntHeader

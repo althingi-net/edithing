@@ -13,9 +13,11 @@ import useLawListContext from '../features/Documents/useLawListContext';
 import { useStore } from '../features/App/store/useStore';
 
 const BillPage: FC = () => {
-    const { isAuthenticated, isNavigationBlocked, setNavigationBlocked } = useStore();
-    const navigate = useNavigate();
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
+    const isNavigationBlocked = useStore((state) => state.isNavigationBlocked);
+    const setNavigationBlocked = useStore((state) => state.setNavigationBlocked);
     const t = useStore((state) => state.t);
+    const navigate = useNavigate();
     // TODO: simplify this by creating a store slice
     const navigationBlocker = {
         blockNavigation: () => setNavigationBlocked(true),

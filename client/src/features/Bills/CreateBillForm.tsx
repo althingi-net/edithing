@@ -10,12 +10,12 @@ interface Props {
 }
 
 const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
-    const { session } = useStore();
+    const session = useStore((state) => state.session);
+    const t = useStore((state) => state.t);
     const [title, setTitle] = useState<string>('');
     const [lagasafnId, setLagasafnId] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [form] = Form.useForm<{ title: string, lagasafnId: number, description: string }>();
-    const t = useStore((state) => state.t);
 
     const handleSubmit = () => {
         if (!session) {

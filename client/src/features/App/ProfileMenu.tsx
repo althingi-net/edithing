@@ -61,7 +61,9 @@ const useProfileMenuItems = () => {
 const ProfileMenu: FC = () => {
     const [isOpen, setOpen] = useState(false);
     const { theme } = useThemeContext();
-    const { isAuthenticated, session, logout } = useStore();
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
+    const session = useStore((state) => state.session);
+    const logout = useStore((state) => state.logout);
     const { errorUnsavedChanges } = useUserErrors();
     const profileMenuItems = useProfileMenuItems();
 

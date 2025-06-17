@@ -12,11 +12,12 @@ import { useStore } from '../features/App/store/useStore';
 
 const LawPage: FC = () => {
     const { identifier } = useParams();
-    const { isNavigationBlocked, setNavigationBlocked } = useStore();
+    const isNavigationBlocked = useStore((state) => state.isNavigationBlocked);
+    const setNavigationBlocked = useStore((state) => state.setNavigationBlocked);
+    const t = useStore((state) => state.t);
     const { setDocument, xml, slate, originalDocument, importError } = useDocument();
     const [hasError, setError] = useState(false);
     const navigate = useNavigate();
-    const t = useStore((state) => state.t);
     // TODO: simplify this by creating a store slice
     const navigationBlocker = {
         blockNavigation: () => setNavigationBlocked(true),

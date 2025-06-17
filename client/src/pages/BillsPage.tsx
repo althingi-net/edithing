@@ -10,7 +10,7 @@ import useBills from '../features/Bills/useBills';
 const BillsPage = () => {
     const navigate = useNavigate();
     const [bills, reload] = useBills();
-    const { isAuthenticated } = useStore();
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
     const t = useStore((state) => state.t);
 
     if (!isAuthenticated()) {
