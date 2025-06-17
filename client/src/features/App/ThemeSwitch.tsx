@@ -1,11 +1,11 @@
 import { Switch } from 'antd';
 import { FC } from 'react';
 import useThemeContext from './useThemeContext';
-import useLanguageContext from './useLanguageContext';
+import { useStore } from './store/useStore';
 
 const ThemeSwitch: FC = () => {
     const { theme, setTheme } = useThemeContext();
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     
     return (
         <Switch

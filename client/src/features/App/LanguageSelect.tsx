@@ -1,9 +1,10 @@
 import { Radio } from 'antd';
 import { ReactCountryFlag } from 'react-country-flag';
-import useLanguageContext from './useLanguageContext';
+import { useStore } from './store/useStore';
 
 const LanguageSelect = () => {
-    const { language, setLanguage } = useLanguageContext();
+    const language = useStore((state) => state.language);
+    const setLanguage = useStore((state) => state.setLanguage);
 
     return (
         <Radio.Group value={language} onChange={(event) => setLanguage(event.target.value as string)}>

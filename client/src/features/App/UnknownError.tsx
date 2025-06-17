@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import useLanguageContext from './useLanguageContext';
+import { useStore } from './store/useStore';
 
 interface Props {
     error: any;
 }
 
 const UnknownError: FC<Props> = ({ error }) => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     
     return (
         <div role="alert">

@@ -1,10 +1,10 @@
 import { Space } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { FC } from 'react';
-import useLanguageContext from './useLanguageContext';
+import { useStore } from './store/useStore';
 
 const NotFoundError: FC = () => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     
     return (
         <Content style={{ padding: '50px', textAlign: 'center' }}>

@@ -5,13 +5,12 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import LanguageSelect from './LanguageSelect';
 import ThemeSwitch from './ThemeSwitch';
 import UserAvatar from './UserAvatar';
-import useLanguageContext from './useLanguageContext';
 import { useStore } from './store/useStore';
 import useThemeContext from './useThemeContext';
 import useUserErrors from './useUserErrors';
 
 const useProfileMenuItems = () => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
 
     const profileMenuItems: ItemType[] = useMemo(() => [
         {

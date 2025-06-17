@@ -6,12 +6,11 @@ import { useLocation, useNavigate } from 'react-router';
 import LanguageSelect from './LanguageSelect';
 import LoginButton from './LoginButton';
 import ProfileMenu from './ProfileMenu';
-import useLanguageContext from './useLanguageContext';
 import useThemeContext from './useThemeContext';
 import { useStore } from './store/useStore';
 
 const useHeaderMenuItems = () => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
 
     const headerMenuItems: MenuItemType[] = useMemo(() => [{
         key: '/',

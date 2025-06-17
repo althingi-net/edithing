@@ -3,9 +3,8 @@ import { Button, Divider, Form, Input, Space } from 'antd';
 import { AuthService } from 'client-sdk';
 import { FC, useCallback, useState } from 'react';
 import Modal from './Modal';
-import useLanguageContext from './useLanguageContext';
-import useUserErrors from './useUserErrors';
 import { useStore } from './store/useStore';
+import useUserErrors from './useUserErrors';
 
 interface FormValues {
     email: string;
@@ -13,7 +12,7 @@ interface FormValues {
 }
 
 const LoginButton: FC = () => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     const [isOpen, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), [setOpen]);
     const [form] = Form.useForm<FormValues>();

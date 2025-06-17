@@ -1,4 +1,3 @@
-
 import { Switch } from 'antd';
 import { Bill, BillDocument, BillDocumentService } from 'client-sdk';
 import { FC, useEffect, useState } from 'react';
@@ -7,7 +6,7 @@ import { exportBillXml } from 'law-document';
 import { CodeBlock } from 'react-code-blocks';
 import Loader from '../App/Loader';
 import { handleErrorWithTranslations } from '../App/handleError';
-import useLanguageContext from '../App/useLanguageContext';
+import { useStore } from '../App/store/useStore';
 import BillDocumentPreview from './BillDocumentPreview';
 import './BillPreview.css';
 
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const useBillDocuments = (bill: Bill) => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     const [documents, setDocuments] = useState<BillDocument[]>([]);
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +34,7 @@ const useBillDocuments = (bill: Bill) => {
 
 const BillPreview: FC<Props> = ({ bill }) => {
     const { title } = bill;
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     const { documents, isLoading } = useBillDocuments(bill);
     const [display, setDisplay] = useState<'live' | 'xml'>('live');
 

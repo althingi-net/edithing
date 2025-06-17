@@ -6,7 +6,7 @@ import { GithubFile } from 'client-sdk';
 import { FC } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { formatIdentifier } from 'law-document';
-import useLanguageContext from '../App/useLanguageContext';
+import { useStore } from '../App/store/useStore';
 import Loader from '../App/Loader';
 import getTextSize from '../App/getTextSize';
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const DocumentsList: FC<Props> = ({ documents, onAddDocument, setSelected, selected }) => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
 
     if (!documents) return (
         <Loader />

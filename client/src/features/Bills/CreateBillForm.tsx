@@ -1,9 +1,8 @@
 import { Button, Divider, Form, Input, Space, notification } from 'antd';
 import { BillService } from 'client-sdk';
 import { FC, useState } from 'react';
-import useLanguageContext from '../App/useLanguageContext';
-import handleError from '../App/handleError';
 import { useStore } from '../App/store/useStore';
+import handleError from '../App/handleError';
 
 interface Props {
     onSubmit: () => void;
@@ -11,12 +10,12 @@ interface Props {
 }
 
 const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
-    const { t } = useLanguageContext();
     const { session } = useStore();
     const [title, setTitle] = useState<string>('');
     const [lagasafnId, setLagasafnId] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [form] = Form.useForm<{ title: string, lagasafnId: number, description: string }>();
+    const t = useStore((state) => state.t);
 
     const handleSubmit = () => {
         if (!session) {

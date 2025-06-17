@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router';
 import Loader from '../features/App/Loader';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import NotFoundError from '../features/App/NotFoundError';
-import useLanguageContext from '../features/App/useLanguageContext';
 import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import BillPreview from '../features/Bills/BillPreview';
 import useBillPage from '../features/Bills/useBillPage';
@@ -14,9 +13,9 @@ import useLawListContext from '../features/Documents/useLawListContext';
 import { useStore } from '../features/App/store/useStore';
 
 const BillPage: FC = () => {
-    const { t } = useLanguageContext();
     const { isAuthenticated, isNavigationBlocked, setNavigationBlocked } = useStore();
     const navigate = useNavigate();
+    const t = useStore((state) => state.t);
     // TODO: simplify this by creating a store slice
     const navigationBlocker = {
         blockNavigation: () => setNavigationBlocked(true),

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Input } from 'antd';
 import { ChangeEvent, FC, useCallback } from 'react';
-import useLanguageContext from '../App/useLanguageContext';
+import { useStore } from '../App/store/useStore';
 
 interface Props {
     title: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const PanelHeader: FC<Props> = ({ title, onFilter }) => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         onFilter?.(event.target.value);

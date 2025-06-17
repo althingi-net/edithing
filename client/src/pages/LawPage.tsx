@@ -7,17 +7,16 @@ import { Editor } from 'law-document-editor';
 import Loader from '../features/App/Loader';
 import NotFoundError from '../features/App/NotFoundError';
 import useDocument from '../features/Documents/useDocument';
-import useLanguageContext from '../features/App/useLanguageContext';
 import 'law-document-editor/src/Editor/Editor.css';
 import { useStore } from '../features/App/store/useStore';
 
 const LawPage: FC = () => {
     const { identifier } = useParams();
-    const { t } = useLanguageContext();
     const { isNavigationBlocked, setNavigationBlocked } = useStore();
     const { setDocument, xml, slate, originalDocument, importError } = useDocument();
     const [hasError, setError] = useState(false);
     const navigate = useNavigate();
+    const t = useStore((state) => state.t);
     // TODO: simplify this by creating a store slice
     const navigationBlocker = {
         blockNavigation: () => setNavigationBlocked(true),

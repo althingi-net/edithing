@@ -10,7 +10,6 @@ import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
 import Header from './Header';
 import UnknownError from './UnknownError';
-import { LanguageContextProvider } from './useLanguageContext';
 import { ThemeContextProvider } from './useThemeContext';
 import BlockNavigation from './BlockNavigation';
 
@@ -58,9 +57,7 @@ if (import.meta.hot) {
 const App = () => {
     return (
         <ThemeContextProvider>
-            <LanguageContextProvider>
-                <RouterProvider router={router} />
-            </LanguageContextProvider>
+            <RouterProvider router={router} />
         </ThemeContextProvider>
     );
 };

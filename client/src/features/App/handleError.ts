@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { Translator } from './useLanguageContext';
+import { Translator } from 'law-document-editor';
 
 const handleError = (error: any, t?: Translator) => {
     if (process.env.NODE_ENV === 'development') {
