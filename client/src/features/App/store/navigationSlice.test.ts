@@ -1,4 +1,5 @@
 import { create, StoreApi } from 'zustand';
+import { createLanguageSlice } from './languageSlice';
 import { createNavigationSlice } from './navigationSlice';
 import { createSessionSlice } from './sessionSlice';
 import { Store } from './useStore';
@@ -10,6 +11,7 @@ describe('Navigation Store', () => {
         store = create<Store>()((...store) => ({
             ...createSessionSlice(...store),
             ...createNavigationSlice(...store),
+            ...createLanguageSlice(...store),
         }));
     });
 

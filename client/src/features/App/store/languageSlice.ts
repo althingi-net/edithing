@@ -1,6 +1,6 @@
-import { DEFAULT_LANGUAGE, translations } from 'law-document';
-import { StateCreator } from 'zustand';
+import { translations } from 'law-document';
 import { Translator } from 'law-document-editor';
+import { StateCreator } from 'zustand';
 import { getBrowserLanguage } from '../getBrowserLanguage';
 import { NavigationSlice } from './navigationSlice';
 import { SessionSlice } from './sessionSlice';
@@ -10,7 +10,7 @@ export interface LanguageSlice {
     language: string;
     setLanguage: (language: string) => void;
     t: Translator;
-    rehydrate: (event: RehydrateEvent) => void;
+    rehydrate: (state: RehydrateEvent) => void;
 }
 
 export const createLanguageSlice: StateCreator<
@@ -20,7 +20,7 @@ export const createLanguageSlice: StateCreator<
     LanguageSlice
 > = (set, get) => {
     return {
-        language: DEFAULT_LANGUAGE,
+        language: undefined as unknown as string, // undefined until rehydrated
         setLanguage: (language: string) => {
             set({ language });
         },
@@ -51,8 +51,8 @@ export const createLanguageSlice: StateCreator<
         /**
          * Set browser language if no language is persisted.
          */
-        rehydrate: (event: RehydrateEvent) => {
-            if (event.state.language === undefined) {
+        rehydrate: (state) => {
+            if (state.language === undefined) {
                 set({ language: getBrowserLanguage() });
             }
         },

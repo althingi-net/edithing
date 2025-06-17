@@ -84,7 +84,7 @@ const ProfileMenu: FC = () => {
         }
     }, [handleLogout]);
 
-    if (!isAuthenticated() || !session) {
+    if (!isAuthenticated()) {
         return (
             <Button type="text" icon={<UserOutlined />} />
         );

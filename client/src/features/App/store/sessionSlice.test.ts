@@ -1,7 +1,8 @@
 import { User } from 'client-sdk';
 import { create, StoreApi } from 'zustand';
-import { createSessionSlice } from './sessionSlice';
+import { createLanguageSlice } from './languageSlice';
 import { createNavigationSlice } from './navigationSlice';
+import { createSessionSlice } from './sessionSlice';
 import { Store } from './useStore';
 
 // Mock the OpenAPI object
@@ -24,6 +25,7 @@ describe('Session Store', () => {
         store = create<Store>()((...store) => ({
             ...createSessionSlice(...store),
             ...createNavigationSlice(...store),
+            ...createLanguageSlice(...store),
         }));
     });
 

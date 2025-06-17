@@ -13,7 +13,7 @@ export interface SessionSlice {
     setSession: (session: Session | null) => void;
     isAuthenticated: () => boolean;
     logout: () => boolean; // Returns true if logout was successful
-    rehydrate: (event: RehydrateEvent) => void;
+    rehydrate: (state: RehydrateEvent) => void;
 }
 
 export const createSessionSlice: StateCreator<
@@ -39,10 +39,12 @@ export const createSessionSlice: StateCreator<
         OpenAPI.TOKEN = undefined;
         return true; // Logout was successful
     },
-    rehydrate: (event) => {
+    rehydrate: (state) => {
         // Only handle side effects, state is already restored by Zustand
         if (event.state.session) {
             OpenAPI.TOKEN = event.state.session.token;
+        if (state.session) {
+            OpenAPI.TOKEN = state.session.token;
         }
     },
 }); 

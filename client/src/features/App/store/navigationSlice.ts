@@ -1,11 +1,11 @@
 import { StateCreator } from 'zustand';
-import { SessionSlice } from './sessionSlice';
 import { RehydrateEvent } from './useStore';
+import { SessionSlice } from './sessionSlice';
 
 export interface NavigationSlice {
     isNavigationBlocked: boolean;
     setNavigationBlocked: (blocked: boolean) => void;
-    rehydrate: (event: RehydrateEvent) => void;
+    rehydrate: (state: RehydrateEvent) => void;
 }
 
 export const createNavigationSlice: StateCreator<
