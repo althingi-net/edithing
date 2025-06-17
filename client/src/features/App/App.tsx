@@ -10,31 +10,24 @@ import LawPage from '../../pages/LawPage';
 import { LawListContextProvider } from '../Documents/useLawListContext';
 import Header from './Header';
 import UnknownError from './UnknownError';
-import { BlockNavigationProvider } from './useBlockNavigation';
 import { LanguageContextProvider } from './useLanguageContext';
-import { SessionContextProvider } from './useSessionContext';
 import { ThemeContextProvider } from './useThemeContext';
+import BlockNavigation from './BlockNavigation';
 
 const router = createBrowserRouter([{
     element: (
-        <LanguageContextProvider>
-            <BlockNavigationProvider>
-                <SessionContextProvider>
-                    <ThemeContextProvider>
-                        <EditorConfigContextProvider>
-                            <LawListContextProvider>
-                                <Layout style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
-                                    <Header />
-                                    <ErrorBoundary FallbackComponent={UnknownError} >
-                                        <Outlet />
-                                    </ErrorBoundary>
-                                </Layout>
-                            </LawListContextProvider>
-                        </EditorConfigContextProvider>
-                    </ThemeContextProvider>
-                </SessionContextProvider>
-            </BlockNavigationProvider>
-        </LanguageContextProvider>
+        <EditorConfigContextProvider>
+            <LawListContextProvider>
+                <BlockNavigation>
+                    <Layout style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+                        <Header />
+                        <ErrorBoundary FallbackComponent={UnknownError} >
+                            <Outlet />
+                        </ErrorBoundary>
+                    </Layout>
+                </BlockNavigation>
+            </LawListContextProvider>
+        </EditorConfigContextProvider>
     ),
     children: [
         {
@@ -62,10 +55,14 @@ if (import.meta.hot) {
     import.meta.hot.dispose(() => router.dispose());
 }
 
-function App() {
+const App = () => {
     return (
-        <RouterProvider router={router} />
+        <ThemeContextProvider>
+            <LanguageContextProvider>
+                <RouterProvider router={router} />
+            </LanguageContextProvider>
+        </ThemeContextProvider>
     );
-}
+};
 
 export default App;

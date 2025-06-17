@@ -6,20 +6,24 @@ import { useNavigate } from 'react-router';
 import Loader from '../features/App/Loader';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import NotFoundError from '../features/App/NotFoundError';
-import useBlockNavigation from '../features/App/useBlockNavigation';
 import useLanguageContext from '../features/App/useLanguageContext';
-import useSessionContext from '../features/App/useSessionContext';
 import BillDocumentExplorer from '../features/Bills/BillDocumentExplorer';
 import BillPreview from '../features/Bills/BillPreview';
 import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
+import { useStore } from '../features/App/store/useStore';
 
 const BillPage: FC = () => {
     const { t } = useLanguageContext();
-    const { isAuthenticated } = useSessionContext();
+    const { isAuthenticated, isNavigationBlocked, setNavigationBlocked } = useStore();
     const navigate = useNavigate();
-    const navigationBlocker = { ...useBlockNavigation(), goTo: navigate };
-    const { isNavigationBlocked } = navigationBlocker;
+    // TODO: simplify this by creating a store slice
+    const navigationBlocker = {
+        blockNavigation: () => setNavigationBlocked(true),
+        unblockNavigation: () => setNavigationBlocked(false),
+        isNavigationBlocked,
+        goTo: navigate,
+    };
     const { lawList } = useLawListContext();
     const {
         bill,

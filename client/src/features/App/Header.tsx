@@ -7,8 +7,8 @@ import LanguageSelect from './LanguageSelect';
 import LoginButton from './LoginButton';
 import ProfileMenu from './ProfileMenu';
 import useLanguageContext from './useLanguageContext';
-import useSessionContext from './useSessionContext';
 import useThemeContext from './useThemeContext';
+import { useStore } from './store/useStore';
 
 const useHeaderMenuItems = () => {
     const { t } = useLanguageContext();
@@ -29,7 +29,7 @@ const Header: FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const headerMenuItems = useHeaderMenuItems();
-    const { isAuthenticated } = useSessionContext();
+    const { isAuthenticated } = useStore();
     
     return (
         <AntHeader

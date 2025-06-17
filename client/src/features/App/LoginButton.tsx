@@ -4,8 +4,8 @@ import { AuthService } from 'client-sdk';
 import { FC, useCallback, useState } from 'react';
 import Modal from './Modal';
 import useLanguageContext from './useLanguageContext';
-import useSessionContext from './useSessionContext';
 import useUserErrors from './useUserErrors';
+import { useStore } from './store/useStore';
 
 interface FormValues {
     email: string;
@@ -17,7 +17,7 @@ const LoginButton: FC = () => {
     const [isOpen, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), [setOpen]);
     const [form] = Form.useForm<FormValues>();
-    const { setSession, isAuthenticated } = useSessionContext();
+    const { setSession, isAuthenticated } = useStore();
     const { errorLogin } = useUserErrors();
 
     const handleSubmit = async (values: FormValues) => {

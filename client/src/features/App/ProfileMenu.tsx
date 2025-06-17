@@ -6,8 +6,9 @@ import LanguageSelect from './LanguageSelect';
 import ThemeSwitch from './ThemeSwitch';
 import UserAvatar from './UserAvatar';
 import useLanguageContext from './useLanguageContext';
-import useSessionContext from './useSessionContext';
+import { useStore } from './store/useStore';
 import useThemeContext from './useThemeContext';
+import useUserErrors from './useUserErrors';
 
 const useProfileMenuItems = () => {
     const { t } = useLanguageContext();
@@ -15,13 +16,13 @@ const useProfileMenuItems = () => {
     const profileMenuItems: ItemType[] = useMemo(() => [
         {
             key: 'profile',
-            label: t('Profile'),
             icon: <UserOutlined />,
+            label: t('Profile'),
         },
         {
             key: 'settings',
-            label: t('Settings'),
             icon: <SettingOutlined />,
+            label: t('Settings'),
         },
         {
             type: 'divider',
@@ -49,8 +50,8 @@ const useProfileMenuItems = () => {
         },
         {
             key: 'logout',
-            label: t('Logout'),
             icon: <LogoutOutlined />,
+            label: t('Logout'),
             danger: true,
         },
     ], [t]);
@@ -61,24 +62,42 @@ const useProfileMenuItems = () => {
 const ProfileMenu: FC = () => {
     const [isOpen, setOpen] = useState(false);
     const { theme } = useThemeContext();
-    const { isAuthenticated, session, logout } = useSessionContext();
+    const { isAuthenticated, session, logout } = useStore();
+    const { errorUnsavedChanges } = useUserErrors();
     const profileMenuItems = useProfileMenuItems();
+
+    const handleLogout = useCallback(() => {
+        const loggedOut = logout();
+        if (!loggedOut) {
+            errorUnsavedChanges();
+        } else {
+            setOpen(false);
+        }
+    }, [logout, errorUnsavedChanges]);
 
     const handleMenuItemClick = useCallback(({ key }: { key: string }) => {
         switch (key) {
         case 'logout': 
-            logout();
-            setOpen(false);
+            handleLogout();
             break;
         }
-    }, [logout]);
+    }, [handleLogout]);
 
     if (!isAuthenticated() || !session) {
-        return null;
+        return (
+            <Button type="text" icon={<UserOutlined />} />
+        );
     }
 
     return (
-        <Dropdown open={isOpen} menu={{ items: profileMenuItems, theme, onClick: handleMenuItemClick }} placement="bottomRight" arrow>
+        <Dropdown
+            menu={{ items: profileMenuItems, theme, onClick: handleMenuItemClick }}
+            open={isOpen}
+            onOpenChange={setOpen}
+            trigger={['click']}
+            placement="bottomRight"
+            arrow
+        >
             <Button
                 onClick={() => setOpen(open => !open)}
                 type='text'

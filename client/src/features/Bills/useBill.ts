@@ -1,10 +1,10 @@
 import { Bill, BillService } from 'client-sdk';
 import { useCallback, useEffect, useState } from 'react';
 import handleError from '../App/handleError';
-import useSessionContext from '../App/useSessionContext';
+import { useStore } from '../App/store/useStore';
 
 const useBill = (id?: string | number) => {
-    const { isAuthenticated } = useSessionContext();
+    const { isAuthenticated } = useStore();
     const [bill, setBill] = useState<Bill>();
     const [hasError, setError] = useState(false);
 

@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import UserAvatar from '../features/App/UserAvatar';
 import useLanguageContext from '../features/App/useLanguageContext';
-import useSessionContext from '../features/App/useSessionContext';
 import CreateBillButton from '../features/Bills/CreateBillButton';
 import useBills from '../features/Bills/useBills';
+import { useStore } from '../features/App/store/useStore';
 
 const BillsPage = () => {
     const { t } = useLanguageContext();
     const navigate = useNavigate();
     const [bills, reload] = useBills();
-    const { isAuthenticated } = useSessionContext();
+    const { isAuthenticated } = useStore();
 
     if (!isAuthenticated()) {
         return <NotAuthorizedError />;
