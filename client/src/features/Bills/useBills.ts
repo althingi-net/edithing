@@ -4,7 +4,7 @@ import handleError from '../App/handleError';
 import { useStore } from '../App/store/useStore';
 
 const useBills = () => {
-    const { isAuthenticated } = useStore();
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
     const [bills, setBills] = useState<Bill[]>([]);
 
     const reload = useCallback(() => {

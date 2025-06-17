@@ -6,13 +6,13 @@ import { useNavigate, useParams } from 'react-router';
 import modal from 'antd/es/modal';
 import { log } from '../../logger';
 import handleError from '../App/handleError';
-import useLanguageContext from '../App/useLanguageContext';
+import { useStore } from '../App/store/useStore';
 import useUserErrors from '../App/useUserErrors';
 import useDocument from '../Documents/useDocument';
 import useBill from './useBill';
 
 const useBillPage = (disableActions = false, billPage = '/bill') => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
     const { id, identifier: selected } = useParams();
     const { bill, reloadBill, hasError: hasBillError } = useBill(id);
     const navigate = useNavigate();

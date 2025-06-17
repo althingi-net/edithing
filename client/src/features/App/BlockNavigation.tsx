@@ -4,7 +4,8 @@ import { useBlocker } from 'react-router';
 import { useStore } from './store/useStore';
 
 const BlockNavigation: FC<PropsWithChildren> = ({ children }) => {
-    const { isNavigationBlocked, setNavigationBlocked } = useStore();
+    const isNavigationBlocked = useStore((state) => state.isNavigationBlocked);
+    const setNavigationBlocked = useStore((state) => state.setNavigationBlocked);
     const blocker = useBlocker(isNavigationBlocked);
 
     useEffect(() => {

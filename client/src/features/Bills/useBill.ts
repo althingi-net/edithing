@@ -4,7 +4,7 @@ import handleError from '../App/handleError';
 import { useStore } from '../App/store/useStore';
 
 const useBill = (id?: string | number) => {
-    const { isAuthenticated } = useStore();
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
     const [bill, setBill] = useState<Bill>();
     const [hasError, setError] = useState(false);
 

@@ -16,7 +16,8 @@ const LoginButton: FC = () => {
     const [isOpen, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), [setOpen]);
     const [form] = Form.useForm<FormValues>();
-    const { setSession, isAuthenticated } = useStore();
+    const setSession = useStore((state) => state.setSession);
+    const isAuthenticated = useStore((state) => state.isAuthenticated);
     const { errorLogin } = useUserErrors();
 
     const handleSubmit = async (values: FormValues) => {

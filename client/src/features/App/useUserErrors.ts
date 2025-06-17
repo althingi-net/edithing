@@ -1,8 +1,8 @@
 import { notification } from 'antd';
-import useLanguageContext from './useLanguageContext';
+import { useStore } from './store/useStore';
 
 const useUserErrors = () => {
-    const { t } = useLanguageContext();
+    const t = useStore((state) => state.t);
 
     return {
         errorUnsavedChanges: () => notification.error({
