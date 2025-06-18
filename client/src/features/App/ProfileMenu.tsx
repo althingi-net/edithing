@@ -8,9 +8,10 @@ import UserAvatar from './UserAvatar';
 import { useStore } from './store/useStore';
 import useThemeContext from './useThemeContext';
 import useUserErrors from './useUserErrors';
+import { useTranslation } from './store/useTranslation';
 
 const useProfileMenuItems = () => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
 
     const profileMenuItems: ItemType[] = useMemo(() => [
         {
@@ -84,10 +85,8 @@ const ProfileMenu: FC = () => {
         }
     }, [handleLogout]);
 
-    if (!isAuthenticated()) {
-        return (
-            <Button type="text" icon={<UserOutlined />} />
-        );
+    if (!isAuthenticated() || !session) {
+        return;
     }
 
     return (

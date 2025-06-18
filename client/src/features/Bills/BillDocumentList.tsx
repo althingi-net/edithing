@@ -2,9 +2,9 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import { BillDocument } from 'client-sdk';
-import { FC } from 'react';
 import { formatIdentifier } from 'law-document';
-import { useStore } from '../App/store/useStore';
+import { FC } from 'react';
+import { useTranslation } from '../App/store/useTranslation';
 
 interface Props {
     billDocuments: BillDocument[] | undefined,
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const BillDocumentList: FC<Props> = ({ billDocuments, onDeleteDocument, setSelected, selected }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
 
     return (
         <>

@@ -9,12 +9,13 @@ import NotFoundError from '../features/App/NotFoundError';
 import useDocument from '../features/Documents/useDocument';
 import 'law-document-editor/src/Editor/Editor.css';
 import { useStore } from '../features/App/store/useStore';
+import { useTranslation } from '../features/App/store/useTranslation';
 
 const LawPage: FC = () => {
     const { identifier } = useParams();
     const isNavigationBlocked = useStore((state) => state.isNavigationBlocked);
     const setNavigationBlocked = useStore((state) => state.setNavigationBlocked);
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const { setDocument, xml, slate, originalDocument, importError } = useDocument();
     const [hasError, setError] = useState(false);
     const navigate = useNavigate();

@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { useStore } from './store/useStore';
+import { useTranslation } from './store/useTranslation';
 
 interface Props {
     error: any;
 }
 
 const UnknownError: FC<Props> = ({ error }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     
     return (
         <div role="alert">

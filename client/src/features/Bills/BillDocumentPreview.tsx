@@ -2,7 +2,7 @@ import { Bill, BillDocument } from 'client-sdk';
 import { convertRomanNumber, formatIdentifier } from 'law-document';
 import { FC } from 'react';
 import { Link } from 'react-router';
-import { useStore } from '../App/store/useStore';
+import { useTranslation } from '../App/store/useTranslation';
 
 interface Props {
     bill: Bill;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const BillDocumentPreview: FC<Props> = ({ bill, document, index }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
 
     return (
         <div className='bill-document-preview'>

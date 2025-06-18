@@ -6,7 +6,7 @@ import { exportBillXml } from 'law-document';
 import { CodeBlock } from 'react-code-blocks';
 import Loader from '../App/Loader';
 import { handleErrorWithTranslations } from '../App/handleError';
-import { useStore } from '../App/store/useStore';
+import { useTranslation } from '../App/store/useTranslation';
 import BillDocumentPreview from './BillDocumentPreview';
 import './BillPreview.css';
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const useBillDocuments = (bill: Bill) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const [documents, setDocuments] = useState<BillDocument[]>([]);
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +34,7 @@ const useBillDocuments = (bill: Bill) => {
 
 const BillPreview: FC<Props> = ({ bill }) => {
     const { title } = bill;
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const { documents, isLoading } = useBillDocuments(bill);
     const [display, setDisplay] = useState<'live' | 'xml'>('live');
 

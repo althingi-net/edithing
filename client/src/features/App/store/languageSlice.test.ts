@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE, translations } from 'law-document';
+import { DEFAULT_LANGUAGE } from 'law-document';
 import { create, StoreApi } from 'zustand';
 import { createLanguageSlice } from './languageSlice';
 import { createNavigationSlice } from './navigationSlice';
@@ -22,20 +22,6 @@ describe('Language Store', () => {
         const { setLanguage } = store.getState();
         setLanguage('is');
         expect(store.getState().language).toBe('is');
-    });
-
-    it('should translate known keys', () => {
-        const { setLanguage, t } = store.getState();
-        setLanguage('is');
-        // Pick a key that exists in translations for 'is'
-        const key = Object.keys(translations['is'])[0];
-        expect(t(key)).toBe(translations['is'][key]);
-    });
-
-    it('should return key for unknown translation', () => {
-        const { setLanguage, t } = store.getState();
-        setLanguage('is');
-        expect(t('__unknown_key__')).toBe('__unknown_key__');
     });
 
     it('should set browser language on rehydrate if persisted language is undefined', () => {

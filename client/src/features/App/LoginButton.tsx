@@ -5,6 +5,7 @@ import { FC, useCallback, useState } from 'react';
 import Modal from './Modal';
 import { useStore } from './store/useStore';
 import useUserErrors from './useUserErrors';
+import { useTranslation } from './store/useTranslation';
 
 interface FormValues {
     email: string;
@@ -12,7 +13,7 @@ interface FormValues {
 }
 
 const LoginButton: FC = () => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const [isOpen, setOpen] = useState(false);
     const handleClose = useCallback(() => setOpen(false), [setOpen]);
     const [form] = Form.useForm<FormValues>();

@@ -1,9 +1,9 @@
 import { Collapse } from 'antd';
 import { BillDocument, GithubFile } from 'client-sdk';
 import { FC, useMemo, useState } from 'react';
-import { useStore } from '../App/store/useStore';
 import filterLawEntry from '../Documents/filterLawEntry';
 import './BillDocumentExplorer.css';
+import { useTranslation } from '../App/store/useTranslation';
 import BillDocumentList from './BillDocumentList';
 import DocumentsList from './DocumentsList';
 import PanelHeader from './PanelHeader';
@@ -22,7 +22,7 @@ const isInBillDocuments = (law: GithubFile, billDocuments: BillDocument[] | unde
 };
 
 const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billDocuments, onAddDocument, onDeleteDocument }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const [filter, setFilter] = useState('');
     const availableDocuments = useMemo(() => {
         return lawList.filter(law => 

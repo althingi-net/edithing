@@ -11,12 +11,13 @@ import BillPreview from '../features/Bills/BillPreview';
 import useBillPage from '../features/Bills/useBillPage';
 import useLawListContext from '../features/Documents/useLawListContext';
 import { useStore } from '../features/App/store/useStore';
+import { useTranslation } from '../features/App/store/useTranslation';
 
 const BillPage: FC = () => {
     const isAuthenticated = useStore((state) => state.isAuthenticated);
     const isNavigationBlocked = useStore((state) => state.isNavigationBlocked);
     const setNavigationBlocked = useStore((state) => state.setNavigationBlocked);
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const navigate = useNavigate();
     // TODO: simplify this by creating a store slice
     const navigationBlocker = {

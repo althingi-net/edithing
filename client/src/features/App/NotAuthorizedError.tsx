@@ -1,10 +1,10 @@
 import { Space } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { FC } from 'react';
-import { useStore } from './store/useStore';
+import { useTranslation } from './store/useTranslation';
 
 const NotAuthorizedError: FC = () => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     
     return (
         <Content style={{ padding: '50px', textAlign: 'center' }}>

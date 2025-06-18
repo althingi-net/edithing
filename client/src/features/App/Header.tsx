@@ -8,9 +8,10 @@ import LoginButton from './LoginButton';
 import ProfileMenu from './ProfileMenu';
 import useThemeContext from './useThemeContext';
 import { useStore } from './store/useStore';
+import { useTranslation } from './store/useTranslation';
 
 const useHeaderMenuItems = () => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
 
     const headerMenuItems: MenuItemType[] = useMemo(() => [{
         key: '/',

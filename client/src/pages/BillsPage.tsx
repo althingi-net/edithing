@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import NotAuthorizedError from '../features/App/NotAuthorizedError';
 import UserAvatar from '../features/App/UserAvatar';
 import { useStore } from '../features/App/store/useStore';
+import { useTranslation } from '../features/App/store/useTranslation';
 import CreateBillButton from '../features/Bills/CreateBillButton';
 import useBills from '../features/Bills/useBills';
 
@@ -11,7 +12,7 @@ const BillsPage = () => {
     const navigate = useNavigate();
     const [bills, reload] = useBills();
     const isAuthenticated = useStore((state) => state.isAuthenticated);
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
 
     if (!isAuthenticated()) {
         return <NotAuthorizedError />;

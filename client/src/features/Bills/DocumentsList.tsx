@@ -6,9 +6,9 @@ import { GithubFile } from 'client-sdk';
 import { FC } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { formatIdentifier } from 'law-document';
-import { useStore } from '../App/store/useStore';
 import Loader from '../App/Loader';
 import getTextSize from '../App/getTextSize';
+import { useTranslation } from '../App/store/useTranslation';
 
 interface Props {
     documents: GithubFile[] | undefined,
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const DocumentsList: FC<Props> = ({ documents, onAddDocument, setSelected, selected }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
 
     if (!documents) return (
         <Loader />

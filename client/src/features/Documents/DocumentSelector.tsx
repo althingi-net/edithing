@@ -2,12 +2,12 @@ import { Button, Flex, List, Space } from 'antd';
 import Search from 'antd/es/input/Search';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useStore } from '../App/store/useStore';
+import { useTranslation } from '../App/store/useTranslation';
 import filterLawEntry from './filterLawEntry';
 import useLawListContext from './useLawListContext';
 
 const DocumentSelector: FC = () => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const [filter, setFilter] = useState('');
     const navigate = useNavigate();
     const { lawList } = useLawListContext();

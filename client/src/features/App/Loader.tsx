@@ -1,13 +1,13 @@
 import { Skeleton, Spin } from 'antd';
 import { FC, PropsWithChildren } from 'react';
-import { useStore } from './store/useStore';
+import { useTranslation } from './store/useTranslation';
 
 interface Props {
     loading?: boolean;
 }
 
 const Loader: FC<PropsWithChildren<Props>> = ({ loading, children }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const displayLoader = loading === undefined ? true : loading;
     
     if (!displayLoader) {

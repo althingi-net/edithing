@@ -2,6 +2,7 @@ import { Button, Divider, Form, Input, Space, notification } from 'antd';
 import { BillService } from 'client-sdk';
 import { FC, useState } from 'react';
 import { useStore } from '../App/store/useStore';
+import { useTranslation } from '../App/store/useTranslation';
 import handleError from '../App/handleError';
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
 
 const CreateBillForm: FC<Props> = ({ onCancel, onSubmit }) => {
     const session = useStore((state) => state.session);
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const [title, setTitle] = useState<string>('');
     const [lagasafnId, setLagasafnId] = useState<string>('');
     const [description, setDescription] = useState<string>('');

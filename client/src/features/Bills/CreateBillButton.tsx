@@ -1,8 +1,8 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { FC, useState } from 'react';
-import { useStore } from '../App/store/useStore';
 import Modal from '../App/Modal';
+import { useTranslation } from '../App/store/useTranslation';
 import CreateBillForm from './CreateBillForm';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CreateBillButton: FC<Props> = ({ onSubmit }) => {
-    const t = useStore((state) => state.t);
+    const t = useTranslation();
     const [isOpen, setOpen] = useState(false);
     const onClose = () => {
         setOpen(false);
