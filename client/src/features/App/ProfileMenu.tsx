@@ -85,6 +85,7 @@ const ProfileMenu: FC = () => {
         }
     }, [handleLogout]);
 
+    console.log('session', { session, isAuthenticated: isAuthenticated(), isOpen });
     if (!isAuthenticated() || !session) {
         return;
     }
@@ -99,7 +100,7 @@ const ProfileMenu: FC = () => {
             arrow
         >
             <Button
-                onClick={() => setOpen(open => !open)}
+                onClick={() => setOpen(!isOpen)}
                 type='text'
                 style={{ padding: 0 }}
             >
