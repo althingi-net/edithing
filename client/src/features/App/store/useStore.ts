@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
+import { OpenAPI } from 'client-sdk';
+import { getBrowserLanguage } from '../getBrowserLanguage';
 import { createLanguageSlice, LanguageSlice } from './languageSlice';
 import { createNavigationSlice, NavigationSlice } from './navigationSlice';
 import { createSessionSlice, SessionSlice } from './sessionSlice';
@@ -17,13 +19,23 @@ const persistOptions: PersistOptions<Store, PersistedState> = {
         language: state.language,
     }),
     onRehydrateStorage: () => (state) => {
+        console.log('onRehydrateStorage', state);
         // Send rehydrate event to all slices to allow them to handle side effects when the app starts with a persisted state
         if (state) {
             const partialState: RehydrateEvent = {
                 session: state.session,
                 language: state.language,
             };
-            state.rehydrate(partialState);
+            
+            // Set browser language if no language is persisted
+            if (partialState.language === undefined) {
+                state.language = getBrowserLanguage();
+            }
+
+            // Set OpenAPI token if session is persisted
+            if (partialState.session) {
+                OpenAPI.TOKEN = partialState.session.token;
+            }
         }
     },
 };

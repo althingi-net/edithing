@@ -1,7 +1,6 @@
 import { LoginResponse, OpenAPI, User } from 'client-sdk';
 import { StateCreator } from 'zustand';
 import { NavigationSlice } from './navigationSlice';
-import { RehydrateEvent } from './useStore';
 
 export interface Session extends LoginResponse {
     token: string;
@@ -13,7 +12,6 @@ export interface SessionSlice {
     setSession: (session: Session | null) => void;
     isAuthenticated: () => boolean;
     logout: () => boolean; // Returns true if logout was successful
-    rehydrate: (state: RehydrateEvent) => void;
 }
 
 export const createSessionSlice: StateCreator<
@@ -24,6 +22,7 @@ export const createSessionSlice: StateCreator<
 > = (set, get) => ({
     session: null,
     setSession: (session) => {
+        console.log('setSession', session);
         set({ session });
         // Update OpenAPI headers when session changes
         OpenAPI.TOKEN = session?.token;
@@ -38,11 +37,5 @@ export const createSessionSlice: StateCreator<
         set({ session: null });
         OpenAPI.TOKEN = undefined;
         return true; // Logout was successful
-    },
-    rehydrate: (state) => {
-        // Only handle side effects, state is already restored by Zustand
-        if (state.session) {
-            OpenAPI.TOKEN = state.session.token;
-        }
     },
 }); 
