@@ -41,8 +41,6 @@ export const createSessionSlice: StateCreator<
     },
     rehydrate: (state) => {
         // Only handle side effects, state is already restored by Zustand
-        if (event.state.session) {
-            OpenAPI.TOKEN = event.state.session.token;
         if (state.session) {
             OpenAPI.TOKEN = state.session.token;
         }
