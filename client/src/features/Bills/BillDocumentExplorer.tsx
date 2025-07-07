@@ -40,34 +40,33 @@ const BillDocumentExplorer: FC<Props> = ({ setSelected, selected, lawList, billD
                 defaultActiveKey={['1', '2']}
                 size='small'
                 ghost={true}
-            >
-                <Collapse.Panel
-                    header={t('Documents in the Bill')}
-                    key="1"
-                >
-                    <div className='explorer-list bill-documents'>
-                        <BillDocumentList
-                            billDocuments={billDocuments}
-                            onDeleteDocument={onDeleteDocument}
-                            setSelected={setSelected}
-                            selected={selected}
-                        />
-                    </div>
-                </Collapse.Panel>
-                <Collapse.Panel
-                    header={<PanelHeader title={t('Legal Codex')} onFilter={setFilter} />} 
-                    key="2"
-                >
-                    <div className='explorer-list'>
-                        <DocumentsList
-                            documents={availableDocuments}
-                            onAddDocument={onAddDocument}
-                            setSelected={setSelected}
-                            selected={selected}
-                        />
-                    </div>
-                </Collapse.Panel>
-            </Collapse>
+                items={[{
+                    key: '1',
+                    label: t('Documents in the Bill'),
+                    children: (
+                        <div className='explorer-list bill-documents'>
+                            <BillDocumentList
+                                billDocuments={billDocuments}
+                                onDeleteDocument={onDeleteDocument}
+                                setSelected={setSelected}
+                                selected={selected}
+                            />
+                        </div>
+                    ),
+                }, {
+                    key: '2',
+                    label: <PanelHeader title={t('Legal Codex')} onFilter={setFilter} />,
+                    children: (
+                        <div className='explorer-list'>
+                            <DocumentsList
+                                documents={availableDocuments}
+                                onAddDocument={onAddDocument}
+                                setSelected={setSelected}
+                                selected={selected}
+                            />
+                        </div>
+                    ),
+                }]} />
         </div>
     );
 };

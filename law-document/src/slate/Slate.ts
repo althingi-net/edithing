@@ -1,5 +1,6 @@
 import { BaseEditor, Descendant } from 'slate';
 import { HistoryEditor } from 'slate-history';
+import { ReactEditor } from 'slate-react';
 import { List } from './element/List';
 import { ListItem } from './element/ListItem';
 import { ListItemText } from './element/ListItemText';
@@ -17,7 +18,7 @@ declare module 'slate' {
 
 export type SlateFragment = Descendant[];
 
-export interface LawEditor extends BaseEditor, HistoryEditor {}
+export interface LawEditor extends BaseEditor, HistoryEditor, ReactEditor {}
 
 export type LawElement = List | ListItem | ListItemText | DocumentMetaElement | Paragraph;
 

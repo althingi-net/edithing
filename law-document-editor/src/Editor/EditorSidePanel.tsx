@@ -25,56 +25,51 @@ export const EditorSidePanel: FC<Props> = (props) => {
         const slateState = JSON.stringify(debouncedSlate.children, null, 2);
         const xmlExport = isSpeech ? exportSpeechXml(debouncedSlate, true) : exportXml(debouncedSlate, true);
 
+        // Build items array for Collapse
+        const items = [
+            {
+                key: '1',
+                label: t('Element Configuration'),
+                children: <NodeMetaForm t={t} />,
+                ...(readOnly ? { collapsible: 'disabled' as const } : {}),
+            },
+            ...(
+                xml
+                    ? [{
+                        key: '2',
+                        label: t('Old XML'),
+                        extra: <CopyClipboardButton t={t} content={xml} />,
+                        children: <CodeBlock text={xml} language={'xml'} />,
+                    }]
+                    : []
+            ),
+            {
+                key: '3',
+                label: 'Slate',
+                extra: <CopyClipboardButton t={t} content={slateState} />,
+                children: <CodeBlock text={slateState} language={'json'} />,
+            },
+            {
+                key: '4',
+                label: t('New XML'),
+                extra: <CopyClipboardButton t={t} content={xmlExport} />,
+                children: <CodeBlock text={xmlExport} language={'xml'} />,
+            },
+            ...(
+                originalDocument
+                    ? [{
+                        key: '5',
+                        label: t('Changes'),
+                        ...(readOnly ? { collapsible: 'disabled' as const } : {}),
+                        children: <LawDiff originalDocument={originalDocument} slate={debouncedSlate} t={t} />,
+                    }]
+                    : []
+            ),
+        ];
+
         return (
             <div style={{ height: 'calc(100vh - 146px)', overflowY: 'auto' }}>
-                <Collapse defaultActiveKey={['5']} destroyInactivePanel>
-                    <Collapse.Panel
-                        key="1"
-                        header={t('Element Configuration')}
-                        collapsible={readOnly ? 'disabled' : undefined}
-                    >
-                        <NodeMetaForm t={t} />
-                    </Collapse.Panel>
-                    {xml && <Collapse.Panel
-                        key="2"
-                        header={t('Old XML')}
-                        extra={<CopyClipboardButton t={t} content={xml} />}
-                    >
-                        <CodeBlock
-                            text={xml}
-                            language={'xml'}
-                        />
-                    </Collapse.Panel>}
-                    <Collapse.Panel
-                        key="3"
-                        header="Slate"
-                        extra={<CopyClipboardButton t={t} content={slateState} />}
-                    >
-                        <CodeBlock
-                            text={slateState}
-                            language={'json'}
-                        />
-                    </Collapse.Panel>
-                    <Collapse.Panel
-                        key="4"
-                        header={t('New XML')}
-                        extra={<CopyClipboardButton t={t} content={xmlExport} />}
-                    >
-                        <CodeBlock
-                            text={xmlExport}
-                            language={'xml'}
-                        />
-                    </Collapse.Panel>
-                    {originalDocument && (
-                        <Collapse.Panel
-                            key="5"
-                            header={t('Changes')}
-                            collapsible={readOnly ? 'disabled' : undefined}
-                        >
-                            <LawDiff originalDocument={originalDocument} slate={debouncedSlate} t={t} />
-                        </Collapse.Panel>
-                    )}
-                </Collapse>
+                <Collapse defaultActiveKey={['5']} destroyInactivePanel items={items} />
             </div>
         );
     // Note: Important to re-render on changes of debouncedSlate.children
