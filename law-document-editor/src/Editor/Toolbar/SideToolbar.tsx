@@ -43,7 +43,7 @@ export const SideToolbar: FC<Props> = ({ t }) => {
         }
 
         try {
-            const domNode = ReactEditor.toDOMNode(editor, listItem);
+            const domNode = ReactEditor.toDOMNode(editor as unknown as ReactEditor, listItem);
             const rect = domNode.getBoundingClientRect();
     
             el.style.opacity = '1';
