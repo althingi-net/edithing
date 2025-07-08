@@ -31,7 +31,7 @@ export const AddEntryForm: FC<Props> = ({ onCancel, onSubmit, t }) => {
         }
 
         onSubmit();
-        ReactEditor.focus(editor);
+        ReactEditor.focus(editor as unknown as ReactEditor);
 
         const nested = locationToAdd === 'nested-list';
         const location = nested ? listItemPath : JSON.parse(locationToAdd) as Path;
